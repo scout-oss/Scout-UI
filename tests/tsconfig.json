@@ -1,0 +1,14 @@
+{
+  "extends": "../tooling/typescript/base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "tsBuildInfoFile": "../.artifacts/typescript/browser-tests.tsbuildinfo",
+    "types": ["node"]
+  },
+  "include": [
+    "browser/**/*.ts",
+    "../playwright.config.ts",
+    "../tooling/test/**/*.ts"
+  ]
+}

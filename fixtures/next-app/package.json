@@ -1,0 +1,23 @@
+{
+  "name": "@scout-ui/fixture-next-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fixture:build": "next build",
+    "fixture:start": "next start",
+    "fixture:typecheck": "tsc --noEmit --pretty false",
+    "lint": "eslint app next.config.ts && stylelint \"app/**/*.css\""
+  },
+  "dependencies": {
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "typescript": "6.0.3"
+  }
+}

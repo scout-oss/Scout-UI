@@ -1,0 +1,14 @@
+{
+  "extends": "../typescript/base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "rootDir": "../..",
+    "tsBuildInfoFile": "./node_modules/.cache/tsconfig.tsbuildinfo"
+  },
+  "include": [
+    "./**/*.ts",
+    "../../playwright.config.ts",
+    "../../vitest.config.ts"
+  ]
+}

@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  color: #111;
+  background: #fff;
+  font-family: system-ui, sans-serif;
+}
+
+main {
+  width: min(48rem, 100% - 2rem);
+  margin: 0 auto;
+  padding: 2rem 0;
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@scout-ui/fixture-harness",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . ../../tests/browser ../../playwright.config.ts",
+    "test:browser": "node run-browser-harness.mjs",
+    "test:visual": "node run-browser-harness.mjs --visual"
+  }
+}

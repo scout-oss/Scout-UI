@@ -44,6 +44,7 @@ export default tseslint.config(
           allowDefaultProject: [
             "apps/*/tests/*.test.ts",
             "packages/*/tests/*.test.ts",
+            "playwright.config.ts",
           ],
         },
         tsconfigRootDir: new URL("../../", import.meta.url).pathname,

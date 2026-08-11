@@ -1,5 +1,6 @@
 import { createLibraryConfig } from "../../tooling/rollup/create-library-config.mjs";
 
 export default createLibraryConfig({
+  clientEntries: ["src/index.ts"],
   external: [/^react(?:\/.*)?$/u],
 });

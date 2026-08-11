@@ -16,6 +16,7 @@
     "format:write": "prettier --write .",
     "test": "turbo run test",
     "test:browser": "turbo run test:browser",
+    "test:fixtures": "node tooling/fixtures/test-packed-consumers.mjs",
     "test:visual": "turbo run test:visual",
     "typecheck": "turbo run typecheck",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
@@ -31,6 +32,7 @@
   "license": "MIT",
   "packageManager": "pnpm@11.21.0",
   "devDependencies": {
+    "@axe-core/playwright": "4.12.1",
     "@changesets/cli": "2.31.1",
     "@eslint/js": "9.39.5",
     "@playwright/test": "1.62.1",

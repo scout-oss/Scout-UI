@@ -117,9 +117,11 @@ scout-ui/
 └── IMPLEMENTATION_PLAN.md
 ```
 
-`fixtures` are private workspace consumers. They install workspace packages
-through their public names and exports, preventing docs-only paths from masking
-packaging defects.
+`fixtures` are private source templates. The test harness copies each fixture
+outside the active workspace graph, injects packed local tarballs under their
+public package names, creates an isolated lockfile, and installs with
+`--frozen-lockfile`. Fixture code imports public names and exports only; neither
+workspace links nor docs-only paths may mask packaging defects.
 
 ## 3. Workspace configuration
 

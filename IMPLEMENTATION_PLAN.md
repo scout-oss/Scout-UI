@@ -1,6 +1,6 @@
 # Scout UI v0.1 Implementation Plan
 
-**Status:** Milestone 1 complete; Milestone 2 has not started<br /> **Source
+**Status:** Milestones 1–2 complete; Milestone 3 has not started<br /> **Source
 documents:** `SCOUT_UI_MASTER_SPEC.md`, `SCOUT_UI_DESIGN_SYSTEM.md`,
 `SCOUT_UI_ENGINEERING_SPEC.md`<br /> **Scope:** Eight components, three public
 packages, one documentation/playground application
@@ -91,7 +91,7 @@ decision, but published examples cannot depend on uncleared artwork.
 
 ## 4. Milestone 2 — Consumer fixtures and test harness
 
-**Status:** Not started
+**Status:** Complete (2026-08-11)
 
 ### Work
 

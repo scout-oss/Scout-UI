@@ -1,0 +1,11 @@
+{
+  "name": "@scout-ui/test-utils",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "vitest run --coverage --config ../../vitest.config.ts",
+    "typecheck": "tsc --noEmit --pretty false"
+  }
+}

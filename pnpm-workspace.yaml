@@ -1,0 +1,11 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "fixtures/*"
+  - "tooling/*"
+engineStrict: true
+saveExact: true
+strictPeerDependencies: true
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true

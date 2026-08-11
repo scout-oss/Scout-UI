@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./apps/docs" },
+    { "path": "./packages/react" },
+    { "path": "./packages/sticker-trail" },
+    { "path": "./packages/stickers" }
+  ]
+}

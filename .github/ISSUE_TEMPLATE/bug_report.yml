@@ -1,0 +1,61 @@
+name: Bug report
+description: Report a reproducible Scout UI defect.
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value:
+        Thanks for helping improve Scout UI. Do not report security
+        vulnerabilities here.
+  - type: input
+    id: package
+    attributes:
+      label: Affected package or docs route
+      placeholder: "@scout-ui/react or /components/sticker"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: "0.1.0-alpha.1 or commit SHA"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Provide a minimal repository, playground URL, or exact steps.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description:
+        Include framework, React, browser, operating system, pointer type, and
+        relevant accessibility settings.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues.
+          required: true
+        - label: This is not a security vulnerability.
+          required: true

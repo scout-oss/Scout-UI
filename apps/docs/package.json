@@ -1,0 +1,18 @@
+{
+  "name": "@scout-ui/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --build --pretty false",
+    "dev": "tsc --build --watch --pretty false",
+    "lint": "eslint src tests && stylelint \"src/**/*.css\" --allow-empty-input",
+    "test": "vitest run --coverage --config ../../vitest.config.ts",
+    "typecheck": "tsc --project tsconfig.json --noEmit --pretty false"
+  },
+  "dependencies": {
+    "@scout-ui/react": "workspace:*",
+    "@scout-ui/sticker-trail": "workspace:*",
+    "@scout-ui/stickers": "workspace:*"
+  }
+}

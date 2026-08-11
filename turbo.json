@@ -1,0 +1,48 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "eslint.config.mjs",
+    "playwright.config.ts",
+    "prettier.config.mjs",
+    "stylelint.config.mjs",
+    "tooling/**",
+    "tsconfig.json",
+    "vitest.config.ts"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        "public/_pagefind/**"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "test:browser": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "test:visual": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "lint:assets": {
+      "outputs": []
+    }
+  }
+}

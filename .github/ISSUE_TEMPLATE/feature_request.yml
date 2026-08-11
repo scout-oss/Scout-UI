@@ -1,0 +1,57 @@
+name: Feature proposal
+description:
+  Propose a focused component, capability, or documentation improvement.
+title: "[Proposal]: "
+labels: ["proposal", "needs-triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and use case
+      description: Explain the user need rather than only the proposed API.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Distinct behavior
+      description:
+        Explain why an existing component or composition cannot address it.
+    validations:
+      required: true
+  - type: textarea
+    id: accessibility
+    attributes:
+      label: Accessibility and input model
+      description:
+        Cover keyboard, touch, reduced motion, focus, and semantics where
+        relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: performance
+    attributes:
+      label: Performance implications
+      description: Describe expected rendering, event, animation, and DOM costs.
+    validations:
+      required: true
+  - type: textarea
+    id: design
+    attributes:
+      label: Design-system fit and examples
+      description:
+        Explain how the proposal supports functional stickers and controlled
+        chaos.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues and the specifications.
+          required: true
+        - label:
+            This proposal does not require copying Scout product assets or
+            private implementation.
+          required: true

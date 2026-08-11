@@ -1,0 +1,13 @@
+node_modules/
+.turbo/
+.next/
+dist/
+coverage/
+playwright-report/
+test-results/
+.stylelintcache
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example

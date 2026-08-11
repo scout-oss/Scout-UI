@@ -1,0 +1,14 @@
+{
+  "extends": "../../tooling/typescript/app.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "tsBuildInfoFile": "./node_modules/.cache/tsconfig.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "references": [
+    { "path": "../../packages/react" },
+    { "path": "../../packages/sticker-trail" },
+    { "path": "../../packages/stickers" }
+  ]
+}

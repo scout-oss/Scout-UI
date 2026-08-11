@@ -173,6 +173,8 @@ importers:
 
   tooling/test: {}
 
+  tooling/tokens: {}
+
 packages:
 
   '@axe-core/playwright@4.12.1':

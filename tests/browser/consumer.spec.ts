@@ -122,3 +122,88 @@ test("stable screenshot probe", async ({ page }, testInfo) => {
     "stable-probe.png",
   );
 });
+
+test("token canvas renders without accessibility or runtime errors", async ({
+  page,
+}, testInfo) => {
+  const diagnostics = captureBrowserDiagnostics(page);
+  await page.goto("/test-surfaces/tokens");
+  await expect(page.getByTestId("token-canvas")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Accent palette" }),
+  ).toBeVisible();
+  await expectNoAxeViolations(page, testInfo);
+  await diagnostics.expectClean(testInfo);
+});
+
+test("token environment baselines remain functional", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/test-surfaces/tokens");
+  const motionProbe = page.getByTestId("motion-probe").locator("span").first();
+
+  if (testInfo.project.name === "chromium-reduced-motion") {
+    await expect
+      .poll(() =>
+        motionProbe.evaluate((element) => ({
+          duration: getComputedStyle(element).transitionDuration,
+          rotation: getComputedStyle(element).getPropertyValue(
+            "--sui-intensity-rotation",
+          ),
+        })),
+      )
+      .toEqual({ duration: "0.001s", rotation: "0deg" });
+  } else if (testInfo.project.name === "chromium-forced-colors") {
+    const button = page.getByRole("button", { name: "Paper focus" });
+    await button.focus();
+    const styles = await button.evaluate((element) => {
+      const computed = getComputedStyle(element);
+      return {
+        outlineStyle: computed.outlineStyle,
+        outlineWidth: computed.outlineWidth,
+      };
+    });
+    expect(styles.outlineStyle).not.toBe("none");
+    expect(Number.parseFloat(styles.outlineWidth)).toBeGreaterThanOrEqual(3);
+  }
+});
+
+test("plain CSS theming and focus tokens resolve", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-desktop");
+  await page.goto("/test-surfaces/tokens");
+
+  const customTheme = page.getByTestId("consumer-theme");
+  expect(
+    await customTheme.evaluate(
+      (element) => getComputedStyle(element).backgroundColor,
+    ),
+  ).toBe("rgb(223, 248, 240)");
+
+  for (const name of [
+    "Paper focus",
+    "Night focus",
+    "Ultraviolet focus",
+    "Acid focus",
+    "Cyan focus",
+    "Custom theme focus",
+  ]) {
+    const button = page.getByRole("button", { name });
+    await button.focus();
+    await expect(button).toBeFocused();
+    const outline = await button.evaluate(
+      (element) => getComputedStyle(element).outlineWidth,
+    );
+    expect(Number.parseFloat(outline)).toBeGreaterThanOrEqual(3);
+  }
+});
+
+test("token canvas visual baseline", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-desktop");
+  await page.goto("/test-surfaces/tokens");
+  await prepareStableScreenshot(page);
+  await expect(page.getByTestId("token-canvas")).toHaveScreenshot(
+    "token-canvas.png",
+  );
+});

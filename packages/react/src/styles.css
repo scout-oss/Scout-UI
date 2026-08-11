@@ -1,1 +1,326 @@
-/* Public stylesheet export placeholder. Production tokens and styles begin in Milestone 3. */
+@layer scout-ui.tokens, scout-ui.base, scout-ui.components, scout-ui.utilities;
+
+@layer scout-ui.tokens {
+  :where(:root, .sui-theme, [data-sui-theme]) {
+    /* sui-token-group: foundation */
+    --sui-paper: #f7f5ef;
+    --sui-paper-raised: #fffefa;
+    --sui-paper-muted: #ede9df;
+    --sui-ink: #121116;
+    --sui-ink-muted: #625e68;
+    --sui-night: #0b0a0e;
+    --sui-night-raised: #17131b;
+    --sui-night-line: #312b36;
+    --sui-night-text: #f5f1f7;
+    --sui-night-muted: #aba3b0;
+    --sui-color-canvas: var(--sui-paper);
+    --sui-color-surface: var(--sui-paper-raised);
+    --sui-color-surface-muted: var(--sui-paper-muted);
+    --sui-color-text: var(--sui-ink);
+    --sui-color-text-muted: var(--sui-ink-muted);
+    --sui-color-line: var(--sui-ink);
+
+    /* sui-token-group: accent */
+    --sui-ultraviolet: #7c2cff;
+    --sui-acid: #d4ff5f;
+    --sui-cyan: #61dbe8;
+    --sui-hot-pink: #ff3d9a;
+    --sui-cobalt: #1664ff;
+    --sui-orange: #ff7a1a;
+
+    /* sui-token-group: semantic */
+    --sui-success: #2e8b57;
+    --sui-success-surface: #dff5e8;
+    --sui-success-text: #1f6840;
+    --sui-warning: #ffb020;
+    --sui-warning-surface: #fff0c7;
+    --sui-warning-text: #674100;
+    --sui-danger: #d9364b;
+    --sui-danger-surface: #ffe4e8;
+    --sui-danger-text: #942033;
+    --sui-information: var(--sui-cobalt);
+    --sui-information-surface: #e1ebff;
+    --sui-information-text: #0d3e9d;
+    --sui-focus: var(--sui-ultraviolet);
+    --sui-focus-separation: var(--sui-paper-raised);
+    --sui-disabled-surface: #d8d3cb;
+    --sui-disabled-text: #6c6870;
+    --sui-disabled-opacity: 0.62;
+
+    /* sui-token-group: typography */
+    --sui-font-display: inherit;
+    --sui-font-body: inherit;
+    --sui-font-mono:
+      ui-monospace, sfmono-regular, consolas, "Liberation Mono", monospace;
+    --sui-weight-regular: 400;
+    --sui-weight-medium: 500;
+    --sui-weight-semibold: 600;
+    --sui-weight-bold: 700;
+    --sui-weight-extrabold: 800;
+    --sui-type-display-xl: clamp(3.2rem, 8vw, 8rem);
+    --sui-type-display-l: clamp(2.7rem, 5.8vw, 5.8rem);
+    --sui-type-heading-m: clamp(2.1rem, 3.5vw, 3.6rem);
+    --sui-type-heading-s: clamp(1.25rem, 2vw, 1.75rem);
+    --sui-type-body-l: clamp(1rem, 1.4vw, 1.2rem);
+    --sui-type-body: clamp(0.94rem, 1.1vw, 1rem);
+    --sui-type-label: clamp(0.7rem, 0.9vw, 0.82rem);
+    --sui-type-eyebrow: clamp(0.65rem, 0.8vw, 0.75rem);
+    --sui-leading-display-xl: 0.88;
+    --sui-leading-display-l: 0.94;
+    --sui-leading-heading: 1;
+    --sui-leading-heading-s: 1.1;
+    --sui-leading-body-l: 1.65;
+    --sui-leading-body: 1.6;
+    --sui-leading-label: 1.2;
+    --sui-tracking-display-xl: -0.055em;
+    --sui-tracking-display-l: -0.045em;
+    --sui-tracking-heading-m: -0.035em;
+    --sui-tracking-heading-s: -0.025em;
+    --sui-tracking-label: 0.04em;
+    --sui-tracking-eyebrow: 0.12em;
+
+    /* sui-token-group: spacing */
+    --sui-space-1: 0.25rem;
+    --sui-space-2: 0.5rem;
+    --sui-space-3: 0.75rem;
+    --sui-space-4: 1rem;
+    --sui-space-5: 1.25rem;
+    --sui-space-6: 1.5rem;
+    --sui-space-8: 2rem;
+    --sui-space-10: 2.5rem;
+    --sui-space-12: 3rem;
+    --sui-space-16: 4rem;
+    --sui-space-20: 5rem;
+    --sui-space-24: 6rem;
+    --sui-space-32: 8rem;
+    --sui-space-40: 10rem;
+    --sui-control-gap: var(--sui-space-2);
+    --sui-card-padding: clamp(1.25rem, 3vw, 3rem);
+    --sui-section-space: clamp(5rem, 9vw, 9rem);
+    --sui-page-edge: clamp(1.25rem, 4vw, 4rem);
+    --sui-content-max: 77.5rem;
+    --sui-reading-max: 47.5rem;
+    --sui-target-min: 2.75rem;
+    --sui-sticker-safe-padding: clamp(0.5rem, 2vw, 1.5rem);
+
+    /* sui-token-group: shape */
+    --sui-radius-label: 0.5rem;
+    --sui-radius-control: 0.875rem;
+    --sui-radius-paper: 1.25rem;
+    --sui-radius-board: 1.75rem;
+    --sui-radius-pill: 999px;
+    --sui-shape-cutout-radius: 38% 62% 54% 46% / 44% 48% 52% 56%;
+    --sui-shape-stamp-radius: 50%;
+    --sui-shape-ribbon-radius: 0.625rem;
+    --sui-material-texture-opacity: 0.04;
+    --sui-material-paper-inset: inset 0 0 0 1px rgb(18 17 22 / 8%);
+
+    /* sui-token-group: outline */
+    --sui-border-compact: 1.5px;
+    --sui-border-strong: 2px;
+    --sui-outline-ink: 2px;
+    --sui-outline-ink-compact: 1.5px;
+    --sui-cut-line: clamp(3px, 0.5rem, 10px);
+    --sui-cut-line-ratio: 0.06;
+    --sui-focus-width: 3px;
+    --sui-focus-gap: 3px;
+
+    /* sui-token-group: shadow */
+    --sui-shadow-offset-sm: 0.25rem;
+    --sui-shadow-offset-md: 0.375rem;
+    --sui-shadow-offset-lg: 0.625rem;
+    --sui-shadow-offset: var(--sui-shadow-offset-md);
+    --sui-shadow-stuck: var(--sui-shadow-offset) var(--sui-shadow-offset) 0
+      var(--sui-ink);
+    --sui-shadow-lifted:
+      var(--sui-shadow-stuck), 0 1.125rem 2.625rem rgb(18 17 22 / 18%);
+    --sui-lift-distance: 0.25rem;
+    --sui-press-distance: 0.25rem;
+
+    /* sui-token-group: motion */
+    --sui-duration-immediate: 100ms;
+    --sui-duration-press: 170ms;
+    --sui-duration-stick: 220ms;
+    --sui-duration-entrance: 420ms;
+    --sui-duration-reveal: 680ms;
+    --sui-duration-ambient: 8s;
+    --sui-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --sui-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --sui-ease-press: cubic-bezier(0.2, 0.9, 0.3, 1);
+    --sui-motion-amplitude: 1;
+    --sui-motion-translate: 0.25rem;
+    --sui-motion-rotation: 5deg;
+
+    /* sui-token-group: intensity */
+    --sui-intensity-rotation: 5deg;
+    --sui-intensity-overlap: 0.14;
+    --sui-intensity-shadow-offset: 0.5rem;
+    --sui-intensity-motion: 1;
+    --sui-intensity-calm-rotation: 2deg;
+    --sui-intensity-calm-overlap: 0.06;
+    --sui-intensity-calm-shadow-offset: 0.3125rem;
+    --sui-intensity-calm-motion: 0.6;
+    --sui-intensity-playful-rotation: 5deg;
+    --sui-intensity-playful-overlap: 0.14;
+    --sui-intensity-playful-shadow-offset: 0.5rem;
+    --sui-intensity-playful-motion: 1;
+    --sui-intensity-loud-rotation: 9deg;
+    --sui-intensity-loud-overlap: 0.22;
+    --sui-intensity-loud-shadow-offset: 0.75rem;
+    --sui-intensity-loud-motion: 1.25;
+
+    /* sui-token-group: density */
+    --sui-density-gap: var(--sui-space-6);
+    --sui-density-overlap: 0.08;
+    --sui-density-sparse-gap: var(--sui-space-12);
+    --sui-density-balanced-gap: var(--sui-space-6);
+    --sui-density-packed-gap: var(--sui-space-2);
+
+    /* sui-token-group: layer */
+    --sui-layer-base: 0;
+    --sui-layer-surface: 10;
+    --sui-layer-decoration: 20;
+    --sui-layer-control: 30;
+    --sui-layer-navigation: 50;
+    --sui-layer-trail: 60;
+    --sui-layer-popover: 70;
+    --sui-layer-modal: 80;
+    --sui-layer-toast: 90;
+
+    /* sui-token-groups:end */
+  }
+
+  /* stylelint-disable-next-line selector-class-pattern -- BEM-style public theme modifier. */
+  :where(.sui-theme--night, [data-sui-theme="night"]) {
+    --sui-color-canvas: var(--sui-night);
+    --sui-color-surface: var(--sui-night-raised);
+    --sui-color-surface-muted: var(--sui-night-line);
+    --sui-color-text: var(--sui-night-text);
+    --sui-color-text-muted: var(--sui-night-muted);
+    --sui-color-line: var(--sui-night-line);
+    --sui-focus: var(--sui-cyan);
+    --sui-focus-separation: var(--sui-night);
+    --sui-shadow-stuck: var(--sui-shadow-offset) var(--sui-shadow-offset) 0
+      var(--sui-ultraviolet);
+    --sui-shadow-lifted:
+      var(--sui-shadow-stuck), 0 1.125rem 2.625rem rgb(0 0 0 / 52%);
+
+    color-scheme: dark;
+  }
+
+  :where(.sui-intensity-calm, [data-sui-intensity="calm"]) {
+    --sui-intensity-rotation: var(--sui-intensity-calm-rotation);
+    --sui-intensity-overlap: var(--sui-intensity-calm-overlap);
+    --sui-intensity-shadow-offset: var(--sui-intensity-calm-shadow-offset);
+    --sui-intensity-motion: var(--sui-intensity-calm-motion);
+  }
+
+  :where(.sui-intensity-playful, [data-sui-intensity="playful"]) {
+    --sui-intensity-rotation: var(--sui-intensity-playful-rotation);
+    --sui-intensity-overlap: var(--sui-intensity-playful-overlap);
+    --sui-intensity-shadow-offset: var(--sui-intensity-playful-shadow-offset);
+    --sui-intensity-motion: var(--sui-intensity-playful-motion);
+  }
+
+  :where(.sui-intensity-loud, [data-sui-intensity="loud"]) {
+    --sui-intensity-rotation: var(--sui-intensity-loud-rotation);
+    --sui-intensity-overlap: var(--sui-intensity-loud-overlap);
+    --sui-intensity-shadow-offset: var(--sui-intensity-loud-shadow-offset);
+    --sui-intensity-motion: var(--sui-intensity-loud-motion);
+  }
+
+  :where([data-sui-density="sparse"]) {
+    --sui-density-gap: var(--sui-density-sparse-gap);
+    --sui-density-overlap: 0;
+  }
+
+  :where([data-sui-density="balanced"]) {
+    --sui-density-gap: var(--sui-density-balanced-gap);
+    --sui-density-overlap: 0.08;
+  }
+
+  :where([data-sui-density="packed"]) {
+    --sui-density-gap: var(--sui-density-packed-gap);
+    --sui-density-overlap: 0.16;
+  }
+}
+
+@layer scout-ui.base {
+  :where(.sui-theme, [data-sui-theme])
+    :where([class^="sui-"], [class*=" sui-"]) {
+    box-sizing: border-box;
+  }
+}
+
+@layer scout-ui.utilities {
+  .sui-boundary {
+    border: var(--sui-border-strong) solid var(--sui-color-line);
+  }
+
+  .sui-focusable:focus-visible {
+    outline: var(--sui-focus-width) solid var(--sui-focus);
+    outline-offset: var(--sui-focus-gap);
+    box-shadow: 0 0 0 calc(var(--sui-focus-width) + var(--sui-focus-gap))
+      var(--sui-focus-separation);
+  }
+
+  .sui-motion {
+    transition-duration: var(--sui-duration-stick);
+    transition-property:
+      background-color, border-color, box-shadow, color, opacity, transform;
+    transition-timing-function: var(--sui-ease-out);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer scout-ui.tokens {
+    :where(:root, .sui-theme, [data-sui-theme]) {
+      --sui-duration-press: 1ms;
+      --sui-duration-stick: 1ms;
+      --sui-duration-entrance: 1ms;
+      --sui-duration-reveal: 1ms;
+      --sui-duration-ambient: 1ms;
+      --sui-motion-amplitude: 0;
+      --sui-motion-translate: 0px;
+      --sui-motion-rotation: 0deg;
+      --sui-intensity-motion: 0;
+      --sui-intensity-rotation: 0deg;
+    }
+  }
+
+  @layer scout-ui.utilities {
+    .sui-motion {
+      transition-duration: 1ms;
+      transition-property: background-color, border-color, color, opacity;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  @layer scout-ui.tokens {
+    :where(:root, .sui-theme, [data-sui-theme]) {
+      --sui-color-canvas: Canvas;
+      --sui-color-surface: Canvas;
+      --sui-color-surface-muted: Canvas;
+      --sui-color-text: CanvasText;
+      --sui-color-text-muted: CanvasText;
+      --sui-color-line: CanvasText;
+      --sui-focus: Highlight;
+      --sui-focus-separation: Canvas;
+      --sui-shadow-stuck: none;
+      --sui-shadow-lifted: none;
+    }
+  }
+
+  @layer scout-ui.utilities {
+    .sui-boundary {
+      border-color: CanvasText;
+      box-shadow: none !important;
+    }
+
+    .sui-focusable:focus-visible {
+      outline-color: Highlight;
+      box-shadow: none !important;
+    }
+  }
+}

@@ -186,6 +186,39 @@ async function inspectInstalledPackage(consumer, record) {
       "react-dom",
     ]);
   }
+
+  if (record.slug === "react") {
+    assert.ok(files.includes("dist/tokens.generated.js"));
+    assert.ok(files.includes("dist/tokens.generated.d.ts"));
+    const css = await readFile(
+      path.join(installed, "dist", "styles.css"),
+      "utf8",
+    );
+    for (const tokenName of [
+      "--sui-paper",
+      "--sui-night",
+      "--sui-ultraviolet",
+      "--sui-success",
+      "--sui-font-display",
+      "--sui-space-4",
+      "--sui-cut-line",
+      "--sui-shadow-stuck",
+      "--sui-duration-stick",
+      "--sui-intensity-rotation",
+      "--sui-density-gap",
+      "--sui-layer-modal",
+    ]) {
+      assert.match(css, new RegExp(`${tokenName}:`, "u"));
+    }
+    assert.doesNotMatch(css, /@font-face|tailwind/iu);
+    assert.doesNotMatch(
+      css,
+      /(?:^|\})\s*(?:\*|body|button|html|input)\s*\{/gmu,
+      "public stylesheet contains a global element/reset selector",
+    );
+    assert.match(css, /@media \(forced-colors: active\)/u);
+    assert.match(css, /@media \(prefers-reduced-motion: reduce\)/u);
+  }
   return installed;
 }
 

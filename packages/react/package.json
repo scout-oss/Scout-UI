@@ -30,10 +30,12 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "rollup --config rollup.config.mjs && tsc --project tsconfig.json --emitDeclarationOnly --pretty false && node ../../tooling/rollup/copy-static.mjs src/styles.css dist/styles.css",
+    "build": "pnpm tokens:check && rollup --config rollup.config.mjs && tsc --project tsconfig.json --emitDeclarationOnly --pretty false && node ../../tooling/rollup/copy-static.mjs src/styles.css dist/styles.css",
     "dev": "rollup --config rollup.config.mjs --watch",
-    "lint": "eslint src tests rollup.config.mjs && stylelint \"src/**/*.css\" --allow-empty-input",
-    "test": "vitest run --coverage --config ../../vitest.config.ts",
+    "lint": "pnpm tokens:check && eslint src tests rollup.config.mjs && stylelint \"src/**/*.css\" --allow-empty-input",
+    "test": "pnpm tokens:check && vitest run --coverage --config ../../vitest.config.ts",
+    "tokens:check": "node ../../tooling/tokens/generate-token-metadata.mjs --check",
+    "tokens:generate": "node ../../tooling/tokens/generate-token-metadata.mjs --write",
     "typecheck": "tsc --project tsconfig.json --noEmit --pretty false"
   },
   "dependencies": {

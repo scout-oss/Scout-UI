@@ -1,6 +1,6 @@
 # Scout UI v0.1 Implementation Plan
 
-**Status:** Milestones 1–2 complete; Milestone 3 has not started<br /> **Source
+**Status:** Milestones 1–3 complete; Milestone 4 has not started<br /> **Source
 documents:** `SCOUT_UI_MASTER_SPEC.md`, `SCOUT_UI_DESIGN_SYSTEM.md`,
 `SCOUT_UI_ENGINEERING_SPEC.md`<br /> **Scope:** Eight components, three public
 packages, one documentation/playground application
@@ -128,6 +128,8 @@ decision, but published examples cannot depend on uncleared artwork.
   artifacts on success.
 
 ## 5. Milestone 3 — Design tokens and CSS foundation
+
+**Status:** Complete (2026-08-11)
 
 ### Work
 

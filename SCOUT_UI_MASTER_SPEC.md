@@ -355,6 +355,14 @@ record.
 The component APIs must never assume bundled assets. A team can supply its own
 artwork while retaining Scout UI's motion and composition rules.
 
+Official `StickerDefinition` assets already contain their authored paper cut
+line, ink outline, and transparent safe padding. `Sticker` therefore preserves
+that intrinsic treatment by default instead of adding a second wrapper outline.
+Consumer-provided image URLs and rendered content remain first-class and may opt
+into wrapper cut-line or outline treatments. Rendering is format-agnostic: the
+contract supports SVG, PNG, WebP, photographic cutouts, and future material
+artwork without changing the public API.
+
 ## 12. Motion and interaction model
 
 Scout UI defines a small motion vocabulary:

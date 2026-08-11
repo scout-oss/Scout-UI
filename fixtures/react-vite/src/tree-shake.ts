@@ -1,4 +1,4 @@
-import { stickerEntryStatus } from "@scout-ui/react/sticker";
+import { Sticker } from "@scout-ui/react/sticker";
 
 // The packed harness replaces workspace ranges with tarball paths.
-export const packedStickerStatus = stickerEntryStatus;
+export const PackedSticker = Sticker;

@@ -22,6 +22,14 @@
       "types": "./dist/sticker/index.d.ts",
       "import": "./dist/sticker/index.js"
     },
+    "./sticker-badge": {
+      "types": "./dist/sticker-badge/index.d.ts",
+      "import": "./dist/sticker-badge/index.js"
+    },
+    "./sticker-button": {
+      "types": "./dist/sticker-button/index.d.ts",
+      "import": "./dist/sticker-button/index.js"
+    },
     "./sticker-trail": {
       "types": "./dist/sticker-trail/index.d.ts",
       "import": "./dist/sticker-trail/index.js"
@@ -36,7 +44,7 @@
     "test": "pnpm tokens:check && vitest run --coverage --config ../../vitest.config.ts",
     "tokens:check": "node ../../tooling/tokens/generate-token-metadata.mjs --check",
     "tokens:generate": "node ../../tooling/tokens/generate-token-metadata.mjs --write",
-    "typecheck": "tsc --project tsconfig.json --noEmit --pretty false"
+    "typecheck": "tsc --project tsconfig.json --noEmit --pretty false && tsc --project tsconfig.type-tests.json --pretty false"
   },
   "dependencies": {
     "@scout-ui/sticker-trail": "workspace:*"

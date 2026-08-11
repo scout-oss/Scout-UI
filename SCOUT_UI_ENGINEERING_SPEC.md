@@ -446,10 +446,7 @@ examples are updated together.
 ### 10.1 Sticker
 
 ```ts
-interface StickerSharedProps extends ScoutMotionPolicy {
-  source?: StickerSource;
-  children?: React.ReactNode;
-  alt?: string;
+interface StickerVisualProps extends ScoutMotionPolicy {
   size?: "xs" | "sm" | "md" | "lg" | "xl" | number | string;
   tone?: StickerTone;
   material?: "flat" | "paper" | "photo" | "metallic";
@@ -460,20 +457,40 @@ interface StickerSharedProps extends ScoutMotionPolicy {
   entrance?: "none" | "stick";
 }
 
+type StickerContentProps =
+  | {
+      source: StickerSource;
+      children?: never;
+      alt?: string;
+    }
+  | {
+      source?: never;
+      children: React.ReactNode;
+      alt?: never;
+    };
+
 export type StickerProps =
-  | (StickerSharedProps &
+  | (StickerVisualProps &
+      StickerContentProps &
       Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> & {
         interactive?: false;
       })
-  | (StickerSharedProps &
+  | (StickerVisualProps &
+      StickerContentProps &
       Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & {
         interactive: true;
       });
 ```
 
-Exactly one of `source` or `children` should be used. `alt` maps to meaningful
-image text only when a source is rendered; an empty string is the decorative
-default. `interactive=true` renders a native button for object-like sticker
+Exactly one of `source` or `children` is enforced by the type contract. `alt`
+maps to meaningful image text only when a source is rendered; an empty string is
+the decorative default. A source renders through format-neutral image semantics
+and can represent SVG, PNG, WebP, photographic, or material artwork. Source
+artwork defaults to `outline="none"` because official `StickerDefinition` assets
+already contain their cut line, ink outline, and transparent safe padding.
+Consumer-rendered children default to `outline="cutline"`; either form may
+choose an explicit wrapper outline. Wrapper treatment never clips source
+padding. `interactive=true` renders a native button for object-like sticker
 actions. Label-like actions use `StickerButton`, and selection labels use
 `StickerBadge`.
 

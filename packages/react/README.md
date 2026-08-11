@@ -1,18 +1,56 @@
 # @scout-ui/react
 
-React entry package for Scout UI. Production components are implemented in their
-later milestones; the v0.1 CSS and typed token foundation is available now.
+React components for sticker-led interfaces. The first v0.1 primitives are
+`Sticker`, `StickerButton`, and `StickerBadge`.
 
 The package supports the root import plus explicit public subpaths. Import
 `@scout-ui/react/styles.css` for the public stylesheet entry.
 
 ```tsx
 import "@scout-ui/react/styles.css";
-import { scoutUiTokens } from "@scout-ui/react";
+import { Sticker, StickerBadge, StickerButton } from "@scout-ui/react";
+
+<Sticker source={{ id: "spark", src: "/spark.webp" }} alt="Bright spark" />;
+<StickerButton href="/docs" tone="ultraviolet">
+  Read the docs
+</StickerButton>;
+<StickerBadge mode="select" selected={selected} onSelectedChange={setSelected}>
+  Motion
+</StickerBadge>;
 ```
+
+Explicit server-compatible subpaths are also available:
+
+```tsx
+import { Sticker } from "@scout-ui/react/sticker";
+import { StickerBadge } from "@scout-ui/react/sticker-badge";
+import { StickerButton } from "@scout-ui/react/sticker-button";
+```
+
+All three leaves and the root barrel are unmarked, SSR-safe modules. Static
+serializable usage can render in a React Server Component; event handlers belong
+below a consumer-authored Client Component boundary.
+
+`Sticker` accepts exactly one of `source` or `children`. Source-backed artwork
+uses format-neutral image semantics and defaults to no wrapper outline so
+official Scout UI assets do not receive a second cut line. Consumer-rendered
+content defaults to the Scout cut-line treatment and either form can choose an
+explicit `outline`.
+
+`StickerButton` renders a native button or anchor. Loading belongs only to the
+button branch. `StickerBadge` renders a span in static mode, an `aria-pressed`
+button in select mode, or one accessible remove button in remove mode. If a tag
+needs selection and removal together, compose sibling controls inside a named
+group; never nest one button inside another.
 
 The stylesheet exposes collision-resistant `--sui-*` custom properties and
 paper/night, intensity, density, forced-colors, and reduced-motion behavior.
 Consumers can override variables with plain CSS; no React theme provider,
 Tailwind setup, CSS-in-JS runtime, or font download is required. The exported
 `scoutUiTokens` metadata is generated from that same CSS source of truth.
+
+Intentional component hooks include the `sui-sticker`, `sui-sticker-button`, and
+`sui-sticker-badge` classes plus focused variables such as `--sui-sticker-size`,
+`--sui-sticker-rotation`, `--sui-sticker-badge-rotation`, and
+`--sui-sticker-badge-max-width`. Broader surface, text, focus, shadow, and
+motion changes should use the shared semantic tokens.

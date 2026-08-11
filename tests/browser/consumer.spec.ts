@@ -19,7 +19,7 @@ test("packed Next.js consumer renders and hydrates", async ({
     page.getByRole("heading", { name: "Next.js packed consumer" }),
   ).toBeVisible();
   await expect(page.getByTestId("server-package-values")).toContainText(
-    "server-compatible",
+    "StickerButton",
   );
   await expect(page.getByTestId("client-entry-value")).toHaveText("0.0.0");
 
@@ -39,11 +39,11 @@ test("server-compatible root and subpath render", async ({
   const diagnostics = captureBrowserDiagnostics(page);
   await page.goto("/server-root");
   await expect(page.getByTestId("server-root-value")).toHaveText(
-    "server-compatible",
+    "server-compatible primitives",
   );
   await page.goto("/server-only");
   await expect(page.getByTestId("server-only-value")).toHaveText(
-    "server-compatible",
+    "server-compatible primitives",
   );
   await diagnostics.expectClean(testInfo);
 });
@@ -57,7 +57,7 @@ test("packed Vite consumer renders", async ({ page }, testInfo) => {
   await expect(
     page.getByRole("heading", { name: "Vite packed consumer" }),
   ).toBeVisible();
-  await expect(page.locator("main")).toContainText("server-compatible");
+  await expect(page.locator("main")).toContainText("sticker-button");
   await expect(page.getByTestId("packed-sticker-definition")).toHaveText(
     "wonky-star",
   );
@@ -246,5 +246,206 @@ test("official sticker gallery visual baseline", async ({ page }, testInfo) => {
   await prepareStableScreenshot(page);
   await expect(page.getByTestId("sticker-gallery")).toHaveScreenshot(
     "official-sticker-gallery.png",
+  );
+});
+
+test("primitive gallery has native semantics and accessible states", async ({
+  page,
+}, testInfo) => {
+  const diagnostics = captureBrowserDiagnostics(page);
+  await page.goto("/test-surfaces/primitives");
+  const gallery = page.getByTestId("primitive-gallery");
+  await expect(gallery).toBeVisible();
+
+  await expect(gallery.locator("span.sui-sticker").first()).toBeVisible();
+  await expect(page.getByTestId("interactive-sticker")).toHaveJSProperty(
+    "tagName",
+    "BUTTON",
+  );
+  const activationButton = page.getByTestId("interactive-button");
+  await page.getByTestId("interactive-sticker").click();
+  await expect(activationButton).toContainText("Activations: 1");
+  await activationButton.click();
+  await expect(activationButton).toContainText("Activations: 2");
+  await activationButton.focus();
+  await activationButton.press("Enter");
+  await expect(activationButton).toContainText("Activations: 3");
+  await expect(
+    page.getByRole("link", { name: "Anchor action" }),
+  ).toHaveAttribute("href", "#badge-heading");
+  await expect(
+    page.getByRole("button", { name: "Disabled action" }),
+  ).toBeDisabled();
+  await expect(
+    page.getByRole("button", { name: "Saving draft" }),
+  ).toBeDisabled();
+  await expect(
+    page.getByRole("button", { name: "Saving draft" }),
+  ).toHaveAttribute("aria-busy", "true");
+
+  const selectBadge = page.locator(
+    ".primitive-interactive-grid button[aria-pressed]",
+  );
+  await expect(selectBadge).toHaveAttribute("aria-pressed", "false");
+  await selectBadge.click();
+  await expect(selectBadge).toHaveAttribute("aria-pressed", "true");
+
+  const removeBadge = page.getByRole("button", {
+    name: "Remove purple filter",
+  });
+  await expect(removeBadge.locator("button")).toHaveCount(0);
+  await removeBadge.click();
+  await expect(page.getByTestId("removed-state")).toHaveText("Badge removed");
+
+  await expectNoAxeViolations(page, testInfo);
+  await diagnostics.expectClean(testInfo);
+});
+
+test("Sticker source treatment remains intrinsic and format agnostic", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-desktop");
+  await page.goto("/test-surfaces/primitives");
+
+  const official = page.locator(".sui-sticker-source").first();
+  await expect(official).toHaveAttribute("data-outline", "none");
+  await expect(official.locator("img")).toHaveCount(1);
+  expect(
+    await official.evaluate(
+      (element) => getComputedStyle(element).outlineStyle,
+    ),
+  ).toBe("none");
+
+  const consumerArtwork = page.locator(".sui-sticker-content-wrapper").first();
+  await expect(consumerArtwork).toHaveAttribute("data-outline", "ink");
+  await expect(
+    page
+      .locator('.sui-sticker-content-wrapper[data-outline="cutline"]')
+      .first(),
+  ).toBeVisible();
+});
+
+test("primitive targets and focus treatment meet the interaction contract", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-desktop");
+  await page.goto("/test-surfaces/primitives");
+
+  const interactiveTargets = page.locator(
+    "button.sui-sticker, .sui-sticker-button, button.sui-sticker-badge",
+  );
+  const boxes = await interactiveTargets.evaluateAll((elements) =>
+    elements.map((element) => {
+      const box = element.getBoundingClientRect();
+      return { height: box.height, width: box.width };
+    }),
+  );
+  expect(boxes.length).toBeGreaterThan(0);
+  for (const box of boxes) {
+    expect(box.height).toBeGreaterThanOrEqual(44);
+    expect(box.width).toBeGreaterThanOrEqual(44);
+  }
+
+  for (const control of await page.locator(".primitive-tone-grid a").all()) {
+    await control.focus();
+    const focus = await control.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        offset: Number.parseFloat(styles.outlineOffset),
+        width: Number.parseFloat(styles.outlineWidth),
+      };
+    });
+    expect(focus.width).toBeGreaterThanOrEqual(3);
+    expect(focus.offset).toBeGreaterThanOrEqual(3);
+  }
+});
+
+test("reduced motion keeps tactile state without translation", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-reduced-motion");
+  await page.goto("/test-surfaces/primitives");
+  const button = page.getByRole("link", { name: "ultraviolet" });
+  const before = await button.evaluate(
+    (element) => getComputedStyle(element).boxShadow,
+  );
+  await button.hover();
+  const after = await button.evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return { shadow: styles.boxShadow, translate: styles.translate };
+  });
+
+  expect(after.translate).toBe("none");
+  expect(after.shadow).not.toBe(before);
+});
+
+test("forced colors preserves primitive boundaries and focus", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-forced-colors");
+  await page.goto("/test-surfaces/primitives");
+  const button = page.getByRole("button", { name: "Activations: 0" });
+  await button.focus();
+  const styles = await button.evaluate((element) => {
+    const computed = getComputedStyle(element);
+    return {
+      border: Number.parseFloat(computed.borderWidth),
+      outline: Number.parseFloat(computed.outlineWidth),
+      shadow: computed.boxShadow,
+    };
+  });
+  expect(styles.border).toBeGreaterThanOrEqual(2);
+  expect(styles.outline).toBeGreaterThanOrEqual(3);
+  expect(styles.shadow).toBe("none");
+});
+
+test("primitive gallery reflows with large text and small viewports", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    !["chromium-desktop", "webkit-mobile"].includes(testInfo.project.name),
+  );
+  await page.goto("/test-surfaces/primitives");
+  await page.addStyleTag({ content: ":root { font-size: 200% !important; }" });
+  await expect(
+    page.getByRole("heading", { name: "StickerButton" }),
+  ).toBeVisible();
+  const overflow = await page.evaluate(
+    () =>
+      document.documentElement.scrollWidth -
+      document.documentElement.clientWidth,
+  );
+  expect(overflow).toBeLessThanOrEqual(1);
+});
+
+test("Vite consumer exercises root and subpath primitives", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-desktop");
+  const viteURL = process.env.SCOUT_UI_VITE_FIXTURE_URL;
+  expect(viteURL).toBeTruthy();
+  await page.goto(viteURL ?? "about:blank");
+  await expect(
+    page.getByRole("heading", { name: "Root primitive imports" }),
+  ).toBeVisible();
+  const badge = page.getByRole("button", { name: "Select" });
+  await badge.click();
+  await expect(page.getByRole("button", { name: "Selected" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await expect(
+    page.getByRole("button", { name: "Subpath button" }),
+  ).toBeVisible();
+  await expectNoAxeViolations(page, testInfo);
+});
+
+test("primitive gallery visual baseline", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-desktop");
+  await page.goto("/test-surfaces/primitives");
+  await prepareStableScreenshot(page);
+  await expect(page.getByTestId("primitive-gallery")).toHaveScreenshot(
+    "primitive-gallery.png",
+    { maxDiffPixelRatio: 0 },
   );
 });

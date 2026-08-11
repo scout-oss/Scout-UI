@@ -14,6 +14,7 @@ const ignoredPaths = [
   "**/node_modules/**",
   "**/playwright-report/**",
   "**/test-results/**",
+  "**/*.test-d.tsx",
 ];
 
 export default tseslint.config(

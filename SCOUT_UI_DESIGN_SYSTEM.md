@@ -273,14 +273,14 @@ identity.
 
 ### 9.1 Sticker artwork
 
-The official pack combines two compatible modes:
+The accepted v0.1 official pack contains 25 bold flat SVG assets with black
+outlines, white cut lines, compressed shapes, and 2–4 saturated colors. It is
+frozen for the remaining v0.1 milestones. A richer family of photographic,
+paper, chrome, metallic, and other material cutouts is deferred until after
+Milestone 19; the component contracts support it without requiring an API
+change.
 
-- bold flat vector artwork with black outlines, white cut lines, compressed
-  shapes, and 2–4 saturated colors;
-- selectively used photographic or material cutouts with an obvious paper edge
-  and one color-treated detail.
-
-One pack should not mix unrelated rendering styles indiscriminately. A
+One pack should not mix unrelated rendering styles indiscriminately. Any future
 photographic object must be art-directed to the same palette and outline system
 as the vector assets.
 
@@ -390,6 +390,13 @@ child.
 
 **Anatomy:** content; optional inner ink outline; paper cut line; optional hard
 shadow; optional accessible label; optional pressable wrapper.
+
+Official pack artwork owns its authored cut line, internal ink outline, and
+transparent padding. Source-backed stickers therefore default to no additional
+wrapper outline. Raw consumer artwork or child content may opt into `ink`,
+`paper`, or `cutline` wrapper treatment. Wrapper treatment must not clip source
+padding and must not assume an SVG source; raster, photographic, and material
+artwork follows the same sizing and semantic contract.
 
 **Sizing:** 24px minimum for a purely visual inline asset; 44px minimum when
 interactive. Named visual sizes are `xs` 32, `sm` 48, `md` 72, `lg` 112, `xl`

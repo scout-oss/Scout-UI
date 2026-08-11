@@ -6,7 +6,21 @@ body {
 }
 
 main {
+  display: grid;
+  gap: 1.5rem;
   width: min(48rem, 100% - 2rem);
   margin: 0 auto;
   padding: 2rem 0;
+}
+
+section {
+  padding: 1rem;
+  border: var(--sui-border-strong) solid var(--sui-color-line);
+}
+
+.vite-primitive-row {
+  display: flex;
+  gap: var(--sui-space-5);
+  align-items: center;
+  flex-wrap: wrap;
 }

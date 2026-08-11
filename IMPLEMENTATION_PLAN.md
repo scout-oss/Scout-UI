@@ -1,6 +1,6 @@
 # Scout UI v0.1 Implementation Plan
 
-**Status:** Milestones 1–4 complete; Milestone 5 has not started<br /> **Source
+**Status:** Milestones 1–5 complete; Milestone 6 has not started<br /> **Source
 documents:** `SCOUT_UI_MASTER_SPEC.md`, `SCOUT_UI_DESIGN_SYSTEM.md`,
 `SCOUT_UI_ENGINEERING_SPEC.md`<br /> **Scope:** Eight components, three public
 packages, one documentation/playground application
@@ -176,6 +176,8 @@ though attribution is not required.
 - Add `ATTRIBUTION.md`, `LICENSE-ASSETS.md`, editable-source policy, and
   contribution checklist.
 - Implement root definitions plus explicit asset subpath exports.
+- Freeze the accepted 25-sticker SVG pack for the remaining v0.1 milestones;
+  richer photographic and material families are separate post-Milestone-19 work.
 
 ### Acceptance criteria
 
@@ -199,6 +201,11 @@ though attribution is not required.
 - Implement the discriminated public APIs exactly as specified.
 - Implement cut line, outline, material, shadow, tone, size, rotation,
   intensity, loading, selected, static, remove, button, and anchor branches.
+- Preserve authored cut lines, ink outlines, and transparent padding on official
+  `StickerDefinition` sources; source artwork receives no second wrapper outline
+  by default, while raw consumer artwork can opt into wrapper treatment.
+- Keep source rendering format-agnostic for SVG, PNG, WebP, photographic, and
+  future material artwork without adding assets or changing the public API.
 - Implement semantic focus, disabled, loading, selected, and remove behavior.
 - Add CSS-variable customization and paper/night examples.
 - Add long-label, custom-font, custom-theme, zoom, and forced-colors coverage.

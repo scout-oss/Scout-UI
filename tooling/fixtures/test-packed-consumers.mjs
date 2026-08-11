@@ -156,6 +156,8 @@ async function inspectInstalledPackage(consumer, record) {
       ".",
       "./package.json",
       "./sticker",
+      "./sticker-badge",
+      "./sticker-button",
       "./sticker-trail",
       "./styles.css",
     ],
@@ -365,6 +367,22 @@ async function assertBoundaries(nextConsumer) {
   );
   assertDirective(
     await readFile(
+      path.join(reactDirectory, "sticker-badge", "index.js"),
+      "utf8",
+    ),
+    false,
+    "StickerBadge leaf",
+  );
+  assertDirective(
+    await readFile(
+      path.join(reactDirectory, "sticker-button", "index.js"),
+      "utf8",
+    ),
+    false,
+    "StickerButton leaf",
+  );
+  assertDirective(
+    await readFile(
       path.join(reactDirectory, "sticker-trail", "index.js"),
       "utf8",
     ),
@@ -381,12 +399,18 @@ async function assertBoundaries(nextConsumer) {
 async function assertServerEvaluation(consumer) {
   const script = `
     const { readFile } = await import("node:fs/promises");
+    const { createElement } = await import("react");
+    const { renderToStaticMarkup } = await import("react-dom/server");
     if (typeof window !== "undefined") throw new Error("window leaked into server evaluation");
     const root = await import("@scout-ui/react");
     const sticker = await import("@scout-ui/react/sticker");
+    const badge = await import("@scout-ui/react/sticker-badge");
+    const button = await import("@scout-ui/react/sticker-button");
     const stickers = await import("@scout-ui/stickers");
     const star = await import("@scout-ui/stickers/definitions/wonky-star");
-    if (root.scoutUiReactVersion !== "0.0.0" || sticker.stickerEntryStatus !== "server-compatible" || stickers.stickerPackVersion !== "0.0.0" || stickers.stickerDefinitions.length !== 25 || star.wonkyStar.id !== "wonky-star") process.exit(2);
+    if (root.scoutUiReactVersion !== "0.0.0" || typeof sticker.Sticker !== "function" || typeof badge.StickerBadge !== "function" || typeof button.StickerButton !== "function" || stickers.stickerPackVersion !== "0.0.0" || stickers.stickerDefinitions.length !== 25 || star.wonkyStar.id !== "wonky-star") process.exit(2);
+    const markup = renderToStaticMarkup(createElement(sticker.Sticker, { source: star.wonkyStar }));
+    if (!markup.includes('data-outline="none"') || !markup.startsWith("<link") && !markup.startsWith("<span")) process.exit(4);
     const asset = await readFile(new URL(star.wonkyStar.src));
     if (!asset.toString("utf8").startsWith("<svg")) process.exit(3);
   `;
@@ -404,11 +428,11 @@ async function assertTreeShaking(viteConsumer) {
       ),
   );
   const source = output.join("\n");
-  assert.match(source, /server-compatible/u);
+  assert.match(source, /sui-sticker/u);
   assert.doesNotMatch(
     source,
-    /0\.0\.0|sticker-trail/u,
-    "Sticker-only Vite build retained unused interactive leaves",
+    /scoutUiReactVersion|sticker-trail|sui-sticker-button|sui-sticker-badge/u,
+    "Sticker-only Vite build retained unused package leaves",
   );
 
   const stickerFiles = await listFiles(

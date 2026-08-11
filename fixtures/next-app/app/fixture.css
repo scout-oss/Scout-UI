@@ -422,3 +422,164 @@ nav,
     background: Canvas;
   }
 }
+
+.sticker-gallery {
+  gap: var(--sui-space-8);
+  width: min(var(--sui-content-max), 100% - 2rem);
+  color: var(--sui-color-text);
+  background: var(--sui-color-canvas);
+  font-family: var(--sui-font-body);
+}
+
+.gallery-header,
+.gallery-category,
+.gallery-collage {
+  padding: var(--sui-card-padding);
+  border-radius: var(--sui-radius-paper);
+  background: var(--sui-color-surface);
+}
+
+.gallery-header {
+  box-shadow: var(--sui-shadow-stuck);
+}
+
+.gallery-header h1,
+.gallery-category h2,
+.gallery-collage h2 {
+  margin: 0;
+  font-weight: var(--sui-weight-extrabold);
+  letter-spacing: var(--sui-tracking-heading-m);
+  text-transform: capitalize;
+}
+
+.gallery-category {
+  display: grid;
+  gap: var(--sui-space-5);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--sui-space-5);
+}
+
+.gallery-card {
+  display: grid;
+  gap: var(--sui-space-2);
+  padding: var(--sui-space-3);
+  border-radius: var(--sui-radius-control);
+  background: var(--sui-paper-raised);
+}
+
+.gallery-card code,
+.gallery-card small {
+  color: var(--sui-ink-muted);
+}
+
+.gallery-previews {
+  display: grid;
+  grid-template-columns: 1fr 0.72fr 0.5fr;
+  min-height: 8rem;
+}
+
+.gallery-preview {
+  display: grid;
+  min-width: 0;
+  place-items: center;
+  border: var(--sui-border-compact) solid var(--sui-ink);
+}
+
+.gallery-preview img {
+  display: block;
+  max-width: 92%;
+  height: auto;
+}
+
+.gallery-preview-paper {
+  background: var(--sui-paper);
+}
+
+.gallery-preview-night {
+  background: var(--sui-night);
+}
+
+.gallery-preview-accent {
+  background: var(--sui-ultraviolet);
+}
+
+.gallery-collage {
+  display: grid;
+  gap: var(--sui-space-6);
+  color: var(--sui-night-text);
+  background: var(--sui-night);
+}
+
+.collage-board {
+  display: flex;
+  min-height: 15rem;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sui-space-6);
+  overflow: hidden;
+  border: var(--sui-border-strong) solid var(--sui-night-text);
+  background: var(--sui-ultraviolet);
+}
+
+.collage-board img {
+  width: clamp(4.5rem, 12vw, 7rem);
+  height: auto;
+  margin-inline: -1.1rem;
+}
+
+.collage-board img:nth-child(3n + 1) {
+  rotate: -7deg;
+}
+
+.collage-board img:nth-child(3n + 2) {
+  translate: 0 -1rem;
+  rotate: 5deg;
+}
+
+.collage-board img:nth-child(3n) {
+  translate: 0 1rem;
+  rotate: -2deg;
+}
+
+@media (width < 48rem) {
+  .sticker-gallery {
+    width: min(100% - 1rem, var(--sui-content-max));
+  }
+
+  .gallery-header,
+  .gallery-category,
+  .gallery-collage {
+    border-radius: var(--sui-radius-control);
+  }
+
+  .collage-board img {
+    margin-inline: -1.6rem;
+  }
+}
+
+@media (forced-colors: active) {
+  .gallery-header,
+  .gallery-category,
+  .gallery-card,
+  .gallery-collage,
+  .gallery-preview,
+  .collage-board {
+    color: CanvasText;
+    border-color: CanvasText;
+    background: Canvas;
+  }
+
+  .gallery-card code,
+  .gallery-card small {
+    color: CanvasText;
+  }
+
+  .gallery-preview img,
+  .collage-board img {
+    forced-color-adjust: none;
+  }
+}

@@ -10,6 +10,9 @@
     "lint": "eslint app next.config.ts && stylelint \"app/**/*.css\""
   },
   "dependencies": {
+    "@scout-ui/react": "workspace:*",
+    "@scout-ui/sticker-trail": "workspace:*",
+    "@scout-ui/stickers": "workspace:*",
     "next": "16.3.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"

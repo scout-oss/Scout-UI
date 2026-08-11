@@ -160,7 +160,16 @@ async function inspectInstalledPackage(consumer, record) {
       "./styles.css",
     ],
     "sticker-trail": [".", "./package.json", "./styles.css"],
-    stickers: [".", "./package.json"],
+    stickers: [
+      ".",
+      "./assets/*.png",
+      "./assets/*.svg",
+      "./assets/*.webp",
+      "./definitions/*",
+      "./manifest",
+      "./manifest.json",
+      "./package.json",
+    ],
   };
   assert.deepEqual(
     Object.keys(manifest.exports).sort(),
@@ -170,8 +179,34 @@ async function inspectInstalledPackage(consumer, record) {
   if (record.slug === "stickers") {
     assert.equal(manifest.dependencies?.react, undefined);
     assert.equal(manifest.peerDependencies?.react, undefined);
+    assert.equal(manifest.optionalDependencies?.react, undefined);
     assert.deepEqual(Object.keys(manifest.dependencies ?? {}), []);
     assert.deepEqual(Object.keys(manifest.peerDependencies ?? {}), []);
+    assert.deepEqual(Object.keys(manifest.optionalDependencies ?? {}), []);
+    assert.ok(files.includes("ART_DIRECTION.md"));
+    assert.ok(files.includes("CONTRIBUTING_ASSETS.md"));
+    assert.ok(files.includes("assets/manifest.json"));
+    assert.equal(
+      files.filter(
+        (file) => file.startsWith("assets/") && file.endsWith(".svg"),
+      ).length,
+      25,
+    );
+    assert.equal(
+      files.filter(
+        (file) => file.startsWith("dist/definitions/") && file.endsWith(".js"),
+      ).length,
+      25,
+    );
+    const assetManifest = JSON.parse(
+      await readFile(path.join(installed, "assets", "manifest.json"), "utf8"),
+    );
+    assert.equal(assetManifest.artworkLicense, "CC0-1.0");
+    assert.equal(assetManifest.stickers.length, 25);
+    assert.equal(
+      new Set(assetManifest.stickers.map(({ checksum }) => checksum)).size,
+      25,
+    );
   } else if (record.slug === "sticker-trail") {
     assert.deepEqual(Object.keys(manifest.dependencies ?? {}), []);
     assert.deepEqual(Object.keys(manifest.peerDependencies ?? {}).sort(), [
@@ -271,7 +306,8 @@ async function createConsumer(record, tarballs) {
   const destination = path.join(consumerDirectory, record.key);
   await cp(source, destination, {
     filter: (sourcePath) =>
-      !["node_modules", ".next", "dist"].includes(path.basename(sourcePath)),
+      !["node_modules", ".next"].includes(path.basename(sourcePath)) &&
+      !path.basename(sourcePath).startsWith("dist"),
     recursive: true,
   });
   await assertFixtureImports(destination);
@@ -344,11 +380,15 @@ async function assertBoundaries(nextConsumer) {
 
 async function assertServerEvaluation(consumer) {
   const script = `
+    const { readFile } = await import("node:fs/promises");
     if (typeof window !== "undefined") throw new Error("window leaked into server evaluation");
     const root = await import("@scout-ui/react");
     const sticker = await import("@scout-ui/react/sticker");
     const stickers = await import("@scout-ui/stickers");
-    if (root.scoutUiReactVersion !== "0.0.0" || sticker.stickerEntryStatus !== "server-compatible" || stickers.stickerPackVersion !== "0.0.0") process.exit(2);
+    const star = await import("@scout-ui/stickers/definitions/wonky-star");
+    if (root.scoutUiReactVersion !== "0.0.0" || sticker.stickerEntryStatus !== "server-compatible" || stickers.stickerPackVersion !== "0.0.0" || stickers.stickerDefinitions.length !== 25 || star.wonkyStar.id !== "wonky-star") process.exit(2);
+    const asset = await readFile(new URL(star.wonkyStar.src));
+    if (!asset.toString("utf8").startsWith("<svg")) process.exit(3);
   `;
   await run(process.execPath, ["--input-type=module", "--eval", script], {
     cwd: consumer,
@@ -369,6 +409,39 @@ async function assertTreeShaking(viteConsumer) {
     source,
     /0\.0\.0|sticker-trail/u,
     "Sticker-only Vite build retained unused interactive leaves",
+  );
+
+  const stickerFiles = await listFiles(
+    path.join(viteConsumer, "dist-sticker-tree-shake"),
+  );
+  const stickerOutput = (
+    await Promise.all(
+      stickerFiles
+        .filter((file) => file.endsWith(".js"))
+        .map((file) =>
+          readFile(
+            path.join(viteConsumer, "dist-sticker-tree-shake", file),
+            "utf8",
+          ),
+        ),
+    )
+  ).join("\n");
+  assert.match(stickerOutput, /0\.0\.0/u);
+  assert.match(stickerOutput, /wonky-star/u);
+  assert.doesNotMatch(
+    stickerOutput,
+    /sparkle-pop|radial-burst|officialStickerPack/u,
+    "single definition build retained the full sticker manifest",
+  );
+  const emittedSvgCount = stickerFiles.filter((file) =>
+    file.endsWith(".svg"),
+  ).length;
+  const inlinedSvgCount =
+    stickerOutput.match(/data:image\/svg\+xml/gu)?.length ?? 0;
+  assert.equal(
+    emittedSvgCount + inlinedSvgCount,
+    1,
+    "single definition build must contain exactly one emitted or inlined SVG",
   );
 }
 

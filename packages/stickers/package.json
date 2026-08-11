@@ -9,7 +9,9 @@
   "files": [
     "assets",
     "dist",
+    "ART_DIRECTION.md",
     "ATTRIBUTION.md",
+    "CONTRIBUTING_ASSETS.md",
     "LICENSE-ASSETS.md",
     "README.md",
     "LICENSE"
@@ -19,13 +21,28 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./manifest": {
+      "types": "./dist/manifest.d.ts",
+      "import": "./dist/manifest.js"
+    },
+    "./manifest.json": "./assets/manifest.json",
+    "./definitions/*": {
+      "types": "./dist/definitions/*.d.ts",
+      "import": "./dist/definitions/*.js"
+    },
+    "./assets/*.svg": "./assets/*.svg",
+    "./assets/*.png": "./assets/*.png",
+    "./assets/*.webp": "./assets/*.webp",
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "rollup --config rollup.config.mjs && tsc --project tsconfig.json --emitDeclarationOnly --pretty false",
+    "assets:check": "node scripts/asset-pipeline.mjs --check",
+    "assets:generate": "node scripts/asset-pipeline.mjs --write",
+    "build": "pnpm assets:check && rollup --config rollup.config.mjs && tsc --project tsconfig.json --emitDeclarationOnly --pretty false",
     "dev": "rollup --config rollup.config.mjs --watch",
-    "lint": "eslint src tests rollup.config.mjs && stylelint \"src/**/*.css\" --allow-empty-input",
-    "test": "vitest run --coverage --config ../../vitest.config.ts",
+    "lint": "pnpm assets:check && eslint src tests scripts rollup.config.mjs && stylelint \"src/**/*.css\" --allow-empty-input",
+    "lint:assets": "pnpm assets:check",
+    "test": "pnpm assets:check && node scripts/test-asset-validation.mjs && vitest run --coverage --config ../../vitest.config.ts",
     "typecheck": "tsc --project tsconfig.json --noEmit --pretty false"
   }
 }

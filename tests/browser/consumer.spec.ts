@@ -58,6 +58,18 @@ test("packed Vite consumer renders", async ({ page }, testInfo) => {
     page.getByRole("heading", { name: "Vite packed consumer" }),
   ).toBeVisible();
   await expect(page.locator("main")).toContainText("server-compatible");
+  await expect(page.getByTestId("packed-sticker-definition")).toHaveText(
+    "wonky-star",
+  );
+  await expect
+    .poll(() =>
+      page
+        .locator("img")
+        .evaluateAll((images) =>
+          images.every((image) => image.complete && image.naturalWidth > 0),
+        ),
+    )
+    .toBe(true);
   await expectNoAxeViolations(page, testInfo);
   await diagnostics.expectClean(testInfo);
 });
@@ -205,5 +217,34 @@ test("token canvas visual baseline", async ({ page }, testInfo) => {
   await prepareStableScreenshot(page);
   await expect(page.getByTestId("token-canvas")).toHaveScreenshot(
     "token-canvas.png",
+  );
+});
+
+test("official sticker gallery renders every packed asset", async ({
+  page,
+}, testInfo) => {
+  const diagnostics = captureBrowserDiagnostics(page);
+  await page.goto("/test-surfaces/sticker-gallery");
+  await expect(page.getByTestId("sticker-gallery")).toBeVisible();
+  await expect(page.getByTestId("official-sticker")).toHaveCount(25);
+  await expect
+    .poll(() =>
+      page
+        .locator(".gallery-grid img")
+        .evaluateAll((images) =>
+          images.every((image) => image.complete && image.naturalWidth > 0),
+        ),
+    )
+    .toBe(true);
+  await expectNoAxeViolations(page, testInfo);
+  await diagnostics.expectClean(testInfo);
+});
+
+test("official sticker gallery visual baseline", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-desktop");
+  await page.goto("/test-surfaces/sticker-gallery");
+  await prepareStableScreenshot(page);
+  await expect(page.getByTestId("sticker-gallery")).toHaveScreenshot(
+    "official-sticker-gallery.png",
   );
 });

@@ -1,6 +1,6 @@
 # Scout UI v0.1 Implementation Plan
 
-**Status:** Milestones 1–3 complete; Milestone 4 has not started<br /> **Source
+**Status:** Milestones 1–4 complete; Milestone 5 has not started<br /> **Source
 documents:** `SCOUT_UI_MASTER_SPEC.md`, `SCOUT_UI_DESIGN_SYSTEM.md`,
 `SCOUT_UI_ENGINEERING_SPEC.md`<br /> **Scope:** Eight components, three public
 packages, one documentation/playground application
@@ -156,10 +156,13 @@ decision, but published examples cannot depend on uncleared artwork.
 
 ## 6. Milestone 4 — Sticker asset system and first pack
 
+**Status:** Complete (2026-08-11)
+
 ### Prerequisite decision
 
-Choose and document the artwork license before merging publishable assets. Code
-remains MIT; the artwork license is recorded separately.
+The official generic artwork license is CC0 1.0. Code remains MIT; artwork and
+code licenses are recorded separately, and provenance remains mandatory even
+though attribution is not required.
 
 ### Work
 
@@ -623,8 +626,9 @@ public package is stable:
 
 ### Before publishable artwork
 
-- Select the official artwork license.
-- Approve provenance and contributor affirmation language.
+- Selected: CC0 1.0 for official generic artwork; MIT for code and tooling.
+- Approved: provenance and contributor affirmation language in
+  `packages/stickers/CONTRIBUTING_ASSETS.md`.
 
 ### Before alpha API freeze
 

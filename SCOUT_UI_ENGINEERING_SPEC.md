@@ -1486,7 +1486,10 @@ Automated and human review rejects:
   redistribution.
 
 Code and artwork licenses remain separate in package and repository
-documentation.
+documentation. The v0.1 official generic pack uses CC0 1.0; package code,
+scripts, tests, and documentation remain MIT licensed. Provenance and
+attribution status remain mandatory manifest fields even though CC0 does not
+require attribution.
 
 ## 37. Contribution standards
 

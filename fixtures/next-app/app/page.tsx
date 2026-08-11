@@ -30,6 +30,7 @@ export default function HomePage() {
         <a href="/test-surfaces/reduced-motion">Reduced-motion surface</a>
         <a href="/test-surfaces/themes">Theme surface</a>
         <a href="/test-surfaces/tokens">Token canvas</a>
+        <a href="/test-surfaces/sticker-gallery">Sticker gallery</a>
       </nav>
     </main>
   );

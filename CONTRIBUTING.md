@@ -33,8 +33,9 @@ screenshots or recordings plus keyboard, reduced-motion, and touch notes.
 ## Assets
 
 Do not contribute Scout product assets, third-party logos, copyrighted
-characters, or artwork without redistribution rights. The detailed asset
-provenance workflow and artwork license are intentionally deferred to Milestone
-4; no publishable artwork should merge before those controls exist.
+characters, or artwork without redistribution rights. Official generic sticker
+artwork is accepted under CC0 1.0 only after the provenance, safety, and visual
+review requirements in `packages/stickers/CONTRIBUTING_ASSETS.md` pass. Code
+remains MIT licensed; Scout and Scout UI trademarks remain separate.
 
 By participating, contributors agree to follow `CODE_OF_CONDUCT.md`.

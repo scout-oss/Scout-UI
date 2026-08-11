@@ -1,0 +1,190 @@
+{
+  "pack": {
+    "id": "scout-ui-official-v0-1",
+    "name": "Scout UI Official v0.1",
+    "version": "0.1.0",
+    "artworkLicense": "CC0-1.0",
+    "codeLicense": "MIT",
+    "creator": "Scout UI contributors",
+    "source": "Original vector artwork authored for Scout UI v0.1",
+    "attributionStatus": "not-required",
+    "aiAssistance": "Codex-assisted SVG source authored from the Scout UI specifications; no image model or reference image was used."
+  },
+  "stickers": [
+    {
+      "id": "wonky-star",
+      "name": "Wonky Star",
+      "category": "signal",
+      "tags": ["star", "favorite", "celebrate"],
+      "dominantTone": "acid"
+    },
+    {
+      "id": "sparkle-pop",
+      "name": "Sparkle Pop",
+      "category": "signal",
+      "tags": ["sparkle", "shine", "new"],
+      "dominantTone": "cyan"
+    },
+    {
+      "id": "radial-burst",
+      "name": "Radial Burst",
+      "category": "signal",
+      "tags": ["burst", "impact", "attention"],
+      "dominantTone": "hot-pink"
+    },
+    {
+      "id": "chunky-check",
+      "name": "Chunky Check",
+      "category": "signal",
+      "tags": ["check", "complete", "confirm"],
+      "dominantTone": "acid"
+    },
+    {
+      "id": "attention-bolt",
+      "name": "Attention Bolt",
+      "category": "signal",
+      "tags": ["bolt", "energy", "attention"],
+      "dominantTone": "orange"
+    },
+    {
+      "id": "sunny-smile",
+      "name": "Sunny Smile",
+      "category": "expression",
+      "tags": ["smile", "happy", "face"],
+      "dominantTone": "orange"
+    },
+    {
+      "id": "watchful-eye",
+      "name": "Watchful Eye",
+      "category": "expression",
+      "tags": ["eye", "look", "notice"],
+      "dominantTone": "cyan"
+    },
+    {
+      "id": "patch-heart",
+      "name": "Patch Heart",
+      "category": "expression",
+      "tags": ["heart", "care", "favorite"],
+      "dominantTone": "hot-pink"
+    },
+    {
+      "id": "high-five",
+      "name": "High Five",
+      "category": "expression",
+      "tags": ["hand", "celebrate", "hello"],
+      "dominantTone": "acid"
+    },
+    {
+      "id": "chat-bubble",
+      "name": "Chat Bubble",
+      "category": "expression",
+      "tags": ["speech", "message", "conversation"],
+      "dominantTone": "ultraviolet"
+    },
+    {
+      "id": "forward-arrow",
+      "name": "Forward Arrow",
+      "category": "direction",
+      "tags": ["arrow", "forward", "next"],
+      "dominantTone": "cobalt"
+    },
+    {
+      "id": "loop-arrow",
+      "name": "Loop Arrow",
+      "category": "direction",
+      "tags": ["arrow", "loop", "repeat"],
+      "dominantTone": "cyan"
+    },
+    {
+      "id": "scribble-pointer",
+      "name": "Scribble Pointer",
+      "category": "direction",
+      "tags": ["pointer", "doodle", "notice"],
+      "dominantTone": "orange"
+    },
+    {
+      "id": "highlight-swipe",
+      "name": "Highlight Swipe",
+      "category": "direction",
+      "tags": ["highlight", "underline", "mark"],
+      "dominantTone": "acid"
+    },
+    {
+      "id": "target-ring",
+      "name": "Target Ring",
+      "category": "direction",
+      "tags": ["target", "circle", "focus"],
+      "dominantTone": "hot-pink"
+    },
+    {
+      "id": "pocket-camera",
+      "name": "Pocket Camera",
+      "category": "object",
+      "tags": ["camera", "photo", "capture"],
+      "dominantTone": "cobalt"
+    },
+    {
+      "id": "bloom-flower",
+      "name": "Bloom Flower",
+      "category": "object",
+      "tags": ["flower", "bloom", "nature"],
+      "dominantTone": "hot-pink"
+    },
+    {
+      "id": "admit-ticket",
+      "name": "Admit Ticket",
+      "category": "object",
+      "tags": ["ticket", "event", "entry"],
+      "dominantTone": "orange"
+    },
+    {
+      "id": "mixtape",
+      "name": "Mixtape",
+      "category": "object",
+      "tags": ["cassette", "music", "retro"],
+      "dominantTone": "ultraviolet"
+    },
+    {
+      "id": "sealed-envelope",
+      "name": "Sealed Envelope",
+      "category": "object",
+      "tags": ["envelope", "mail", "message"],
+      "dominantTone": "cyan"
+    },
+    {
+      "id": "blank-ribbon",
+      "name": "Blank Ribbon",
+      "category": "label",
+      "tags": ["ribbon", "label", "blank"],
+      "dominantTone": "cobalt"
+    },
+    {
+      "id": "notched-stamp",
+      "name": "Notched Stamp",
+      "category": "label",
+      "tags": ["stamp", "label", "blank"],
+      "dominantTone": "orange"
+    },
+    {
+      "id": "round-seal",
+      "name": "Round Seal",
+      "category": "label",
+      "tags": ["seal", "badge", "blank"],
+      "dominantTone": "ultraviolet"
+    },
+    {
+      "id": "paper-tab",
+      "name": "Paper Tab",
+      "category": "label",
+      "tags": ["tab", "paper", "blank"],
+      "dominantTone": "acid"
+    },
+    {
+      "id": "tape-strip",
+      "name": "Tape Strip",
+      "category": "label",
+      "tags": ["tape", "material", "blank"],
+      "dominantTone": "cyan"
+    }
+  ]
+}

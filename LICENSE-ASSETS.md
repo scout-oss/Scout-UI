@@ -5,10 +5,16 @@ file states otherwise. It does not automatically grant rights to artwork,
 illustrations, photographs, logos, trademarks, or other designated visual
 assets.
 
-Milestone 1 contains no publishable Scout UI artwork. Before artwork is added,
-Milestone 4 must select an asset-appropriate permissive license and record that
-license, provenance, attribution status, and creator information in the asset
-manifest and package documentation.
+The original official sticker artwork in `packages/stickers/assets/*.svg` is
+dedicated under the Creative Commons CC0 1.0 Universal Public Domain Dedication.
+Attribution is not required, but creator, source, license, attribution status,
+editable-source status, AI-assistance disclosure, and checksum are retained in
+the generated manifest and `ATTRIBUTION.md` for audit.
 
-Scout product assets, product screenshots, wordmarks, and uncleared third-party
-materials are excluded.
+Package code, build scripts, tests, and documentation remain MIT licensed.
+Third-party artwork does not inherit CC0 and may ship only with an individually
+compatible license and complete attribution record.
+
+Scout and Scout UI names and trademarks are not licensed as artwork. Scout
+product assets, product screenshots, wordmarks, product claims, protected
+stickers, and uncleared third-party materials are excluded.

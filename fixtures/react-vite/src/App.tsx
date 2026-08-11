@@ -3,6 +3,8 @@ import { stickerEntryStatus } from "@scout-ui/react/sticker";
 import { stickerTrailVersion } from "@scout-ui/react/sticker-trail";
 import { stickerTrailVersion as standaloneTrailVersion } from "@scout-ui/sticker-trail";
 import { stickerPackVersion } from "@scout-ui/stickers";
+import starAssetUrl from "@scout-ui/stickers/assets/wonky-star.svg";
+import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 
 export function App() {
   return (
@@ -20,6 +22,12 @@ export function App() {
         <dt>Framework-neutral package</dt>
         <dd>{stickerPackVersion}</dd>
       </dl>
+      <section aria-labelledby="packed-asset-heading">
+        <h2 id="packed-asset-heading">Packed asset paths</h2>
+        <img src={starAssetUrl} alt="" width="64" height="64" />
+        <img src={wonkyStar.src} alt="" width="64" height="64" />
+        <p data-testid="packed-sticker-definition">{wonkyStar.id}</p>
+      </section>
     </main>
   );
 }

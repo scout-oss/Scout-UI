@@ -608,10 +608,9 @@ copyrighted characters, and close imitations are rejected.
 ## 25. Licensing
 
 - Code is MIT unless a file states otherwise.
-- Official generic sticker assets use a clearly documented permissive license
-  selected before publication; MIT may cover code wrappers, while artwork should
-  use an asset-appropriate license such as CC BY 4.0 or CC0 where contributor
-  intent permits.
+- Official generic sticker assets use the CC0 1.0 Universal Public Domain
+  Dedication. Attribution is not required, but provenance remains recorded for
+  audit. MIT covers code wrappers, scripts, tests, and documentation.
 - Asset and code licensing are stated separately in package metadata and the
   asset manifest.
 - Scout trademarks and protected product materials are excluded.

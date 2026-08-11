@@ -4,11 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "fixture:build": "tsc --noEmit --pretty false && vite build && vite build --config vite.tree-shake.config.ts",
+    "fixture:build": "tsc --noEmit --pretty false && vite build && vite build --config vite.tree-shake.config.ts && vite build --config vite.sticker-tree-shake.config.ts",
     "fixture:preview": "vite preview",
-    "lint": "eslint src vite.config.ts vite.tree-shake.config.ts && stylelint \"src/**/*.css\""
+    "lint": "eslint src vite.config.ts vite.tree-shake.config.ts vite.sticker-tree-shake.config.ts && stylelint \"src/**/*.css\""
   },
   "dependencies": {
+    "@scout-ui/react": "workspace:*",
+    "@scout-ui/sticker-trail": "workspace:*",
+    "@scout-ui/stickers": "workspace:*",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },

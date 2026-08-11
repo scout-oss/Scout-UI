@@ -1,5 +1,4 @@
 import { stickerEntryStatus } from "@scout-ui/react/sticker";
 
-// The source manifest intentionally omits Scout UI; the packed harness injects it.
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+// The packed harness replaces workspace ranges with tarball paths.
 export const packedStickerStatus = stickerEntryStatus;

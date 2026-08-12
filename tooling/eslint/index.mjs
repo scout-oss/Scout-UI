@@ -1,3 +1,5 @@
+import { fileURLToPath } from "node:url";
+
 import js from "@eslint/js";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import importX from "eslint-plugin-import-x";
@@ -5,6 +7,12 @@ import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+
+import { scoutUiPlugin } from "./no-state-in-pointer-handler.mjs";
+
+// `URL.pathname` yields "/C:/..." on Windows, which the TypeScript project
+// service rejects. `fileURLToPath` produces a real absolute path everywhere.
+const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
 
 const ignoredPaths = [
   "**/.next/**",
@@ -48,7 +56,7 @@ export default tseslint.config(
             "playwright.config.ts",
           ],
         },
-        tsconfigRootDir: new URL("../../", import.meta.url).pathname,
+        tsconfigRootDir: repositoryRoot,
       },
     },
     plugins: {
@@ -56,6 +64,7 @@ export default tseslint.config(
       "jsx-a11y": jsxA11y,
       react,
       "react-hooks": reactHooks,
+      "scout-ui": scoutUiPlugin,
     },
     settings: {
       react: {
@@ -69,6 +78,9 @@ export default tseslint.config(
       ...jsxA11y.configs.recommended.rules,
       "import-x/no-duplicates": "error",
       "react/prop-types": "off",
+      // Scout UI's central performance invariant: no React state update per
+      // pointer movement. See SCOUT_UI_ENGINEERING_SPEC.md section 31.
+      "scout-ui/no-state-in-pointer-handler": "error",
     },
   },
   {

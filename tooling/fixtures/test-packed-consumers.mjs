@@ -39,11 +39,30 @@ const fixtureRecords = [
   { directory: "fixtures/react-vite", key: "vite" },
 ];
 
+/**
+ * On Windows the toolchain entry points are `.cmd` shims, which `spawn` cannot
+ * resolve without a shell. An absolute path — the Node binary — is a real
+ * executable and must bypass the shell, because routing it through cmd.exe
+ * would mangle multi-line `--eval` scripts.
+ */
+function needsShell(command) {
+  return process.platform === "win32" && !path.isAbsolute(command);
+}
+
+function shellArgs(command, args) {
+  return needsShell(command)
+    ? args.map((argument) =>
+        /\s/u.test(argument) ? `"${argument}"` : argument,
+      )
+    : args;
+}
+
 async function run(command, args, options = {}) {
   await new Promise((resolve, reject) => {
-    const child = spawn(command, args, {
+    const child = spawn(command, shellArgs(command, args), {
       cwd: options.cwd ?? root,
       env: { ...process.env, ...options.env },
+      shell: needsShell(command),
       stdio: "inherit",
     });
     child.once("error", reject);
@@ -61,9 +80,10 @@ async function runCaptured(command, args, options = {}) {
   let stdout = "";
   let stderr = "";
   return await new Promise((resolve, reject) => {
-    const child = spawn(command, args, {
+    const child = spawn(command, shellArgs(command, args), {
       cwd: options.cwd ?? root,
       env: { ...process.env, ...options.env },
+      shell: needsShell(command),
       stdio: ["ignore", "pipe", "pipe"],
     });
     child.stdout.setEncoding("utf8");
@@ -214,6 +234,26 @@ async function inspectInstalledPackage(consumer, record) {
     assert.deepEqual(Object.keys(manifest.peerDependencies ?? {}).sort(), [
       "react",
     ]);
+    assert.equal(
+      manifest.dependencies?.["@scout-ui/react"],
+      undefined,
+      "the standalone package must never depend on the broad package",
+    );
+    assert.equal(manifest.dependencies?.["@scout-ui/stickers"], undefined);
+    for (const emitted of [
+      "dist/StickerTrail.js",
+      "dist/StickerTrail.d.ts",
+      "dist/engine.js",
+      "dist/geometry.js",
+      "dist/pool.js",
+      "dist/presets.js",
+      "dist/sequence.js",
+      "dist/types.d.ts",
+      "dist/useStickerTrail.js",
+      "dist/useStickerTrail.d.ts",
+    ]) {
+      assert.ok(files.includes(emitted), `missing ${emitted} in tarball`);
+    }
   } else {
     assert.deepEqual(Object.keys(manifest.dependencies ?? {}).sort(), [
       "@scout-ui/sticker-trail",
@@ -314,18 +354,22 @@ async function createConsumer(record, tarballs) {
   });
   await assertFixtureImports(destination);
 
+  // Backslashes are an escape sequence inside double-quoted YAML and would
+  // corrupt the generated workspace file on Windows.
+  const specifier = (tarball) => `file:${tarball.replaceAll("\\", "/")}`;
+
   const manifestPath = path.join(destination, "package.json");
   const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
   manifest.dependencies = {
     ...manifest.dependencies,
-    "@scout-ui/react": `file:${tarballs.react}`,
-    "@scout-ui/sticker-trail": `file:${tarballs["sticker-trail"]}`,
-    "@scout-ui/stickers": `file:${tarballs.stickers}`,
+    "@scout-ui/react": specifier(tarballs.react),
+    "@scout-ui/sticker-trail": specifier(tarballs["sticker-trail"]),
+    "@scout-ui/stickers": specifier(tarballs.stickers),
   };
   await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
   await writeFile(
     path.join(destination, "pnpm-workspace.yaml"),
-    `packages:\n  - "."\noverrides:\n  "@scout-ui/sticker-trail": "file:${tarballs["sticker-trail"]}"\n`,
+    `packages:\n  - "."\noverrides:\n  "@scout-ui/sticker-trail": "${specifier(tarballs["sticker-trail"])}"\n`,
   );
 
   await run("corepack", ["pnpm", "install", "--lockfile-only"], {
@@ -338,6 +382,104 @@ async function createConsumer(record, tarballs) {
     await inspectInstalledPackage(destination, packageRecord);
   await assertSingleReact(destination);
   return destination;
+}
+
+function normalizeCss(source) {
+  return source.replace(/\r\n/gu, "\n").trim();
+}
+
+function stripLayerOrderStatement(source) {
+  return source.replace(/^@layer\s+[^;{]+;\s*/mu, "").trim();
+}
+
+/**
+ * Decision C: Trail rules are authored once, in the standalone package, and
+ * composed into the broad stylesheet at build time. These assertions verify
+ * the whole contract against the installed tarballs.
+ */
+async function assertStylesheetComposition(consumer) {
+  const trailCss = normalizeCss(
+    await readFile(
+      path.join(
+        consumer,
+        "node_modules",
+        "@scout-ui",
+        "sticker-trail",
+        "dist",
+        "styles.css",
+      ),
+      "utf8",
+    ),
+  );
+  const reactCss = normalizeCss(
+    await readFile(
+      path.join(
+        consumer,
+        "node_modules",
+        "@scout-ui",
+        "react",
+        "dist",
+        "styles.css",
+      ),
+      "utf8",
+    ),
+  );
+
+  // 1. The standalone stylesheet stands on its own: it declares the cascade
+  //    layer order itself and never depends on the broad token layer.
+  assert.match(
+    trailCss,
+    /^@layer scout-ui\.tokens, scout-ui\.base, scout-ui\.components, scout-ui\.utilities;/mu,
+    "standalone Trail CSS must establish the cascade layer order itself",
+  );
+  assert.match(trailCss, /\.sui-trail-layer\s*\{/u);
+  assert.match(trailCss, /\.sui-trail-item\s*\{/u);
+  assert.match(
+    trailCss,
+    /z-index:\s*var\(--sui-trail-layer,\s*60\)/u,
+    "standalone Trail CSS must supply token fallbacks",
+  );
+  assert.doesNotMatch(
+    trailCss,
+    /--sui-paper|--sui-ink:/u,
+    "standalone Trail CSS must not carry the broad token layer",
+  );
+
+  // 2. The broad stylesheet contains the Trail rules.
+  const trailBody = stripLayerOrderStatement(trailCss);
+  assert.ok(trailBody.length > 0, "Trail stylesheet produced no rules");
+  assert.ok(
+    reactCss.includes(trailBody),
+    "broad React CSS must contain the authored Trail rules verbatim",
+  );
+
+  // 3. Exactly once — byte-for-byte, not merely "a trail selector appears".
+  assert.equal(
+    reactCss.split(trailBody).length - 1,
+    1,
+    "broad React CSS must contain the Trail rules exactly once",
+  );
+  assert.equal(
+    [...reactCss.matchAll(/\.sui-trail-item\[data-active="true"\]/gu)].length,
+    1,
+    "duplicate Trail rules detected in the broad stylesheet",
+  );
+
+  // 4. The broad stylesheet keeps its own layers and order statement.
+  assert.match(
+    reactCss,
+    /^@layer scout-ui\.tokens, scout-ui\.base, scout-ui\.components, scout-ui\.utilities;/mu,
+  );
+  assert.equal(
+    [...reactCss.matchAll(/^@layer scout-ui\.tokens,/gmu)].length,
+    1,
+    "composition must not repeat the cascade layer order statement",
+  );
+  assert.match(reactCss, /--sui-paper:/u);
+  assert.match(reactCss, /\.sui-sticker-button/u);
+
+  // 5. The composed section is marked so its single source is discoverable.
+  assert.match(reactCss, /Scout UI composed section, authored once in/u);
 }
 
 async function assertBoundaries(nextConsumer) {
@@ -394,6 +536,45 @@ async function assertBoundaries(nextConsumer) {
     true,
     "Standalone trail root",
   );
+
+  // Preserved modules: the client entry must not have been flattened, and the
+  // engine must remain a separate module below the boundary.
+  for (const file of [
+    "StickerTrail.js",
+    "engine.js",
+    "geometry.js",
+    "pool.js",
+    "presets.js",
+    "sequence.js",
+    "useStickerTrail.js",
+  ]) {
+    await readFile(path.join(trailDirectory, file), "utf8");
+  }
+
+  const trailRoot = await readFile(
+    path.join(trailDirectory, "index.js"),
+    "utf8",
+  );
+  assert.match(
+    trailRoot,
+    /from ["']\.\/StickerTrail\.js["']/u,
+    "standalone root must re-export preserved leaf modules rather than inline them",
+  );
+  assert.doesNotMatch(
+    trailRoot,
+    /createStickerTrailEngine|planSegmentSpawns/u,
+    "standalone root must not inline the engine into the client entry",
+  );
+
+  const reactTrailLeaf = await readFile(
+    path.join(reactDirectory, "sticker-trail", "index.js"),
+    "utf8",
+  );
+  assert.match(
+    reactTrailLeaf,
+    /from ["']@scout-ui\/sticker-trail["']/u,
+    "the React trail leaf must re-export the standalone package, not copy it",
+  );
 }
 
 async function assertServerEvaluation(consumer) {
@@ -406,9 +587,33 @@ async function assertServerEvaluation(consumer) {
     const sticker = await import("@scout-ui/react/sticker");
     const badge = await import("@scout-ui/react/sticker-badge");
     const button = await import("@scout-ui/react/sticker-button");
+    const reactTrail = await import("@scout-ui/react/sticker-trail");
+    const standaloneTrail = await import("@scout-ui/sticker-trail");
     const stickers = await import("@scout-ui/stickers");
     const star = await import("@scout-ui/stickers/definitions/wonky-star");
     if (root.scoutUiReactVersion !== "0.0.0" || typeof sticker.Sticker !== "function" || typeof badge.StickerBadge !== "function" || typeof button.StickerButton !== "function" || stickers.stickerPackVersion !== "0.0.0" || stickers.stickerDefinitions.length !== 25 || star.wonkyStar.id !== "wonky-star") process.exit(2);
+
+    // Trail is importable on a server from every documented path, and the
+    // milestone-2 sentinel is gone from all of them.
+    for (const module of [root, reactTrail, standaloneTrail]) {
+      if (typeof module.StickerTrail !== "function") process.exit(5);
+      if (typeof module.useStickerTrail !== "function") process.exit(6);
+      if ("stickerTrailVersion" in module) process.exit(7);
+    }
+
+    // Server rendering emits a deterministic inert pool with no image source.
+    const trailMarkup = renderToStaticMarkup(createElement(standaloneTrail.StickerTrail, { stickers: [star.wonkyStar], maxActive: 9, seed: "ssr" }));
+    const slotCount = trailMarkup.split("data-sui-trail-slot").length - 1;
+    if (slotCount !== 9) process.exit(8);
+    if (trailMarkup.includes("src=")) process.exit(9);
+    if (!trailMarkup.includes('aria-hidden="true"')) process.exit(10);
+    // Identical props must produce identical markup, or hydration would break.
+    const repeat = renderToStaticMarkup(createElement(standaloneTrail.StickerTrail, { stickers: [star.wonkyStar], maxActive: 9, seed: "ssr" }));
+    if (repeat !== trailMarkup) process.exit(11);
+    // A clamped request still yields a stable, bounded pool.
+    const clamped = renderToStaticMarkup(createElement(standaloneTrail.StickerTrail, { stickers: [star.wonkyStar], maxActive: 100000 }));
+    if (clamped.split("data-sui-trail-slot").length - 1 !== 48) process.exit(12);
+
     const markup = renderToStaticMarkup(createElement(sticker.Sticker, { source: star.wonkyStar }));
     if (!markup.includes('data-outline="none"') || !markup.startsWith("<link") && !markup.startsWith("<span")) process.exit(4);
     const asset = await readFile(new URL(star.wonkyStar.src));
@@ -469,6 +674,58 @@ async function assertTreeShaking(viteConsumer) {
   );
 }
 
+/**
+ * The standalone consumer page is built into its own output directory, so its
+ * bundle can be inspected in isolation: a standalone install must never need
+ * @scout-ui/react or @scout-ui/stickers.
+ */
+async function assertStandaloneIndependence(viteConsumer) {
+  const directory = path.join(viteConsumer, "dist", "standalone");
+  const files = await listFiles(directory);
+  assert.ok(
+    files.some((file) => file.endsWith("standalone-trail.html")),
+    "standalone consumer page was not built",
+  );
+
+  const scripts = files.filter((file) => file.endsWith(".js"));
+  assert.ok(scripts.length > 0, "standalone bundle emitted no JavaScript");
+  const source = (
+    await Promise.all(
+      scripts.map((file) => readFile(path.join(directory, file), "utf8")),
+    )
+  ).join("\n");
+
+  assert.match(
+    source,
+    /sui-trail/u,
+    "standalone bundle lost the Trail runtime",
+  );
+  assert.doesNotMatch(
+    source,
+    /sui-sticker-button|sui-sticker-badge|scoutUiReactVersion|officialStickerPack/u,
+    "standalone bundle pulled in the broad React package or the sticker pack",
+  );
+
+  const stylesheets = files.filter((file) => file.endsWith(".css"));
+  assert.ok(stylesheets.length > 0, "standalone page emitted no stylesheet");
+  const css = (
+    await Promise.all(
+      stylesheets.map((file) => readFile(path.join(directory, file), "utf8")),
+    )
+  ).join("\n");
+
+  assert.match(
+    css,
+    /\.sui-trail-item/u,
+    "standalone page must carry the Trail stylesheet on its own",
+  );
+  assert.doesNotMatch(
+    css,
+    /--sui-paper:|\.sui-sticker-button/u,
+    "standalone page must not require the broad stylesheet",
+  );
+}
+
 async function assertNextServerOutput(nextConsumer) {
   const files = (await listFiles(path.join(nextConsumer, ".next"))).filter(
     (file) => /\.(?:js|json)$/u.test(file),
@@ -501,8 +758,12 @@ export async function preparePackedConsumers() {
   await mkdir(tarballDirectory, { recursive: true });
   await mkdir(consumerDirectory, { recursive: true });
 
+  // One dependency-ordered build. Building each package in isolation is not
+  // safe: @scout-ui/react resolves the standalone package's declarations and
+  // composes its stylesheet, so the trail package must be built first.
+  await run("corepack", ["pnpm", "build"]);
+
   for (const record of packageRecords) {
-    await run("corepack", ["pnpm", "--filter", record.name, "build"]);
     await run(
       "corepack",
       ["pnpm", "pack", "--pack-destination", tarballDirectory],
@@ -527,13 +788,18 @@ export async function preparePackedConsumers() {
   for (const record of fixtureRecords)
     consumers[record.key] = await createConsumer(record, tarballs);
   await assertBoundaries(consumers.next);
+  await assertStylesheetComposition(consumers.next);
   await assertServerEvaluation(consumers.next);
   await assertServerEvaluation(consumers.vite);
-  await run("corepack", ["pnpm", "fixture:typecheck"], { cwd: consumers.next });
+  // Build first: the committed `next-env.d.ts` references generated route
+  // types, so a typecheck of a clean copy only resolves after Next has emitted
+  // them. Typechecking afterwards still validates the packed public API.
   await run("corepack", ["pnpm", "fixture:build"], { cwd: consumers.next });
+  await run("corepack", ["pnpm", "fixture:typecheck"], { cwd: consumers.next });
   await assertNextServerOutput(consumers.next);
   await run("corepack", ["pnpm", "fixture:build"], { cwd: consumers.vite });
   await assertTreeShaking(consumers.vite);
+  await assertStandaloneIndependence(consumers.vite);
 
   const manifest = { createdAt: new Date().toISOString(), consumers, tarballs };
   await writeFile(

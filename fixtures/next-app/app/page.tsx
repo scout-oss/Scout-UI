@@ -49,6 +49,10 @@ export default function HomePage() {
         <a href="/test-surfaces/tokens">Token canvas</a>
         <a href="/test-surfaces/sticker-gallery">Sticker gallery</a>
         <a href="/test-surfaces/primitives">Primitive gallery</a>
+        <a href="/test-surfaces/trail">Trail surface</a>
+        <a href="/test-surfaces/trail-render-count">Trail render count</a>
+        <a href="/test-surfaces/trail-lifecycle">Trail lifecycle</a>
+        <a href="/test-surfaces/trail-presets">Trail presets</a>
       </nav>
     </main>
   );

@@ -12,7 +12,19 @@ export { StickerBadge } from "./sticker-badge/index.js";
 export type { StickerBadgeProps } from "./sticker-badge/index.js";
 export { StickerButton } from "./sticker-button/index.js";
 export type { StickerButtonProps } from "./sticker-button/index.js";
+export { StickerTrail, useStickerTrail } from "./sticker-trail/index.js";
 export type {
+  StickerTrailController,
+  StickerTrailExit,
+  StickerTrailOptions,
+  StickerTrailPreset,
+  StickerTrailProps,
+  StickerTrailSequence,
+  StickerTrailTouch,
+  UseStickerTrailOptions,
+} from "./sticker-trail/index.js";
+export type {
+  NumberRange,
   ScoutIntensity,
   ScoutMotionPolicy,
   ScoutStyleProperties,
@@ -25,6 +37,5 @@ export type {
   ScoutUiTokenGroup,
   ScoutUiTokenName,
 } from "./tokens.generated.js";
-export { stickerTrailVersion } from "@scout-ui/sticker-trail";
 
 export const scoutUiReactVersion = "0.0.0" as const;

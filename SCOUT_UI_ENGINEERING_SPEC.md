@@ -66,13 +66,16 @@ scout-ui/
 │   │   │   ├── sticker/
 │   │   │   ├── sticker-badge/
 │   │   │   ├── sticker-button/
+│   │   │   ├── sticker-trail/        # re-export leaf for the standalone package
 │   │   │   ├── sticker-cursor/
 │   │   │   ├── sticker-navbar/
 │   │   │   ├── sticker-peel/
 │   │   │   ├── sticker-stack/
-│   │   │   ├── styles/
 │   │   │   ├── internal/
-│   │   │   └── index.ts
+│   │   │   ├── shared-types.ts       # generic public types for broad consumers
+│   │   │   ├── styles.css            # authored tokens/base/components/utilities
+│   │   │   ├── tokens.generated.ts   # generated from styles.css, drift-checked
+│   │   │   └── index.ts              # unmarked re-export barrel
 │   │   ├── tests/
 │   │   └── package.json
 │   ├── sticker-trail/
@@ -81,9 +84,11 @@ scout-ui/
 │   │   │   ├── geometry.ts
 │   │   │   ├── pool.ts
 │   │   │   ├── presets.ts
+│   │   │   ├── sequence.ts
+│   │   │   ├── types.ts              # locally owned generic structural types
 │   │   │   ├── StickerTrail.tsx
 │   │   │   ├── useStickerTrail.ts
-│   │   │   ├── styles.css
+│   │   │   ├── styles.css            # single source of truth for Trail rules
 │   │   │   └── index.ts
 │   │   ├── tests/
 │   │   └── package.json
@@ -95,15 +100,21 @@ scout-ui/
 │       │   ├── types.ts
 │       │   └── index.ts
 │       ├── scripts/
+│       ├── source/
 │       ├── ATTRIBUTION.md
 │       ├── LICENSE-ASSETS.md
 │       └── package.json
 ├── fixtures/
-│   ├── next-app/
-│   └── react-vite/
+│   ├── next-app/                     # broad-package consumer
+│   └── react-vite/                   # broad plus standalone-only entry
+├── tests/
+│   └── browser/                      # Playwright specs against packed fixtures
 ├── tooling/
 │   ├── eslint/
 │   ├── typescript/
+│   ├── rollup/                       # shared library config, static/CSS emit
+│   ├── tokens/                       # token metadata generation and drift check
+│   ├── fixtures/                     # packed-tarball consumer harness
 │   └── test/
 ├── .changeset/
 ├── .github/
@@ -251,6 +262,38 @@ the other components in `@scout-ui/react`.
 Peer dependency policy supports the React major versions validated by consumer
 fixtures. The range is not widened without tests. Duplicate React must never be
 bundled.
+
+### 5.1 Generic type ownership
+
+`@scout-ui/sticker-trail` must not depend on `@scout-ui/react` or
+`@scout-ui/stickers`, and v0.1 adds no shared package. The standalone package
+therefore owns local declarations of the generic structural types it needs —
+`StickerSource`, `NumberRange`, and `ScoutMotionPolicy` — and exports them for
+standalone consumers.
+
+This duplication is deliberate: the package graph matters more than forcing a
+shared runtime or type package into existence. No runtime dependency may be
+introduced merely to share an interface. The declarations must stay structurally
+equivalent, and type-level parity assertions prove mutual assignability so the
+shapes cannot silently drift.
+
+`@scout-ui/react` remains the public home of the generic types for broad
+consumers. It must not use `export * from "@scout-ui/sticker-trail"`, because
+that would re-export a second copy of the generic names. It re-exports only the
+Trail-specific public API:
+
+```ts
+export { StickerTrail, useStickerTrail } from "@scout-ui/sticker-trail";
+export type {
+  StickerTrailController,
+  StickerTrailOptions,
+  StickerTrailPreset,
+  StickerTrailProps,
+  UseStickerTrailOptions,
+} from "@scout-ui/sticker-trail";
+```
+
+plus any genuinely Trail-specific type the implementation adds.
 
 ## 6. TypeScript architecture
 
@@ -610,6 +653,16 @@ export function useStickerTrail(
 ): StickerTrailController;
 ```
 
+`StickerTrailProps` composes `StickerTrailOptions` with the div attributes
+directly. This was verified against the validated React type range rather than
+assumed: `React.HTMLAttributes<HTMLDivElement>` declares only `translate` and
+`color` among names that could collide, and neither `size`, `scale`, nor
+`rotate` appears on it — those live on `AllHTMLAttributes`. No Trail option name
+collides, so `Omit` removes `children` alone. If a future validated React
+version introduces a collision, the fix is to extend the `Omit` list for the
+actual conflicting names; Trail option names are not renamed to work around a
+type utility.
+
 The component renders a positioned wrapper and image-based layer. Applications
 that cannot accept a wrapper use the hook with their own container and layer.
 Trail sources are URLs or structurally compatible official sticker definitions;
@@ -767,10 +820,33 @@ documented component subpath styles later. Consumers import:
 import "@scout-ui/react/styles.css";
 ```
 
-The React stylesheet includes the Trail styles at build time so the broad
-package requires one CSS import. Standalone consumers import
-`@scout-ui/sticker-trail/styles.css`. The rules are generated from the same
-Trail source stylesheet to prevent drift.
+Trail rules are authored exactly once, in
+`packages/sticker-trail/src/styles.css`. That file is the single source of truth
+for Trail styling and is published verbatim as
+`@scout-ui/sticker-trail/styles.css`.
+
+The React package build composes the same authored Trail rules into its own
+`dist/styles.css` through a deterministic build-time step, so the broad package
+needs one CSS import. The composition strips the Trail stylesheet's redundant
+cascade-layer order statement, appends the remaining rules after the React
+component rules, and preserves layer ordering. Trail rules are never hand-copied
+into a second source file, and the React source stylesheet is never rewritten
+into a generated mixed-source file.
+
+The consumer contract is exclusive:
+
+- a broad consumer imports `@scout-ui/react/styles.css` and must **not** also
+  import the standalone Trail stylesheet;
+- a standalone consumer imports `@scout-ui/sticker-trail/styles.css` and needs
+  neither `@scout-ui/react` nor its stylesheet.
+
+Because a standalone consumer has no token layer, every Trail declaration that
+reads a `--sui-*` token supplies an inline fallback value.
+
+Packaging tests verify that the standalone stylesheet works independently, that
+the broad stylesheet contains the Trail rules, that it contains them exactly
+once, that broad usage needs no standalone CSS import, and that standalone usage
+needs no React package.
 
 Class names use a collision-resistant `sui-` prefix and BEM-like component
 structure. CSS cascade layers establish order:
@@ -781,9 +857,22 @@ structure. CSS cascade layers establish order:
 
 The base layer does not reset global elements. It defines only component-scoped
 box sizing and inherited variables. Themes are CSS custom properties on
-`.sui-theme` or any consumer-selected ancestor. Components expose a documented
-small set of variables; internal variables use an underscore-like naming
-convention and are not API.
+`.sui-theme` or any consumer-selected ancestor.
+
+Every Scout UI custom property, including implementation-only ones, is a valid
+kebab-case name inside the `--sui-*` namespace. The distinction between public
+and internal variables is contractual and documentary, not syntactic:
+
+- **public variables** are documented, supported customization points and part
+  of the public styling contract;
+- **internal variables** stay inside the same namespace, are not documented as
+  customization API, may change without a public API change, and must not be
+  relied upon by examples.
+
+Internal variables are marked by an `internal` name segment — for example
+`--sui-trail-internal-x` — so that intent is readable in emitted CSS. The
+Stylelint `custom-property-pattern` rule remains the enforcement mechanism and
+is not weakened to admit underscore-prefixed names.
 
 Tailwind examples map to CSS variables but the runtime emits no Tailwind classes
 and does not require a Tailwind plugin.
@@ -818,22 +907,38 @@ manifests, metadata, package information, and asset files. Each asset has:
 
 ```ts
 export interface StickerDefinition {
-  id: string;
-  name: string;
-  category: "signal" | "expression" | "direction" | "object" | "label";
-  tags: readonly string[];
-  src: string;
-  width: number;
-  height: number;
-  viewBox?: string;
-  dominantTone: string;
-  format: "svg" | "png" | "webp";
-  license: string;
-  attribution?: string;
-  sourceFile: string;
-  checksum: string;
+  readonly id: string;
+  readonly name: string;
+  readonly category: "signal" | "expression" | "direction" | "object" | "label";
+  readonly tags: readonly string[];
+  readonly src: string;
+  readonly width: number;
+  readonly height: number;
+  readonly viewBox?: string;
+  readonly transparentBounds: StickerTransparentBounds;
+  readonly dominantTone: string;
+  readonly format: "svg" | "png" | "webp";
+  readonly creator: string;
+  readonly source: string;
+  readonly license: string;
+  readonly attributionStatus: "not-required" | "required" | "included";
+  readonly attribution?: string;
+  readonly sourceFile: string;
+  readonly editableSource: string;
+  readonly aiAssistance?: string;
+  readonly checksum: string;
 }
 ```
+
+Provenance fields are mandatory even under CC0: `creator`, `source`,
+`attributionStatus`, `editableSource`, and `checksum` are what make the pack
+auditable. `transparentBounds` records the authored safe padding so consumers
+can reason about optical sizing without measuring artwork at runtime.
+
+The first four fields of `StickerDefinition` — `id`, `src`, `width`, `height` —
+make every official definition structurally assignable to `StickerSource`, which
+is how `@scout-ui/react` and `@scout-ui/sticker-trail` accept official artwork
+without depending on the pack.
 
 SVG is preferred for flat artwork; photographic/material cutouts use optimized
 WebP with PNG fallback only when required. Masters are stored in an appropriate
@@ -954,16 +1059,28 @@ mount/unmount.
 
 ### 15.7 Safety limits
 
-Public values are clamped. Initial limits are validated in performance tests:
+Three concepts are deliberately separate and are encoded as separate constants:
 
-- `maxActive`: 4–48, default 24;
+1. **The engine hard ceiling** — an absolute bound that nothing may exceed. It
+   is not a default and is never a preset value.
+2. **The preset value** — the tuned default a named preset contributes.
+3. **The consumer value** — an explicit option, which overrides the preset and
+   is then clamped by the hard ceiling.
+
+Hard bounds, validated in performance tests:
+
+- `maxActive`: 4–48;
 - lifetime: 150–5000ms;
 - size: 16–256px;
 - rotation: within ±180°, presets within design limits;
 - spawns per frame: maximum 6;
 - no immediate repeat when multiple sticker sources exist.
 
-`chaos` changes visual variance, not these hard ceilings.
+The default `maxActive` when no preset applies is 24. `chaos` changes visual
+variance only; its preset `maxActive` equals `dense`'s and must never drift
+upward toward the absolute ceiling. Tests assert each preset's value explicitly
+and assert separately that every preset stays at or below the hard ceiling, so
+one cannot silently become the other.
 
 ### 15.8 SSR and reduced motion
 

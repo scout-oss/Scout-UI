@@ -1,6 +1,6 @@
 # Scout UI v0.1 Implementation Plan
 
-**Status:** Milestones 1–5 complete; Milestone 6 has not started<br /> **Source
+**Status:** Milestones 1–6 complete; Milestone 7 has not started<br /> **Source
 documents:** `SCOUT_UI_MASTER_SPEC.md`, `SCOUT_UI_DESIGN_SYSTEM.md`,
 `SCOUT_UI_ENGINEERING_SPEC.md`<br /> **Scope:** Eight components, three public
 packages, one documentation/playground application
@@ -196,6 +196,8 @@ though attribution is not required.
 
 ## 7. Milestone 5 — Shared primitives: Sticker, StickerButton, StickerBadge
 
+**Status:** Complete (2026-08-11)
+
 ### Work
 
 - Implement the discriminated public APIs exactly as specified.
@@ -225,6 +227,8 @@ though attribution is not required.
 - Packed package imports work in both fixtures.
 
 ## 8. Milestone 6 — StickerTrail standalone package
+
+**Status:** Complete (2026-08-13)
 
 ### Work
 

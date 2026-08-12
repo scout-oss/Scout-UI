@@ -21,7 +21,15 @@ test("packed Next.js consumer renders and hydrates", async ({
   await expect(page.getByTestId("server-package-values")).toContainText(
     "StickerButton",
   );
-  await expect(page.getByTestId("client-entry-value")).toHaveText("0.0.0");
+
+  // Replaces the milestone-2 version sentinel with the production API: the
+  // React client leaf must resolve, hydrate, and build a real bounded pool.
+  await expect(page.getByTestId("client-entry-value")).toHaveText(
+    "client trail ready",
+  );
+  await expect(
+    page.getByTestId("client-entry-trail").locator("[data-sui-trail-slot]"),
+  ).toHaveCount(6);
 
   const activation = page.getByRole("button", { name: "Activations: 0" });
   await activation.click();
@@ -61,15 +69,104 @@ test("packed Vite consumer renders", async ({ page }, testInfo) => {
   await expect(page.getByTestId("packed-sticker-definition")).toHaveText(
     "wonky-star",
   );
+  // The broad package's Trail works from both the root and the subpath, using
+  // only `@scout-ui/react/styles.css`.
+  await expect(
+    page.getByTestId("vite-root-trail").locator("[data-sui-trail-slot]"),
+  ).toHaveCount(6);
+  await expect(
+    page.getByTestId("vite-subpath-trail").locator("[data-sui-trail-slot]"),
+  ).toHaveCount(6);
+  const broadLayerStyles = await page
+    .getByTestId("vite-root-trail")
+    .locator(".sui-trail-layer")
+    .evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return { pointerEvents: styles.pointerEvents, position: styles.position };
+    });
+  expect(broadLayerStyles.position).toBe("absolute");
+  expect(broadLayerStyles.pointerEvents).toBe("none");
+  // Real artwork must load. Inert trail slots are excluded by design: they
+  // carry no source until the engine activates them.
   await expect
     .poll(() =>
       page
-        .locator("img")
+        .locator("img:not([data-sui-trail-slot])")
         .evaluateAll((images) =>
           images.every((image) => image.complete && image.naturalWidth > 0),
         ),
     )
     .toBe(true);
+  expect(
+    await page
+      .locator("img[data-sui-trail-slot]")
+      .evaluateAll((images) =>
+        images.every((image) => !image.hasAttribute("src")),
+      ),
+  ).toBe(true);
+  await expectNoAxeViolations(page, testInfo);
+  await diagnostics.expectClean(testInfo);
+});
+
+test("standalone Trail consumer works without the broad package", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-desktop");
+  const diagnostics = captureBrowserDiagnostics(page);
+  const viteURL = process.env.SCOUT_UI_VITE_FIXTURE_URL;
+  expect(viteURL).toBeTruthy();
+  await page.goto(
+    `${viteURL ?? "about:blank"}/standalone/standalone-trail.html`,
+  );
+
+  await expect(
+    page.getByRole("heading", { name: "Standalone trail consumer" }),
+  ).toBeVisible();
+  await expect(
+    page.getByTestId("standalone-trail").locator("[data-sui-trail-slot]"),
+  ).toHaveCount(8);
+  await expect(
+    page.getByTestId("standalone-hook-trail").locator("[data-sui-trail-slot]"),
+  ).toHaveCount(6);
+
+  // The standalone stylesheet alone must fully style the layer and the slots.
+  const styles = await page
+    .getByTestId("standalone-trail")
+    .locator(".sui-trail-layer")
+    .evaluate((element) => {
+      const computed = getComputedStyle(element);
+      const slot = element.querySelector("[data-sui-trail-slot]");
+      const slotStyles = slot === null ? null : getComputedStyle(slot);
+      return {
+        layerPointerEvents: computed.pointerEvents,
+        layerPosition: computed.position,
+        slotPosition: slotStyles?.position ?? "",
+        slotVisibility: slotStyles?.visibility ?? "",
+      };
+    });
+
+  expect(styles.layerPosition).toBe("absolute");
+  expect(styles.layerPointerEvents).toBe("none");
+  expect(styles.slotPosition).toBe("absolute");
+  expect(styles.slotVisibility).toBe("hidden");
+
+  // And it still runs: a sweep spawns nodes with no broad package present.
+  const box = await page.getByTestId("standalone-trail").boundingBox();
+  expect(box).not.toBeNull();
+  if (box !== null) {
+    for (let step = 0; step <= 8; step += 1) {
+      await page.mouse.move(box.x + 10 + step * 20, box.y + box.height / 2);
+      await page.waitForTimeout(40);
+    }
+  }
+
+  expect(
+    await page
+      .getByTestId("standalone-trail")
+      .locator('[data-sui-trail-slot][data-active="true"]')
+      .count(),
+  ).toBeGreaterThan(0);
+
   await expectNoAxeViolations(page, testInfo);
   await diagnostics.expectClean(testInfo);
 });

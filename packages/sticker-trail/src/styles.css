@@ -1,1 +1,99 @@
-/* Public stylesheet export placeholder. Production Trail styles begin in Milestone 6. */
+/**
+ * Scout UI — StickerTrail
+ *
+ * This file is the single source of truth for Trail rules. It ships verbatim as
+ * `@scout-ui/sticker-trail/styles.css`, and the React package build composes
+ * these same rules once into `@scout-ui/react/styles.css`.
+ *
+ * A standalone consumer has no Scout UI token layer, so every token read below
+ * carries an inline fallback.
+ *
+ * `--sui-trail-*` variables are the documented public surface.
+ * `--sui-trail-internal-*` variables are engine-owned and may change.
+ */
+
+@layer scout-ui.tokens, scout-ui.base, scout-ui.components, scout-ui.utilities;
+
+@layer scout-ui.components {
+  .sui-trail {
+    /* Public: raise or lower the decorative layer within its own context. */
+    --sui-trail-layer: var(--sui-layer-trail, 60);
+
+    position: relative;
+
+    /* A local stacking context keeps the trail from escaping into
+       navigation, popover, or modal layers. */
+    isolation: isolate;
+  }
+
+  .sui-trail[data-clip="true"] {
+    overflow: hidden;
+  }
+
+  .sui-trail-layer {
+    position: absolute;
+    z-index: var(--sui-trail-layer, 60);
+    inset: 0;
+
+    /* Decorative only: never intercept a click, a drag, or a text selection. */
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .sui-trail-item {
+    --sui-trail-internal-x: 0px;
+    --sui-trail-internal-y: 0px;
+    --sui-trail-internal-size: 0px;
+    --sui-trail-internal-rotation: 0deg;
+    --sui-trail-internal-scale: 1;
+    --sui-trail-internal-opacity: 0;
+    --sui-trail-internal-drift: 0px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--sui-trail-internal-size);
+    height: auto;
+
+    /* Inactive slots stay in the DOM but out of the paint and hit-test. */
+    visibility: hidden;
+    opacity: var(--sui-trail-internal-opacity);
+    transform: translate3d(
+        calc(var(--sui-trail-internal-x) - 50%),
+        calc(
+          var(--sui-trail-internal-y) - 50% - var(--sui-trail-internal-drift)
+        ),
+        0
+      )
+      rotate(var(--sui-trail-internal-rotation))
+      scale(var(--sui-trail-internal-scale));
+    transform-origin: 50% 50%;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .sui-trail-item[data-active="true"] {
+    visibility: visible;
+    will-change: transform, opacity;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer scout-ui.components {
+    /* The engine also refuses to attach a movement loop; this guarantees the
+       visual result even if a slot was mid-life when the setting changed. */
+    .sui-trail-layer {
+      display: none;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  @layer scout-ui.components {
+    /* Purely decorative artwork is withdrawn so it cannot interfere with the
+       system palette. The container's real content is unaffected. */
+    .sui-trail-layer {
+      display: none;
+    }
+  }
+}

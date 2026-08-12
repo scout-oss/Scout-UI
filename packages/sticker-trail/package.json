@@ -26,7 +26,7 @@
     "dev": "rollup --config rollup.config.mjs --watch",
     "lint": "eslint src tests rollup.config.mjs && stylelint \"src/**/*.css\" --allow-empty-input",
     "test": "vitest run --coverage --config ../../vitest.config.ts",
-    "typecheck": "tsc --project tsconfig.json --noEmit --pretty false"
+    "typecheck": "tsc --project tsconfig.json --noEmit --pretty false && tsc --project tsconfig.type-tests.json --pretty false"
   },
   "peerDependencies": {
     "react": "^19.0.0"

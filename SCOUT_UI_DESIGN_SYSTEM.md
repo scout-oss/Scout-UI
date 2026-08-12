@@ -520,8 +520,14 @@ according to velocity, ±12° rotation, 0.9–1.08 scale range, 1100ms life, max
 - `scout`: balanced default;
 - `dense`: smaller stickers and closer spacing, maximum 32;
 - `floaty`: longer life, slower fade, small upward drift, maximum 20;
-- `chaos`: wider scale/rotation variance but the same hard safety ceiling as
+- `chaos`: wider scale/rotation variance but the same active-node maximum as
   `dense`; docs label it high intensity.
+
+The per-preset maximums above are preset values, not the engine's absolute
+safety ceiling. A consumer may configure its own maximum, which is then clamped
+by the engine's independent hard bound. `chaos` is expressly not permitted to
+drift upward toward that bound: expressiveness comes from scale and rotation
+variance, never from more simultaneous nodes than `dense`.
 
 **Layering:** the trail sits above decorative background but below navigation,
 controls, text-selection affordances, dialogs, and tooltips. Stickers may
@@ -531,8 +537,13 @@ is still selectable.
 **Idle:** no nodes until input.<br /> **Hover/move:** spawns according to
 path.<br /> **Click:** unchanged by default; optional burst feedback is not part
 of v0.1.<br /> **Leave:** existing nodes complete their short exit; no new nodes
-spawn.<br /> **Disabled/reduced motion:** render nothing or one authored static
-sticker fallback. **Loading:** not applicable.
+spawn.<br /> **Disabled/reduced motion:** the decorative trail is suppressed and
+no node is ever activated. **Loading:** not applicable.
+
+There is no fallback prop. The container's ordinary caller-rendered content —
+`children` for the wrapper, the caller's own markup for the hook — stays visible
+and is the static experience. A team wanting an authored resting sticker simply
+renders it as normal content; the trail suppresses only itself.
 
 **Touch:** off by default. Optional `tap` mode places one temporary sticker per
 deliberate tap; it must not interfere with scroll or gesture navigation.
@@ -542,7 +553,7 @@ cannot be the only feedback for any action.
 
 **Customization:** sticker sources, preset, size range, spacing range, lifetime,
 max active, rotation, scale, exit style, sequence mode, seed, target/container,
-z-layer, touch mode, and reduced-motion fallback.
+z-layer, touch mode, and reduced-motion policy.
 
 **Use:** bounded hero, creative canvas, product showcase.<br /> **Misuse:**
 site-wide reading pages, data entry, mobile scroll surfaces, or an unbounded

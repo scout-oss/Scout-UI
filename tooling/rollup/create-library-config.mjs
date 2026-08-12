@@ -1,5 +1,24 @@
 import esbuild from "rollup-plugin-esbuild";
 
+/**
+ * Rollup reports native module ids, so on Windows they arrive with backslashes
+ * while `clientEntries` are authored with POSIX separators. Comparing them
+ * unnormalised silently drops the `"use client"` banner and produces an
+ * incorrect RSC boundary, so every comparison goes through this.
+ */
+function toPosix(id) {
+  return id.replaceAll("\\", "/");
+}
+
+function isEntry(id, clientEntries) {
+  if (typeof id !== "string") {
+    return false;
+  }
+
+  const normalized = toPosix(id);
+  return clientEntries.some((entry) => normalized.endsWith(toPosix(entry)));
+}
+
 export function createLibraryConfig({
   input = "src/index.ts",
   external = [],
@@ -9,8 +28,7 @@ export function createLibraryConfig({
     input,
     external,
     onwarn(warning, warn) {
-      const isClientEntry =
-        warning.id && clientEntries.some((entry) => warning.id.endsWith(entry));
+      const isClientEntry = isEntry(warning.id, clientEntries);
       const isHandledDirective =
         warning.code === "MODULE_LEVEL_DIRECTIVE" &&
         warning.message.includes("use client");
@@ -32,14 +50,9 @@ export function createLibraryConfig({
       preserveModulesRoot: "src",
       sourcemap: true,
       banner(chunk) {
-        if (
-          chunk.facadeModuleId &&
-          clientEntries.some((entry) => chunk.facadeModuleId.endsWith(entry))
-        ) {
-          return '"use client";';
-        }
-
-        return "";
+        return isEntry(chunk.facadeModuleId, clientEntries)
+          ? '"use client";'
+          : "";
       },
     },
     plugins: [

@@ -2,13 +2,13 @@ import {
   Sticker,
   StickerBadge,
   StickerButton,
+  StickerTrail,
   scoutUiReactVersion,
 } from "@scout-ui/react";
 import { Sticker as SubpathSticker } from "@scout-ui/react/sticker";
 import { StickerBadge as SubpathStickerBadge } from "@scout-ui/react/sticker-badge";
 import { StickerButton as SubpathStickerButton } from "@scout-ui/react/sticker-button";
-import { stickerTrailVersion } from "@scout-ui/react/sticker-trail";
-import { stickerTrailVersion as standaloneTrailVersion } from "@scout-ui/sticker-trail";
+import { StickerTrail as SubpathStickerTrail } from "@scout-ui/react/sticker-trail";
 import { stickerPackVersion } from "@scout-ui/stickers";
 import starAssetUrl from "@scout-ui/stickers/assets/wonky-star.svg";
 import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
@@ -26,12 +26,31 @@ export function App() {
         <dt>React server subpaths</dt>
         <dd>sticker · sticker-button · sticker-badge</dd>
         <dt>React client subpath</dt>
-        <dd>{stickerTrailVersion}</dd>
-        <dt>Standalone client package</dt>
-        <dd>{standaloneTrailVersion}</dd>
+        <dd>sticker-trail</dd>
         <dt>Framework-neutral package</dt>
         <dd>{stickerPackVersion}</dd>
       </dl>
+      <section aria-labelledby="vite-trail-heading">
+        <h2 id="vite-trail-heading">Trail from the broad package</h2>
+        <StickerTrail
+          data-testid="vite-root-trail"
+          maxActive={6}
+          seed="vite-root"
+          stickers={[{ id: "star", src: starAssetUrl, width: 64, height: 64 }]}
+          style={{ border: "2px solid #121116", minHeight: 160, padding: 16 }}
+        >
+          <p>Root import, broad stylesheet only.</p>
+        </StickerTrail>
+        <SubpathStickerTrail
+          data-testid="vite-subpath-trail"
+          maxActive={6}
+          seed="vite-subpath"
+          stickers={[wonkyStar]}
+          style={{ border: "2px solid #121116", minHeight: 160, padding: 16 }}
+        >
+          <p>Subpath import of the same client leaf.</p>
+        </SubpathStickerTrail>
+      </section>
       <section aria-labelledby="packed-asset-heading">
         <h2 id="packed-asset-heading">Packed asset paths</h2>
         <img src={starAssetUrl} alt="" width="64" height="64" />

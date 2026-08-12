@@ -73,6 +73,8 @@ try {
   const args = ["pnpm", "exec", "playwright", "test"];
   if (process.argv.includes("--visual")) args.push("--update-snapshots");
   await new Promise((resolve, reject) => {
+    // `corepack` is a `.cmd` shim on Windows, which `spawn` cannot resolve
+    // without a shell.
     const tests = spawn("corepack", args, {
       cwd: root,
       env: {
@@ -80,6 +82,7 @@ try {
         SCOUT_UI_FIXTURE_URL: `http://127.0.0.1:${port}`,
         SCOUT_UI_VITE_FIXTURE_URL: `http://127.0.0.1:${vitePort}`,
       },
+      shell: process.platform === "win32",
       stdio: "inherit",
     });
     tests.once("error", reject);

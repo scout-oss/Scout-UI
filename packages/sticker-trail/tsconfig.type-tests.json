@@ -1,0 +1,9 @@
+{
+  "extends": "../../tooling/typescript/library.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": ".",
+    "tsBuildInfoFile": "./node_modules/.cache/tsconfig.type-tests.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.test-d.tsx"]
+}

@@ -1,7 +1,7 @@
 # @scout-ui/react
 
-React components for sticker-led interfaces. The first v0.1 primitives are
-`Sticker`, `StickerButton`, and `StickerBadge`.
+React components for sticker-led interfaces. The v0.1 surface so far is
+`Sticker`, `StickerButton`, `StickerBadge`, and `StickerTrail`.
 
 The package supports the root import plus explicit public subpaths. Import
 `@scout-ui/react/styles.css` for the public stylesheet entry.
@@ -30,6 +30,20 @@ import { StickerButton } from "@scout-ui/react/sticker-button";
 All three leaves and the root barrel are unmarked, SSR-safe modules. Static
 serializable usage can render in a React Server Component; event handlers belong
 below a consumer-authored Client Component boundary.
+
+`StickerTrail` and `useStickerTrail` are re-exported from the standalone
+`@scout-ui/sticker-trail` package, and its leaf is the one interactive entry:
+
+```tsx
+import { StickerTrail, useStickerTrail } from "@scout-ui/react";
+// or, for the narrowest client boundary:
+import { StickerTrail } from "@scout-ui/react/sticker-trail";
+```
+
+That subpath carries `"use client"`. Its Trail rules are already composed into
+`@scout-ui/react/styles.css`, so a broad consumer needs one CSS import and must
+not also import `@scout-ui/sticker-trail/styles.css`. See the standalone
+package's README for the Trail API, presets, and behaviour.
 
 `Sticker` accepts exactly one of `source` or `children`. Source-backed artwork
 uses format-neutral image semantics and defaults to no wrapper outline so

@@ -816,3 +816,67 @@ nav,
     forced-color-adjust: none;
   }
 }
+
+/* --- Trail surfaces ------------------------------------------------------ */
+
+.trail-box {
+  min-width: 0;
+  min-height: 18rem;
+  padding: 1.5rem;
+  border: 0.375rem solid #121116;
+  background: #f7f5ef;
+}
+
+.trail-box-compact {
+  min-height: 8rem;
+}
+
+.trail-box-tall {
+  min-height: 24rem;
+}
+
+.trail-box-offset {
+  position: relative;
+  margin-left: 2.3125rem;
+}
+
+.trail-scroller {
+  overflow: auto;
+  max-height: 20rem;
+  border: 1px solid #625e68;
+}
+
+.trail-scroller-spacer {
+  height: 12rem;
+}
+
+.trail-offscreen-spacer {
+  height: 150vh;
+}
+
+.trail-scroll-content {
+  overflow: auto;
+  max-height: 6rem;
+}
+
+.trail-preset-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+}
+
+.trail-preset-panel {
+  min-width: 0;
+}
+
+.trail-preset-title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.trail-preset-canvas {
+  min-height: 20rem;
+  background: #0b0a0e;
+}

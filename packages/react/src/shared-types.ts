@@ -19,6 +19,11 @@ export interface StickerSource {
   height?: number;
 }
 
+export interface NumberRange {
+  min: number;
+  max: number;
+}
+
 export interface ScoutMotionPolicy {
   reducedMotion?: "system" | "always";
 }

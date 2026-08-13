@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tooling/fixtures/serve-next-fixture.mjs"],
+      "port": 4310
+    },
+    {
+      "name": "fixture",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tooling/fixtures/serve-next-fixture.mjs"],
+      "port": 4310
+    }
+  ]
+}

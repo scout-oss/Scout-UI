@@ -30,6 +30,10 @@
       "types": "./dist/sticker-button/index.d.ts",
       "import": "./dist/sticker-button/index.js"
     },
+    "./sticker-cursor": {
+      "types": "./dist/sticker-cursor/index.d.ts",
+      "import": "./dist/sticker-cursor/index.js"
+    },
     "./sticker-trail": {
       "types": "./dist/sticker-trail/index.d.ts",
       "import": "./dist/sticker-trail/index.js"

@@ -786,6 +786,101 @@
   .sui-sticker[data-reduced-motion="always"][data-entrance="stick"] {
     animation: none;
   }
+
+  /* --- StickerCursor ---------------------------------------------------- */
+
+  .sui-sticker-cursor {
+    /* Public: stacking order of the decorative cursor layer. */
+    --sui-sticker-cursor-layer: var(--sui-layer-trail, 60);
+
+    position: relative;
+
+    /* A local stacking context keeps the cursor from escaping into
+       navigation, popover, or modal layers. */
+    isolation: isolate;
+  }
+
+  /* Scoped to the region and only while the engine reports the artwork ready.
+     There is deliberately no global `cursor: none` rule: the attribute is
+     removed the instant the pointer enters a bypass region, leaves, the window
+     blurs, an asset fails, or the component unmounts. */
+  .sui-sticker-cursor[data-native-hidden="true"] {
+    cursor: none;
+  }
+
+  .sui-sticker-cursor-layer {
+    position: absolute;
+    z-index: var(--sui-sticker-cursor-layer, 60);
+    inset: 0;
+
+    /* Decorative only: never intercept a click, a drag, or a text selection. */
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .sui-sticker-cursor-visual,
+  .sui-sticker-cursor-echo {
+    --sui-sticker-cursor-internal-x: 0px;
+    --sui-sticker-cursor-internal-y: 0px;
+    --sui-sticker-cursor-internal-hotspot-x: -50%;
+    --sui-sticker-cursor-internal-hotspot-y: -50%;
+    --sui-sticker-cursor-internal-tilt: 0deg;
+    --sui-sticker-cursor-internal-size: 2.75rem;
+    --sui-sticker-cursor-internal-press: 1;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--sui-sticker-cursor-internal-size);
+    height: auto;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .sui-sticker-cursor-visual {
+    visibility: hidden;
+    transform: translate3d(
+        calc(
+          var(--sui-sticker-cursor-internal-x) +
+            var(--sui-sticker-cursor-internal-hotspot-x)
+        ),
+        calc(
+          var(--sui-sticker-cursor-internal-y) +
+            var(--sui-sticker-cursor-internal-hotspot-y)
+        ),
+        0
+      )
+      rotate(var(--sui-sticker-cursor-internal-tilt))
+      scale(var(--sui-sticker-cursor-internal-press));
+    transform-origin: 50% 50%;
+
+    /* Press is a low-frequency semantic change, so it rides a transition
+       rather than adding per-frame work to the engine. */
+    transition: scale var(--sui-duration-press, 170ms)
+      var(--sui-ease-press, ease-out);
+  }
+
+  .sui-sticker-cursor-layer[data-visible="true"] .sui-sticker-cursor-visual {
+    visibility: visible;
+    will-change: transform;
+  }
+
+  .sui-sticker-cursor-layer[data-pressed="true"] .sui-sticker-cursor-visual {
+    --sui-sticker-cursor-internal-press: 0.92;
+  }
+
+  .sui-sticker-cursor-echo {
+    border-radius: 50%;
+    background: var(--sui-ultraviolet, #7c2cff);
+    opacity: 0;
+    aspect-ratio: 1;
+    height: var(--sui-sticker-cursor-internal-size);
+    transform: translate3d(
+      calc(var(--sui-sticker-cursor-internal-x) - 50%),
+      calc(var(--sui-sticker-cursor-internal-y) - 50%),
+      0
+    );
+  }
 }
 
 @layer scout-ui.utilities {
@@ -851,6 +946,17 @@
     .sui-sticker-button:hover:not(:disabled) .sui-sticker-button-trailing {
       translate: none !important;
     }
+
+    /* The engine also refuses to attach; this guarantees the visual result even
+       if the setting changed mid-session. Reduced motion receives the native
+       cursor only. */
+    .sui-sticker-cursor-layer {
+      display: none;
+    }
+
+    .sui-sticker-cursor[data-native-hidden="true"] {
+      cursor: auto;
+    }
   }
 }
 
@@ -910,6 +1016,16 @@
     button.sui-sticker-badge[data-selected="true"] {
       border-color: Highlight;
       outline-color: Highlight;
+    }
+
+    /* Purely decorative artwork is withdrawn so it cannot interfere with the
+       system palette, and the native cursor returns as the safety baseline. */
+    .sui-sticker-cursor-layer {
+      display: none;
+    }
+
+    .sui-sticker-cursor[data-native-hidden="true"] {
+      cursor: auto;
     }
   }
 }

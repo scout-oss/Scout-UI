@@ -53,6 +53,9 @@ export default function HomePage() {
         <a href="/test-surfaces/trail-render-count">Trail render count</a>
         <a href="/test-surfaces/trail-lifecycle">Trail lifecycle</a>
         <a href="/test-surfaces/trail-presets">Trail presets</a>
+        <a href="/test-surfaces/cursor">Cursor surface</a>
+        <a href="/test-surfaces/cursor-hotspot">Cursor hotspot review</a>
+        <a href="/test-surfaces/cursor-assets">Cursor asset readiness</a>
       </nav>
     </main>
   );

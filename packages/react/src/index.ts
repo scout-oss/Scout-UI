@@ -12,6 +12,12 @@ export { StickerBadge } from "./sticker-badge/index.js";
 export type { StickerBadgeProps } from "./sticker-badge/index.js";
 export { StickerButton } from "./sticker-button/index.js";
 export type { StickerButtonProps } from "./sticker-button/index.js";
+export { StickerCursor } from "./sticker-cursor/index.js";
+export type {
+  CursorVisual,
+  StickerCursorProps,
+  StickerCursorState,
+} from "./sticker-cursor/index.js";
 export { StickerTrail, useStickerTrail } from "./sticker-trail/index.js";
 export type {
   StickerTrailController,

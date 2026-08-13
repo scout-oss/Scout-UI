@@ -18,6 +18,8 @@ export type {
   StickerCursorProps,
   StickerCursorState,
 } from "./sticker-cursor/index.js";
+export { StickerPeel } from "./sticker-peel/index.js";
+export type { StickerPeelProps } from "./sticker-peel/index.js";
 export { StickerTrail, useStickerTrail } from "./sticker-trail/index.js";
 export type {
   StickerTrailController,

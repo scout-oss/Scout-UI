@@ -179,6 +179,7 @@ async function inspectInstalledPackage(consumer, record) {
       "./sticker-badge",
       "./sticker-button",
       "./sticker-cursor",
+      "./sticker-peel",
       "./sticker-trail",
       "./styles.css",
     ],
@@ -479,6 +480,7 @@ async function assertStylesheetComposition(consumer) {
   assert.match(reactCss, /--sui-paper:/u);
   assert.match(reactCss, /\.sui-sticker-button/u);
   assert.match(reactCss, /\.sui-sticker-cursor-layer/u);
+  assert.match(reactCss, /\.sui-sticker-peel/u);
   assert.match(
     reactCss,
     /\.sui-sticker-cursor\[data-native-hidden="true"\]/u,
@@ -545,6 +547,14 @@ async function assertBoundaries(nextConsumer) {
   );
   assertDirective(
     await readFile(
+      path.join(reactDirectory, "sticker-peel", "index.js"),
+      "utf8",
+    ),
+    true,
+    "React Peel leaf",
+  );
+  assertDirective(
+    await readFile(
       path.join(reactDirectory, "sticker-trail", "index.js"),
       "utf8",
     ),
@@ -577,6 +587,24 @@ async function assertBoundaries(nextConsumer) {
     cursorLeaf,
     /createStickerCursorEngine|createAssetRegistry/u,
     "the cursor engine was inlined into the client entry",
+  );
+
+  for (const file of ["StickerPeel.js", "peel-math.js"]) {
+    await readFile(path.join(reactDirectory, "sticker-peel", file), "utf8");
+  }
+  const peelLeaf = await readFile(
+    path.join(reactDirectory, "sticker-peel", "index.js"),
+    "utf8",
+  );
+  assert.match(
+    peelLeaf,
+    /from ["']\.\/StickerPeel\.js["']/u,
+    "the Peel leaf must re-export preserved modules rather than inline them",
+  );
+  assert.doesNotMatch(
+    peelLeaf,
+    /progressFromMovement|resolvePeelIntent/u,
+    "Peel geometry was inlined into the client entry",
   );
   assertDirective(
     await readFile(path.join(trailDirectory, "index.js"), "utf8"),
@@ -635,6 +663,7 @@ async function assertServerEvaluation(consumer) {
     const badge = await import("@scout-ui/react/sticker-badge");
     const button = await import("@scout-ui/react/sticker-button");
     const reactCursor = await import("@scout-ui/react/sticker-cursor");
+    const reactPeel = await import("@scout-ui/react/sticker-peel");
     const reactTrail = await import("@scout-ui/react/sticker-trail");
     const standaloneTrail = await import("@scout-ui/sticker-trail");
     const stickers = await import("@scout-ui/stickers");
@@ -654,6 +683,18 @@ async function assertServerEvaluation(consumer) {
     if (!cursorMarkup.includes('aria-hidden="true"')) process.exit(18);
     const cursorRepeat = renderToStaticMarkup(createElement(reactCursor.StickerCursor, { visuals: { default: { source: star.wonkyStar } } }, "content"));
     if (cursorRepeat !== cursorMarkup) process.exit(19);
+
+    // Peel remains server-import safe even though its leaf is a client entry.
+    if (typeof root.StickerPeel !== "function" || typeof reactPeel.StickerPeel !== "function") process.exit(20);
+    const peelProps = { back: "answer", front: "question", id: "packed-peel", open: false };
+    const peelMarkup = renderToStaticMarkup(createElement(reactPeel.StickerPeel, peelProps));
+    if (!peelMarkup.includes('aria-expanded="false"')) process.exit(21);
+    if (!peelMarkup.includes('id="packed-peel-back"')) process.exit(22);
+    if (!peelMarkup.includes("inert") || !peelMarkup.includes("question") || !peelMarkup.includes("answer")) process.exit(23);
+    const peelRepeat = renderToStaticMarkup(createElement(reactPeel.StickerPeel, peelProps));
+    if (peelRepeat !== peelMarkup) process.exit(24);
+    const openPeel = renderToStaticMarkup(createElement(root.StickerPeel, { back: "answer", defaultOpen: true, front: "question", id: "packed-open-peel" }));
+    if (!openPeel.includes('aria-expanded="true"')) process.exit(25);
 
     // Trail is importable on a server from every documented path, and the
     // milestone-2 sentinel is gone from all of them.
@@ -705,6 +746,11 @@ async function assertTreeShaking(viteConsumer) {
     source,
     /sui-sticker-cursor|createStickerCursorEngine|createAssetRegistry/u,
     "Sticker-only Vite build pulled in the Cursor engine",
+  );
+  assert.doesNotMatch(
+    source,
+    /sui-sticker-peel|progressFromMovement|resolvePeelIntent/u,
+    "Sticker-only Vite build pulled in StickerPeel",
   );
 
   const stickerFiles = await listFiles(

@@ -1,7 +1,8 @@
 # @scout-ui/react
 
 React components for sticker-led interfaces. The v0.1 surface so far is
-`Sticker`, `StickerButton`, `StickerBadge`, and `StickerTrail`.
+`Sticker`, `StickerButton`, `StickerBadge`, `StickerTrail`, `StickerCursor`, and
+`StickerPeel`.
 
 The package supports the root import plus explicit public subpaths. Import
 `@scout-ui/react/styles.css` for the public stylesheet entry.
@@ -44,6 +45,30 @@ That subpath carries `"use client"`. Its Trail rules are already composed into
 `@scout-ui/react/styles.css`, so a broad consumer needs one CSS import and must
 not also import `@scout-ui/sticker-trail/styles.css`. See the standalone
 package's README for the Trail API, presets, and behaviour.
+
+`StickerPeel` is a progressively enhanced disclosure. Its leaf is a narrow
+Client Component entry because it owns focus management and optional pointer
+dragging; the root barrel itself remains unmarked.
+
+```tsx
+import { StickerPeel } from "@scout-ui/react/sticker-peel";
+
+<StickerPeel
+  front={<span>What is underneath?</span>}
+  back={<a href="/answer">The revealed answer</a>}
+  drag
+  origin="top-right"
+/>;
+```
+
+Both layers remain mounted, while the inactive layer is `inert` and hidden from
+assistive technology. The named button is always the complete keyboard, touch,
+and reduced-motion interaction; dragging begins only from that grip. `peelSize`
+accepts a CSS length, or a number interpreted as pixels and clamped to 36–320px.
+Use Peel for short secondary disclosures—not required notices, long documents,
+or irreversible actions. Public styling hooks are `.sui-sticker-peel` and
+`--sui-peel-size`, `--sui-peel-front`, `--sui-peel-back`,
+`--sui-peel-underside`, and `--sui-peel-ink`.
 
 `Sticker` accepts exactly one of `source` or `children`. Source-backed artwork
 uses format-neutral image semantics and defaults to no wrapper outline so

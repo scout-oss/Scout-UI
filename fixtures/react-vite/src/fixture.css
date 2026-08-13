@@ -24,3 +24,9 @@ section {
   align-items: center;
   flex-wrap: wrap;
 }
+
+.vite-peel-row {
+  display: grid;
+  gap: var(--sui-space-6);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}

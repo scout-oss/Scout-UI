@@ -180,6 +180,7 @@ async function inspectInstalledPackage(consumer, record) {
       "./sticker-button",
       "./sticker-cursor",
       "./sticker-peel",
+      "./sticker-stack",
       "./sticker-trail",
       "./styles.css",
     ],
@@ -555,6 +556,14 @@ async function assertBoundaries(nextConsumer) {
   );
   assertDirective(
     await readFile(
+      path.join(reactDirectory, "sticker-stack", "index.js"),
+      "utf8",
+    ),
+    true,
+    "React Stack leaf",
+  );
+  assertDirective(
+    await readFile(
       path.join(reactDirectory, "sticker-trail", "index.js"),
       "utf8",
     ),
@@ -605,6 +614,23 @@ async function assertBoundaries(nextConsumer) {
     peelLeaf,
     /progressFromMovement|resolvePeelIntent/u,
     "Peel geometry was inlined into the client entry",
+  );
+  for (const file of ["StickerStack.js", "stack-math.js"]) {
+    await readFile(path.join(reactDirectory, "sticker-stack", file), "utf8");
+  }
+  const stackLeaf = await readFile(
+    path.join(reactDirectory, "sticker-stack", "index.js"),
+    "utf8",
+  );
+  assert.match(
+    stackLeaf,
+    /from ["']\.\/StickerStack\.js["']/u,
+    "the Stack leaf must re-export preserved modules rather than inline them",
+  );
+  assert.doesNotMatch(
+    stackLeaf,
+    /visibleStackIndexes|resolveStackIntent/u,
+    "Stack geometry was inlined into the client entry",
   );
   assertDirective(
     await readFile(path.join(trailDirectory, "index.js"), "utf8"),
@@ -664,6 +690,7 @@ async function assertServerEvaluation(consumer) {
     const button = await import("@scout-ui/react/sticker-button");
     const reactCursor = await import("@scout-ui/react/sticker-cursor");
     const reactPeel = await import("@scout-ui/react/sticker-peel");
+    const reactStack = await import("@scout-ui/react/sticker-stack");
     const reactTrail = await import("@scout-ui/react/sticker-trail");
     const standaloneTrail = await import("@scout-ui/sticker-trail");
     const stickers = await import("@scout-ui/stickers");
@@ -695,6 +722,16 @@ async function assertServerEvaluation(consumer) {
     if (peelRepeat !== peelMarkup) process.exit(24);
     const openPeel = renderToStaticMarkup(createElement(root.StickerPeel, { back: "answer", defaultOpen: true, front: "question", id: "packed-open-peel" }));
     if (!openPeel.includes('aria-expanded="true"')) process.exit(25);
+
+    // Stack is server-import safe and emits deterministic, bounded semantic markup.
+    if (typeof root.StickerStack !== "function" || typeof reactStack.StickerStack !== "function") process.exit(26);
+    const stackItems = [{ id: "one", label: "One" }, { id: "two", label: "Two" }, { id: "three", label: "Three" }, { id: "four", label: "Four" }];
+    const stackProps = { getKey: (item) => item.id, id: "packed-stack", items: stackItems, renderItem: (item) => item.label };
+    const stackMarkup = renderToStaticMarkup(createElement(reactStack.StickerStack, stackProps));
+    if (stackMarkup.split('data-stack-card="true"').length - 1 !== 3) process.exit(27);
+    if (stackMarkup.split('data-active="true"').length - 1 !== 1) process.exit(28);
+    if (!stackMarkup.includes('aria-label="Next item"') || !stackMarkup.includes("inert")) process.exit(29);
+    if (renderToStaticMarkup(createElement(root.StickerStack, stackProps)) !== stackMarkup) process.exit(30);
 
     // Trail is importable on a server from every documented path, and the
     // milestone-2 sentinel is gone from all of them.
@@ -751,6 +788,11 @@ async function assertTreeShaking(viteConsumer) {
     source,
     /sui-sticker-peel|progressFromMovement|resolvePeelIntent/u,
     "Sticker-only Vite build pulled in StickerPeel",
+  );
+  assert.doesNotMatch(
+    source,
+    /sui-sticker-stack|visibleStackIndexes|resolveStackIntent/u,
+    "Sticker-only Vite build pulled in StickerStack",
   );
 
   const stickerFiles = await listFiles(

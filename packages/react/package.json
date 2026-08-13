@@ -38,6 +38,10 @@
       "types": "./dist/sticker-peel/index.d.ts",
       "import": "./dist/sticker-peel/index.js"
     },
+    "./sticker-stack": {
+      "types": "./dist/sticker-stack/index.d.ts",
+      "import": "./dist/sticker-stack/index.js"
+    },
     "./sticker-trail": {
       "types": "./dist/sticker-trail/index.d.ts",
       "import": "./dist/sticker-trail/index.js"

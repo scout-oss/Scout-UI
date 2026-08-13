@@ -4,6 +4,7 @@ export default createLibraryConfig({
   clientEntries: [
     "src/sticker-cursor/index.ts",
     "src/sticker-peel/index.ts",
+    "src/sticker-stack/index.ts",
     "src/sticker-trail/index.ts",
   ],
   input: [
@@ -13,6 +14,7 @@ export default createLibraryConfig({
     "src/sticker-button/index.tsx",
     "src/sticker-cursor/index.ts",
     "src/sticker-peel/index.ts",
+    "src/sticker-stack/index.ts",
     "src/sticker-trail/index.ts",
   ],
   external: [/^@scout-ui\//u, /^react(?:-dom)?(?:\/.*)?$/u],

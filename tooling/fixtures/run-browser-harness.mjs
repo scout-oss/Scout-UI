@@ -71,6 +71,10 @@ try {
   await waitForServer(`http://127.0.0.1:${port}`);
   await waitForServer(`http://127.0.0.1:${vitePort}`);
   const args = ["pnpm", "exec", "playwright", "test"];
+  const forwarded = process.argv
+    .slice(2)
+    .filter((argument) => argument !== "--visual" && argument !== "--");
+  args.push(...forwarded);
   if (process.argv.includes("--visual")) args.push("--update-snapshots");
   await new Promise((resolve, reject) => {
     // `corepack` is a `.cmd` shim on Windows, which `spawn` cannot resolve

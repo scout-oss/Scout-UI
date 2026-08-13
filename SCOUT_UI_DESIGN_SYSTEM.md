@@ -725,8 +725,11 @@ configured and does not conflict with swipe direction.
 remain static.
 
 **Customization:** items, render item, index/default index, on-index-change,
-visible count, loop, axis, drag, keyboard, rotations, offsets, intensity,
-labels, and empty state.
+visible count, loop, axis, drag, keyboard, labels, and empty state. In v0.1,
+bounded rotations and offsets are deterministic implementation geometry derived
+from stable item keys and the shared token system rather than additional public
+props. Public geometry controls may be considered only after real integrations
+demonstrate a need.
 
 **Use:** stories, testimonials, examples, small collections.<br /> **Misuse:**
 hundreds of records, primary navigation, dense forms, or content whose ordering

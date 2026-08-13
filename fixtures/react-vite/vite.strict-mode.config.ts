@@ -32,6 +32,10 @@ export default defineConfig({
           "peel-render-count.html",
         ),
         "render-count": resolve(import.meta.dirname, "render-count.html"),
+        "stack-render-count": resolve(
+          import.meta.dirname,
+          "stack-render-count.html",
+        ),
         "strict-mode": resolve(import.meta.dirname, "strict-mode.html"),
       },
     },

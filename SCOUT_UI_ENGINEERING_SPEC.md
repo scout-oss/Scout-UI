@@ -832,6 +832,12 @@ semantics; background layers receive `inert` and are hidden from assistive
 technology. Consumer data is not cloned or mutated. Controlled index changes are
 normalized when item count changes, and callbacks are not fired during render.
 
+The v0.1 defaults are `visibleCount=3`, `loop=false`, `axis="x"`, `drag=false`,
+and `keyboard=false`. The default control labels are “Next item” and “Previous
+item”. These defaults keep the minimal render bounded, finite, button-operable,
+and free of gesture or keyboard interception until the consumer opts into those
+enhancements.
+
 ## 11. CSS architecture
 
 The library ships one explicit stylesheet per public package and may expose

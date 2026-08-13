@@ -7,6 +7,7 @@ import {
 import { Sticker as SubpathSticker } from "@scout-ui/react/sticker";
 import { StickerBadge as SubpathStickerBadge } from "@scout-ui/react/sticker-badge";
 import { StickerButton as SubpathStickerButton } from "@scout-ui/react/sticker-button";
+import { StickerPeel as SubpathStickerPeel } from "@scout-ui/react/sticker-peel";
 import { stickerPackVersion } from "@scout-ui/stickers";
 import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 
@@ -39,6 +40,14 @@ export default function HomePage() {
         <SubpathStickerBadge>Subpath badge</SubpathStickerBadge>
       </section>
       <ClientBoundaryCheck initialLabel="client entry ready" />
+      <section aria-label="Serializable Peel client entries">
+        <SubpathStickerPeel
+          back="Subpath back"
+          front="Subpath front"
+          id="subpath-peel"
+          origin="bottom-left"
+        />
+      </section>
       <nav aria-label="Fixture surfaces">
         <a href="/server-only">Server-only import</a>
         <a href="/test-surfaces/pointer">Pointer surface</a>
@@ -56,6 +65,7 @@ export default function HomePage() {
         <a href="/test-surfaces/cursor">Cursor surface</a>
         <a href="/test-surfaces/cursor-hotspot">Cursor hotspot review</a>
         <a href="/test-surfaces/cursor-assets">Cursor asset readiness</a>
+        <a href="/test-surfaces/peel">Peel surface</a>
       </nav>
     </main>
   );

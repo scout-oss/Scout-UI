@@ -2,12 +2,14 @@ import {
   Sticker,
   StickerBadge,
   StickerButton,
+  StickerPeel,
   StickerTrail,
   scoutUiReactVersion,
 } from "@scout-ui/react";
 import { Sticker as SubpathSticker } from "@scout-ui/react/sticker";
 import { StickerBadge as SubpathStickerBadge } from "@scout-ui/react/sticker-badge";
 import { StickerButton as SubpathStickerButton } from "@scout-ui/react/sticker-button";
+import { StickerPeel as SubpathStickerPeel } from "@scout-ui/react/sticker-peel";
 import { StickerTrail as SubpathStickerTrail } from "@scout-ui/react/sticker-trail";
 import { stickerPackVersion } from "@scout-ui/stickers";
 import starAssetUrl from "@scout-ui/stickers/assets/wonky-star.svg";
@@ -16,6 +18,7 @@ import { useState } from "react";
 
 export function App() {
   const [selected, setSelected] = useState(false);
+  const [peelOpen, setPeelOpen] = useState(false);
 
   return (
     <main className="sui-theme">
@@ -26,7 +29,7 @@ export function App() {
         <dt>React server subpaths</dt>
         <dd>sticker · sticker-button · sticker-badge</dd>
         <dt>React client subpath</dt>
-        <dd>sticker-trail</dd>
+        <dd>sticker-trail · sticker-peel</dd>
         <dt>Framework-neutral package</dt>
         <dd>{stickerPackVersion}</dd>
       </dl>
@@ -84,6 +87,25 @@ export function App() {
             Subpath button
           </SubpathStickerButton>
           <SubpathStickerBadge>Subpath badge</SubpathStickerBadge>
+        </div>
+      </section>
+      <section aria-labelledby="vite-peel-heading">
+        <h2 id="vite-peel-heading">Packed Peel root and subpath imports</h2>
+        <div className="vite-peel-row">
+          <StickerPeel
+            back={<button type="button">Root back action</button>}
+            data-testid="vite-root-peel"
+            front="Root Peel front"
+            onOpenChange={setPeelOpen}
+            open={peelOpen}
+          />
+          <SubpathStickerPeel
+            back="Subpath Peel back"
+            data-testid="vite-subpath-peel"
+            defaultOpen
+            front="Subpath Peel front"
+            origin="bottom-left"
+          />
         </div>
       </section>
     </main>

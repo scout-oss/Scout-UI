@@ -34,6 +34,10 @@
       "types": "./dist/sticker-cursor/index.d.ts",
       "import": "./dist/sticker-cursor/index.js"
     },
+    "./sticker-peel": {
+      "types": "./dist/sticker-peel/index.d.ts",
+      "import": "./dist/sticker-peel/index.js"
+    },
     "./sticker-trail": {
       "types": "./dist/sticker-trail/index.d.ts",
       "import": "./dist/sticker-trail/index.js"

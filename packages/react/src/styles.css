@@ -881,6 +881,318 @@
       0
     );
   }
+
+  /* --- StickerPeel ------------------------------------------------------ */
+
+  /* State and origin attributes intentionally refine the base component
+     selectors below; keeping those relationships together is clearer than
+     scattering interaction states ahead of their base rules. */
+  /* stylelint-disable no-descending-specificity */
+
+  .sui-sticker-peel {
+    /* Public customization points: the authored curl size, semantic progress,
+       and the three material surfaces. Internal geometry stays private. */
+    --sui-peel-size: 3rem;
+    --sui-peel-progress: 0;
+    --sui-peel-front: var(--sui-paper-raised);
+    --sui-peel-back: var(--sui-acid);
+    --sui-peel-underside: var(--sui-paper-muted);
+    --sui-peel-ink: var(--sui-ink);
+    --sui-peel-internal-rest: 0.3;
+
+    position: relative;
+    display: grid;
+    min-inline-size: min(100%, 10rem);
+    min-block-size: 7.5rem;
+    color: var(--sui-peel-ink);
+    font-family: var(--sui-font-body);
+    isolation: isolate;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .sui-sticker-peel-layer {
+    grid-area: 1 / 1;
+    min-width: 0;
+    min-height: 7.5rem;
+    padding: clamp(var(--sui-space-5), 4vw, var(--sui-space-8));
+    overflow-wrap: anywhere;
+    border: var(--sui-border-strong) solid var(--sui-peel-ink);
+    border-radius: var(--sui-radius-paper);
+  }
+
+  .sui-sticker-peel-back {
+    z-index: 0;
+    background: var(--sui-peel-back);
+    box-shadow: var(--sui-shadow-stuck);
+  }
+
+  .sui-sticker-peel-front {
+    z-index: 1;
+    background: var(--sui-peel-front);
+    box-shadow: var(--sui-shadow-stuck);
+
+    /* Keep the authored front opaque through the readable drag range. The
+       diagonal clip owns the reveal; a late fade only clears the final
+       degenerate corner when progress reaches the open state. */
+    opacity: clamp(0, calc((1 - var(--sui-peel-progress)) * 2), 1);
+    transition:
+      clip-path var(--sui-duration-reveal) var(--sui-ease-in-out),
+      opacity var(--sui-duration-stick) var(--sui-ease-out);
+  }
+
+  .sui-sticker-peel[data-origin="top-left"] .sui-sticker-peel-front {
+    clip-path: polygon(
+      calc(var(--sui-peel-progress) * 100%) 0,
+      100% 0,
+      100% 100%,
+      0 100%,
+      0 calc(var(--sui-peel-progress) * 100%)
+    );
+  }
+
+  .sui-sticker-peel[data-origin="top-right"] .sui-sticker-peel-front {
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--sui-peel-progress) * 100%) 0,
+      100% calc(var(--sui-peel-progress) * 100%),
+      100% 100%,
+      0 100%
+    );
+  }
+
+  .sui-sticker-peel[data-origin="bottom-left"] .sui-sticker-peel-front {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% 100%,
+      calc(var(--sui-peel-progress) * 100%) 100%,
+      0 calc(100% - var(--sui-peel-progress) * 100%)
+    );
+  }
+
+  .sui-sticker-peel[data-origin="bottom-right"] .sui-sticker-peel-front {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - var(--sui-peel-progress) * 100%),
+      calc(100% - var(--sui-peel-progress) * 100%) 100%,
+      0 100%
+    );
+  }
+
+  .sui-sticker-peel[data-dragging="true"] .sui-sticker-peel-front {
+    transition: none;
+    will-change: clip-path;
+  }
+
+  .sui-sticker-peel-layer[data-active="false"] {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .sui-sticker-peel-toggle {
+    position: absolute;
+    z-index: 3;
+    display: grid;
+    width: var(--sui-target-min);
+    height: var(--sui-target-min);
+    padding: 0;
+    border: var(--sui-border-compact) solid transparent;
+    border-radius: var(--sui-radius-label);
+    color: var(--sui-peel-ink);
+    background: transparent;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .sui-sticker-peel[data-origin^="top"] .sui-sticker-peel-toggle {
+    top: 0;
+  }
+
+  .sui-sticker-peel[data-origin^="bottom"] .sui-sticker-peel-toggle {
+    bottom: 0;
+  }
+
+  .sui-sticker-peel[data-origin$="left"] .sui-sticker-peel-toggle {
+    left: 0;
+  }
+
+  .sui-sticker-peel[data-origin$="right"] .sui-sticker-peel-toggle {
+    right: 0;
+  }
+
+  .sui-sticker-peel-curl {
+    position: absolute;
+    width: var(--sui-peel-size);
+    height: var(--sui-peel-size);
+    max-width: 5rem;
+    max-height: 5rem;
+    border: var(--sui-border-compact) solid var(--sui-peel-ink);
+    background: linear-gradient(
+      135deg,
+      var(--sui-peel-underside) 0 48%,
+      var(--sui-peel-front) 50% 100%
+    );
+    box-shadow: var(--sui-shadow-offset-sm) var(--sui-shadow-offset-sm) 0
+      color-mix(in srgb, var(--sui-peel-ink) 72%, transparent);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    opacity: calc(1 - var(--sui-peel-progress));
+    pointer-events: none;
+    transform: scale(
+        calc(var(--sui-peel-internal-rest) + var(--sui-peel-progress) * 0.78)
+      )
+      rotate(calc(var(--sui-peel-progress) * 12deg));
+    transition:
+      transform var(--sui-duration-stick) var(--sui-ease-out),
+      opacity var(--sui-duration-stick) var(--sui-ease-out);
+    transform-origin: 0 0;
+  }
+
+  .sui-sticker-peel[data-origin="top-left"] .sui-sticker-peel-curl {
+    top: 0;
+    left: 0;
+  }
+
+  .sui-sticker-peel[data-origin="top-right"] .sui-sticker-peel-curl {
+    top: 0;
+    right: 0;
+    transform-origin: 100% 0;
+    rotate: 90deg;
+  }
+
+  .sui-sticker-peel[data-origin="bottom-left"] .sui-sticker-peel-curl {
+    bottom: 0;
+    left: 0;
+    transform-origin: 0 100%;
+    rotate: -90deg;
+  }
+
+  .sui-sticker-peel[data-origin="bottom-right"] .sui-sticker-peel-curl {
+    right: 0;
+    bottom: 0;
+    transform-origin: 100% 100%;
+    rotate: 180deg;
+  }
+
+  .sui-sticker-peel-toggle-label {
+    position: absolute;
+    width: max-content;
+    max-width: min(12rem, 70vw);
+    padding: var(--sui-space-2) var(--sui-space-3);
+    border: var(--sui-border-compact) solid var(--sui-peel-ink);
+    border-radius: var(--sui-radius-label);
+    color: var(--sui-peel-ink);
+    background: var(--sui-acid);
+    box-shadow: var(--sui-shadow-offset-sm) var(--sui-shadow-offset-sm) 0
+      var(--sui-peel-ink);
+    font-size: var(--sui-type-label);
+    font-weight: var(--sui-weight-bold);
+    line-height: var(--sui-leading-label);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0.2rem);
+    transition:
+      opacity var(--sui-duration-immediate) var(--sui-ease-out),
+      transform var(--sui-duration-immediate) var(--sui-ease-out);
+  }
+
+  .sui-sticker-peel[data-origin^="top"] .sui-sticker-peel-toggle-label {
+    top: calc(100% + var(--sui-space-2));
+  }
+
+  .sui-sticker-peel[data-origin^="bottom"] .sui-sticker-peel-toggle-label {
+    bottom: calc(100% + var(--sui-space-2));
+  }
+
+  .sui-sticker-peel[data-origin$="left"] .sui-sticker-peel-toggle-label {
+    left: 0;
+  }
+
+  .sui-sticker-peel[data-origin$="right"] .sui-sticker-peel-toggle-label {
+    right: 0;
+  }
+
+  .sui-sticker-peel-toggle:is(:hover, :focus-visible)
+    .sui-sticker-peel-toggle-label,
+  .sui-sticker-peel[data-open="true"] .sui-sticker-peel-toggle-label {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .sui-sticker-peel[data-dragging="true"] .sui-sticker-peel-toggle-label {
+    opacity: 0;
+  }
+
+  .sui-sticker-peel-toggle:hover:not(:disabled) .sui-sticker-peel-curl,
+  .sui-sticker-peel-toggle:focus-visible .sui-sticker-peel-curl {
+    --sui-peel-internal-rest: 0.4;
+  }
+
+  .sui-sticker-peel[data-open="true"] .sui-sticker-peel-toggle {
+    width: auto;
+    min-width: var(--sui-target-min);
+    padding-inline: var(--sui-space-3);
+    border-color: var(--sui-peel-ink);
+    background: var(--sui-acid);
+    box-shadow: var(--sui-shadow-offset-sm) var(--sui-shadow-offset-sm) 0
+      var(--sui-peel-ink);
+  }
+
+  .sui-sticker-peel[data-open="true"] .sui-sticker-peel-toggle-label {
+    position: static;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .sui-sticker-peel[data-open="true"][data-origin^="top"]
+    .sui-sticker-peel-back {
+    padding-block-start: max(
+      clamp(var(--sui-space-5), 4vw, var(--sui-space-8)),
+      4.25rem
+    );
+  }
+
+  .sui-sticker-peel[data-open="true"][data-origin^="bottom"]
+    .sui-sticker-peel-back {
+    padding-block-end: max(
+      clamp(var(--sui-space-5), 4vw, var(--sui-space-8)),
+      4.25rem
+    );
+  }
+
+  .sui-sticker-peel-toggle:focus-visible {
+    outline: var(--sui-focus-width) solid var(--sui-focus);
+    outline-offset: var(--sui-focus-gap);
+    box-shadow: 0 0 0 calc(var(--sui-focus-width) + var(--sui-focus-gap))
+      var(--sui-focus-separation);
+  }
+
+  .sui-sticker-peel[data-disabled="true"] .sui-sticker-peel-front {
+    border-style: dashed;
+    border-color: var(--sui-disabled-text);
+    background: var(--sui-disabled-surface);
+  }
+
+  .sui-sticker-peel-toggle:disabled {
+    color: var(--sui-disabled-text);
+    cursor: not-allowed;
+  }
+
+  .sui-sticker-peel-toggle:disabled .sui-sticker-peel-curl {
+    border-color: var(--sui-disabled-text);
+    background: var(--sui-disabled-surface);
+    box-shadow: none;
+    transition: none;
+  }
+
+  .sui-sticker-peel[data-reduced-motion="always"]
+    :is(.sui-sticker-peel-front, .sui-sticker-peel-curl) {
+    transition: none;
+  }
+
+  /* stylelint-enable no-descending-specificity */
 }
 
 @layer scout-ui.utilities {
@@ -957,6 +1269,11 @@
     .sui-sticker-cursor[data-native-hidden="true"] {
       cursor: auto;
     }
+
+    .sui-sticker-peel-front,
+    .sui-sticker-peel-curl {
+      transition: none;
+    }
   }
 }
 
@@ -1026,6 +1343,32 @@
 
     .sui-sticker-cursor[data-native-hidden="true"] {
       cursor: auto;
+    }
+
+    .sui-sticker-peel {
+      --sui-peel-front: Canvas;
+      --sui-peel-back: Canvas;
+      --sui-peel-underside: Canvas;
+      --sui-peel-ink: CanvasText;
+    }
+
+    .sui-sticker-peel-layer,
+    .sui-sticker-peel-curl,
+    .sui-sticker-peel-toggle-label {
+      border-color: CanvasText;
+      box-shadow: none;
+      forced-color-adjust: none;
+    }
+
+    .sui-sticker-peel-toggle:focus-visible {
+      outline-color: Highlight;
+      box-shadow: none;
+    }
+
+    .sui-sticker-peel-toggle:disabled,
+    .sui-sticker-peel[data-disabled="true"] .sui-sticker-peel-front {
+      border-color: GrayText;
+      color: GrayText;
     }
   }
 }

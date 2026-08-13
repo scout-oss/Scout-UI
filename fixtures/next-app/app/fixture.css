@@ -880,3 +880,56 @@ nav,
   min-height: 20rem;
   background: #0b0a0e;
 }
+
+/* --- Cursor surfaces ----------------------------------------------------- */
+
+.cursor-box {
+  display: grid;
+  gap: 0.75rem;
+  align-items: start;
+  min-width: 0;
+  min-height: 20rem;
+  padding: 1.5rem;
+  border: 0.375rem solid #121116;
+  background: #f7f5ef;
+}
+
+.cursor-box-compact {
+  min-height: 10rem;
+}
+
+.cursor-disabled-region {
+  padding: 0.75rem;
+  border: 2px dashed #d9364b;
+}
+
+.cursor-hotspot-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.cursor-hotspot-panel {
+  position: relative;
+  min-height: 14rem;
+}
+
+.cursor-hotspot-label {
+  margin: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Fixture-only alignment guide. The production component renders no markers. */
+.cursor-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  translate: -50% -50%;
+  background:
+    linear-gradient(#d9364b, #d9364b) center / 100% 1px no-repeat,
+    linear-gradient(#d9364b, #d9364b) center / 1px 100% no-repeat;
+}

@@ -178,6 +178,7 @@ async function inspectInstalledPackage(consumer, record) {
       "./sticker",
       "./sticker-badge",
       "./sticker-button",
+      "./sticker-cursor",
       "./sticker-trail",
       "./styles.css",
     ],
@@ -477,6 +478,17 @@ async function assertStylesheetComposition(consumer) {
   );
   assert.match(reactCss, /--sui-paper:/u);
   assert.match(reactCss, /\.sui-sticker-button/u);
+  assert.match(reactCss, /\.sui-sticker-cursor-layer/u);
+  assert.match(
+    reactCss,
+    /\.sui-sticker-cursor\[data-native-hidden="true"\]/u,
+    "native cursor hiding must be scoped to the component region",
+  );
+  assert.doesNotMatch(
+    trailCss,
+    /sui-sticker-cursor/u,
+    "Cursor rules belong to the React package, not the standalone Trail sheet",
+  );
 
   // 5. The composed section is marked so its single source is discoverable.
   assert.match(reactCss, /Scout UI composed section, authored once in/u);
@@ -525,11 +537,46 @@ async function assertBoundaries(nextConsumer) {
   );
   assertDirective(
     await readFile(
+      path.join(reactDirectory, "sticker-cursor", "index.js"),
+      "utf8",
+    ),
+    true,
+    "React cursor leaf",
+  );
+  assertDirective(
+    await readFile(
       path.join(reactDirectory, "sticker-trail", "index.js"),
       "utf8",
     ),
     true,
     "React trail leaf",
+  );
+
+  // Preserved modules: the cursor entry must not have been flattened, and its
+  // engine must remain a separate module below the client boundary.
+  for (const file of [
+    "StickerCursor.js",
+    "assets.js",
+    "cursor-math.js",
+    "engine.js",
+    "state.js",
+  ]) {
+    await readFile(path.join(reactDirectory, "sticker-cursor", file), "utf8");
+  }
+
+  const cursorLeaf = await readFile(
+    path.join(reactDirectory, "sticker-cursor", "index.js"),
+    "utf8",
+  );
+  assert.match(
+    cursorLeaf,
+    /from ["']\.\/StickerCursor\.js["']/u,
+    "the cursor leaf must re-export preserved modules rather than inline them",
+  );
+  assert.doesNotMatch(
+    cursorLeaf,
+    /createStickerCursorEngine|createAssetRegistry/u,
+    "the cursor engine was inlined into the client entry",
   );
   assertDirective(
     await readFile(path.join(trailDirectory, "index.js"), "utf8"),
@@ -587,11 +634,26 @@ async function assertServerEvaluation(consumer) {
     const sticker = await import("@scout-ui/react/sticker");
     const badge = await import("@scout-ui/react/sticker-badge");
     const button = await import("@scout-ui/react/sticker-button");
+    const reactCursor = await import("@scout-ui/react/sticker-cursor");
     const reactTrail = await import("@scout-ui/react/sticker-trail");
     const standaloneTrail = await import("@scout-ui/sticker-trail");
     const stickers = await import("@scout-ui/stickers");
     const star = await import("@scout-ui/stickers/definitions/wonky-star");
     if (root.scoutUiReactVersion !== "0.0.0" || typeof sticker.Sticker !== "function" || typeof badge.StickerBadge !== "function" || typeof button.StickerButton !== "function" || stickers.stickerPackVersion !== "0.0.0" || stickers.stickerDefinitions.length !== 25 || star.wonkyStar.id !== "wonky-star") process.exit(2);
+
+    // Cursor is importable on a server and renders an inert layer with no
+    // artwork committed before the engine starts.
+    if (typeof root.StickerCursor !== "function") process.exit(13);
+    if (typeof reactCursor.StickerCursor !== "function") process.exit(14);
+    const cursorMarkup = renderToStaticMarkup(createElement(reactCursor.StickerCursor, { visuals: { default: { source: star.wonkyStar } } }, "content"));
+    if (!cursorMarkup.includes("sui-sticker-cursor-layer")) process.exit(15);
+    if (!cursorMarkup.includes('data-visible="false"')) process.exit(16);
+    // The lone image in this markup is the cursor visual, so any src at all
+    // would mean artwork was committed before the engine started.
+    if (cursorMarkup.includes("src=")) process.exit(17);
+    if (!cursorMarkup.includes('aria-hidden="true"')) process.exit(18);
+    const cursorRepeat = renderToStaticMarkup(createElement(reactCursor.StickerCursor, { visuals: { default: { source: star.wonkyStar } } }, "content"));
+    if (cursorRepeat !== cursorMarkup) process.exit(19);
 
     // Trail is importable on a server from every documented path, and the
     // milestone-2 sentinel is gone from all of them.
@@ -638,6 +700,11 @@ async function assertTreeShaking(viteConsumer) {
     source,
     /scoutUiReactVersion|sticker-trail|sui-sticker-button|sui-sticker-badge/u,
     "Sticker-only Vite build retained unused package leaves",
+  );
+  assert.doesNotMatch(
+    source,
+    /sui-sticker-cursor|createStickerCursorEngine|createAssetRegistry/u,
+    "Sticker-only Vite build pulled in the Cursor engine",
   );
 
   const stickerFiles = await listFiles(

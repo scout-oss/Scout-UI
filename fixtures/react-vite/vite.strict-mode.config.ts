@@ -23,6 +23,10 @@ export default defineConfig({
     outDir: "dist/strict",
     rollupOptions: {
       input: {
+        "cursor-render-count": resolve(
+          import.meta.dirname,
+          "cursor-render-count.html",
+        ),
         "render-count": resolve(import.meta.dirname, "render-count.html"),
         "strict-mode": resolve(import.meta.dirname, "strict-mode.html"),
       },

@@ -707,6 +707,27 @@ media controls, resize handles, and `[data-sticker-cursor="native"]` always
 restore the native cursor. Custom state names select matching visuals without
 changing the hotspot unless explicitly defined.
 
+#### Hotspot coordinates
+
+`hotspot` is expressed in **normalised rendered-box coordinates**: `x` and `y`
+are fractions of the visual's rendered width and height, in the range 0–1, where
+`{ x: 0, y: 0 }` is its top-left corner and `{ x: 1, y: 1 }` its bottom-right.
+The default is the centre, `{ x: 0.5, y: 0.5 }`.
+
+Coordinates are normalised rather than expressed in pixels because the hotspot
+must stay under the pointer when a state change swaps in artwork with different
+intrinsic dimensions, and when `size` overrides those dimensions entirely. A
+pixel hotspot would silently drift under either. The value is applied as a
+percentage translation of the visual's own box, so the same declaration remains
+correct at every rendered size.
+
+A missing hotspot resolves to the centre. Values outside the range — negative,
+greater than one, or non-finite — are clamped into it rather than rejected, so
+invalid configuration can never push the artwork away from the pointer. Each
+state declares its own hotspot; the engine applies the hotspot belonging to the
+artwork actually displayed, including when a state falls back to the default
+visual because its own artwork has not decoded.
+
 ### 10.6 StickerNavbar
 
 ```ts

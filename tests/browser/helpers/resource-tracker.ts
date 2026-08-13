@@ -1,6 +1,7 @@
 import type { Page } from "@playwright/test";
 
 export interface ResourceCounts {
+  detachedListeners: number;
   listeners: number;
   /** Live listener count per event type. */
   listenersByType: Record<string, number>;
@@ -161,13 +162,18 @@ export async function installResourceTracker(page: Page): Promise<void> {
     Object.defineProperty(window, "__scoutUiResourceCounts", {
       configurable: false,
       value: () => {
+        let detachedListeners = 0;
         const listenersByType: Record<string, number> = {};
         for (const entry of live) {
-          const { type } = entry as { type: string };
+          const { target, type } = entry as ListenerEntry;
           listenersByType[type] = (listenersByType[type] ?? 0) + 1;
+          if (target instanceof Node && !target.isConnected) {
+            detachedListeners += 1;
+          }
         }
 
         return {
+          detachedListeners,
           frames: frames.size,
           intersectionObservers,
           listeners: live.size,

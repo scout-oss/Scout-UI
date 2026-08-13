@@ -9,8 +9,10 @@ import {
   mkdir,
   writeFile,
 } from "node:fs/promises";
+import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { gzipSync } from "node:zlib";
 
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -179,6 +181,7 @@ async function inspectInstalledPackage(consumer, record) {
       "./sticker-badge",
       "./sticker-button",
       "./sticker-cursor",
+      "./sticker-navbar",
       "./sticker-peel",
       "./sticker-stack",
       "./sticker-trail",
@@ -259,8 +262,14 @@ async function inspectInstalledPackage(consumer, record) {
     }
   } else {
     assert.deepEqual(Object.keys(manifest.dependencies ?? {}).sort(), [
+      "@radix-ui/react-dialog",
       "@scout-ui/sticker-trail",
     ]);
+    assert.equal(
+      manifest.dependencies?.["@radix-ui/react-dialog"],
+      "1.1.23",
+      "the React package must pin the reviewed Radix Dialog runtime",
+    );
     assert.deepEqual(Object.keys(manifest.peerDependencies ?? {}).sort(), [
       "react",
       "react-dom",
@@ -298,6 +307,34 @@ async function inspectInstalledPackage(consumer, record) {
     );
     assert.match(css, /@media \(forced-colors: active\)/u);
     assert.match(css, /@media \(prefers-reduced-motion: reduce\)/u);
+    for (const emitted of [
+      "dist/sticker-navbar/index.js",
+      "dist/sticker-navbar/index.js.map",
+      "dist/sticker-navbar/index.d.ts",
+      "dist/sticker-navbar/index.d.ts.map",
+      "dist/sticker-navbar/StickerNavbar.js",
+      "dist/sticker-navbar/StickerNavbar.js.map",
+      "dist/sticker-navbar/StickerNavbar.d.ts",
+      "dist/sticker-navbar/StickerNavbar.d.ts.map",
+    ]) {
+      assert.ok(files.includes(emitted), `missing ${emitted} in tarball`);
+    }
+
+    const installedRealPath = await realpath(installed);
+    const requireFromReactPackage = createRequire(
+      path.join(installedRealPath, "package.json"),
+    );
+    const radixEntry = await realpath(
+      requireFromReactPackage.resolve("@radix-ui/react-dialog"),
+    );
+    assert.ok(
+      radixEntry.startsWith(consumer),
+      "Radix Dialog resolved outside the isolated packed consumer",
+    );
+    assert.ok(
+      !radixEntry.includes(`${path.sep}packages${path.sep}`),
+      "Radix Dialog resolved through repository source",
+    );
   }
   return installed;
 }
@@ -556,6 +593,14 @@ async function assertBoundaries(nextConsumer) {
   );
   assertDirective(
     await readFile(
+      path.join(reactDirectory, "sticker-navbar", "index.js"),
+      "utf8",
+    ),
+    true,
+    "React Navbar leaf",
+  );
+  assertDirective(
+    await readFile(
       path.join(reactDirectory, "sticker-stack", "index.js"),
       "utf8",
     ),
@@ -596,6 +641,25 @@ async function assertBoundaries(nextConsumer) {
     cursorLeaf,
     /createStickerCursorEngine|createAssetRegistry/u,
     "the cursor engine was inlined into the client entry",
+  );
+
+  await readFile(
+    path.join(reactDirectory, "sticker-navbar", "StickerNavbar.js"),
+    "utf8",
+  );
+  const navbarLeaf = await readFile(
+    path.join(reactDirectory, "sticker-navbar", "index.js"),
+    "utf8",
+  );
+  assert.match(
+    navbarLeaf,
+    /from ["']\.\/StickerNavbar\.js["']/u,
+    "the Navbar leaf must re-export its preserved component module",
+  );
+  assert.doesNotMatch(
+    navbarLeaf,
+    /@radix-ui\/react-dialog|data-navbar-progress|DEFAULT_RIBBON_PATH/u,
+    "Navbar implementation details were inlined into the client entry",
   );
 
   for (const file of ["StickerPeel.js", "peel-math.js"]) {
@@ -689,6 +753,7 @@ async function assertServerEvaluation(consumer) {
     const badge = await import("@scout-ui/react/sticker-badge");
     const button = await import("@scout-ui/react/sticker-button");
     const reactCursor = await import("@scout-ui/react/sticker-cursor");
+    const reactNavbar = await import("@scout-ui/react/sticker-navbar");
     const reactPeel = await import("@scout-ui/react/sticker-peel");
     const reactStack = await import("@scout-ui/react/sticker-stack");
     const reactTrail = await import("@scout-ui/react/sticker-trail");
@@ -732,6 +797,40 @@ async function assertServerEvaluation(consumer) {
     if (stackMarkup.split('data-active="true"').length - 1 !== 1) process.exit(28);
     if (!stackMarkup.includes('aria-label="Next item"') || !stackMarkup.includes("inert")) process.exit(29);
     if (renderToStaticMarkup(createElement(root.StickerStack, stackProps)) !== stackMarkup) process.exit(30);
+
+    // Navbar is server-evaluation safe through both public paths. Its closed
+    // Dialog state and deterministic decoration are present without browser globals.
+    if (typeof root.StickerNavbar !== "function" || typeof reactNavbar.StickerNavbar !== "function") process.exit(31);
+    const navItems = [
+      { href: "/", id: "home", label: "Home" },
+      { href: "/work", id: "work", label: "Work" },
+      { disabled: true, href: "/hidden", id: "hidden", label: "Hidden" },
+    ];
+    const navbarProps = {
+      action: createElement("button", { type: "button" }, "Join"),
+      activeId: "work",
+      brand: createElement("strong", null, "Scout"),
+      items: navItems,
+      switcher: createElement("button", { type: "button" }, "Theme"),
+    };
+    const navbarMarkup = renderToStaticMarkup(createElement(reactNavbar.StickerNavbar, navbarProps));
+    if (!navbarMarkup.includes("<header") || !navbarMarkup.includes("<nav")) process.exit(32);
+    if (!navbarMarkup.includes('aria-label="Primary navigation"')) process.exit(33);
+    if (!navbarMarkup.includes('aria-current="page"') || navbarMarkup.includes("Hidden")) process.exit(34);
+    if (!navbarMarkup.includes('data-navbar-ribbon="true"') || navbarMarkup.includes('data-navbar-progress="true"')) process.exit(35);
+    if (renderToStaticMarkup(createElement(reactNavbar.StickerNavbar, navbarProps)) !== navbarMarkup) process.exit(36);
+    if (renderToStaticMarkup(createElement(root.StickerNavbar, navbarProps)) !== navbarMarkup) process.exit(37);
+    const collageProps = {
+      ...navbarProps,
+      collage: [{ id: "one", src: "/one.svg" }, { id: "two", src: "/two.svg" }],
+      showScrollProgress: true,
+      sticky: true,
+      variant: "collage",
+    };
+    const collageMarkup = renderToStaticMarkup(createElement(reactNavbar.StickerNavbar, collageProps));
+    if (!collageMarkup.includes('data-navbar-collage="true"')) process.exit(38);
+    if (!collageMarkup.includes('data-navbar-progress="true"') || !collageMarkup.includes('data-sticky="true"')) process.exit(39);
+    if (renderToStaticMarkup(createElement(reactNavbar.StickerNavbar, collageProps)) !== collageMarkup) process.exit(40);
 
     // Trail is importable on a server from every documented path, and the
     // milestone-2 sentinel is gone from all of them.
@@ -794,6 +893,39 @@ async function assertTreeShaking(viteConsumer) {
     /sui-sticker-stack|visibleStackIndexes|resolveStackIntent/u,
     "Sticker-only Vite build pulled in StickerStack",
   );
+  assert.doesNotMatch(
+    source,
+    /sui-sticker-navbar|data-navbar-(?:header|ribbon|progress)|data-radix-focus-guard/u,
+    "Sticker-only Vite build pulled in StickerNavbar or Radix Dialog",
+  );
+
+  const navbarOutput = (
+    await Promise.all(
+      (await listFiles(path.join(viteConsumer, "dist-navbar-tree-shake")))
+        .filter((file) => file.endsWith(".js"))
+        .map((file) =>
+          readFile(
+            path.join(viteConsumer, "dist-navbar-tree-shake", file),
+            "utf8",
+          ),
+        ),
+    )
+  ).join("\n");
+  assert.match(
+    navbarOutput,
+    /sui-sticker-navbar/u,
+    "Navbar-only Vite build lost StickerNavbar",
+  );
+  assert.match(
+    navbarOutput,
+    /data-navbar-(?:header|ribbon|progress)/u,
+    "Navbar-only Vite build lost Navbar runtime markers",
+  );
+  assert.match(
+    navbarOutput,
+    /data-radix-focus-guard/u,
+    "Navbar-only Vite build did not retain the Radix Dialog implementation",
+  );
 
   const stickerFiles = await listFiles(
     path.join(viteConsumer, "dist-sticker-tree-shake"),
@@ -827,6 +959,23 @@ async function assertTreeShaking(viteConsumer) {
     1,
     "single definition build must contain exactly one emitted or inlined SVG",
   );
+
+  const stickerOnlyBytes = Buffer.byteLength(source);
+  const stickerOnlyGzipBytes = gzipSync(source).byteLength;
+  const navbarBytes = Buffer.byteLength(navbarOutput);
+  const navbarGzipBytes = gzipSync(navbarOutput).byteLength;
+  assert.ok(
+    navbarBytes > stickerOnlyBytes,
+    "Navbar-positive bundle should retain more implementation than Sticker-only",
+  );
+  return {
+    navbarBytes,
+    navbarGzipBytes,
+    navbarGzipOverheadBytes: navbarGzipBytes - stickerOnlyGzipBytes,
+    navbarOverheadBytes: navbarBytes - stickerOnlyBytes,
+    stickerOnlyBytes,
+    stickerOnlyGzipBytes,
+  };
 }
 
 /**
@@ -953,10 +1102,15 @@ export async function preparePackedConsumers() {
   await run("corepack", ["pnpm", "fixture:typecheck"], { cwd: consumers.next });
   await assertNextServerOutput(consumers.next);
   await run("corepack", ["pnpm", "fixture:build"], { cwd: consumers.vite });
-  await assertTreeShaking(consumers.vite);
+  const navbarBundleImpact = await assertTreeShaking(consumers.vite);
   await assertStandaloneIndependence(consumers.vite);
 
-  const manifest = { createdAt: new Date().toISOString(), consumers, tarballs };
+  const manifest = {
+    createdAt: new Date().toISOString(),
+    consumers,
+    navbarBundleImpact,
+    tarballs,
+  };
   await writeFile(
     path.join(artifactRoot, "manifest.json"),
     `${JSON.stringify(manifest, null, 2)}\n`,

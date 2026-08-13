@@ -48,7 +48,7 @@ export default function HomePage() {
           origin="bottom-left"
         />
       </section>
-      <nav aria-label="Fixture surfaces">
+      <nav aria-label="Fixture surfaces" className="fixture-root-nav">
         <a href="/server-only">Server-only import</a>
         <a href="/test-surfaces/pointer">Pointer surface</a>
         <a href="/test-surfaces/drag">Drag surface</a>
@@ -66,6 +66,7 @@ export default function HomePage() {
         <a href="/test-surfaces/cursor-hotspot">Cursor hotspot review</a>
         <a href="/test-surfaces/cursor-assets">Cursor asset readiness</a>
         <a href="/test-surfaces/peel">Peel surface</a>
+        <a href="/test-surfaces/navbar">Navbar surface</a>
       </nav>
     </main>
   );

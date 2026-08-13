@@ -62,15 +62,52 @@ test.describe("StickerStack semantics and interaction", () => {
       stack(page, "stack-visible-5").locator('[data-stack-card="true"]'),
     ).toHaveCount(5);
     const root = stack(page, "stack-main");
-    await root.getByRole("button", { name: "Next item" }).click();
-    await expect(root.locator('[data-outgoing="true"]')).toHaveCount(
-      testInfo.project.name === "chromium-reduced-motion" ? 0 : 1,
-    );
-    expect(
-      await root.locator('[data-stack-card="true"]').count(),
-    ).toBeLessThanOrEqual(4);
-    await expect(root.locator('[data-outgoing="true"]')).toHaveCount(0);
-    await expect(root.locator('[data-stack-card="true"]')).toHaveCount(3);
+    await root.evaluate((element) => {
+      const observed = element as HTMLElement & {
+        __scoutUiOutgoingObserver?: MutationObserver;
+      };
+      const recordOutgoingCount = () => {
+        const count = element.querySelectorAll('[data-outgoing="true"]').length;
+        const previous = Number(
+          element.getAttribute("data-test-max-outgoing") ?? "0",
+        );
+        element.setAttribute(
+          "data-test-max-outgoing",
+          String(Math.max(previous, count)),
+        );
+      };
+      const observer = new MutationObserver(recordOutgoingCount);
+      observer.observe(element, {
+        attributeFilter: ["data-outgoing"],
+        attributes: true,
+        childList: true,
+        subtree: true,
+      });
+      observed.__scoutUiOutgoingObserver = observer;
+      recordOutgoingCount();
+    });
+
+    try {
+      await root.getByRole("button", { name: "Next item" }).click();
+      await expect(root).toHaveAttribute(
+        "data-test-max-outgoing",
+        testInfo.project.name === "chromium-reduced-motion" ? "0" : "1",
+      );
+      expect(
+        await root.locator('[data-stack-card="true"]').count(),
+      ).toBeLessThanOrEqual(4);
+      await expect(root.locator('[data-outgoing="true"]')).toHaveCount(0);
+      await expect(root.locator('[data-stack-card="true"]')).toHaveCount(3);
+    } finally {
+      await root.evaluate((element) => {
+        const observed = element as HTMLElement & {
+          __scoutUiOutgoingObserver?: MutationObserver;
+        };
+        observed.__scoutUiOutgoingObserver?.disconnect();
+        delete observed.__scoutUiOutgoingObserver;
+        element.removeAttribute("data-test-max-outgoing");
+      });
+    }
   });
 
   test("buttons navigate once, preserve focus, announce once, and gate rapid input", async ({
@@ -87,16 +124,24 @@ test.describe("StickerStack semantics and interaction", () => {
     );
     await expect(next).toBeFocused();
     if (testInfo.project.name === "chromium-reduced-motion") return;
+
+    // Begin the burst from a known idle state. The assertions above can take
+    // longer than the 260ms transition on WebKit, so relying on that first
+    // transition to remain active makes the gate proof command-latency
+    // dependent. One click from this synchronous burst must be accepted and
+    // the remaining 29 must be rejected in the same JavaScript turn.
+    await expect(root).toHaveAttribute("data-transition", "idle");
     await next.evaluate((button: HTMLButtonElement) => {
       for (let count = 0; count < 30; count += 1) button.click();
     });
-    await expect(page.getByTestId("stack-main-callback-count")).toHaveText("1");
+    await expect(page.getByTestId("stack-main-callback-count")).toHaveText("2");
+    await expect(page.getByTestId("stack-main-last-index")).toHaveText("2");
     expect(
       await root.locator('[data-outgoing="true"]').count(),
     ).toBeLessThanOrEqual(1);
     await expect(root).toHaveAttribute("data-transition", "idle");
     await next.click();
-    await expect(page.getByTestId("stack-main-callback-count")).toHaveText("2");
+    await expect(page.getByTestId("stack-main-callback-count")).toHaveText("3");
   });
 
   test("finite, loop, empty, and one-item boundaries are semantic", async ({

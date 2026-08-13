@@ -2,7 +2,7 @@
 
 React components for sticker-led interfaces. The v0.1 surface so far is
 `Sticker`, `StickerButton`, `StickerBadge`, `StickerTrail`, `StickerCursor`, and
-`StickerPeel`.
+`StickerPeel`, and `StickerStack`.
 
 The package supports the root import plus explicit public subpaths. Import
 `@scout-ui/react/styles.css` for the public stylesheet entry.
@@ -69,6 +69,39 @@ Use Peel for short secondary disclosures—not required notices, long documents,
 or irreversible actions. Public styling hooks are `.sui-sticker-peel` and
 `--sui-peel-size`, `--sui-peel-front`, `--sui-peel-back`,
 `--sui-peel-underside`, and `--sui-peel-ink`.
+
+`StickerStack` renders a bounded, accessible stack from consumer data. Its
+interactive leaf is a narrow Client Component entry; the root barrel remains
+unmarked.
+
+```tsx
+import { StickerStack } from "@scout-ui/react/sticker-stack";
+
+<StickerStack
+  items={notes}
+  getKey={(note) => note.id}
+  renderItem={(note, { active }) => (
+    <article>
+      <h2>{note.title}</h2>
+      <button disabled={!active}>Pin note</button>
+    </article>
+  )}
+  drag
+  keyboard
+/>;
+```
+
+The defaults are `visibleCount={3}`, `loop={false}`, `axis="x"`, `drag={false}`,
+and `keyboard={false}`. Native previous/next buttons remain available even when
+dragging or arrow-key navigation is enabled. Only the active card is exposed to
+interaction and assistive technology; background cards are inert. Stable keys
+preserve the active item through reordering, the rendered window stays bounded,
+and pointer progress is written once per animation frame without React renders.
+Use `empty` for the zero-item state and `disabled` to suspend every navigation
+path. Public styling hooks include `.sui-sticker-stack` and
+`--sui-stack-surface`, `--sui-stack-ink`, `--sui-stack-accent`,
+`--sui-stack-control-surface`, `--sui-stack-card-min-inline`, and
+`--sui-stack-card-min-block`.
 
 `Sticker` accepts exactly one of `source` or `children`. Source-backed artwork
 uses format-neutral image semantics and defaults to no wrapper outline so

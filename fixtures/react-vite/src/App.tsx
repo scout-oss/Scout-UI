@@ -3,6 +3,7 @@ import {
   StickerBadge,
   StickerButton,
   StickerPeel,
+  StickerStack,
   StickerTrail,
   scoutUiReactVersion,
 } from "@scout-ui/react";
@@ -10,6 +11,7 @@ import { Sticker as SubpathSticker } from "@scout-ui/react/sticker";
 import { StickerBadge as SubpathStickerBadge } from "@scout-ui/react/sticker-badge";
 import { StickerButton as SubpathStickerButton } from "@scout-ui/react/sticker-button";
 import { StickerPeel as SubpathStickerPeel } from "@scout-ui/react/sticker-peel";
+import { StickerStack as SubpathStickerStack } from "@scout-ui/react/sticker-stack";
 import { StickerTrail as SubpathStickerTrail } from "@scout-ui/react/sticker-trail";
 import { stickerPackVersion } from "@scout-ui/stickers";
 import starAssetUrl from "@scout-ui/stickers/assets/wonky-star.svg";
@@ -19,6 +21,7 @@ import { useState } from "react";
 export function App() {
   const [selected, setSelected] = useState(false);
   const [peelOpen, setPeelOpen] = useState(false);
+  const stackItems = ["Root", "Subpath", "Packed"] as const;
 
   return (
     <main className="sui-theme">
@@ -105,6 +108,24 @@ export function App() {
             defaultOpen
             front="Subpath Peel front"
             origin="bottom-left"
+          />
+        </div>
+      </section>
+      <section aria-labelledby="vite-stack-heading">
+        <h2 id="vite-stack-heading">Packed Stack root and subpath imports</h2>
+        <div className="vite-peel-row">
+          <StickerStack
+            data-testid="vite-root-stack"
+            getKey={(item) => item}
+            items={stackItems}
+            renderItem={(item) => <article>{item} Stack card</article>}
+          />
+          <SubpathStickerStack
+            data-testid="vite-subpath-stack"
+            defaultIndex={1}
+            getKey={(item) => item}
+            items={stackItems}
+            renderItem={(item) => <article>{item} Stack card</article>}
           />
         </div>
       </section>

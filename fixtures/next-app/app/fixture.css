@@ -17,7 +17,7 @@ main {
   padding: 2rem 0;
 }
 
-nav,
+.fixture-root-nav,
 .theme-grid,
 .test-surface {
   display: flex;
@@ -448,6 +448,234 @@ nav,
   line-height: var(--sui-leading-heading-s);
 }
 /* stylelint-enable no-descending-specificity */
+
+/* StickerNavbar engineering and visual-review surfaces. Consumer slot styles
+ * stay fixture-scoped; the component owns navigation, decoration, and Dialog. */
+main.navbar-fixture {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0 0 5rem;
+  overflow-x: clip;
+  color: var(--sui-ink);
+  background:
+    linear-gradient(90deg, rgb(18 17 22 / 5%) 1px, transparent 1px) 0 0 / 2rem
+      2rem,
+    var(--sui-paper);
+  font-family: var(--sui-font-body);
+}
+
+.navbar-fixture-night {
+  --sui-color-canvas: var(--sui-night);
+  --sui-color-surface: var(--sui-night-raised);
+  --sui-color-text: var(--sui-night-text);
+  --sui-color-text-muted: var(--sui-night-muted);
+  --sui-color-line: var(--sui-night-text);
+
+  color: var(--sui-night-text);
+  background: var(--sui-night);
+}
+
+.navbar-fixture-brand {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 2.75rem;
+  gap: 0.55rem;
+  align-items: center;
+  color: inherit;
+  font-family: var(--sui-font-display);
+  font-size: 0.92rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.navbar-fixture-brand-mark {
+  display: grid;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0.16rem solid currentcolor;
+  border-radius: 42% 58% 52% 48%;
+  background: var(--sui-acid);
+  box-shadow: 0.2rem 0.2rem 0 currentcolor;
+  color: var(--sui-ink);
+  rotate: -4deg;
+}
+
+.navbar-fixture-switcher,
+.navbar-fixture-action {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.8rem;
+  border: 0.13rem solid currentcolor;
+  border-radius: 999px;
+  color: inherit;
+  background: var(--sui-paper-raised);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-decoration: none;
+}
+
+.navbar-fixture-action {
+  border-radius: 0.55rem;
+  background: var(--sui-hot-pink);
+  box-shadow: 0.2rem 0.2rem 0 var(--sui-ink);
+  color: var(--sui-ink);
+  rotate: 1deg;
+}
+
+.navbar-fixture :is(a, button):focus-visible {
+  outline: var(--sui-focus-width) solid var(--sui-focus);
+  outline-offset: var(--sui-focus-gap);
+}
+
+.navbar-fixture-status {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.navbar-fixture-hero,
+.navbar-anchor-target {
+  width: min(72rem, 100% - 2rem);
+  margin-inline: auto;
+  scroll-margin-top: var(--sui-navbar-sticky-offset);
+}
+
+.navbar-fixture-hero {
+  display: grid;
+  min-height: min(42rem, 78vh);
+  align-content: center;
+  padding-block: clamp(4rem, 11vw, 9rem);
+}
+
+.navbar-fixture-hero > p:first-child,
+.navbar-anchor-target > p:first-child {
+  margin: 0;
+  font-family: var(--sui-font-mono);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.navbar-fixture-hero h1 {
+  max-width: 10ch;
+  margin: 0.5rem 0 1.25rem;
+  font-family: var(--sui-font-display);
+  font-size: clamp(3.5rem, 10vw, 8.5rem);
+  font-weight: 900;
+  line-height: 0.82;
+  letter-spacing: -0.065em;
+}
+
+.navbar-fixture-hero > p:last-child {
+  max-width: 45rem;
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+}
+
+.navbar-anchor-target {
+  display: grid;
+  min-height: 38rem;
+  align-content: center;
+  margin-block: 2rem;
+  padding: clamp(2rem, 7vw, 5rem);
+  border: 0.2rem solid currentcolor;
+  border-radius: 1.5rem;
+  background: var(--sui-paper-raised);
+  box-shadow: 0.65rem 0.65rem 0 currentcolor;
+}
+
+.navbar-anchor-target h2 {
+  max-width: 12ch;
+  margin: 0.6rem 0 1.2rem;
+  font-family: var(--sui-font-display);
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+}
+
+.navbar-anchor-target > p:last-child {
+  max-width: 46rem;
+  font-size: 1.08rem;
+  line-height: 1.65;
+}
+
+.navbar-anchor-target-acid {
+  background: var(--sui-acid);
+}
+
+.navbar-anchor-target-night {
+  color: var(--sui-night-text);
+  background: var(--sui-night);
+}
+
+@media (width <= 40rem) {
+  .navbar-fixture-brand > span:last-child {
+    max-width: 7.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .navbar-fixture-switcher {
+    display: none;
+  }
+
+  .navbar-fixture-hero,
+  .navbar-anchor-target {
+    width: min(100% - 1rem, 72rem);
+  }
+
+  .navbar-fixture-hero {
+    min-height: 34rem;
+  }
+
+  .navbar-fixture-hero h1 {
+    font-size: clamp(3rem, 18vw, 5rem);
+  }
+
+  .navbar-anchor-target {
+    min-height: 32rem;
+    padding: 1.5rem;
+    border-radius: 0.8rem;
+    box-shadow: 0.35rem 0.35rem 0 currentcolor;
+  }
+}
+
+@media (width <= 23.75rem) {
+  .navbar-fixture-brand > span:last-child {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .navbar-fixture,
+  .navbar-fixture-night,
+  .navbar-fixture-brand-mark,
+  .navbar-fixture-switcher,
+  .navbar-fixture-action,
+  .navbar-anchor-target,
+  .navbar-anchor-target-acid,
+  .navbar-anchor-target-night {
+    color: CanvasText;
+    border-color: CanvasText;
+    background: Canvas;
+    box-shadow: none;
+  }
+}
 
 .token-eyebrow {
   margin: 0;

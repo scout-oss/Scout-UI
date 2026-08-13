@@ -27,6 +27,10 @@ export default defineConfig({
           import.meta.dirname,
           "cursor-render-count.html",
         ),
+        "navbar-render-count": resolve(
+          import.meta.dirname,
+          "navbar-render-count.html",
+        ),
         "peel-render-count": resolve(
           import.meta.dirname,
           "peel-render-count.html",

@@ -625,8 +625,9 @@ obvious.
 present, links and primary action right. Active links receive an outline,
 underline doodle, or selected sticker state—not color alone.
 
-**Tablet:** low-priority links move into a menu below 1024px; brand, mode
-switch, and primary action remain when space permits.
+**Tablet:** below 1024px, the complete enabled link group moves into a menu as
+one deterministic set; v0.1 has no public priority field. Brand, mode switch,
+and primary action remain when space permits.
 
 **Mobile:** 64–68px sticky bar. Decoration crops rather than scales to
 illegibility. The visible surface contains brand or mode switch, one primary
@@ -639,9 +640,11 @@ height abruptly; hover lifts individual sticker links; active presses; focus
 uses external ring; menu-open visibly changes the trigger; disabled links are
 generally omitted rather than shown. Loading is not supported.
 
-**Customization:** variant, tone, ribbon path, collage assets, brand, links,
-active item, switch slot, action slot, sticky behavior, scroll progress, menu
-labels, and density.
+**Customization:** the v0.1 public API exposes variant, ribbon path, collage
+assets, brand, links, active item, switch slot, action slot, sticky behavior,
+scroll progress, and menu labels. Tone and density remain design-language
+concepts expressed through themes, source selection, and scoped CSS variables;
+they are not Navbar props in v0.1.
 
 **Use:** expressive marketing or docs site.<br /> **Misuse:** arbitrary SVG path
 colliding with controls, unreadable collage behind text, or preserving desktop

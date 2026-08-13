@@ -108,6 +108,62 @@ test("packed Vite consumer renders", async ({ page }, testInfo) => {
   await diagnostics.expectClean(testInfo);
 });
 
+test("packed Vite root and subpath Navbars run responsively", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "chromium-desktop");
+  const diagnostics = captureBrowserDiagnostics(page);
+  const viteURL = process.env.SCOUT_UI_VITE_FIXTURE_URL;
+  expect(viteURL).toBeTruthy();
+  await page.setViewportSize({ height: 844, width: 390 });
+  await page.goto(viteURL ?? "about:blank");
+
+  const rootNavbar = page.getByTestId("vite-root-navbar");
+  const subpathNavbar = page.getByTestId("vite-subpath-navbar");
+  await expect(rootNavbar).toBeVisible();
+  await expect(subpathNavbar).toBeVisible();
+  await expect(rootNavbar.locator('[data-navbar-nav="desktop"]')).toBeHidden();
+  await expect(
+    subpathNavbar.locator('[data-navbar-collage="true"]'),
+  ).toBeVisible();
+
+  for (const packedNavbar of [rootNavbar, subpathNavbar]) {
+    await packedNavbar.locator('[data-navbar-menu-trigger="true"]').click();
+    const dialog = page.locator('[data-navbar-content="true"]');
+    await expect(dialog).toBeVisible();
+    const bounds = await dialog.evaluate((element) => {
+      const box = element.getBoundingClientRect();
+      return {
+        documentOverflow:
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth,
+        left: box.left,
+        right: box.right,
+        viewport: window.innerWidth,
+      };
+    });
+    expect(bounds.left).toBeGreaterThanOrEqual(-1);
+    expect(bounds.right).toBeLessThanOrEqual(bounds.viewport + 1);
+    expect(bounds.documentOverflow).toBeLessThanOrEqual(1);
+    await dialog.locator('[data-navbar-close="true"]').click();
+    await expect(dialog).toHaveCount(0);
+  }
+
+  await page.evaluate(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+  await expect
+    .poll(() =>
+      rootNavbar
+        .locator('[data-navbar-progress="true"]')
+        .getAttribute("data-navbar-progress-value")
+        .then((value) => Number.parseFloat(value ?? "0")),
+    )
+    .toBeGreaterThan(0.5);
+  await expectNoAxeViolations(page, testInfo);
+  await diagnostics.expectClean(testInfo);
+});
+
 test("standalone Trail consumer works without the broad package", async ({
   page,
 }, testInfo) => {

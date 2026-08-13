@@ -2,6 +2,7 @@ import {
   Sticker,
   StickerBadge,
   StickerButton,
+  StickerNavbar,
   StickerPeel,
   StickerStack,
   StickerTrail,
@@ -11,6 +12,7 @@ import { Sticker as SubpathSticker } from "@scout-ui/react/sticker";
 import { StickerBadge as SubpathStickerBadge } from "@scout-ui/react/sticker-badge";
 import { StickerButton as SubpathStickerButton } from "@scout-ui/react/sticker-button";
 import { StickerPeel as SubpathStickerPeel } from "@scout-ui/react/sticker-peel";
+import { StickerNavbar as SubpathStickerNavbar } from "@scout-ui/react/sticker-navbar";
 import { StickerStack as SubpathStickerStack } from "@scout-ui/react/sticker-stack";
 import { StickerTrail as SubpathStickerTrail } from "@scout-ui/react/sticker-trail";
 import { stickerPackVersion } from "@scout-ui/stickers";
@@ -22,6 +24,10 @@ export function App() {
   const [selected, setSelected] = useState(false);
   const [peelOpen, setPeelOpen] = useState(false);
   const stackItems = ["Root", "Subpath", "Packed"] as const;
+  const navbarItems = [
+    { id: "root", label: "Root", href: "#vite-root-primitives" },
+    { id: "subpath", label: "Subpath", href: "#vite-subpath-primitives" },
+  ] as const;
 
   return (
     <main className="sui-theme">
@@ -128,6 +134,25 @@ export function App() {
             renderItem={(item) => <article>{item} Stack card</article>}
           />
         </div>
+      </section>
+      <section aria-labelledby="vite-navbar-heading">
+        <h2 id="vite-navbar-heading">Packed Navbar root and subpath imports</h2>
+        <StickerNavbar
+          activeId="root"
+          aria-label="Root package navigation"
+          brand={<a href="#vite-navbar-heading">Root Navbar</a>}
+          data-testid="vite-root-navbar"
+          items={navbarItems}
+          showScrollProgress
+        />
+        <SubpathStickerNavbar
+          activeId="subpath"
+          aria-label="Subpath package navigation"
+          brand={<a href="#vite-navbar-heading">Subpath Navbar</a>}
+          data-testid="vite-subpath-navbar"
+          items={navbarItems}
+          variant="collage"
+        />
       </section>
     </main>
   );

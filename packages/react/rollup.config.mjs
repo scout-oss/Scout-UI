@@ -3,6 +3,7 @@ import { createLibraryConfig } from "../../tooling/rollup/create-library-config.
 export default createLibraryConfig({
   clientEntries: [
     "src/sticker-cursor/index.ts",
+    "src/sticker-navbar/index.ts",
     "src/sticker-peel/index.ts",
     "src/sticker-stack/index.ts",
     "src/sticker-trail/index.ts",
@@ -13,9 +14,14 @@ export default createLibraryConfig({
     "src/sticker-badge/index.tsx",
     "src/sticker-button/index.tsx",
     "src/sticker-cursor/index.ts",
+    "src/sticker-navbar/index.ts",
     "src/sticker-peel/index.ts",
     "src/sticker-stack/index.ts",
     "src/sticker-trail/index.ts",
   ],
-  external: [/^@scout-ui\//u, /^react(?:-dom)?(?:\/.*)?$/u],
+  external: [
+    "@radix-ui/react-dialog",
+    /^@scout-ui\//u,
+    /^react(?:-dom)?(?:\/.*)?$/u,
+  ],
 });

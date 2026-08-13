@@ -117,32 +117,73 @@ test.describe("cursor review baselines", () => {
     await page.mouse.move(box.x + box.width / 2, box.y + 40);
     await settled(page, "echo-cursor");
 
-    // Fill the pool with no waits: an echo lives 420ms, so all four must still
-    // be in flight when they are pinned. Pausing after they expired would
-    // capture an empty layer and silently prove nothing.
-    for (let index = 0; index < 4; index += 1) {
-      await page.mouse.move(box.x + 60 + index * 70, box.y + 40);
-      await page.mouse.down();
-      await page.mouse.up();
+    // Hold only echo animations at the review frame as they are created.
+    // Their real lifetime is 420ms, while four cross-process pointer sequences
+    // can exceed that on a loaded Windows runner. Pausing at creation preserves
+    // the real pointer/spawn/pool path without racing Playwright overhead.
+    await page.evaluate(() => {
+      const animateDescriptor = Object.getOwnPropertyDescriptor(
+        Element.prototype,
+        "animate",
+      );
+      if (typeof animateDescriptor?.value !== "function") {
+        throw new TypeError("Element.animate is unavailable");
+      }
+      const originalAnimate = animateDescriptor.value as Element["animate"];
+      const target = window as typeof window & {
+        __scoutUiRestoreElementAnimate?: () => void;
+      };
+
+      target.__scoutUiRestoreElementAnimate = () => {
+        Object.defineProperty(Element.prototype, "animate", animateDescriptor);
+        delete target.__scoutUiRestoreElementAnimate;
+      };
+      Element.prototype.animate = function (keyframes, options) {
+        const animation = originalAnimate.call(this, keyframes, options);
+        if (this.hasAttribute("data-sui-cursor-echo")) {
+          animation.pause();
+          animation.currentTime = 120;
+        }
+        return animation;
+      };
+    });
+
+    try {
+      for (let index = 0; index < 4; index += 1) {
+        await page.mouse.move(box.x + 60 + index * 70, box.y + 40);
+        await page.mouse.down();
+        await page.mouse.up();
+      }
+
+      const echoes = cursor(page, "echo-cursor").locator(
+        "[data-sui-cursor-echo]",
+      );
+      await expect(echoes).toHaveCount(4);
+      await expect
+        .poll(() =>
+          echoes.evaluateAll((nodes) =>
+            nodes.every((node) => {
+              const animations = node.getAnimations();
+              return (
+                animations.length === 1 && animations[0]?.playState === "paused"
+              );
+            }),
+          ),
+        )
+        .toBe(true);
+
+      await freeze(page, 120);
+      await expect(cursor(page, "echo-cursor")).toHaveScreenshot(
+        "cursor-echo.png",
+      );
+    } finally {
+      await page.evaluate(() => {
+        const target = window as typeof window & {
+          __scoutUiRestoreElementAnimate?: () => void;
+        };
+        target.__scoutUiRestoreElementAnimate?.();
+      });
     }
-
-    await expect(
-      cursor(page, "echo-cursor").locator("[data-sui-cursor-echo]"),
-    ).toHaveCount(4);
-
-    // Pin every echo mid-flight so the capture is reproducible, then assert
-    // they are genuinely mid-flight rather than finished.
-    await freeze(page, 120);
-    const live = await page.evaluate(
-      () =>
-        document
-          .getAnimations()
-          .filter((animation) => animation.playState === "paused").length,
-    );
-    expect(live, "every echo had already expired before the capture").toBe(4);
-    await expect(cursor(page, "echo-cursor")).toHaveScreenshot(
-      "cursor-echo.png",
-    );
   });
 
   test("hotspot alignment", async ({ page }, testInfo) => {

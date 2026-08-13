@@ -18,6 +18,11 @@ export type {
   StickerCursorProps,
   StickerCursorState,
 } from "./sticker-cursor/index.js";
+export { StickerNavbar } from "./sticker-navbar/index.js";
+export type {
+  StickerNavbarProps,
+  StickerNavItem,
+} from "./sticker-navbar/index.js";
 export { StickerPeel } from "./sticker-peel/index.js";
 export type { StickerPeelProps } from "./sticker-peel/index.js";
 export { StickerStack } from "./sticker-stack/index.js";

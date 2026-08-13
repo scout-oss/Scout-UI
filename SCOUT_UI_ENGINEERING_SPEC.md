@@ -771,6 +771,30 @@ supplied accessibility and event props. Development warnings flag a renderer
 that does not produce a link. Disabled navigation items are omitted unless
 documentation context requires them.
 
+The v0.1 defaults are `variant="ribbon"`, `sticky=false`,
+`showScrollProgress=false`, `menuLabel="Open navigation menu"`, and
+`closeMenuLabel="Close navigation menu"`. These defaults keep the minimal render
+semantic and decorative without opting a consumer into sticky layout or global
+scroll work. The internal navigation landmark is named "Primary navigation";
+consumer `React.HTMLAttributes<HTMLElement>` apply to the outer `<header>`
+rather than being split across semantic roots.
+
+`external=true` means the default anchor opens a new browsing context with
+`target="_blank"` and `rel="noopener noreferrer"`. A custom `renderLink` owns
+its router-specific destination behavior but still receives the complete item so
+it can preserve the same contract. Disabled items are omitted from both desktop
+and Dialog navigation. Because v0.1 exposes no priority field, the entire
+enabled item group moves from inline navigation into the responsive Dialog below
+the menu breakpoint; no undocumented priority, desktop-only, or mobile-only
+semantics are inferred.
+
+Sticky integration exposes `--sui-navbar-sticky-offset`, whose responsive
+default resolves from the nominal `--sui-navbar-height`. Both defaults are
+declared on Scout UI theme roots so sibling anchor targets can consume them.
+Consumers apply the offset to targets through `scroll-margin-top`; if custom
+slot content makes the bar taller, override both properties on the shared theme
+root. The Navbar does not continuously mutate the document root.
+
 ### 10.7 StickerPeel
 
 ```ts
@@ -1204,7 +1228,9 @@ Mobile navigation uses Radix Dialog scoped to `StickerNavbar` rather than a
 custom focus trap. It supplies modal focus management, Escape behavior, outside
 interaction handling, and return focus. Bundle impact is measured and
 documented, and the dependency remains tree-shakeable for consumers who do not
-import Navbar. The project will not ship a hand-rolled incomplete modal.
+import Navbar. The project will not ship a hand-rolled incomplete modal. The
+initial v0.1 implementation pins `@radix-ui/react-dialog` `1.1.23` as an
+`@scout-ui/react` runtime dependency; unrelated packages are not upgraded.
 
 Scroll progress uses a passive scroll source or Intersection Observer-derived
 section state and a compositor-friendly scale transform. It is optional and

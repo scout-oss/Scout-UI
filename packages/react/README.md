@@ -1,8 +1,8 @@
 # @scout-ui/react
 
 React components for sticker-led interfaces. The v0.1 surface so far is
-`Sticker`, `StickerButton`, `StickerBadge`, `StickerTrail`, `StickerCursor`, and
-`StickerPeel`, and `StickerStack`.
+`Sticker`, `StickerButton`, `StickerBadge`, `StickerTrail`, `StickerCursor`,
+`StickerPeel`, `StickerStack`, and `StickerNavbar`.
 
 The package supports the root import plus explicit public subpaths. Import
 `@scout-ui/react/styles.css` for the public stylesheet entry.
@@ -102,6 +102,46 @@ path. Public styling hooks include `.sui-sticker-stack` and
 `--sui-stack-surface`, `--sui-stack-ink`, `--sui-stack-accent`,
 `--sui-stack-control-surface`, `--sui-stack-card-min-inline`, and
 `--sui-stack-card-min-block`.
+
+`StickerNavbar` renders a semantic header and named primary-navigation landmark.
+Its interactive leaf uses Radix Dialog for the responsive menu while the root
+barrel remains unmarked.
+
+```tsx
+import { StickerNavbar } from "@scout-ui/react/sticker-navbar";
+import { StickerButton } from "@scout-ui/react/sticker-button";
+
+<StickerNavbar
+  brand={<a href="/">Studio Index</a>}
+  items={[
+    { id: "work", label: "Work", href: "/work" },
+    { id: "notes", label: "Notes", href: "/notes" },
+  ]}
+  activeId="work"
+  action={<StickerButton href="/contact">Start a project</StickerButton>}
+  sticky
+/>;
+```
+
+The defaults are `variant="ribbon"`, `sticky={false}`,
+`showScrollProgress={false}`, `menuLabel="Open navigation menu"`, and
+`closeMenuLabel="Close navigation menu"`. Disabled items are omitted. The
+default renderer emits anchors; `external` items open a new browsing context
+with `noopener noreferrer`. Framework adapters may use `renderLink`, but must
+ultimately render an anchor and preserve the supplied class, current-page state,
+and click handler. The decorative Ribbon and Collage layers never carry
+navigation meaning or receive pointer input.
+
+Public styling hooks include `.sui-sticker-navbar`, `--sui-navbar-height`,
+`--sui-navbar-sticky-offset`, `--sui-navbar-surface`,
+`--sui-navbar-functional-surface`, `--sui-navbar-ink`, `--sui-navbar-accent`,
+`--sui-navbar-active`, and `--sui-navbar-ribbon-stroke`. Apply
+`--sui-navbar-sticky-offset` to anchor targets with `scroll-margin-top` when
+sticky navigation is enabled. Its responsive default derives from the nominal
+`--sui-navbar-height` on the shared Scout UI theme root; when custom slot
+content increases the bar height, override both values on that shared root. The
+inherited `aria-label` attribute can provide a unique header/navigation landmark
+name when a page intentionally renders more than one Navbar.
 
 `Sticker` accepts exactly one of `source` or `children`. Source-backed artwork
 uses format-neutral image semantics and defaults to no wrapper outline so

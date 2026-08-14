@@ -17,10 +17,12 @@
     "test": "turbo run test",
     "test:browser": "turbo run test:browser",
     "test:fixtures": "node tooling/fixtures/test-packed-consumers.mjs",
+    "test:packages": "node tooling/package-preflight/package-preflight.mjs",
+    "test:packages:update": "node tooling/package-preflight/package-preflight.mjs --update",
     "test:visual": "turbo run test:visual",
     "lint:assets": "turbo run lint:assets",
     "typecheck": "turbo run typecheck",
-    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:packages",
     "changeset": "changeset",
     "release": "turbo run build && changeset publish"
   },

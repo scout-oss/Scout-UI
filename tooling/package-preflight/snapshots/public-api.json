@@ -1,0 +1,287 @@
+{
+  "baseline": {
+    "commit": "30abbc3d58eefa12266efd772c8d207eed80e419",
+    "milestone": 11,
+    "release": "v0.1-alpha"
+  },
+  "components": [
+    "Sticker",
+    "StickerBadge",
+    "StickerButton",
+    "StickerCursor",
+    "StickerNavbar",
+    "StickerPeel",
+    "StickerStack",
+    "StickerTrail"
+  ],
+  "packages": {
+    "@scout-ui/react": {
+      "exportPaths": {
+        ".": {
+          "classification": "javascript",
+          "importTarget": "./dist/index.js",
+          "runtimeExports": [
+            "Sticker",
+            "StickerBadge",
+            "StickerButton",
+            "StickerCursor",
+            "StickerNavbar",
+            "StickerPeel",
+            "StickerStack",
+            "StickerTrail",
+            "scoutUiReactVersion",
+            "scoutUiTokens",
+            "useStickerTrail"
+          ],
+          "specifier": "@scout-ui/react",
+          "typeExports": [
+            "CursorVisual",
+            "NumberRange",
+            "ScoutIntensity",
+            "ScoutMotionPolicy",
+            "ScoutStyleProperties",
+            "ScoutUiToken",
+            "ScoutUiTokenGroup",
+            "ScoutUiTokenName",
+            "StickerBadgeProps",
+            "StickerButtonProps",
+            "StickerCursorProps",
+            "StickerCursorState",
+            "StickerMaterial",
+            "StickerNavItem",
+            "StickerNavbarProps",
+            "StickerOutline",
+            "StickerPeelProps",
+            "StickerProps",
+            "StickerShadow",
+            "StickerSize",
+            "StickerSource",
+            "StickerStackProps",
+            "StickerTone",
+            "StickerTrailController",
+            "StickerTrailExit",
+            "StickerTrailOptions",
+            "StickerTrailPreset",
+            "StickerTrailProps",
+            "StickerTrailSequence",
+            "StickerTrailTouch",
+            "UseStickerTrailOptions"
+          ],
+          "typesTarget": "./dist/index.d.ts"
+        },
+        "./sticker": {
+          "classification": "javascript",
+          "importTarget": "./dist/sticker/index.js",
+          "runtimeExports": ["Sticker"],
+          "specifier": "@scout-ui/react/sticker",
+          "typeExports": [
+            "StickerMaterial",
+            "StickerOutline",
+            "StickerProps",
+            "StickerShadow",
+            "StickerSize"
+          ],
+          "typesTarget": "./dist/sticker/index.d.ts"
+        },
+        "./sticker-badge": {
+          "classification": "javascript",
+          "importTarget": "./dist/sticker-badge/index.js",
+          "runtimeExports": ["StickerBadge"],
+          "specifier": "@scout-ui/react/sticker-badge",
+          "typeExports": ["StickerBadgeProps"],
+          "typesTarget": "./dist/sticker-badge/index.d.ts"
+        },
+        "./sticker-button": {
+          "classification": "javascript",
+          "importTarget": "./dist/sticker-button/index.js",
+          "runtimeExports": ["StickerButton"],
+          "specifier": "@scout-ui/react/sticker-button",
+          "typeExports": ["StickerButtonProps"],
+          "typesTarget": "./dist/sticker-button/index.d.ts"
+        },
+        "./sticker-cursor": {
+          "classification": "javascript",
+          "importTarget": "./dist/sticker-cursor/index.js",
+          "runtimeExports": ["StickerCursor"],
+          "specifier": "@scout-ui/react/sticker-cursor",
+          "typeExports": [
+            "CursorVisual",
+            "StickerCursorProps",
+            "StickerCursorState"
+          ],
+          "typesTarget": "./dist/sticker-cursor/index.d.ts"
+        },
+        "./sticker-navbar": {
+          "classification": "javascript",
+          "importTarget": "./dist/sticker-navbar/index.js",
+          "runtimeExports": ["StickerNavbar"],
+          "specifier": "@scout-ui/react/sticker-navbar",
+          "typeExports": ["StickerNavItem", "StickerNavbarProps"],
+          "typesTarget": "./dist/sticker-navbar/index.d.ts"
+        },
+        "./sticker-peel": {
+          "classification": "javascript",
+          "importTarget": "./dist/sticker-peel/index.js",
+          "runtimeExports": ["StickerPeel"],
+          "specifier": "@scout-ui/react/sticker-peel",
+          "typeExports": ["StickerPeelProps"],
+          "typesTarget": "./dist/sticker-peel/index.d.ts"
+        },
+        "./sticker-stack": {
+          "classification": "javascript",
+          "importTarget": "./dist/sticker-stack/index.js",
+          "runtimeExports": ["StickerStack"],
+          "specifier": "@scout-ui/react/sticker-stack",
+          "typeExports": ["StickerStackProps"],
+          "typesTarget": "./dist/sticker-stack/index.d.ts"
+        },
+        "./sticker-trail": {
+          "classification": "javascript",
+          "importTarget": "./dist/sticker-trail/index.js",
+          "runtimeExports": ["StickerTrail", "useStickerTrail"],
+          "specifier": "@scout-ui/react/sticker-trail",
+          "typeExports": [
+            "StickerTrailController",
+            "StickerTrailExit",
+            "StickerTrailOptions",
+            "StickerTrailPreset",
+            "StickerTrailProps",
+            "StickerTrailSequence",
+            "StickerTrailTouch",
+            "UseStickerTrailOptions"
+          ],
+          "typesTarget": "./dist/sticker-trail/index.d.ts"
+        },
+        "./styles.css": {
+          "classification": "css",
+          "target": "./dist/styles.css"
+        },
+        "./package.json": {
+          "classification": "asset-or-metadata",
+          "target": "./package.json"
+        }
+      },
+      "purpose": "Eight React components, shared tokens, and broad CSS"
+    },
+    "@scout-ui/sticker-trail": {
+      "exportPaths": {
+        ".": {
+          "classification": "javascript",
+          "importTarget": "./dist/index.js",
+          "runtimeExports": ["StickerTrail", "useStickerTrail"],
+          "specifier": "@scout-ui/sticker-trail",
+          "typeExports": [
+            "NumberRange",
+            "ScoutMotionPolicy",
+            "StickerSource",
+            "StickerTrailController",
+            "StickerTrailExit",
+            "StickerTrailOptions",
+            "StickerTrailPreset",
+            "StickerTrailProps",
+            "StickerTrailSequence",
+            "StickerTrailTouch",
+            "UseStickerTrailOptions"
+          ],
+          "typesTarget": "./dist/index.d.ts"
+        },
+        "./styles.css": {
+          "classification": "css",
+          "target": "./dist/styles.css"
+        },
+        "./package.json": {
+          "classification": "asset-or-metadata",
+          "target": "./package.json"
+        }
+      },
+      "purpose": "Standalone bounded StickerTrail component and hook"
+    },
+    "@scout-ui/stickers": {
+      "exportPaths": {
+        ".": {
+          "classification": "javascript",
+          "importTarget": "./dist/index.js",
+          "runtimeExports": [
+            "officialStickerPack",
+            "stickerDefinitions",
+            "stickerPackVersion",
+            "stickersById"
+          ],
+          "specifier": "@scout-ui/stickers",
+          "typeExports": [
+            "StickerAttributionStatus",
+            "StickerCategory",
+            "StickerDefinition",
+            "StickerFormat",
+            "StickerPackManifest",
+            "StickerTransparentBounds"
+          ],
+          "typesTarget": "./dist/index.d.ts"
+        },
+        "./manifest": {
+          "classification": "javascript",
+          "importTarget": "./dist/manifest.js",
+          "runtimeExports": [
+            "officialStickerPack",
+            "stickerDefinitions",
+            "stickersById"
+          ],
+          "specifier": "@scout-ui/stickers/manifest",
+          "typeExports": [],
+          "typesTarget": "./dist/manifest.d.ts"
+        },
+        "./manifest.json": {
+          "classification": "asset-or-metadata",
+          "target": "./assets/manifest.json"
+        },
+        "./definitions/*": {
+          "classification": "javascript-pattern",
+          "importTarget": "./dist/definitions/*.js",
+          "members": [
+            "admit-ticket",
+            "attention-bolt",
+            "blank-ribbon",
+            "bloom-flower",
+            "chat-bubble",
+            "chunky-check",
+            "forward-arrow",
+            "high-five",
+            "highlight-swipe",
+            "loop-arrow",
+            "mixtape",
+            "notched-stamp",
+            "paper-tab",
+            "patch-heart",
+            "pocket-camera",
+            "radial-burst",
+            "round-seal",
+            "scribble-pointer",
+            "sealed-envelope",
+            "sparkle-pop",
+            "sunny-smile",
+            "tape-strip",
+            "target-ring",
+            "watchful-eye",
+            "wonky-star"
+          ],
+          "typesTarget": "./dist/definitions/*.d.ts"
+        },
+        "./assets/*.svg": {
+          "classification": "asset-or-metadata",
+          "target": "./assets/*.svg"
+        },
+        "./package.json": {
+          "classification": "asset-or-metadata",
+          "target": "./package.json"
+        }
+      },
+      "purpose": "React-free definitions, manifest, metadata, and assets"
+    }
+  },
+  "policy": {
+    "deepImports": "Only package.json exports are supported.",
+    "postFreeze": "Public API change requires authoritative specification update, Changeset, and intentional public-api snapshot update.",
+    "trailBoundary": "@scout-ui/react explicitly re-exports Trail values and Trail-specific types; generic structural types remain owned independently by each package."
+  },
+  "schemaVersion": 1
+}

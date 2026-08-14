@@ -190,9 +190,7 @@ async function inspectInstalledPackage(consumer, record) {
     "sticker-trail": [".", "./package.json", "./styles.css"],
     stickers: [
       ".",
-      "./assets/*.png",
       "./assets/*.svg",
-      "./assets/*.webp",
       "./definitions/*",
       "./manifest",
       "./manifest.json",
@@ -864,6 +862,23 @@ async function assertServerEvaluation(consumer) {
 }
 
 async function assertTreeShaking(viteConsumer) {
+  async function readJavaScript(directory) {
+    return (
+      await Promise.all(
+        (await listFiles(directory))
+          .filter((file) => file.endsWith(".js"))
+          .map((file) => readFile(path.join(directory, file), "utf8")),
+      )
+    ).join("\n");
+  }
+
+  function measure(source) {
+    return {
+      gzipBytes: gzipSync(source).byteLength,
+      rawBytes: Buffer.byteLength(source),
+    };
+  }
+
   const output = await Promise.all(
     (await listFiles(path.join(viteConsumer, "dist-tree-shake")))
       .filter((file) => file.endsWith(".js"))
@@ -897,6 +912,48 @@ async function assertTreeShaking(viteConsumer) {
     source,
     /sui-sticker-navbar|data-navbar-(?:header|ribbon|progress)|data-radix-focus-guard/u,
     "Sticker-only Vite build pulled in StickerNavbar or Radix Dialog",
+  );
+
+  const peelOutput = await readJavaScript(
+    path.join(viteConsumer, "dist-peel-tree-shake"),
+  );
+  assert.match(
+    peelOutput,
+    /sui-sticker-peel/u,
+    "Peel narrow build lost StickerPeel",
+  );
+  assert.doesNotMatch(
+    peelOutput,
+    /sui-sticker-navbar|data-radix-focus-guard|sui-sticker-cursor|sui-sticker-stack|officialStickerPack/u,
+    "Peel narrow build retained unrelated Navbar, Cursor, Stack, or sticker-pack code",
+  );
+
+  const broadTrailOutput = await readJavaScript(
+    path.join(viteConsumer, "dist-trail-tree-shake"),
+  );
+  assert.match(
+    broadTrailOutput,
+    /sui-trail/u,
+    "broad React Trail build lost the Trail runtime",
+  );
+  assert.doesNotMatch(
+    broadTrailOutput,
+    /sui-sticker-navbar|data-radix-focus-guard|sui-sticker-cursor|sui-sticker-peel|sui-sticker-stack|officialStickerPack/u,
+    "broad React Trail build retained unrelated React leaves or sticker-pack code",
+  );
+
+  const standaloneTrailOutput = await readJavaScript(
+    path.join(viteConsumer, "dist-standalone-trail-tree-shake"),
+  );
+  assert.match(
+    standaloneTrailOutput,
+    /sui-trail/u,
+    "standalone Trail narrow build lost the Trail runtime",
+  );
+  assert.doesNotMatch(
+    standaloneTrailOutput,
+    /scoutUiReactVersion|sui-sticker-(?:button|badge|navbar|cursor|peel|stack)|officialStickerPack/u,
+    "standalone Trail narrow build retained the broad React package or sticker pack",
   );
 
   const navbarOutput = (
@@ -960,21 +1017,27 @@ async function assertTreeShaking(viteConsumer) {
     "single definition build must contain exactly one emitted or inlined SVG",
   );
 
-  const stickerOnlyBytes = Buffer.byteLength(source);
-  const stickerOnlyGzipBytes = gzipSync(source).byteLength;
-  const navbarBytes = Buffer.byteLength(navbarOutput);
-  const navbarGzipBytes = gzipSync(navbarOutput).byteLength;
+  const stickerOnly = measure(source);
+  const nonNavbarInteractive = measure(peelOutput);
+  const navbar = measure(navbarOutput);
+  const broadTrail = measure(broadTrailOutput);
+  const standaloneTrail = measure(standaloneTrailOutput);
+  const singleSticker = measure(stickerOutput);
   assert.ok(
-    navbarBytes > stickerOnlyBytes,
+    navbar.rawBytes > stickerOnly.rawBytes,
     "Navbar-positive bundle should retain more implementation than Sticker-only",
   );
   return {
-    navbarBytes,
-    navbarGzipBytes,
-    navbarGzipOverheadBytes: navbarGzipBytes - stickerOnlyGzipBytes,
-    navbarOverheadBytes: navbarBytes - stickerOnlyBytes,
-    stickerOnlyBytes,
-    stickerOnlyGzipBytes,
+    broadTrail,
+    navbar,
+    navbarIncremental: {
+      gzipBytes: navbar.gzipBytes - stickerOnly.gzipBytes,
+      rawBytes: navbar.rawBytes - stickerOnly.rawBytes,
+    },
+    nonNavbarInteractive,
+    singleSticker,
+    standaloneTrail,
+    stickerOnly,
   };
 }
 
@@ -1062,10 +1125,29 @@ export async function preparePackedConsumers() {
   await mkdir(tarballDirectory, { recursive: true });
   await mkdir(consumerDirectory, { recursive: true });
 
+  // Remove only generated public-package output, then bypass Turbo's cache.
+  // This proves that neither packing nor consumer verification relies on a
+  // developer's stale dist directory or a cached build restored by accident.
+  for (const record of packageRecords) {
+    await rm(path.join(root, record.directory, "dist"), {
+      force: true,
+      recursive: true,
+    });
+    await rm(
+      path.join(
+        root,
+        record.directory,
+        "node_modules",
+        ".cache",
+        "tsconfig.tsbuildinfo",
+      ),
+      { force: true },
+    );
+  }
   // One dependency-ordered build. Building each package in isolation is not
   // safe: @scout-ui/react resolves the standalone package's declarations and
   // composes its stylesheet, so the trail package must be built first.
-  await run("corepack", ["pnpm", "build"]);
+  await run("corepack", ["pnpm", "exec", "turbo", "run", "build", "--force"]);
 
   for (const record of packageRecords) {
     await run(
@@ -1102,18 +1184,33 @@ export async function preparePackedConsumers() {
   await run("corepack", ["pnpm", "fixture:typecheck"], { cwd: consumers.next });
   await assertNextServerOutput(consumers.next);
   await run("corepack", ["pnpm", "fixture:build"], { cwd: consumers.vite });
-  const navbarBundleImpact = await assertTreeShaking(consumers.vite);
+  const bundleProbes = await assertTreeShaking(consumers.vite);
   await assertStandaloneIndependence(consumers.vite);
 
   const manifest = {
-    createdAt: new Date().toISOString(),
     consumers,
-    navbarBundleImpact,
+    bundleProbes,
     tarballs,
+  };
+  const relativeManifest = {
+    bundleProbes,
+    consumers: Object.fromEntries(
+      Object.entries(consumers).map(([key, value]) => [
+        key,
+        path.relative(root, value).replaceAll("\\", "/"),
+      ]),
+    ),
+    schemaVersion: 1,
+    tarballs: Object.fromEntries(
+      Object.entries(tarballs).map(([key, value]) => [
+        key,
+        path.relative(root, value).replaceAll("\\", "/"),
+      ]),
+    ),
   };
   await writeFile(
     path.join(artifactRoot, "manifest.json"),
-    `${JSON.stringify(manifest, null, 2)}\n`,
+    `${JSON.stringify(relativeManifest, null, 2)}\n`,
   );
   return manifest;
 }

@@ -1,0 +1,263 @@
+{
+  "baseline": {
+    "commit": "30abbc3d58eefa12266efd772c8d207eed80e419",
+    "milestone": 11,
+    "note": "Regression baselines for local packed artifacts and isolated Vite probes; not universal application sizes."
+  },
+  "bundleProbes": {
+    "broadTrail": {
+      "baseline": {
+        "gzipBytes": 15647,
+        "rawBytes": 58593
+      },
+      "budget": {
+        "gzipBytes": 16899,
+        "rawBytes": 63281
+      }
+    },
+    "navbar": {
+      "baseline": {
+        "gzipBytes": 31209,
+        "rawBytes": 120094
+      },
+      "budget": {
+        "gzipBytes": 33706,
+        "rawBytes": 129702
+      }
+    },
+    "navbarIncremental": {
+      "baseline": {
+        "gzipBytes": 19792,
+        "rawBytes": 75677
+      },
+      "budget": {
+        "gzipBytes": 21376,
+        "rawBytes": 81732
+      }
+    },
+    "nonNavbarInteractive": {
+      "baseline": {
+        "gzipBytes": 13668,
+        "rawBytes": 52361
+      },
+      "budget": {
+        "gzipBytes": 14762,
+        "rawBytes": 56550
+      }
+    },
+    "singleSticker": {
+      "baseline": {
+        "gzipBytes": 915,
+        "rawBytes": 1731
+      },
+      "budget": {
+        "gzipBytes": 1427,
+        "rawBytes": 2243
+      }
+    },
+    "standaloneTrail": {
+      "baseline": {
+        "gzipBytes": 15407,
+        "rawBytes": 57954
+      },
+      "budget": {
+        "gzipBytes": 16640,
+        "rawBytes": 62591
+      }
+    },
+    "stickerOnly": {
+      "baseline": {
+        "gzipBytes": 11417,
+        "rawBytes": 44417
+      },
+      "budget": {
+        "gzipBytes": 12331,
+        "rawBytes": 47971
+      }
+    }
+  },
+  "methodology": {
+    "bundle": "Vite ESM library probes from tarball-installed packages; raw and deterministic gzip bytes measured separately.",
+    "package": "pnpm pack tarball bytes plus byte totals from the actual isolated installed tarball contents."
+  },
+  "packages": {
+    "@scout-ui/react": {
+      "baseline": {
+        "assetBytes": 0,
+        "cssBytes": 74665,
+        "declarationBytes": 42876,
+        "fileCount": 88,
+        "jsBytes": 114584,
+        "mapBytes": 248346,
+        "otherBytes": 12858,
+        "packedBytes": 108311,
+        "unpackedBytes": 493329
+      },
+      "budget": {
+        "packedBytes": 116976,
+        "unpackedBytes": 532796
+      },
+      "largestFiles": [
+        {
+          "bytes": 74665,
+          "path": "dist/styles.css"
+        },
+        {
+          "bytes": 21896,
+          "path": "dist/sticker-stack/StickerStack.d.ts.map"
+        },
+        {
+          "bytes": 21674,
+          "path": "dist/sticker-cursor/engine.d.ts.map"
+        },
+        {
+          "bytes": 19716,
+          "path": "dist/sticker-cursor/engine.js"
+        },
+        {
+          "bytes": 19179,
+          "path": "dist/sticker-stack/StickerStack.js"
+        },
+        {
+          "bytes": 18199,
+          "path": "dist/tokens.generated.d.ts"
+        },
+        {
+          "bytes": 17976,
+          "path": "dist/sticker-navbar/StickerNavbar.d.ts.map"
+        },
+        {
+          "bytes": 17325,
+          "path": "dist/tokens.generated.d.ts.map"
+        },
+        {
+          "bytes": 16980,
+          "path": "dist/tokens.generated.js"
+        },
+        {
+          "bytes": 16477,
+          "path": "dist/sticker-stack/StickerStack.js.map"
+        }
+      ]
+    },
+    "@scout-ui/sticker-trail": {
+      "baseline": {
+        "assetBytes": 0,
+        "cssBytes": 2805,
+        "declarationBytes": 13381,
+        "fileCount": 40,
+        "jsBytes": 36725,
+        "mapBytes": 82512,
+        "otherBytes": 5895,
+        "packedBytes": 38726,
+        "unpackedBytes": 141318
+      },
+      "budget": {
+        "packedBytes": 41825,
+        "unpackedBytes": 152624
+      },
+      "largestFiles": [
+        {
+          "bytes": 17897,
+          "path": "dist/engine.d.ts.map"
+        },
+        {
+          "bytes": 17165,
+          "path": "dist/engine.js"
+        },
+        {
+          "bytes": 14450,
+          "path": "dist/engine.js.map"
+        },
+        {
+          "bytes": 6993,
+          "path": "dist/presets.d.ts.map"
+        },
+        {
+          "bytes": 6151,
+          "path": "dist/geometry.d.ts.map"
+        },
+        {
+          "bytes": 5207,
+          "path": "dist/presets.js"
+        },
+        {
+          "bytes": 4702,
+          "path": "dist/pool.d.ts.map"
+        },
+        {
+          "bytes": 4439,
+          "path": "dist/presets.js.map"
+        },
+        {
+          "bytes": 4074,
+          "path": "dist/types.d.ts.map"
+        },
+        {
+          "bytes": 3827,
+          "path": "dist/StickerTrail.d.ts.map"
+        }
+      ]
+    },
+    "@scout-ui/stickers": {
+      "baseline": {
+        "assetBytes": 15588,
+        "cssBytes": 0,
+        "declarationBytes": 59576,
+        "fileCount": 149,
+        "jsBytes": 29898,
+        "mapBytes": 65620,
+        "otherBytes": 31894,
+        "packedBytes": 26944,
+        "unpackedBytes": 202576
+      },
+      "budget": {
+        "packedBytes": 29100,
+        "unpackedBytes": 218783
+      },
+      "largestFiles": [
+        {
+          "bytes": 37766,
+          "path": "dist/manifest.generated.d.ts"
+        },
+        {
+          "bytes": 22831,
+          "path": "assets/manifest.json"
+        },
+        {
+          "bytes": 4262,
+          "path": "dist/manifest.generated.d.ts.map"
+        },
+        {
+          "bytes": 2891,
+          "path": "dist/types.d.ts.map"
+        },
+        {
+          "bytes": 2354,
+          "path": "dist/manifest.generated.js"
+        },
+        {
+          "bytes": 1964,
+          "path": "ART_DIRECTION.md"
+        },
+        {
+          "bytes": 1848,
+          "path": "dist/manifest.generated.js.map"
+        },
+        {
+          "bytes": 1633,
+          "path": "package.json"
+        },
+        {
+          "bytes": 1458,
+          "path": "dist/definitions/scribble-pointer.d.ts.map"
+        },
+        {
+          "bytes": 1449,
+          "path": "dist/definitions/highlight-swipe.d.ts.map"
+        }
+      ]
+    }
+  },
+  "schemaVersion": 1
+}

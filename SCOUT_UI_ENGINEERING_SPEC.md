@@ -1010,6 +1010,14 @@ Both paths are verified from packed tarballs in Next.js and Vite fixtures. The
 package does not inline the complete sticker pack into its root JavaScript
 entry.
 
+The frozen v0.1 official pack contains SVG files, so its alpha export map
+exposes the concrete `./assets/*.svg` family only. The public definition and
+React rendering contracts remain format-agnostic for PNG and WebP. A
+format-specific raster asset export is added, with a specification update,
+Changeset, fixture, and intentional API snapshot update, when the first cleared
+asset in that format actually ships; an empty wildcard that resolves no file is
+not advertised as public API.
+
 ## 14. Motion architecture
 
 CSS transitions and keyframes implement button, badge, sticker, and simple
@@ -1606,6 +1614,46 @@ Before publish:
 
 Canary releases use an explicit prerelease tag. `latest` is updated only from a
 protected release workflow after documentation and package checks succeed.
+
+### 32.1 v0.1 alpha public API freeze
+
+Milestone 11 freezes the pre-release package contract before documentation is
+built on top of it. The machine-readable freeze artifact is
+`tooling/package-preflight/snapshots/public-api.json`. It records the three
+package names, every package export path, root runtime symbols, named public
+types, the eight component names, wildcard definition/asset policy, and the
+explicit standalone Trail boundary. Tarball contents and measured regression
+budgets are frozen beside it in `tarball-contents.json` and `size-budgets.json`.
+
+`pnpm test:packages` performs a cache-bypassed clean package build, creates real
+tarballs, installs them into isolated Next.js and Vite consumers, and validates
+the frozen API, declarations, maps, CSS, dependency closure, licenses, contents,
+tree shaking, and size budgets. Snapshot changes are never automatic. A
+maintainer reviews the package/API change and runs `pnpm test:packages:update`
+only when the new contract is intentional.
+
+After Milestone 11, every public API modification follows this sequence:
+
+```text
+authoritative specification update
+→ implementation and fixture update
+→ Changeset with migration/release intent
+→ intentional public API snapshot update
+```
+
+An internal refactor that does not alter the public contract does not need an
+API snapshot change. Milestone 11 itself does not create a Changeset because it
+establishes, rather than changes, the unpublished alpha contract. The package
+versions remain `0.0.0` and all three manifests remain `private: true` until
+Milestone 18 owns publication infrastructure and release protection changes.
+
+The frozen peer range is React `^19.0.0` and React DOM `^19.0.0` for
+`@scout-ui/react`, and React `^19.0.0` for `@scout-ui/sticker-trail`. The packed
+Next.js and Vite matrices validate React 19.2.8; no React 18 compatibility is
+claimed by this range. The browser policy remains current evergreen Chromium,
+Firefox, and Safari as represented by the Playwright Chromium/Firefox/WebKit
+projects and the documented capability projects for reduced motion, coarse
+pointers, mobile, and forced colors.
 
 ## 33. CI/CD
 

@@ -4,6 +4,16 @@ React components for sticker-led interfaces. The v0.1 surface so far is
 `Sticker`, `StickerButton`, `StickerBadge`, `StickerTrail`, `StickerCursor`,
 `StickerPeel`, `StickerStack`, and `StickerNavbar`.
 
+## Install
+
+```sh
+npm install @scout-ui/react react react-dom
+```
+
+React and React DOM are peers and are not bundled. Scout UI is ESM-only and
+requires no theme provider, Tailwind configuration, CSS-in-JS runtime, font
+download, analytics, or browser-side network service.
+
 The package supports the root import plus explicit public subpaths. Import
 `@scout-ui/react/styles.css` for the public stylesheet entry.
 
@@ -33,7 +43,7 @@ serializable usage can render in a React Server Component; event handlers belong
 below a consumer-authored Client Component boundary.
 
 `StickerTrail` and `useStickerTrail` are re-exported from the standalone
-`@scout-ui/sticker-trail` package, and its leaf is the one interactive entry:
+`@scout-ui/sticker-trail` package:
 
 ```tsx
 import { StickerTrail, useStickerTrail } from "@scout-ui/react";
@@ -45,6 +55,25 @@ That subpath carries `"use client"`. Its Trail rules are already composed into
 `@scout-ui/react/styles.css`, so a broad consumer needs one CSS import and must
 not also import `@scout-ui/sticker-trail/styles.css`. See the standalone
 package's README for the Trail API, presets, and behaviour.
+
+The mixed root barrel is intentionally unmarked. Server-compatible leaves stay
+unmarked; the five leaves that own client interaction carry their own boundary:
+
+| Public entry                     | RSC classification |
+| -------------------------------- | ------------------ |
+| `@scout-ui/react`                | unmarked barrel    |
+| `@scout-ui/react/sticker`        | server-compatible  |
+| `@scout-ui/react/sticker-button` | server-compatible  |
+| `@scout-ui/react/sticker-badge`  | server-compatible  |
+| `@scout-ui/react/sticker-trail`  | client entry       |
+| `@scout-ui/react/sticker-cursor` | client entry       |
+| `@scout-ui/react/sticker-peel`   | client entry       |
+| `@scout-ui/react/sticker-stack`  | client entry       |
+| `@scout-ui/react/sticker-navbar` | client entry       |
+
+All modules are safe to evaluate during SSR. Callback and render-function props
+on interactive entries belong below a consumer-authored Client Component
+boundary; direct Server Component usage must pass serializable props.
 
 `StickerPeel` is a progressively enhanced disclosure. Its leaf is a narrow
 Client Component entry because it owns focus management and optional pointer
@@ -143,6 +172,19 @@ content increases the bar height, override both values on that shared root. The
 inherited `aria-label` attribute can provide a unique header/navigation landmark
 name when a page intentionally renders more than one Navbar.
 
+`StickerCursor` is available from the root or its narrow client subpath:
+
+```tsx
+import { StickerCursor } from "@scout-ui/react/sticker-cursor";
+
+<StickerCursor visuals={{ default: { source: cursorArtwork } }}>
+  <section>Bounded showcase</section>
+</StickerCursor>;
+```
+
+Cursor restores native behavior until artwork is ready and over editable,
+native, coarse-pointer, reduced-motion, blurred, left, or unmounted regions.
+
 `Sticker` accepts exactly one of `source` or `children`. Source-backed artwork
 uses format-neutral image semantics and defaults to no wrapper outline so
 official Scout UI assets do not receive a second cut line. Consumer-rendered
@@ -166,3 +208,6 @@ Intentional component hooks include the `sui-sticker`, `sui-sticker-button`, and
 `--sui-sticker-rotation`, `--sui-sticker-badge-rotation`, and
 `--sui-sticker-badge-max-width`. Broader surface, text, focus, shadow, and
 motion changes should use the shared semantic tokens.
+
+Only paths listed in the package `exports` map are public. Imports through
+`src/`, `dist/`, or other filesystem internals are unsupported.

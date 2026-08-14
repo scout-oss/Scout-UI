@@ -11,8 +11,12 @@ component is re-exported there and its CSS is already included.
 ## Install
 
 ```sh
-npm install @scout-ui/sticker-trail
+npm install @scout-ui/sticker-trail react
 ```
+
+React is a peer dependency and is not bundled. The package is ESM-only, safe to
+evaluate during SSR, and carries a narrow `"use client"` boundary because its
+entire public runtime is interactive.
 
 ## Use
 
@@ -85,4 +89,8 @@ engine-owned and may change without notice.
 | ------------------- | --------------------------------------- |
 | `--sui-trail-layer` | Stacking order of the decorative layer. |
 
-React and React DOM are peer dependencies and are never bundled.
+React is a peer dependency and is never bundled. React DOM is neither bundled
+nor required by the standalone package.
+
+Only the root, `styles.css`, and `package.json` exports are public. Imports
+through `src/`, `dist/`, or engine internals are unsupported.

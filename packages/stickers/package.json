@@ -31,14 +31,12 @@
       "import": "./dist/definitions/*.js"
     },
     "./assets/*.svg": "./assets/*.svg",
-    "./assets/*.png": "./assets/*.png",
-    "./assets/*.webp": "./assets/*.webp",
     "./package.json": "./package.json"
   },
   "scripts": {
     "assets:check": "node scripts/asset-pipeline.mjs --check",
     "assets:generate": "node scripts/asset-pipeline.mjs --write",
-    "build": "pnpm assets:check && rollup --config rollup.config.mjs && tsc --project tsconfig.json --emitDeclarationOnly --pretty false",
+    "build": "pnpm assets:check && rollup --config rollup.config.mjs && tsc --project tsconfig.json --emitDeclarationOnly --pretty false && node ../../tooling/rollup/embed-declaration-sources.mjs dist",
     "dev": "rollup --config rollup.config.mjs --watch",
     "lint": "pnpm assets:check && eslint src tests scripts rollup.config.mjs && stylelint \"src/**/*.css\" --allow-empty-input",
     "lint:assets": "pnpm assets:check",

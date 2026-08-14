@@ -19,9 +19,12 @@
   "include": [
     "src",
     "vite.config.ts",
+    "vite.peel-tree-shake.config.ts",
     "vite.standalone-trail.config.ts",
+    "vite.standalone-trail-tree-shake.config.ts",
     "vite.sticker-tree-shake.config.ts",
     "vite.strict-mode.config.ts",
+    "vite.trail-tree-shake.config.ts",
     "vite.tree-shake.config.ts"
   ]
 }

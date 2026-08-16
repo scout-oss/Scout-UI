@@ -49,6 +49,10 @@ export function createLibraryConfig({
       preserveModules: true,
       preserveModulesRoot: "src",
       sourcemap: true,
+      // Published declaration maps embed their TypeScript sources in the
+      // post-build step below each package. Keep JavaScript maps external and
+      // path-based so source bodies are not duplicated across the tarball.
+      sourcemapExcludeSources: true,
       banner(chunk) {
         return isEntry(chunk.facadeModuleId, clientEntries)
           ? '"use client";'

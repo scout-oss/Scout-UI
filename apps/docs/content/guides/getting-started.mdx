@@ -1,0 +1,49 @@
+export const metadata = {
+  title: "Getting started",
+  description:
+    "Use Scout UI's frozen alpha package surface in a React project.",
+  order: 1,
+};
+
+Scout UI is an open-source sticker UI library for React. The packages are still
+in alpha preflight, so this guide documents the repository build rather than
+claiming a public npm release.
+
+## Install the foundation
+
+Consume the React package and its single public stylesheet. During local
+development in this monorepo, pnpm resolves the workspace package.
+
+<CodeBlock
+  language="tsx"
+  code={`import { StickerButton } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export function FirstAction() {
+  return <StickerButton tone="acid">Start sticking</StickerButton>;
+}`}
+/>
+
+## Choose the right primitive
+
+Use `Sticker` for object-like artwork, `StickerButton` for actions and links,
+and `StickerBadge` for labels, selection, or removal. Explore the
+[component pinboard](/components) before reaching for a signature interaction.
+
+### Keep semantics native
+
+Scout UI's visual chaos is bounded. Links remain anchors, actions remain
+buttons, and decorative artwork stays out of the accessibility tree.
+
+## Add your own artwork
+
+The React renderer accepts official definitions, image-like sources, and
+consumer-rendered content. The framework-neutral sticker pack is optional; your
+own PNG, WebP, SVG, or React content remains first-class.
+
+## Continue from here
+
+Review the [sticker contact sheet](/stickers), then use the honest
+[playground foundation](/playground) to understand what the next milestone will
+connect. Generated code and shareable configuration are intentionally not live
+yet.

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tooling/typescript/base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "composite": false,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "noEmit": true,
+    "rootDir": "../..",
+    "types": ["node"]
+  },
+  "include": ["playwright.config.ts", "../../tests/browser/docs-*.spec.ts"]
+}

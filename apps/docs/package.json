@@ -4,15 +4,31 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc --build --pretty false",
-    "dev": "tsc --build --watch --pretty false",
-    "lint": "eslint src tests && stylelint \"src/**/*.css\" --allow-empty-input",
+    "build": "next build --webpack",
+    "dev": "next dev --webpack",
+    "lint": "eslint app components content lib tests next.config.mjs && stylelint \"**/*.css\" --allow-empty-input",
+    "start": "next start",
     "test": "vitest run --coverage --config ../../vitest.config.ts",
-    "typecheck": "tsc --project tsconfig.json --noEmit --pretty false"
+    "test:browser": "node tests/browser/run-docs-browser.mjs",
+    "test:visual": "node tests/browser/run-docs-browser.mjs --update-snapshots=all",
+    "typecheck": "tsc --project tsconfig.json --noEmit --pretty false && tsc --project tsconfig.type-tests.json --pretty false && tsc --project tsconfig.browser-tests.json --pretty false"
   },
   "dependencies": {
+    "@mdx-js/loader": "3.1.1",
+    "@mdx-js/react": "3.1.1",
+    "@next/mdx": "16.3.0",
+    "@radix-ui/react-dialog": "1.1.23",
     "@scout-ui/react": "workspace:*",
     "@scout-ui/sticker-trail": "workspace:*",
-    "@scout-ui/stickers": "workspace:*"
+    "@scout-ui/stickers": "workspace:*",
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "typescript": "6.0.3"
   }
 }

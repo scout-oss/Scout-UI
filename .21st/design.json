@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "project": {
+    "name": "scout-ui",
+    "productType": "open-source React design library and documentation product",
+    "stack": ["Next.js App Router", "React", "TypeScript", "CSS cascade layers"]
+  },
+  "sources": {
+    "tokens": [
+      "packages/tokens/src/tokens.css",
+      "packages/react/src/styles.css"
+    ],
+    "components": ["packages/react/src"],
+    "assets": ["packages/stickers/src"],
+    "instructions": [
+      "SCOUT_UI_MASTER_SPEC.md",
+      "SCOUT_UI_DESIGN_SYSTEM.md",
+      "SCOUT_UI_ENGINEERING_SPEC.md",
+      "IMPLEMENTATION_PLAN.md"
+    ]
+  },
+  "design": {
+    "colorMode": "compositional paper and night surfaces",
+    "colors": {
+      "paper": "#F7F5EF",
+      "ink": "#121116",
+      "night": "#0B0A0E",
+      "ultraviolet": "#7C2CFF",
+      "acid": "#D4FF5F",
+      "cyan": "#61DBE8",
+      "hotPink": "#FF3D9A",
+      "cobalt": "#1664FF",
+      "orange": "#FF7A1A"
+    },
+    "typography": {
+      "display": "Bricolage Grotesque target with robust local system fallback",
+      "body": "Inter target with robust local system fallback",
+      "code": "Geist Mono target with robust local system fallback"
+    },
+    "spacing": {
+      "desktop": "12-column grid, 24px gutters, 40–64px edges",
+      "tablet": "8-column grid, 20px gutters, 24–32px edges",
+      "mobile": "4-column grid, 16px gutters, at least 20px edges"
+    },
+    "radius": {
+      "language": "bounded shape vocabulary; labels, paper, stamps, and true pills remain distinct"
+    },
+    "shadows": {
+      "language": "hard offset shadows communicate physical depth and state"
+    },
+    "motion": {
+      "language": "bounded, local, optional, and reduced-motion safe"
+    },
+    "density": "calm technical reading with expressive local interruptions"
+  },
+  "components": {
+    "installed": [
+      "Sticker",
+      "StickerButton",
+      "StickerBadge",
+      "StickerTrail",
+      "StickerCursor",
+      "StickerPeel",
+      "StickerStack",
+      "StickerNavbar"
+    ],
+    "preferredPrimitives": [
+      "native HTML",
+      "Scout UI public components",
+      "Radix Dialog"
+    ],
+    "patterns": [
+      "editorial sticker book",
+      "pinboard component index",
+      "paper reading surfaces",
+      "night preview boards",
+      "page-edge sticker tabs"
+    ]
+  },
+  "constraints": {
+    "must": [
+      "Use frozen public package-name imports",
+      "Preserve native semantics and visible focus",
+      "Keep structure predictable while expression stays bounded",
+      "Use paper and night as compositional surfaces",
+      "Respect reduced motion, forced colors, touch, and reflow",
+      "Keep scout-in read-only"
+    ],
+    "avoid": [
+      "Generic SaaS dashboards and uniform card grids",
+      "Glassmorphism, soft gradients, and excessive rounded pills",
+      "Site-wide cursor or trail decoration",
+      "External runtime fonts or unlicensed assets",
+      "Private package source imports",
+      "M13 controls, schemas, presets, or URL state during M12"
+    ]
+  },
+  "decisions": [
+    "M12 uses calm paper reading regions and bounded night preview regions on the same page.",
+    "The component index uses authored pinboard hierarchy without changing semantic order.",
+    "Root layout and route content remain server components; browser state lives in small client leaves.",
+    "The documentation shell dogfoods StickerNavbar and the frozen Scout UI packages.",
+    "No 21st AI generation was used; the authoritative Scout UI specifications define the visual direction."
+  ],
+  "evidence": [
+    { "fact": "design.tokens", "source": "packages/tokens/src/tokens.css" },
+    { "fact": "design.system", "source": "SCOUT_UI_DESIGN_SYSTEM.md" },
+    { "fact": "docs.architecture", "source": "SCOUT_UI_ENGINEERING_SPEC.md" },
+    { "fact": "milestone.boundary", "source": "IMPLEMENTATION_PLAN.md" }
+  ],
+  "generatedAt": "2026-08-16T17:20:16.731Z"
+}

@@ -1,6 +1,6 @@
 # Scout UI v0.1 Implementation Plan
 
-**Status:** Milestones 1–11 complete; Milestone 12 has not started<br />
+**Status:** Milestones 1–12 complete; Milestone 13 has not started<br />
 **Source documents:** `SCOUT_UI_MASTER_SPEC.md`, `SCOUT_UI_DESIGN_SYSTEM.md`,
 `SCOUT_UI_ENGINEERING_SPEC.md`<br /> **Scope:** Eight components, three public
 packages, one documentation/playground application
@@ -404,6 +404,8 @@ though attribution is not required.
 - API changes after this milestone require a specification update and Changeset.
 
 ## 14. Milestone 12 — Documentation application foundation
+
+**Status:** Complete (2026-08-17)
 
 ### Work
 

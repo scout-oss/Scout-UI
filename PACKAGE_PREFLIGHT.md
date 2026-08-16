@@ -1,8 +1,8 @@
 # Scout UI v0.1 Alpha Package Preflight
 
-**Milestone:** 11<br />
-**Source baseline:** `30abbc3d58eefa12266efd772c8d207eed80e419`<br />
-**Status:** local alpha freeze; packages remain unpublished and `private: true`
+**Milestone:** 11<br /> **Source baseline:**
+`30abbc3d58eefa12266efd772c8d207eed80e419`<br /> **Status:** local alpha freeze;
+packages remain unpublished and `private: true`
 
 This document explains the regression numbers enforced by `pnpm test:packages`.
 Exact API and package-content inventories live in the machine-readable snapshots

@@ -15,6 +15,9 @@ export default createLibraryConfig({
   input: {
     index: "src/index.ts",
     manifest: "src/manifest.ts",
+    // Preserve the frozen M11 tarball inventory on clean builds even though
+    // the authored module contains TypeScript types only.
+    types: "src/types.ts",
     ...definitions,
   },
 });

@@ -4,6 +4,7 @@ import type {
   ComponentDocDefinition,
   ComponentSlug,
   ConfigField,
+  PromptContext,
 } from "../lib/component-registry/types";
 import { componentDefinitions } from "../lib/component-registry/definitions";
 
@@ -50,6 +51,22 @@ void stickerSource;
 // @ts-expect-error M14 intentionally exposes no invented framework variants.
 const invalidCodegenContext: CodegenContext = { framework: "next" };
 void invalidCodegenContext;
+
+const promptContext: PromptContext = {
+  framework: "next-app-router",
+  targetLocation: "Existing hero action",
+  assetStrategy: "bundled",
+  preserveLayout: true,
+  detail: "detailed",
+  projectContext: "Keep the current typography and analytics behavior.",
+};
+const stickerPrompt = sticker.generatePrompt(sticker.defaults, promptContext);
+void stickerPrompt.sections;
+void stickerPrompt.text;
+
+// @ts-expect-error prompt generation accepts only documented framework values.
+const invalidPromptContext: PromptContext = { framework: "next" };
+void invalidPromptContext;
 
 sticker.generateCode(
   // @ts-expect-error each definition accepts only its exact component config.

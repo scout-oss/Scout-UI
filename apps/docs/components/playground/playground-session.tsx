@@ -36,6 +36,7 @@ import {
 import { ConfigurablePreview } from "./configurable-preview";
 import { CodeOutput } from "./code-output";
 import { ControlDeck } from "./control-deck";
+import { PromptSheet } from "./prompt-sheet";
 
 type RuntimeConfig = Record<string, JsonPrimitive>;
 type RuntimeDefinition = ComponentDocDefinition<RuntimeConfig>;
@@ -380,6 +381,14 @@ export function PlaygroundSession({
         changedField={changedField}
         generated={generatedCode}
         mode={mode}
+        promptAction={
+          <PromptSheet
+            changedField={changedField}
+            config={config}
+            definition={definition}
+            mode={mode}
+          />
+        }
       />
 
       {mode === "component" ? (

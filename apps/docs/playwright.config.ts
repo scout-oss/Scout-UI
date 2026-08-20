@@ -48,7 +48,12 @@ export default defineConfig(basePlaywrightConfig, {
     },
   ],
   testDir: "../../tests/browser",
-  testMatch: ["copy-code-*.spec.ts", "docs-*.spec.ts", "playground-*.spec.ts"],
+  testMatch: [
+    "copy-code-*.spec.ts",
+    "docs-*.spec.ts",
+    "playground-*.spec.ts",
+    "prompt-*.spec.ts",
+  ],
   use: {
     ...basePlaywrightConfig.use,
     baseURL,

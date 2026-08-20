@@ -84,7 +84,7 @@ describe("M13 typed component registry", () => {
       expect(definition.schema.fields.length).toBeGreaterThan(4);
       expect(definition.presets.length).toBeGreaterThanOrEqual(2);
       expect(typeof definition.generateCode).toBe("function");
-      expect("generatePrompt" in definition).toBe(false);
+      expect(typeof definition.generatePrompt).toBe("function");
     }
   });
 

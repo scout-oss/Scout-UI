@@ -1392,7 +1392,7 @@ export interface ComponentDocDefinition<
 export interface CompleteComponentDocDefinition<
   C extends object,
 > extends ComponentDocDefinition<C> {
-  generatePrompt(config: C, context: PromptContext): string;
+  generatePrompt(config: C, context: PromptContext): PromptDocument;
 }
 ```
 
@@ -1463,14 +1463,40 @@ export interface PromptContext {
   assetStrategy: "bundled" | "local" | "remote" | "unknown";
   preserveLayout: boolean;
   detail: "concise" | "detailed";
+  projectContext?: string;
+}
+
+export interface PromptLine {
+  text: string;
+  field?: string;
 }
 
 export interface PromptSection {
   id: string;
   title: string;
-  lines: readonly string[];
+  lines: readonly PromptLine[];
+}
+
+export interface PromptSummaryItem {
+  id: string;
+  label: string;
+  value: string;
+  field?: string;
+}
+
+export interface PromptDocument {
+  text: string;
+  sections: readonly PromptSection[];
+  configurationSummary: readonly PromptSummaryItem[];
+  fieldLines: Readonly<Record<string, readonly number[]>>;
 }
 ```
+
+`PromptDocument.text` is the one canonical serialization of the structured
+sections. The prompt sheet renders and copies that exact value; it does not own
+a second UI-only or clipboard-only template. `fieldLines` identifies only the
+bounded configuration fragments that may receive transient changed-value
+emphasis without changing the prompt bytes.
 
 Templates assemble these ordered sections:
 
@@ -1484,9 +1510,11 @@ Templates assemble these ordered sections:
 8. verification and non-regression criteria.
 
 Only values known from config are stated as facts. Empty project context becomes
-an instruction to inspect rather than an invented assumption. Free-form fields
-are length-limited, stripped of control characters, visible in the generated
-output, and excluded from analytics and share URLs by default.
+an instruction to inspect rather than an invented assumption. `targetLocation`
+is limited to 120 Unicode code points and `projectContext` to 500 Unicode code
+points. Free-form fields are stripped of disallowed control characters, rendered
+as plain text inside an explicit user-context delimiter, visible in the
+generated output, and excluded from analytics, storage, history, and share URLs.
 
 Prompt templates have snapshot tests and semantic assertions—for example, a
 Trail prompt must mention scoped coordinates, reduced motion, pointer-event

@@ -74,7 +74,7 @@ describe("M14 deterministic code generators", () => {
       expect(
         definition.generateCode(definition.defaults, defaultCodegenContext),
       ).toBe(generated(slug).source);
-      expect("generatePrompt" in definition).toBe(false);
+      expect(typeof definition.generatePrompt).toBe("function");
     }
   });
 

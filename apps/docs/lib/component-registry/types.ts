@@ -243,6 +243,45 @@ export interface CodegenContext {
   readonly framework: "react";
 }
 
+export type PromptFramework =
+  "react" | "next-app-router" | "next-pages-router" | "unknown";
+export type PromptAssetStrategy = "bundled" | "local" | "remote" | "unknown";
+export type PromptDetail = "concise" | "detailed";
+
+export interface PromptContext {
+  readonly framework: PromptFramework;
+  readonly targetLocation?: string;
+  readonly assetStrategy: PromptAssetStrategy;
+  readonly preserveLayout: boolean;
+  readonly detail: PromptDetail;
+  readonly projectContext?: string;
+}
+
+export interface PromptLine {
+  readonly text: string;
+  readonly field?: string;
+}
+
+export interface PromptSection {
+  readonly id: string;
+  readonly title: string;
+  readonly lines: readonly PromptLine[];
+}
+
+export interface PromptSummaryItem {
+  readonly id: string;
+  readonly label: string;
+  readonly value: string;
+  readonly field?: string;
+}
+
+export interface PromptDocument {
+  readonly text: string;
+  readonly sections: readonly PromptSection[];
+  readonly configurationSummary: readonly PromptSummaryItem[];
+  readonly fieldLines: Readonly<Record<string, readonly number[]>>;
+}
+
 export interface ComponentDocDefinitionBase<C extends object> {
   readonly slug: ComponentSlug;
   readonly name: string;
@@ -267,6 +306,10 @@ export interface ComponentDocDefinition<
     config: Readonly<C>,
     context: CodegenContext,
   ) => string;
+  readonly generatePrompt: (
+    config: Readonly<C>,
+    context: PromptContext,
+  ) => PromptDocument;
 }
 
 export type AnyComponentDocDefinition = {

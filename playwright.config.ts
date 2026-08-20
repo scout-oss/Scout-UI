@@ -5,7 +5,12 @@ import { basePlaywrightConfig } from "./tooling/test/playwright.base.ts";
 const baseURL = process.env.SCOUT_UI_FIXTURE_URL ?? "http://127.0.0.1:4310";
 
 export default defineConfig(basePlaywrightConfig, {
-  testIgnore: ["copy-code-*.spec.ts", "docs-*.spec.ts", "playground-*.spec.ts"],
+  testIgnore: [
+    "copy-code-*.spec.ts",
+    "docs-*.spec.ts",
+    "playground-*.spec.ts",
+    "prompt-*.spec.ts",
+  ],
   projects: [
     {
       name: "chromium-desktop",

@@ -1361,27 +1361,47 @@ under overlap.
 plus typed registries for interactive examples. The site statically renders as
 much content as possible; playground canvases hydrate only where needed.
 
-Each component has one registry entry:
+Each component has one authoritative registry entry. The definition is composed
+in milestone stages so later documentation capabilities enrich the same source
+without fake placeholder generators or duplicated configuration metadata:
 
 ```ts
-export interface ComponentDocDefinition<C extends JsonObject> {
+export interface ComponentDocDefinition<C extends object> {
   slug: string;
   name: string;
   packageName: "@scout-ui/react" | "@scout-ui/sticker-trail";
   status: "alpha" | "beta" | "stable";
+  schemaVersion: number;
   defaults: C;
   schema: ConfigSchema<C>;
   presets: readonly ConfigPreset<C>[];
   renderPreview(config: C): React.ReactNode;
-  generateCode(config: C, context: CodegenContext): string;
-  generatePrompt(config: C, context: PromptContext): string;
   searchTerms: readonly string[];
+}
+
+export interface ComponentDocDefinitionWithCode<
+  C extends object,
+> extends ComponentDocDefinition<C> {
+  generateCode(config: C, context: CodegenContext): string;
+}
+
+export interface CompleteComponentDocDefinition<
+  C extends object,
+> extends ComponentDocDefinitionWithCode<C> {
+  generatePrompt(config: C, context: PromptContext): string;
 }
 ```
 
-The same definition drives component pages, full playground routes, generated
-output, share URLs, and documentation tests. No configuration value should be
-manually represented in four separate systems.
+Milestone 13 completes `ComponentDocDefinition`: identity, configuration,
+controls, validation, normalization, presets, preview, and share state. Each
+concrete config type is constrained to the registry's JSON-primitive field
+model; the broader `object` generic avoids requiring an unsafe string index
+signature on exact component config interfaces. Milestone 14 adds `generateCode`
+to that same definition composition. Milestone 15 adds `generatePrompt`. A
+production definition never ships a stub generator that throws or returns
+placeholder output. The same schema metadata drives component pages, full
+playground routes, generated output, share URLs, and documentation tests. No
+configuration value is manually represented in four separate systems.
 
 ## 24. Playground schema
 

@@ -1,18 +1,59 @@
-export type DocsPackageName = "@scout-ui/react" | "@scout-ui/sticker-trail";
-export type ComponentStatus = "alpha" | "beta" | "stable";
+import {
+  componentDefinitions,
+  componentSlugs,
+} from "./component-registry/definitions";
+import {
+  assertDefinitionIntegrity,
+  configsEqual,
+  isConfigDirty,
+  isFieldVisible,
+  normalizeConfig,
+  selectedPresetId,
+  serializableValues,
+  validateFieldValue,
+} from "./component-registry/schema";
+import type {
+  AnyComponentDocDefinition,
+  ComponentConfigMap,
+  ComponentDocDefinition,
+  ComponentSlug,
+  ConfigField,
+  ConfigPreset,
+  ConfigSchema,
+  ControlGroup,
+  DocsPackageName,
+} from "./component-registry/types";
+
+export type {
+  AnyComponentDocDefinition,
+  ComponentConfigMap,
+  ComponentDocDefinition,
+  ComponentSlug,
+  ConfigField,
+  ConfigPreset,
+  ConfigSchema,
+  ControlGroup,
+  DocsPackageName,
+};
+export type ComponentSummaryDefinition = AnyComponentDocDefinition;
+export type ComponentStatus = AnyComponentDocDefinition["status"];
+export {
+  componentDefinitions,
+  componentSlugs,
+  configsEqual,
+  isConfigDirty,
+  isFieldVisible,
+  normalizeConfig,
+  selectedPresetId,
+  serializableValues,
+  validateFieldValue,
+};
 
 export interface RegistryDefinition {
   readonly slug: string;
   readonly name: string;
   readonly packageName: DocsPackageName;
   readonly status: ComponentStatus;
-}
-
-export interface ComponentSummaryDefinition extends RegistryDefinition {
-  readonly kind: "foundation" | "signature";
-  readonly purpose: string;
-  readonly capabilities: readonly ("keyboard" | "pointer" | "ssr" | "touch")[];
-  readonly accent: "acid" | "cyan" | "orange" | "pink" | "ultraviolet";
 }
 
 export interface Registry<T extends RegistryDefinition> {
@@ -25,7 +66,7 @@ export function createRegistry<const T extends RegistryDefinition>(
   definitions: readonly T[],
 ): Registry<T> {
   const entries = Object.freeze(
-    definitions.map((definition) => Object.freeze({ ...definition }) as T),
+    definitions.map((definition) => Object.freeze(definition)),
   );
   const bySlug = new Map<string, T>();
   for (const definition of entries) {
@@ -42,85 +83,37 @@ export function createRegistry<const T extends RegistryDefinition>(
   });
 }
 
-export const componentCatalog = createRegistry([
-  {
-    slug: "sticker",
-    name: "Sticker",
-    packageName: "@scout-ui/react",
-    status: "alpha",
-    kind: "foundation",
-    purpose: "Place accessible artwork with tactile Scout UI treatment.",
-    capabilities: ["ssr", "keyboard"],
-    accent: "acid",
-  },
-  {
-    slug: "sticker-button",
-    name: "StickerButton",
-    packageName: "@scout-ui/react",
-    status: "alpha",
-    kind: "foundation",
-    purpose: "Give actions and links physical press feedback.",
-    capabilities: ["ssr", "keyboard", "touch"],
-    accent: "cyan",
-  },
-  {
-    slug: "sticker-badge",
-    name: "StickerBadge",
-    packageName: "@scout-ui/react",
-    status: "alpha",
-    kind: "foundation",
-    purpose: "Label, select, and remove with native semantics.",
-    capabilities: ["ssr", "keyboard", "touch"],
-    accent: "pink",
-  },
-  {
-    slug: "sticker-trail",
-    name: "StickerTrail",
-    packageName: "@scout-ui/sticker-trail",
-    status: "alpha",
-    kind: "signature",
-    purpose: "Leave a bounded, performant trail inside one intentional region.",
-    capabilities: ["pointer", "touch", "ssr"],
-    accent: "ultraviolet",
-  },
-  {
-    slug: "sticker-cursor",
-    name: "StickerCursor",
-    packageName: "@scout-ui/react",
-    status: "alpha",
-    kind: "signature",
-    purpose: "Add a safety-first custom pointer enhancement.",
-    capabilities: ["pointer", "ssr"],
-    accent: "orange",
-  },
-  {
-    slug: "sticker-peel",
-    name: "StickerPeel",
-    packageName: "@scout-ui/react",
-    status: "alpha",
-    kind: "signature",
-    purpose: "Reveal layered content with directional intent.",
-    capabilities: ["keyboard", "pointer", "touch", "ssr"],
-    accent: "pink",
-  },
-  {
-    slug: "sticker-stack",
-    name: "StickerStack",
-    packageName: "@scout-ui/react",
-    status: "alpha",
-    kind: "signature",
-    purpose: "Navigate a bounded stack without rendering the whole collection.",
-    capabilities: ["keyboard", "pointer", "touch", "ssr"],
-    accent: "cyan",
-  },
-  {
-    slug: "sticker-navbar",
-    name: "StickerNavbar",
-    packageName: "@scout-ui/react",
-    status: "alpha",
-    kind: "signature",
-    purpose: "Frame a site with accessible ribbon or collage navigation.",
-    capabilities: ["keyboard", "touch", "ssr"],
-    accent: "acid",
-  },
-] as const satisfies readonly ComponentSummaryDefinition[]);
+export function isComponentSlug(value: string): value is ComponentSlug {
+  return componentSlugs.includes(value as ComponentSlug);
+}
+
+export function getComponentDefinition<S extends ComponentSlug>(
+  slug: S,
+): ComponentDocDefinition<ComponentConfigMap[S]>;
+export function getComponentDefinition(
+  slug: string,
+): AnyComponentDocDefinition | undefined;
+export function getComponentDefinition(
+  slug: string,
+): AnyComponentDocDefinition | undefined {
+  return isComponentSlug(slug) ? componentDefinitions[slug] : undefined;
+}
+
+export const componentCatalog = createRegistry<AnyComponentDocDefinition>([
+  componentDefinitions.sticker,
+  componentDefinitions["sticker-button"],
+  componentDefinitions["sticker-badge"],
+  componentDefinitions["sticker-trail"],
+  componentDefinitions["sticker-cursor"],
+  componentDefinitions["sticker-peel"],
+  componentDefinitions["sticker-stack"],
+  componentDefinitions["sticker-navbar"],
+]);
+
+for (const definition of componentCatalog.entries) {
+  assertDefinitionIntegrity(
+    definition as unknown as ComponentDocDefinition<
+      Record<string, string | number | boolean | null>
+    >,
+  );
+}

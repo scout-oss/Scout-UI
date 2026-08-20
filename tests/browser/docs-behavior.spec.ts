@@ -187,47 +187,31 @@ test.describe("Scout UI docs keyboard and resilience", () => {
     ).toBeVisible();
   });
 
-  test("preview poster, hydration, and settled stage preserve surrounding geometry", async ({
+  test("configured preview updates preserve surrounding geometry", async ({
     page,
   }, testInfo) => {
     test.skip(testInfo.project.name !== "chromium-desktop");
-    await page.addInitScript(() => {
-      const previewWindow = window as Window & {
-        __SCOUT_UI_HOLD_PREVIEW__?: boolean;
-      };
-      previewWindow.__SCOUT_UI_HOLD_PREVIEW__ = true;
-    });
     await page.goto("/components/sticker");
     const preview = page.locator(".sui-docs-preview-stage");
     const following = page.locator("[data-preview-following-content]");
-    await expect(preview).toHaveAttribute("data-preview-phase", "poster");
-    const before = await Promise.all([
-      preview.boundingBox(),
-      following.boundingBox(),
-    ]);
-    await page.evaluate(() => {
-      const previewWindow = window as Window & {
-        __SCOUT_UI_HOLD_PREVIEW__?: boolean;
-      };
-      previewWindow.__SCOUT_UI_HOLD_PREVIEW__ = false;
-      window.dispatchEvent(new Event("scout-ui:activate-preview"));
-    });
     await expect(preview).toHaveAttribute("data-preview-phase", "active");
+    const absoluteBounds = (locator: typeof preview) =>
+      locator.evaluate((element) => {
+        const bounds = element.getBoundingClientRect();
+        return { height: bounds.height, y: bounds.top + window.scrollY };
+      });
+    const previewBefore = await absoluteBounds(preview);
+    const followingBefore = await absoluteBounds(following);
+    await page.getByRole("radio", { name: "XL" }).first().check();
     await page.waitForTimeout(250);
-    const after = await Promise.all([
-      preview.boundingBox(),
-      following.boundingBox(),
-    ]);
-    expect(before[0]).not.toBeNull();
-    expect(before[1]).not.toBeNull();
-    expect(after[0]).not.toBeNull();
-    expect(after[1]).not.toBeNull();
+    const previewAfter = await absoluteBounds(preview);
+    const followingAfter = await absoluteBounds(following);
     expect(
-      Math.abs((before[0]?.height ?? 0) - (after[0]?.height ?? 0)),
+      Math.abs(previewBefore.height - previewAfter.height),
     ).toBeLessThanOrEqual(1);
-    expect(
-      Math.abs((before[1]?.y ?? 0) - (after[1]?.y ?? 0)),
-    ).toBeLessThanOrEqual(1);
+    expect(Math.abs(followingBefore.y - followingAfter.y)).toBeLessThanOrEqual(
+      1,
+    );
   });
 
   test("preview failure stays contained and retry restores the live board", async ({
@@ -251,7 +235,7 @@ test.describe("Scout UI docs keyboard and resilience", () => {
       page.getByRole("navigation", { name: "Scout UI documentation" }),
     ).toBeVisible();
     await page.getByRole("button", { name: "Retry preview" }).click();
-    await expect(page.locator("[data-preview-active='true']")).toBeVisible();
+    await expect(page.locator("[data-preview-value]").first()).toBeVisible();
   });
 
   test("user reduced effects persist and preserve content", async ({

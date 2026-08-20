@@ -85,6 +85,10 @@ test.describe("Scout UI M12 docs review baselines", () => {
   });
 
   test("Component skeleton desktop", async ({ page }, testInfo) => {
+    test.skip(
+      true,
+      "M13 component-page visuals live in playground-visual.spec.ts",
+    );
     desktopOnly(testInfo);
     await page.setViewportSize({ height: 1000, width: 1440 });
     await page.goto("/components/sticker");
@@ -92,6 +96,10 @@ test.describe("Scout UI M12 docs review baselines", () => {
   });
 
   test("Component skeleton mobile", async ({ page }, testInfo) => {
+    test.skip(
+      true,
+      "M13 component-page visuals live in playground-visual.spec.ts",
+    );
     desktopOnly(testInfo);
     await page.setViewportSize({ height: 844, width: 390 });
     await page.goto("/components/sticker");
@@ -99,6 +107,10 @@ test.describe("Scout UI M12 docs review baselines", () => {
   });
 
   test("Desktop page-edge TOC", async ({ page }, testInfo) => {
+    test.skip(
+      true,
+      "M13 component-page visuals live in playground-visual.spec.ts",
+    );
     desktopOnly(testInfo);
     await page.setViewportSize({ height: 900, width: 1280 });
     await page.goto("/components/sticker#api");
@@ -137,6 +149,10 @@ test.describe("Scout UI M12 docs review baselines", () => {
   });
 
   test("Night interactive preview board", async ({ page }, testInfo) => {
+    test.skip(
+      true,
+      "M13 configured preview visuals live in playground-visual.spec.ts",
+    );
     desktopOnly(testInfo);
     await page.setViewportSize({ height: 900, width: 1280 });
     await page.goto("/components/sticker");
@@ -168,6 +184,10 @@ test.describe("Scout UI M12 docs review baselines", () => {
   });
 
   test("Preview error state", async ({ page }, testInfo) => {
+    test.skip(
+      true,
+      "M13 configured error visuals live in playground-visual.spec.ts",
+    );
     desktopOnly(testInfo);
     await page.setViewportSize({ height: 900, width: 1280 });
     await page.goto("/test-surfaces/preview-error");

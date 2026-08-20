@@ -1,0 +1,12 @@
+{
+  "extends": "../typescript/base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "rootDir": "../..",
+    "tsBuildInfoFile": "./node_modules/.cache/tsconfig.tsbuildinfo",
+    "types": ["node"]
+  },
+  "include": ["./codegen-samples-entry.ts"]
+}

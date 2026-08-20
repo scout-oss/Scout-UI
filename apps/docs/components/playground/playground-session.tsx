@@ -13,6 +13,10 @@ import {
 
 import { componentDefinitions } from "../../lib/component-registry/definitions";
 import {
+  defaultCodegenContext,
+  generateCodeForDefinition,
+} from "../../lib/codegen/generate-code";
+import {
   isConfigDirty,
   isFieldVisible,
   normalizeConfig,
@@ -30,6 +34,7 @@ import {
   URL_REPLACE_DEBOUNCE_MS,
 } from "../../lib/component-registry/url-state";
 import { ConfigurablePreview } from "./configurable-preview";
+import { CodeOutput } from "./code-output";
 import { ControlDeck } from "./control-deck";
 
 type RuntimeConfig = Record<string, JsonPrimitive>;
@@ -87,6 +92,7 @@ export function PlaygroundSession({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shareStatus, setShareStatus] = useState<ShareStatus>("idle");
   const [shareUrl, setShareUrl] = useState("");
+  const [changedField, setChangedField] = useState<string | null>(null);
   const configRef = useRef(config);
   const mobileCloseRef = useRef<HTMLButtonElement>(null);
   const mobileSheetRef = useRef<HTMLDivElement>(null);
@@ -172,6 +178,7 @@ export function PlaygroundSession({
       setConfig(restored.config);
       setNotice(restored.notice);
       setShareStatus("idle");
+      setChangedField(null);
     };
     const scope = window as typeof window & {
       __scoutUiPlaygroundPopstateListeners?: number;
@@ -202,6 +209,7 @@ export function PlaygroundSession({
 
     configRef.current = next;
     setConfig(next);
+    setChangedField(key);
     setShareStatus("idle");
     scheduleLiveUrl(next);
   };
@@ -218,6 +226,7 @@ export function PlaygroundSession({
     setConfig(next);
     setNotice(null);
     setShareStatus("idle");
+    setChangedField("preset");
     writeHistory(next, "push");
   };
 
@@ -229,6 +238,7 @@ export function PlaygroundSession({
     setConfig(next);
     setNotice(null);
     setShareStatus("idle");
+    setChangedField(null);
     writeHistory(next, "push");
   };
 
@@ -264,6 +274,10 @@ export function PlaygroundSession({
     "https://scout-ui.invalid",
   ).relativeUrl;
   const preview = definition.renderPreview(config);
+  const generatedCode = useMemo(
+    () => generateCodeForDefinition(definition, config, defaultCodegenContext),
+    [config, definition],
+  );
   const deckProps = {
     config,
     definition,
@@ -362,24 +376,11 @@ export function PlaygroundSession({
         </Dialog.Root>
       </div>
 
-      <div className="sui-docs-playground-handoff">
-        <div>
-          <span>Next desk · M14</span>
-          <strong>Generated React code</strong>
-          <p>
-            The schema is ready; final code generation is intentionally not
-            active yet.
-          </p>
-        </div>
-        <div>
-          <span>Next desk · M15</span>
-          <strong>AI implementation prompt</strong>
-          <p>
-            Prompt metadata is present; final prompt generation remains
-            intentionally deferred.
-          </p>
-        </div>
-      </div>
+      <CodeOutput
+        changedField={changedField}
+        generated={generatedCode}
+        mode={mode}
+      />
 
       {mode === "component" ? (
         <Link className="sui-docs-open-playground" href={fullPlaygroundUrl}>

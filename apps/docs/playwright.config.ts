@@ -6,6 +6,10 @@ const baseURL = process.env.SCOUT_UI_DOCS_URL ?? "http://127.0.0.1:4312";
 
 export default defineConfig(basePlaywrightConfig, {
   outputDir: "../../.artifacts/playwright/docs-test-results",
+  // Screenshot, debounce, history, and worker-lifecycle proofs share one
+  // production docs server. Serializing them removes cross-test CPU/timer
+  // contention without weakening the browser/device project matrix.
+  workers: 1,
   projects: [
     { name: "chromium-desktop", use: { ...devices["Desktop Chrome"] } },
     { name: "firefox-desktop", use: { ...devices["Desktop Firefox"] } },
@@ -44,7 +48,7 @@ export default defineConfig(basePlaywrightConfig, {
     },
   ],
   testDir: "../../tests/browser",
-  testMatch: ["docs-*.spec.ts", "playground-*.spec.ts"],
+  testMatch: ["copy-code-*.spec.ts", "docs-*.spec.ts", "playground-*.spec.ts"],
   use: {
     ...basePlaywrightConfig.use,
     baseURL,

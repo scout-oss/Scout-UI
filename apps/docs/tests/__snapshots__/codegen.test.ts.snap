@@ -1,0 +1,984 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker/custom 1`] = `
+""use client";
+
+import { Sticker } from "@scout-ui/react";
+import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
+import "@scout-ui/react/styles.css";
+
+export default function StickerExample() {
+  return (
+    <Sticker
+      source={sunnySmile}
+      alt={"Smiling sun sticker"}
+      size="xl"
+      material="photo"
+      shadow="lifted"
+      rotation={7}
+      interactive
+      onClick={() => window.alert("Sticker activated")}
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker/default 1`] = `
+"import { Sticker } from "@scout-ui/react";
+import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
+import "@scout-ui/react/styles.css";
+
+export default function StickerExample() {
+  return (
+    <Sticker
+      source={sunnySmile}
+      alt={"Smiling sun sticker"}
+      size="lg"
+      shadow="lifted"
+      rotation={-6}
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker/preset/calm 1`] = `
+"import { Sticker } from "@scout-ui/react";
+import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
+import "@scout-ui/react/styles.css";
+
+export default function StickerExample() {
+  return (
+    <Sticker
+      source={sunnySmile}
+      alt={"Smiling sun sticker"}
+      size="md"
+      shadow="stuck"
+      rotation={0}
+      intensity="calm"
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker/preset/default 1`] = `
+"import { Sticker } from "@scout-ui/react";
+import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
+import "@scout-ui/react/styles.css";
+
+export default function StickerExample() {
+  return (
+    <Sticker
+      source={sunnySmile}
+      alt={"Smiling sun sticker"}
+      size="lg"
+      shadow="lifted"
+      rotation={-6}
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker/preset/loud 1`] = `
+"import { Sticker } from "@scout-ui/react";
+import { attentionBolt } from "@scout-ui/stickers/definitions/attention-bolt";
+import "@scout-ui/react/styles.css";
+
+export default function StickerExample() {
+  return (
+    <Sticker
+      source={attentionBolt}
+      alt={"Attention bolt sticker"}
+      size="xl"
+      tone="orange"
+      shadow="lifted"
+      rotation={9}
+      intensity="loud"
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-badge/custom 1`] = `
+""use client";
+
+import { useState } from "react";
+import { StickerBadge } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerBadgeExample() {
+  const [selected, setSelected] = useState(true);
+
+  return (
+    <StickerBadge
+      mode="select"
+      tone="cyan"
+      shape="stamp"
+      rotation={-1}
+      selected={selected}
+      onSelectedChange={setSelected}
+    >
+      {"Fresh signal"}
+    </StickerBadge>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-badge/default 1`] = `
+"import { StickerBadge } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerBadgeExample() {
+  return (
+    <StickerBadge
+      tone="cyan"
+      rotation={-1}
+    >
+      {"Fresh signal"}
+    </StickerBadge>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-badge/preset/default 1`] = `
+"import { StickerBadge } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerBadgeExample() {
+  return (
+    <StickerBadge
+      tone="cyan"
+      rotation={-1}
+    >
+      {"Fresh signal"}
+    </StickerBadge>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-badge/preset/remove 1`] = `
+""use client";
+
+import { useState } from "react";
+import { StickerBadge } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerBadgeExample() {
+  const [visible, setVisible] = useState(true);
+  if (!visible) return null;
+
+  return (
+    <StickerBadge
+      mode="remove"
+      tone="pink"
+      rotation={-1}
+      removeLabel={"Remove tag: Remove me"}
+      onRemove={() => setVisible(false)}
+    >
+      {"Remove me"}
+    </StickerBadge>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-badge/preset/selected 1`] = `
+""use client";
+
+import { useState } from "react";
+import { StickerBadge } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerBadgeExample() {
+  const [selected, setSelected] = useState(true);
+
+  return (
+    <StickerBadge
+      mode="select"
+      tone="acid"
+      shape="stamp"
+      rotation={-1}
+      selected={selected}
+      onSelectedChange={setSelected}
+    >
+      {"Fresh signal"}
+    </StickerBadge>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-button/custom 1`] = `
+"import { StickerButton } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerButtonExample() {
+  return (
+    <StickerButton
+      href="/components"
+      tone="cyan"
+      trailing={<span aria-hidden="true">→</span>}
+    >
+      {"Make it stick"}
+    </StickerButton>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-button/default 1`] = `
+"import { StickerButton } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerButtonExample() {
+  return (
+    <StickerButton
+      tone="acid"
+      leading={<span aria-hidden="true">✦</span>}
+      trailing={<span aria-hidden="true">→</span>}
+    >
+      {"Make it stick"}
+    </StickerButton>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-button/preset/default 1`] = `
+"import { StickerButton } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerButtonExample() {
+  return (
+    <StickerButton
+      tone="acid"
+      leading={<span aria-hidden="true">✦</span>}
+      trailing={<span aria-hidden="true">→</span>}
+    >
+      {"Make it stick"}
+    </StickerButton>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-button/preset/link 1`] = `
+"import { StickerButton } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerButtonExample() {
+  return (
+    <StickerButton
+      href="/components"
+      tone="cyan"
+      shape="label"
+      trailing={<span aria-hidden="true">→</span>}
+    >
+      {"Make it stick"}
+    </StickerButton>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-button/preset/loading 1`] = `
+"import { StickerButton } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerButtonExample() {
+  return (
+    <StickerButton
+      tone="acid"
+      leading={<span aria-hidden="true">✦</span>}
+      loading
+      loadingLabel="Sticking…"
+    >
+      {"Make it stick"}
+    </StickerButton>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-cursor/custom 1`] = `
+"import { StickerCursor } from "@scout-ui/react";
+import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
+import { scribblePointer } from "@scout-ui/stickers/definitions/scribble-pointer";
+import "@scout-ui/react/styles.css";
+
+export default function StickerCursorExample() {
+  return (
+    <StickerCursor
+      visuals={{
+        default: { source: scribblePointer },
+        hover: { source: chunkyCheck },
+      }}
+      size={48}
+      tilt={3}
+      clickFeedback="none"
+      hideNative="never"
+    >
+      <section style={{ minHeight: 320, padding: 32 }}>
+        <h2>Cursor showcase</h2>
+        <button data-sticker-cursor="hover" type="button">
+          Hover target
+        </button>
+        <input aria-label="Native cursor text field" />
+      </section>
+    </StickerCursor>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-cursor/default 1`] = `
+"import { StickerCursor } from "@scout-ui/react";
+import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
+import { scribblePointer } from "@scout-ui/stickers/definitions/scribble-pointer";
+import "@scout-ui/react/styles.css";
+
+export default function StickerCursorExample() {
+  return (
+    <StickerCursor
+      visuals={{
+        default: { source: scribblePointer },
+        hover: { source: chunkyCheck },
+      }}
+      size={48}
+    >
+      <section style={{ minHeight: 320, padding: 32 }}>
+        <h2>Cursor showcase</h2>
+        <button data-sticker-cursor="hover" type="button">
+          Hover target
+        </button>
+        <input aria-label="Native cursor text field" />
+      </section>
+    </StickerCursor>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-cursor/preset/default 1`] = `
+"import { StickerCursor } from "@scout-ui/react";
+import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
+import { scribblePointer } from "@scout-ui/stickers/definitions/scribble-pointer";
+import "@scout-ui/react/styles.css";
+
+export default function StickerCursorExample() {
+  return (
+    <StickerCursor
+      visuals={{
+        default: { source: scribblePointer },
+        hover: { source: chunkyCheck },
+      }}
+      size={48}
+    >
+      <section style={{ minHeight: 320, padding: 32 }}>
+        <h2>Cursor showcase</h2>
+        <button data-sticker-cursor="hover" type="button">
+          Hover target
+        </button>
+        <input aria-label="Native cursor text field" />
+      </section>
+    </StickerCursor>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-cursor/preset/native 1`] = `
+"import { StickerCursor } from "@scout-ui/react";
+import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
+import { scribblePointer } from "@scout-ui/stickers/definitions/scribble-pointer";
+import "@scout-ui/react/styles.css";
+
+export default function StickerCursorExample() {
+  return (
+    <StickerCursor
+      visuals={{
+        default: { source: scribblePointer },
+        hover: { source: chunkyCheck },
+      }}
+      size={48}
+      tilt={4}
+      clickFeedback="press"
+      hideNative="never"
+    >
+      <section style={{ minHeight: 320, padding: 32 }}>
+        <h2>Cursor showcase</h2>
+        <button data-sticker-cursor="hover" type="button">
+          Hover target
+        </button>
+        <input aria-label="Native cursor text field" />
+      </section>
+    </StickerCursor>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-cursor/preset/quiet 1`] = `
+"import { StickerCursor } from "@scout-ui/react";
+import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
+import "@scout-ui/react/styles.css";
+
+export default function StickerCursorExample() {
+  return (
+    <StickerCursor
+      visuals={{
+        default: { source: chunkyCheck },
+        hover: { source: chunkyCheck },
+      }}
+      size={34}
+      tilt={0}
+      smoothing={0.65}
+      clickFeedback="none"
+    >
+      <section style={{ minHeight: 320, padding: 32 }}>
+        <h2>Cursor showcase</h2>
+        <button data-sticker-cursor="hover" type="button">
+          Hover target
+        </button>
+        <input aria-label="Native cursor text field" />
+      </section>
+    </StickerCursor>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-navbar/custom 1`] = `
+"import { StickerNavbar } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+const items = [
+  { id: "components", label: "Components", href: "/components" },
+  { id: "guides", label: "Guides", href: "/guides" },
+  { id: "examples", label: "Examples", href: "/examples" },
+] as const;
+
+export default function StickerNavbarExample() {
+  return (
+    <StickerNavbar
+      brand={<a href="/">STICK/WORK</a>}
+      items={items}
+      variant="collage"
+      activeId="examples"
+      showScrollProgress
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-navbar/default 1`] = `
+"import { StickerNavbar } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+const items = [
+  { id: "components", label: "Components", href: "/components" },
+  { id: "guides", label: "Guides", href: "/guides" },
+  { id: "examples", label: "Examples", href: "/examples" },
+] as const;
+
+export default function StickerNavbarExample() {
+  return (
+    <StickerNavbar
+      brand={<a href="/">STICK/WORK</a>}
+      items={items}
+      activeId="components"
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-navbar/preset/collage 1`] = `
+"import { StickerNavbar } from "@scout-ui/react";
+import { attentionBolt } from "@scout-ui/stickers/definitions/attention-bolt";
+import "@scout-ui/react/styles.css";
+
+const items = [
+  { id: "components", label: "Components", href: "/components" },
+  { id: "guides", label: "Guides", href: "/guides" },
+  { id: "examples", label: "Examples", href: "/examples" },
+] as const;
+
+export default function StickerNavbarExample() {
+  return (
+    <StickerNavbar
+      brand={<a href="/">STICK/WORK</a>}
+      items={items}
+      variant="collage"
+      activeId="examples"
+      collage={[attentionBolt]}
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-navbar/preset/default 1`] = `
+"import { StickerNavbar } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+const items = [
+  { id: "components", label: "Components", href: "/components" },
+  { id: "guides", label: "Guides", href: "/guides" },
+  { id: "examples", label: "Examples", href: "/examples" },
+] as const;
+
+export default function StickerNavbarExample() {
+  return (
+    <StickerNavbar
+      brand={<a href="/">STICK/WORK</a>}
+      items={items}
+      activeId="components"
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-navbar/preset/progress 1`] = `
+"import { StickerNavbar } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+const items = [
+  { id: "components", label: "Components", href: "/components" },
+  { id: "guides", label: "Guides", href: "/guides" },
+  { id: "examples", label: "Examples", href: "/examples" },
+] as const;
+
+export default function StickerNavbarExample() {
+  return (
+    <StickerNavbar
+      brand={<a href="/">STICK/WORK</a>}
+      items={items}
+      activeId="guides"
+      sticky
+      showScrollProgress
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-peel/custom 1`] = `
+"import { StickerPeel } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerPeelExample() {
+  return (
+    <StickerPeel
+      front={
+        <article>
+          <h2>Front layer</h2>
+          <p>Peel for the detail.</p>
+        </article>
+      }
+      back={
+        <article>
+          <h2>Revealed layer</h2>
+          <p>Complete semantic content.</p>
+        </article>
+      }
+      defaultOpen
+      origin="bottom-left"
+      drag={false}
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-peel/default 1`] = `
+"import { StickerPeel } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerPeelExample() {
+  return (
+    <StickerPeel
+      front={
+        <article>
+          <h2>Front layer</h2>
+          <p>Peel for the detail.</p>
+        </article>
+      }
+      back={
+        <article>
+          <h2>Revealed layer</h2>
+          <p>Complete semantic content.</p>
+        </article>
+      }
+      drag
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-peel/preset/default 1`] = `
+"import { StickerPeel } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerPeelExample() {
+  return (
+    <StickerPeel
+      front={
+        <article>
+          <h2>Front layer</h2>
+          <p>Peel for the detail.</p>
+        </article>
+      }
+      back={
+        <article>
+          <h2>Revealed layer</h2>
+          <p>Complete semantic content.</p>
+        </article>
+      }
+      drag
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-peel/preset/open 1`] = `
+"import { StickerPeel } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerPeelExample() {
+  return (
+    <StickerPeel
+      front={
+        <article>
+          <h2>Front layer</h2>
+          <p>Peel for the detail.</p>
+        </article>
+      }
+      back={
+        <article>
+          <h2>Revealed layer</h2>
+          <p>Complete semantic content.</p>
+        </article>
+      }
+      defaultOpen
+      drag
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-peel/preset/static 1`] = `
+"import { StickerPeel } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+export default function StickerPeelExample() {
+  return (
+    <StickerPeel
+      front={
+        <article>
+          <h2>Front layer</h2>
+          <p>Peel for the detail.</p>
+        </article>
+      }
+      back={
+        <article>
+          <h2>Revealed layer</h2>
+          <p>Complete semantic content.</p>
+        </article>
+      }
+      origin="bottom-left"
+      drag={false}
+      reducedMotion="always"
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-stack/custom 1`] = `
+""use client";
+
+import { StickerStack } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+const items = [
+  { id: "shape", title: "Give the idea a shape." },
+  { id: "ship", title: "Ship the bounded version." },
+  { id: "learn", title: "Learn from real use." },
+  { id: "repeat", title: "Keep what sticks." },
+] as const;
+
+export default function StickerStackExample() {
+  return (
+    <StickerStack
+      items={items}
+      getKey={(item) => item.id}
+      renderItem={(item) => (
+        <article>
+          <h2>{item.title}</h2>
+        </article>
+      )}
+      defaultIndex={2}
+      axis="y"
+      drag
+      keyboard
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-stack/default 1`] = `
+""use client";
+
+import { StickerStack } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+const items = [
+  { id: "shape", title: "Give the idea a shape." },
+  { id: "ship", title: "Ship the bounded version." },
+  { id: "learn", title: "Learn from real use." },
+  { id: "repeat", title: "Keep what sticks." },
+] as const;
+
+export default function StickerStackExample() {
+  return (
+    <StickerStack
+      items={items}
+      getKey={(item) => item.id}
+      renderItem={(item) => (
+        <article>
+          <h2>{item.title}</h2>
+        </article>
+      )}
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-stack/preset/default 1`] = `
+""use client";
+
+import { StickerStack } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+const items = [
+  { id: "shape", title: "Give the idea a shape." },
+  { id: "ship", title: "Ship the bounded version." },
+  { id: "learn", title: "Learn from real use." },
+  { id: "repeat", title: "Keep what sticks." },
+] as const;
+
+export default function StickerStackExample() {
+  return (
+    <StickerStack
+      items={items}
+      getKey={(item) => item.id}
+      renderItem={(item) => (
+        <article>
+          <h2>{item.title}</h2>
+        </article>
+      )}
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-stack/preset/interactive 1`] = `
+""use client";
+
+import { StickerStack } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+const items = [
+  { id: "shape", title: "Give the idea a shape." },
+  { id: "ship", title: "Ship the bounded version." },
+  { id: "learn", title: "Learn from real use." },
+  { id: "repeat", title: "Keep what sticks." },
+] as const;
+
+export default function StickerStackExample() {
+  return (
+    <StickerStack
+      items={items}
+      getKey={(item) => item.id}
+      renderItem={(item) => (
+        <article>
+          <h2>{item.title}</h2>
+        </article>
+      )}
+      loop
+      drag
+      keyboard
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-stack/preset/vertical 1`] = `
+""use client";
+
+import { StickerStack } from "@scout-ui/react";
+import "@scout-ui/react/styles.css";
+
+const items = [
+  { id: "shape", title: "Give the idea a shape." },
+  { id: "ship", title: "Ship the bounded version." },
+  { id: "learn", title: "Learn from real use." },
+  { id: "repeat", title: "Keep what sticks." },
+] as const;
+
+export default function StickerStackExample() {
+  return (
+    <StickerStack
+      items={items}
+      getKey={(item) => item.id}
+      renderItem={(item) => (
+        <article>
+          <h2>{item.title}</h2>
+        </article>
+      )}
+      defaultIndex={2}
+      visibleCount={4}
+      axis="y"
+      reducedMotion="always"
+    />
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-trail/custom 1`] = `
+"import { StickerTrail } from "@scout-ui/sticker-trail";
+import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
+import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
+import "@scout-ui/sticker-trail/styles.css";
+
+export default function StickerTrailExample() {
+  return (
+    <StickerTrail
+      stickers={[sparklePop, wonkyStar]}
+      spacing={{ min: 56, max: 76 }}
+      maxActive={18}
+      sequence="random"
+    >
+      <section style={{ minHeight: 320, padding: 32 }}>
+        <h2>Move inside this bounded region</h2>
+        <p>The trail stays decorative and pointer-safe.</p>
+      </section>
+    </StickerTrail>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-trail/default 1`] = `
+"import { StickerTrail } from "@scout-ui/sticker-trail";
+import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
+import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
+import "@scout-ui/sticker-trail/styles.css";
+
+export default function StickerTrailExample() {
+  return (
+    <StickerTrail
+      stickers={[sparklePop, wonkyStar]}
+      spacing={{ min: 32, max: 52 }}
+    >
+      <section style={{ minHeight: 320, padding: 32 }}>
+        <h2>Move inside this bounded region</h2>
+        <p>The trail stays decorative and pointer-safe.</p>
+      </section>
+    </StickerTrail>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-trail/preset/calm 1`] = `
+"import { StickerTrail } from "@scout-ui/sticker-trail";
+import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
+import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
+import "@scout-ui/sticker-trail/styles.css";
+
+export default function StickerTrailExample() {
+  return (
+    <StickerTrail
+      stickers={[sparklePop, wonkyStar]}
+      preset="calm"
+      size={{ min: 46, max: 74 }}
+      spacing={{ min: 62, max: 82 }}
+      maxActive={14}
+    >
+      <section style={{ minHeight: 320, padding: 32 }}>
+        <h2>Move inside this bounded region</h2>
+        <p>The trail stays decorative and pointer-safe.</p>
+      </section>
+    </StickerTrail>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-trail/preset/chaos 1`] = `
+"import { StickerTrail } from "@scout-ui/sticker-trail";
+import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
+import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
+import "@scout-ui/sticker-trail/styles.css";
+
+export default function StickerTrailExample() {
+  return (
+    <StickerTrail
+      stickers={[sparklePop, wonkyStar]}
+      preset="chaos"
+      size={{ min: 78, max: 106 }}
+      spacing={{ min: 20, max: 40 }}
+      maxActive={32}
+      exit="float"
+      sequence="random"
+    >
+      <section style={{ minHeight: 320, padding: 32 }}>
+        <h2>Move inside this bounded region</h2>
+        <p>The trail stays decorative and pointer-safe.</p>
+      </section>
+    </StickerTrail>
+  );
+}
+"
+`;
+
+exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-trail/preset/default 1`] = `
+"import { StickerTrail } from "@scout-ui/sticker-trail";
+import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
+import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
+import "@scout-ui/sticker-trail/styles.css";
+
+export default function StickerTrailExample() {
+  return (
+    <StickerTrail
+      stickers={[sparklePop, wonkyStar]}
+      spacing={{ min: 32, max: 52 }}
+    >
+      <section style={{ minHeight: 320, padding: 32 }}>
+        <h2>Move inside this bounded region</h2>
+        <p>The trail stays decorative and pointer-safe.</p>
+      </section>
+    </StickerTrail>
+  );
+}
+"
+`;

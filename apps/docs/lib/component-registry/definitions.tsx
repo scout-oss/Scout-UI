@@ -1,10 +1,12 @@
 import { PreviewAdapter } from "../../components/playground/preview-adapter";
+import { generateCodeForDefinition } from "../codegen/generate-code";
 import { playgroundStickerOptions } from "./sticker-options";
 import type {
   BooleanControlField,
   ChoiceControlField,
   ComponentConfigMap,
   ComponentDocDefinition,
+  ComponentDocDefinitionBase,
   ComponentSlug,
   ConfigField,
   ConfigPreset,
@@ -27,6 +29,7 @@ interface FieldOptions<C extends object> {
   readonly visibleWhen?: ControlVisibility<C>;
   readonly accessibility?: string;
   readonly motion?: string;
+  readonly omitWhenDefault?: boolean;
 }
 
 function common<C extends object, K extends PrimitiveKey<C>>(
@@ -47,7 +50,7 @@ function common<C extends object, K extends PrimitiveKey<C>>(
     serialization: options.shareable === false ? "never" : "non-default",
     codegen: {
       prop: options.prop === undefined ? key : options.prop,
-      omitWhenDefault: true,
+      omitWhenDefault: options.omitWhenDefault ?? true,
     },
     prompt: {
       description,
@@ -182,13 +185,18 @@ function preset<C extends object>(
   });
 }
 
-function definition<C extends object>(value: ComponentDocDefinition<C>) {
-  for (const field of value.schema.fields) Object.freeze(field);
-  Object.freeze(value.schema.fields);
-  Object.freeze(value.schema);
-  Object.freeze(value.presets);
-  Object.freeze(value.defaults);
-  return Object.freeze(value);
+function definition<C extends object>(value: ComponentDocDefinitionBase<C>) {
+  const complete: ComponentDocDefinition<C> = {
+    ...value,
+    generateCode: (config, context) =>
+      generateCodeForDefinition(value, config, context).source,
+  };
+  for (const field of complete.schema.fields) Object.freeze(field);
+  Object.freeze(complete.schema.fields);
+  Object.freeze(complete.schema);
+  Object.freeze(complete.presets);
+  Object.freeze(complete.defaults);
+  return Object.freeze(complete);
 }
 
 const stickerDefaults = {
@@ -220,6 +228,7 @@ const stickerFields: readonly ConfigField<ComponentConfigMap["sticker"]>[] = [
     stickerDefaults.alt,
     80,
     {
+      omitWhenDefault: false,
       accessibility:
         "Meaningful source artwork requires useful alternative text.",
     },
@@ -235,6 +244,7 @@ const stickerFields: readonly ConfigField<ComponentConfigMap["sticker"]>[] = [
       label: value.toUpperCase(),
       value,
     })),
+    { omitWhenDefault: false },
   ),
   choiceField(
     "select",
@@ -277,6 +287,7 @@ const stickerFields: readonly ConfigField<ComponentConfigMap["sticker"]>[] = [
     "Appearance",
     stickerDefaults.shadow,
     ["none", "stuck", "lifted"].map((value) => ({ label: value, value })),
+    { omitWhenDefault: false },
   ),
   numericField(
     "range",
@@ -288,6 +299,7 @@ const stickerFields: readonly ConfigField<ComponentConfigMap["sticker"]>[] = [
     -12,
     12,
     1,
+    { omitWhenDefault: false },
   ),
   choiceField(
     "segmented",
@@ -349,6 +361,7 @@ const badgeFields: readonly ConfigField<ComponentConfigMap["sticker-badge"]>[] =
       "Appearance",
       badgeDefaults.tone,
       toneOptions,
+      { omitWhenDefault: false },
     ),
     choiceField(
       "segmented",
@@ -378,6 +391,7 @@ const badgeFields: readonly ConfigField<ComponentConfigMap["sticker-badge"]>[] =
       -3,
       3,
       1,
+      { omitWhenDefault: false },
     ),
     booleanField(
       "selected",
@@ -440,6 +454,7 @@ const buttonFields: readonly ConfigField<
     "Appearance",
     buttonDefaults.tone,
     toneOptions,
+    { omitWhenDefault: false },
   ),
   choiceField(
     "segmented",
@@ -465,7 +480,7 @@ const buttonFields: readonly ConfigField<
     "Show authored leading content.",
     "Content",
     buttonDefaults.leading,
-    { prop: "leading" },
+    { omitWhenDefault: false, prop: "leading" },
   ),
   booleanField(
     "trailing",
@@ -473,7 +488,7 @@ const buttonFields: readonly ConfigField<
     "Show authored trailing content.",
     "Content",
     buttonDefaults.trailing,
-    { prop: "trailing" },
+    { omitWhenDefault: false, prop: "trailing" },
   ),
   booleanField(
     "fullWidth",
@@ -573,6 +588,7 @@ const trailFields: readonly ConfigField<ComponentConfigMap["sticker-trail"]>[] =
       20,
       120,
       2,
+      { omitWhenDefault: false },
     ),
     numericField(
       "number",
@@ -681,6 +697,7 @@ const cursorFields: readonly ConfigField<
     24,
     96,
     2,
+    { omitWhenDefault: false },
   ),
   numericField(
     "range",
@@ -783,7 +800,10 @@ const peelFields: readonly ConfigField<ComponentConfigMap["sticker-peel"]>[] = [
     "Add directional pointer drag without removing click or keyboard.",
     "Behavior",
     peelDefaults.drag,
-    { accessibility: "Drag is never the only path." },
+    {
+      accessibility: "Drag is never the only path.",
+      omitWhenDefault: false,
+    },
   ),
   numericField(
     "range",
@@ -929,6 +949,7 @@ const navbarFields: readonly ConfigField<
     "Behavior",
     navbarDefaults.activeId,
     navOptions(),
+    { omitWhenDefault: false },
   ),
   booleanField(
     "sticky",
@@ -995,6 +1016,7 @@ export const componentDefinitions = Object.freeze({
       }),
       preset("loud", "Loud", "A bounded high-energy object.", {
         ...stickerDefaults,
+        alt: "Attention bolt sticker",
         sourceId: "attention-bolt",
         tone: "orange",
         size: "xl",

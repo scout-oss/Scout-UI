@@ -83,7 +83,7 @@ describe("M13 typed component registry", () => {
       expect(definition.schemaVersion).toBe(1);
       expect(definition.schema.fields.length).toBeGreaterThan(4);
       expect(definition.presets.length).toBeGreaterThanOrEqual(2);
-      expect("generateCode" in definition).toBe(false);
+      expect(typeof definition.generateCode).toBe("function");
       expect("generatePrompt" in definition).toBe(false);
     }
   });
@@ -100,7 +100,7 @@ describe("M13 typed component registry", () => {
         expect(field.normalization).not.toBe("");
         expect(["non-default", "never"]).toContain(field.serialization);
         expect(typeof field.shareable).toBe("boolean");
-        expect(field.codegen.omitWhenDefault).toBe(true);
+        expect(typeof field.codegen.omitWhenDefault).toBe("boolean");
         expect(field.prompt.description).not.toBe("");
         if (["select", "segmented", "sticker"].includes(field.kind)) {
           expect("options" in field && Array.isArray(field.options)).toBe(true);

@@ -1,5 +1,5 @@
 import type {
-  ComponentDocDefinition,
+  ComponentDocDefinitionBase,
   ConfigField,
   JsonPrimitive,
 } from "./types";
@@ -127,7 +127,7 @@ export interface NormalizationResult<C extends object> {
 }
 
 export function normalizeConfig<C extends object>(
-  definition: ComponentDocDefinition<C>,
+  definition: ComponentDocDefinitionBase<C>,
   input: unknown,
 ): NormalizationResult<C> {
   const source =
@@ -184,7 +184,7 @@ export function configsEqual<C extends object>(left: C, right: C): boolean {
 }
 
 export function isConfigDirty<C extends object>(
-  definition: ComponentDocDefinition<C>,
+  definition: ComponentDocDefinitionBase<C>,
   config: C,
 ) {
   return !configsEqual(normalizeConfig(definition, config).config, {
@@ -193,7 +193,7 @@ export function isConfigDirty<C extends object>(
 }
 
 export function selectedPresetId<C extends object>(
-  definition: ComponentDocDefinition<C>,
+  definition: ComponentDocDefinitionBase<C>,
   config: C,
 ): string | null {
   const canonical = normalizeConfig(definition, config).config;
@@ -208,7 +208,7 @@ export function selectedPresetId<C extends object>(
 }
 
 export function serializableValues<C extends object>(
-  definition: ComponentDocDefinition<C>,
+  definition: ComponentDocDefinitionBase<C>,
   config: C,
 ): Record<string, JsonPrimitive> {
   const normalized = normalizeConfig(definition, config).config;
@@ -229,7 +229,7 @@ export function serializableValues<C extends object>(
 }
 
 export function assertDefinitionIntegrity<C extends object>(
-  definition: ComponentDocDefinition<C>,
+  definition: ComponentDocDefinitionBase<C>,
 ) {
   const keys = definition.schema.fields.map((field) => field.key);
   if (new Set(keys).size !== keys.length) {

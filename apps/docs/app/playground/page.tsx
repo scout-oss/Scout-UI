@@ -1,55 +1,47 @@
-import { StickerBadge, StickerButton } from "@scout-ui/react";
 import type { Metadata } from "next";
+import Link from "next/link";
 
-import { CodeBlock } from "../../components/code-block";
 import { PageHeading } from "../../components/page-heading";
+import { componentCatalog } from "../../lib/registry";
 import { routeMetadata } from "../../lib/site";
 
 export const metadata: Metadata = routeMetadata({
   path: "/playground",
   title: "Playground",
   description:
-    "See the honest foundation for Scout UI's future configuration playground.",
+    "Configure every Scout UI component from one typed, shareable registry.",
 });
 
 export default function PlaygroundPage() {
   return (
     <div className="sui-docs-page sui-docs-playground-page">
       <PageHeading
-        eyebrow="Foundation state · M12"
-        lede="The final playground will connect preview, controls, generated code, prompts, and share state through one schema. This milestone establishes the room, not fake controls."
+        eyebrow="Typed workbench · M13"
+        lede="Choose one component, shape it with safe controls, and share the exact normalized state. Code and AI handoff enrich this same registry in the next milestones."
       >
         Playground
       </PageHeading>
-      <div className="sui-docs-playground-grid" data-sui-theme="night">
-        <section>
-          <StickerBadge tone="cyan">Preview</StickerBadge>
-          <div className="sui-docs-playground-poster">
-            <strong>Preview canvas reserved</strong>
-            <p>One bounded interaction will live here.</p>
-          </div>
-        </section>
-        <section className="sui-docs-controls-poster">
-          <StickerBadge tone="acid">Controls · M13</StickerBadge>
-          <h2>Schema-driven, not wired yet.</h2>
-          <p>
-            No misleading toggles. M13 owns validation, presets, URL state,
-            reset, and sharing.
-          </p>
-          <StickerButton disabled tone="paper">
-            Controls arrive in M13
-          </StickerButton>
-        </section>
-        <section className="sui-docs-output-poster">
-          <StickerBadge tone="pink">Output · M14–M15</StickerBadge>
-          <CodeBlock
-            code={
-              "// Generated code and AI prompt will share one validated configuration."
-            }
-            language="tsx"
-          />
-        </section>
-      </div>
+      <ol className="sui-docs-playground-index">
+        {componentCatalog.entries.map((component, index) => (
+          <li
+            data-accent={component.accent}
+            data-kind={component.kind}
+            key={component.slug}
+          >
+            <Link href={`/playground/${component.slug}`}>
+              <span>
+                0{String(index + 1)} · {component.packageName}
+              </span>
+              <strong>{component.name}</strong>
+              <p>{component.purpose}</p>
+              <small>
+                {component.schema.fields.length} safe controls ·{" "}
+                {component.presets.length} presets
+              </small>
+            </Link>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

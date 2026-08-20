@@ -100,7 +100,10 @@
     "The component index uses authored pinboard hierarchy without changing semantic order.",
     "Root layout and route content remain server components; browser state lives in small client leaves.",
     "The documentation shell dogfoods StickerNavbar and the frozen Scout UI packages.",
-    "No 21st AI generation was used; the authoritative Scout UI specifications define the visual direction."
+    "No 21st AI generation was used; the authoritative Scout UI specifications define the visual direction.",
+    "M13 uses one typed component registry to drive the full playground and compact component-page control rail, with a 7/5 desktop workbench and one Radix bottom sheet on mobile.",
+    "M13 control actions remain in normal document flow so Reset, Share, status, and fallback content never cover schema fields.",
+    "M13 keeps the preview as a bounded night board and the controls as a paper control sheet; component expression changes inside that stable workbench rather than redesigning the shell per route."
   ],
   "evidence": [
     { "fact": "design.tokens", "source": "packages/tokens/src/tokens.css" },

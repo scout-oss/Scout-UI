@@ -1,6 +1,6 @@
 # Scout UI v0.1 Implementation Plan
 
-**Status:** Milestones 1–12 complete; Milestone 13 has not started<br />
+**Status:** Milestones 1–13 complete; Milestone 14 has not started<br />
 **Source documents:** `SCOUT_UI_MASTER_SPEC.md`, `SCOUT_UI_DESIGN_SYSTEM.md`,
 `SCOUT_UI_ENGINEERING_SPEC.md`<br /> **Scope:** Eight components, three public
 packages, one documentation/playground application
@@ -433,6 +433,8 @@ though attribution is not required.
   sidebar/card template.
 
 ## 15. Milestone 13 — Registry, playground, and shareable URL state
+
+**Status:** Complete (2026-08-20)
 
 ### Work
 

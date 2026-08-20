@@ -5,7 +5,7 @@ import type { ComponentSummaryDefinition } from "../lib/registry";
 import { repositoryUrl } from "../lib/site";
 import { CodeBlock } from "./code-block";
 import { PageEdgeNav } from "./page-edge-nav";
-import { PreviewBoundary } from "./preview-boundary";
+import { PlaygroundSession } from "./playground/playground-session";
 
 const sectionItems = [
   { id: "install", label: "Install", level: 2 },
@@ -59,7 +59,12 @@ export function ComponentPageShell({
         </div>
       </div>
 
-      <PreviewBoundary failFirst={failPreview} />
+      <PlaygroundSession
+        failPreview={failPreview}
+        initialConfig={{ ...component.defaults }}
+        mode="component"
+        slug={component.slug}
+      />
 
       <div className="sui-docs-reference-layout" data-preview-following-content>
         <div className="sui-docs-reading-column">
@@ -86,9 +91,9 @@ export function ComponentPageShell({
           <section id="api">
             <h2 tabIndex={-1}>API</h2>
             <p>
-              The public alpha surface is frozen. Full authored prop tables and
-              interactive registry controls arrive in later documentation
-              milestones.
+              The public alpha surface is frozen. This page uses the same typed
+              configuration definition as the full playground while keeping
+              reference documentation in the reading flow.
             </p>
           </section>
           <section id="accessibility">

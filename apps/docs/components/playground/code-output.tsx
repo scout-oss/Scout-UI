@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type ReactNode,
 } from "react";
 
 import type { GeneratedCodeResult } from "../../lib/codegen/generate-code";
@@ -102,10 +103,12 @@ export function CodeOutput({
   changedField,
   generated,
   mode,
+  promptAction,
 }: {
   readonly changedField: string | null;
   readonly generated: GeneratedCodeResult;
   readonly mode: "component" | "playground";
+  readonly promptAction: ReactNode;
 }) {
   const [copyState, setCopyState] = useState<CopyState>({
     source: generated.source,
@@ -321,9 +324,7 @@ export function CodeOutput({
           <span className="sui-docs-code-tab" aria-current="page">
             Code
           </span>
-          <span className="sui-docs-code-tab" data-future="true">
-            AI Prompt · M15
-          </span>
+          {promptAction}
         </div>
         <button
           className="sui-docs-copy-code"

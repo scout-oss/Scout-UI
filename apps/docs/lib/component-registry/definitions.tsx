@@ -1,5 +1,6 @@
 import { PreviewAdapter } from "../../components/playground/preview-adapter";
 import { generateCodeForDefinition } from "../codegen/generate-code";
+import { generatePromptForDefinition } from "../promptgen/generate-prompt";
 import { playgroundStickerOptions } from "./sticker-options";
 import type {
   BooleanControlField,
@@ -190,6 +191,8 @@ function definition<C extends object>(value: ComponentDocDefinitionBase<C>) {
     ...value,
     generateCode: (config, context) =>
       generateCodeForDefinition(value, config, context).source,
+    generatePrompt: (config, context) =>
+      generatePromptForDefinition(value, config, context),
   };
   for (const field of complete.schema.fields) Object.freeze(field);
   Object.freeze(complete.schema.fields);

@@ -239,7 +239,11 @@ export interface ConfigPreset<C extends object> {
   readonly config: Readonly<C>;
 }
 
-export interface ComponentDocDefinition<C extends object> {
+export interface CodegenContext {
+  readonly framework: "react";
+}
+
+export interface ComponentDocDefinitionBase<C extends object> {
   readonly slug: ComponentSlug;
   readonly name: string;
   readonly purpose: string;
@@ -254,6 +258,15 @@ export interface ComponentDocDefinition<C extends object> {
   readonly presets: readonly ConfigPreset<C>[];
   readonly renderPreview: (config: Readonly<C>) => ReactNode;
   readonly searchTerms: readonly string[];
+}
+
+export interface ComponentDocDefinition<
+  C extends object,
+> extends ComponentDocDefinitionBase<C> {
+  readonly generateCode: (
+    config: Readonly<C>,
+    context: CodegenContext,
+  ) => string;
 }
 
 export type AnyComponentDocDefinition = {

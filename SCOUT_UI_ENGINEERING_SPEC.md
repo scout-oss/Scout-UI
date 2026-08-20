@@ -1366,7 +1366,11 @@ in milestone stages so later documentation capabilities enrich the same source
 without fake placeholder generators or duplicated configuration metadata:
 
 ```ts
-export interface ComponentDocDefinition<C extends object> {
+export interface CodegenContext {
+  readonly framework: "react";
+}
+
+export interface ComponentDocDefinitionBase<C extends object> {
   slug: string;
   name: string;
   packageName: "@scout-ui/react" | "@scout-ui/sticker-trail";
@@ -1379,29 +1383,31 @@ export interface ComponentDocDefinition<C extends object> {
   searchTerms: readonly string[];
 }
 
-export interface ComponentDocDefinitionWithCode<
+export interface ComponentDocDefinition<
   C extends object,
-> extends ComponentDocDefinition<C> {
-  generateCode(config: C, context: CodegenContext): string;
+> extends ComponentDocDefinitionBase<C> {
+  generateCode(config: Readonly<C>, context: CodegenContext): string;
 }
 
 export interface CompleteComponentDocDefinition<
   C extends object,
-> extends ComponentDocDefinitionWithCode<C> {
+> extends ComponentDocDefinition<C> {
   generatePrompt(config: C, context: PromptContext): string;
 }
 ```
 
-Milestone 13 completes `ComponentDocDefinition`: identity, configuration,
+Milestone 13 completes `ComponentDocDefinitionBase`: identity, configuration,
 controls, validation, normalization, presets, preview, and share state. Each
 concrete config type is constrained to the registry's JSON-primitive field
 model; the broader `object` generic avoids requiring an unsafe string index
 signature on exact component config interfaces. Milestone 14 adds `generateCode`
-to that same definition composition. Milestone 15 adds `generatePrompt`. A
-production definition never ships a stub generator that throws or returns
-placeholder output. The same schema metadata drives component pages, full
-playground routes, generated output, share URLs, and documentation tests. No
-configuration value is manually represented in four separate systems.
+to that same definition composition. Its `CodegenContext` is deliberately
+constrained to `{ framework: "react" }`; an additional framework value requires
+a real generator and fixture matrix rather than a decorative tab. Milestone 15
+adds `generatePrompt`. A production definition never ships a stub generator that
+throws or returns placeholder output. The same schema metadata drives component
+pages, full playground routes, generated output, share URLs, and documentation
+tests. No configuration value is manually represented in four separate systems.
 
 ## 24. Playground schema
 

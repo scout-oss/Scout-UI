@@ -6,19 +6,67 @@ import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
 import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
 import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 
-export const playgroundStickerSources = Object.freeze({
-  "attention-bolt": attentionBolt,
-  "chunky-check": chunkyCheck,
-  "pocket-camera": pocketCamera,
-  "scribble-pointer": scribblePointer,
-  "sparkle-pop": sparklePop,
-  "sunny-smile": sunnySmile,
-  "wonky-star": wonkyStar,
+export const playgroundStickerCatalog = Object.freeze({
+  "attention-bolt": {
+    exportName: "attentionBolt",
+    module: "@scout-ui/stickers/definitions/attention-bolt",
+    source: attentionBolt,
+  },
+  "chunky-check": {
+    exportName: "chunkyCheck",
+    module: "@scout-ui/stickers/definitions/chunky-check",
+    source: chunkyCheck,
+  },
+  "pocket-camera": {
+    exportName: "pocketCamera",
+    module: "@scout-ui/stickers/definitions/pocket-camera",
+    source: pocketCamera,
+  },
+  "scribble-pointer": {
+    exportName: "scribblePointer",
+    module: "@scout-ui/stickers/definitions/scribble-pointer",
+    source: scribblePointer,
+  },
+  "sparkle-pop": {
+    exportName: "sparklePop",
+    module: "@scout-ui/stickers/definitions/sparkle-pop",
+    source: sparklePop,
+  },
+  "sunny-smile": {
+    exportName: "sunnySmile",
+    module: "@scout-ui/stickers/definitions/sunny-smile",
+    source: sunnySmile,
+  },
+  "wonky-star": {
+    exportName: "wonkyStar",
+    module: "@scout-ui/stickers/definitions/wonky-star",
+    source: wonkyStar,
+  },
 });
 
+type PlaygroundStickerId = keyof typeof playgroundStickerCatalog;
+
+export const playgroundStickerSources = Object.freeze(
+  Object.fromEntries(
+    Object.entries(playgroundStickerCatalog).map(([id, entry]) => [
+      id,
+      entry.source,
+    ]),
+  ) as {
+    readonly [
+      K in PlaygroundStickerId
+    ]: (typeof playgroundStickerCatalog)[K]["source"];
+  },
+);
+
 export const playgroundStickerOptions = Object.freeze(
-  Object.entries(playgroundStickerSources).map(([value, source]) => ({
-    label: source.name,
+  Object.entries(playgroundStickerCatalog).map(([value, entry]) => ({
+    label: entry.source.name,
     value,
   })),
 );
+
+export function getPlaygroundStickerImport(id: string) {
+  if (!Object.hasOwn(playgroundStickerCatalog, id)) return null;
+  return playgroundStickerCatalog[id as PlaygroundStickerId];
+}

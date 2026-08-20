@@ -13,6 +13,7 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
+import { build as buildWithEsbuild } from "esbuild";
 
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -21,6 +22,10 @@ const root = path.resolve(
 const artifactRoot = path.join(root, ".artifacts", "packed-fixtures");
 const tarballDirectory = path.join(artifactRoot, "tarballs");
 const consumerDirectory = path.join(artifactRoot, "consumers");
+const codegenGenerator = path.join(
+  artifactRoot,
+  "codegen-sample-generator.mjs",
+);
 
 const packageRecords = [
   { directory: "packages/react", name: "@scout-ui/react", slug: "react" },
@@ -103,6 +108,25 @@ async function runCaptured(command, args, options = {}) {
         );
     });
   });
+}
+
+async function generateCodegenSamples(consumers) {
+  await buildWithEsbuild({
+    bundle: true,
+    entryPoints: [
+      path.join(root, "tooling", "fixtures", "codegen-samples-entry.ts"),
+    ],
+    format: "esm",
+    outfile: codegenGenerator,
+    platform: "node",
+    sourcemap: false,
+    target: "node24",
+  });
+  await run(process.execPath, [
+    codegenGenerator,
+    path.join(consumers.next, "app", "generated-code"),
+    path.join(consumers.vite, "src", "generated-code"),
+  ]);
 }
 
 async function listFiles(directory, prefix = "") {
@@ -1173,6 +1197,7 @@ export async function preparePackedConsumers() {
   const consumers = {};
   for (const record of fixtureRecords)
     consumers[record.key] = await createConsumer(record, tarballs);
+  await generateCodegenSamples(consumers);
   await assertBoundaries(consumers.next);
   await assertStylesheetComposition(consumers.next);
   await assertServerEvaluation(consumers.next);

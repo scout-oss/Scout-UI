@@ -21,6 +21,10 @@
     "@scout-ui/react": "workspace:*",
     "@scout-ui/sticker-trail": "workspace:*",
     "@scout-ui/stickers": "workspace:*",
+    "@shikijs/core": "4.4.3",
+    "@shikijs/engine-javascript": "4.4.3",
+    "@shikijs/langs": "4.4.3",
+    "@shikijs/themes": "4.4.3",
     "next": "16.3.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"

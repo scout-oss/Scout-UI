@@ -46,6 +46,7 @@ export function SearchDialog() {
     <Dialog.Root onOpenChange={setOpen} open={open}>
       <Dialog.Trigger asChild>
         <button
+          aria-label="Search documentation"
           aria-keyshortcuts="/"
           className="sui-docs-search-trigger"
           ref={triggerRef}

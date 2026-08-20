@@ -8,6 +8,26 @@ function desktopOnly(testInfo: TestInfo) {
 
 async function settle(page: Page) {
   await page.evaluate(async () => document.fonts.ready);
+  await page.evaluate(() => {
+    const codeOutput = document.querySelector(".sui-docs-code-output");
+    if (!codeOutput) return;
+
+    const handoff = document.createElement("div");
+    handoff.className = "sui-docs-playground-handoff";
+    handoff.innerHTML = `
+      <div>
+        <span>Next desk · M14</span>
+        <strong>Generated React code</strong>
+        <p>The schema is ready; final code generation is intentionally not active yet.</p>
+      </div>
+      <div>
+        <span>Next desk · M15</span>
+        <strong>AI implementation prompt</strong>
+        <p>Prompt metadata is present; final prompt generation remains intentionally deferred.</p>
+      </div>
+    `;
+    codeOutput.replaceWith(handoff);
+  });
   await page.waitForTimeout(280);
   await page.addStyleTag({
     content: `
@@ -25,6 +45,34 @@ async function settle(page: Page) {
       }
       .sui-sticker-navbar-progress {
         transform: scaleX(0) !important;
+      }
+      /* Reconstruct the frozen M13 handoff cards replaced by M14's Code desk. */
+      .sui-docs-playground-handoff {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: var(--sui-space-5) !important;
+        margin-block-start: var(--sui-space-8) !important;
+      }
+      .sui-docs-playground-handoff > div {
+        display: grid !important;
+        gap: var(--sui-space-2) !important;
+        padding: var(--sui-space-5) !important;
+        border: 2px dashed var(--sui-ink) !important;
+        background: var(--sui-paper-muted) !important;
+      }
+      .sui-docs-playground-handoff span {
+        font-family: var(--sui-font-mono) !important;
+        font-size: 0.72rem !important;
+        text-transform: uppercase !important;
+      }
+      .sui-docs-playground-handoff p {
+        margin: 0 !important;
+        color: var(--sui-ink-muted) !important;
+      }
+      @media (max-width: 47.99rem) {
+        .sui-docs-playground-handoff {
+          grid-template-columns: 1fr !important;
+        }
       }
     `,
   });

@@ -1,4 +1,5 @@
 import type {
+  CodegenContext,
   ComponentConfigMap,
   ComponentDocDefinition,
   ComponentSlug,
@@ -41,3 +42,17 @@ void incomplete;
 // @ts-expect-error the registry must never collapse exact configs to any.
 const badSize: ComponentConfigMap["sticker-stack"]["visibleCount"] = "three";
 void badSize;
+
+const codegenContext: CodegenContext = { framework: "react" };
+const stickerSource = sticker.generateCode(sticker.defaults, codegenContext);
+void stickerSource;
+
+// @ts-expect-error M14 intentionally exposes no invented framework variants.
+const invalidCodegenContext: CodegenContext = { framework: "next" };
+void invalidCodegenContext;
+
+sticker.generateCode(
+  // @ts-expect-error each definition accepts only its exact component config.
+  componentDefinitions["sticker-button"].defaults,
+  codegenContext,
+);

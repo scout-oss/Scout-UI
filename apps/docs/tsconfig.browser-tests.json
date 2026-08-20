@@ -8,5 +8,10 @@
     "rootDir": "../..",
     "types": ["node"]
   },
-  "include": ["playwright.config.ts", "../../tests/browser/docs-*.spec.ts"]
+  "include": [
+    "playwright.config.ts",
+    "../../tests/browser/copy-code-*.spec.ts",
+    "../../tests/browser/docs-*.spec.ts",
+    "../../tests/browser/playground-*.spec.ts"
+  ]
 }

@@ -5,6 +5,9 @@ channel for reproducible bugs, accessibility problems, documentation gaps, and
 focused feature proposals. Security vulnerabilities must follow `SECURITY.md`
 instead.
 
+For public API and usage guidance, start with the official documentation at
+[design.scoutapp.in](https://design.scoutapp.in/).
+
 Before opening an issue:
 
 1. Confirm the behavior with a minimal reproduction.

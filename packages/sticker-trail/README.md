@@ -3,6 +3,8 @@
 A bounded, container-scoped sticker trail for React. Stickers appear along the
 pointer path according to distance travelled and velocity, then fade away.
 
+Documentation: [design.scoutapp.in](https://design.scoutapp.in/)
+
 This is the standalone flagship package. It has no dependency on
 `@scout-ui/react` or `@scout-ui/stickers`, so it works with your own artwork and
 without the broader library. If you already use `@scout-ui/react`, the same

@@ -3,6 +3,8 @@
 An open-source library of distinctive components and interactions extracted from
 Scout and generalized for broader use.
 
+Official documentation: [design.scoutapp.in](https://design.scoutapp.in/)
+
 ## Workspace
 
 - `apps/docs` — documentation site
@@ -21,6 +23,17 @@ application.
 - pnpm 11.21.0 through Corepack
 
 Run `corepack enable`, then `pnpm install --frozen-lockfile`.
+
+The documentation app derives its canonical origin from `SCOUT_UI_DOCS_ORIGIN`.
+Production deployments use:
+
+```sh
+SCOUT_UI_DOCS_ORIGIN=https://design.scoutapp.in
+```
+
+See `apps/docs/.env.example` for the local configuration template. The app uses
+a loopback origin when the variable is unset so local development and test hosts
+remain isolated from the public site.
 
 ## Licensing
 

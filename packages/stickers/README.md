@@ -4,6 +4,8 @@ Framework-neutral Scout UI assets, metadata, definitions, and manifests. The
 package contains no React code or dependency and is safe to evaluate on a
 server.
 
+Documentation: [design.scoutapp.in](https://design.scoutapp.in/)
+
 ## Install
 
 ```sh

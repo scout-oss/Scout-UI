@@ -2,7 +2,8 @@
 
 Thank you for helping build Scout UI. The project values distinctive design,
 accessible behavior, bounded performance, framework interoperability, and clear
-documentation equally.
+documentation equally. The official public documentation is available at
+[design.scoutapp.in](https://design.scoutapp.in/).
 
 ## Before opening a change
 

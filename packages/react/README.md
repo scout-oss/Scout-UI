@@ -4,6 +4,8 @@ React components for sticker-led interfaces. The v0.1 surface so far is
 `Sticker`, `StickerButton`, `StickerBadge`, `StickerTrail`, `StickerCursor`,
 `StickerPeel`, `StickerStack`, and `StickerNavbar`.
 
+Documentation: [design.scoutapp.in](https://design.scoutapp.in/)
+
 ## Install
 
 ```sh

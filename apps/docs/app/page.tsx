@@ -1,11 +1,10 @@
 import { Sticker, StickerBadge, StickerButton } from "@scout-ui/react";
-import { attentionBolt } from "@scout-ui/stickers/definitions/attention-bolt";
 import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
-import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
-import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { HomeHeroDemo } from "../components/home/home-hero-demo";
+import { PlaygroundSession } from "../components/playground/playground-session";
 import { componentCatalog } from "../lib/registry";
 import { repositoryUrl, routeMetadata } from "../lib/site";
 
@@ -20,8 +19,10 @@ export default function HomePage() {
   const signature = componentCatalog.entries.filter(
     (component) => component.kind === "signature",
   );
+  const trail = componentCatalog.get("sticker-trail");
+  if (!trail) throw new Error("StickerTrail registry definition is missing.");
   return (
-    <div className="sui-docs-home">
+    <div className="sui-docs-home" data-pagefind-body>
       <section className="sui-docs-hero">
         <div className="sui-docs-hero-copy">
           <StickerBadge rotation={-2} shape="stamp" tone="acid">
@@ -49,36 +50,7 @@ export default function HomePage() {
             </StickerButton>
           </div>
         </div>
-        <div
-          aria-label="Scout UI sticker composition"
-          className="sui-docs-hero-board"
-          role="img"
-        >
-          <p>CONTROLLED</p>
-          <p>CHAOS</p>
-          <Sticker
-            alt=""
-            rotation={-11}
-            shadow="lifted"
-            size="xl"
-            source={sunnySmile}
-          />
-          <Sticker
-            alt=""
-            rotation={12}
-            shadow="stuck"
-            size="lg"
-            source={wonkyStar}
-          />
-          <Sticker
-            alt=""
-            rotation={-4}
-            shadow="lifted"
-            size="lg"
-            source={attentionBolt}
-          />
-          <span className="sui-docs-hero-tape">production-minded</span>
-        </div>
+        <HomeHeroDemo />
       </section>
 
       <section aria-label="Scout UI qualities" className="sui-docs-proof-strip">
@@ -112,13 +84,32 @@ export default function HomePage() {
               <div>
                 <h3>{component.name}</h3>
                 <p>{component.purpose}</p>
+                <code>{`import { ${component.name} } from "${component.packageName}";`}</code>
               </div>
-              <Link href={`/components/${component.slug}`}>
-                Open field note →
-              </Link>
+              <div>
+                <Link href={`/components/${component.slug}`}>Reference →</Link>
+                <Link href={`/playground/${component.slug}`}>Playground →</Link>
+              </div>
             </li>
           ))}
         </ol>
+      </section>
+
+      <section className="sui-docs-home-handoff" id="config-to-handoff">
+        <div className="sui-docs-section-heading">
+          <p className="sui-docs-eyebrow">From config to handoff</p>
+          <h2>One state. Three trustworthy outputs.</h2>
+          <p>
+            Change the bounded Trail once; preview, deterministic code, and
+            configuration-aware AI Prompt stay aligned through the M13–M15
+            registry.
+          </p>
+        </div>
+        <PlaygroundSession
+          initialConfig={{ ...trail.defaults }}
+          mode="component"
+          slug="sticker-trail"
+        />
       </section>
 
       <section className="sui-docs-home-pack" data-sui-theme="night">
@@ -145,6 +136,28 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="sui-docs-home-stack-row">
+        <p className="sui-docs-eyebrow">Works with your stack</p>
+        <h2>Public React. Ordinary CSS. Your assets.</h2>
+        <ul>
+          <li>React 19</li>
+          <li>Next.js App Router</li>
+          <li>CSS variables</li>
+          <li>Consumer SVG / PNG / WebP</li>
+        </ul>
+      </section>
+
+      <section className="sui-docs-home-principles">
+        <p className="sui-docs-eyebrow">Production rules</p>
+        <h2>Expression with an exit plan.</h2>
+        <div>
+          <p>Native controls stay native.</p>
+          <p>Motion follows capability and preference.</p>
+          <p>High-frequency work remains bounded.</p>
+          <p>Official art stays provenance-cleared.</p>
+        </div>
+      </section>
+
       <section className="sui-docs-open-call">
         <p className="sui-docs-eyebrow">Built in public</p>
         <h2>Make something that sticks.</h2>
@@ -156,8 +169,28 @@ export default function HomePage() {
           <StickerButton href="/open-source" shape="label" tone="pink">
             Open-source guide
           </StickerButton>
-          <StickerButton href="/guides/getting-started" tone="ink">
+          <StickerButton href="/guides/installation" tone="ink">
             Start with the guide
+          </StickerButton>
+        </div>
+      </section>
+
+      <section className="sui-docs-home-final" data-sui-theme="night">
+        <p className="sui-docs-eyebrow">
+          Alpha preflight · not yet an npm release
+        </p>
+        <h2>Make something that sticks.</h2>
+        <code>pnpm add @scout-ui/react</code>
+        <p>
+          Use the install command once a public alpha is announced. Today,
+          inspect the packages and verified consumer fixtures in the repository.
+        </p>
+        <div>
+          <StickerButton href="/components" size="large" tone="acid">
+            Browse components
+          </StickerButton>
+          <StickerButton href={repositoryUrl} size="large" tone="paper">
+            GitHub ↗
           </StickerButton>
         </div>
       </section>

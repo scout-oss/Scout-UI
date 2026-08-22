@@ -1,0 +1,52 @@
+export const metadata = {
+  slug: "installation",
+  title: "Installation",
+  description:
+    "Choose the right Scout UI package and integrate its public alpha contract without widening client boundaries.",
+  order: 1,
+  searchTerms: [
+    "install",
+    "@scout-ui/react",
+    "@scout-ui/sticker-trail",
+    "@scout-ui/stickers",
+    "styles.css",
+  ],
+};
+
+Scout UI currently documents an **unpublished alpha workspace**. The package
+names and exports are frozen and tested from tarballs, but M18 still owns public
+npm publication. Do not treat the commands below as proof that a registry
+release exists today.
+
+## Choose a package
+
+Use `@scout-ui/react` for all eight React components and the broad stylesheet.
+Use `@scout-ui/sticker-trail` when Trail is the only Scout UI runtime you need.
+Add `@scout-ui/stickers` only when you want the framework-neutral official
+artwork and manifest; consumer-provided SVG, PNG, WebP, URLs, and React content
+remain first-class.
+
+## Add the public stylesheet
+
+<CodeBlock
+  language="tsx"
+  code={`import "@scout-ui/react/styles.css";
+import { StickerButton } from "@scout-ui/react/sticker-button";`}
+/>
+
+Broad React consumers import only the React stylesheet. Standalone Trail
+consumers import `@scout-ui/sticker-trail/styles.css` instead—never both.
+
+## Respect React boundaries
+
+React and React DOM are peer dependencies. Static Sticker, StickerButton, and
+StickerBadge leaves are server-compatible; Trail, Cursor, Navbar, Peel, and
+Stack are narrow Client Component entries. Keep callback and render-function
+props below a consumer-authored client boundary rather than marking an entire
+route `"use client"`.
+
+## Verify the integration
+
+Start with one bounded component, test keyboard and reduced-motion behavior, and
+inspect the generated production bundle. The [SSR guide](/guides/ssr-nextjs) and
+[component reference](/components) document each leaf's contract.

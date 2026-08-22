@@ -32,7 +32,7 @@ const contributionAreas = [
 
 export default function OpenSourcePage() {
   return (
-    <div className="sui-docs-page sui-docs-open-source-page">
+    <div className="sui-docs-page sui-docs-open-source-page" data-pagefind-body>
       <PageHeading
         eyebrow="Public by design"
         lede="Scout UI is built from a real product language and generalized in public. The packages remain in alpha preflight; contributions should preserve both expression and engineering discipline."
@@ -82,6 +82,55 @@ export default function OpenSourcePage() {
           Security ↗
         </StickerButton>
       </div>
+      <section className="sui-docs-open-source-links">
+        <p className="sui-docs-eyebrow">Canonical project documents</p>
+        <h2>Policy lives with the source.</h2>
+        <ul>
+          <li>
+            <a href={`${repositoryUrl}/blob/main/LICENSE`}>
+              MIT code license ↗
+            </a>
+          </li>
+          <li>
+            <a href={`${repositoryUrl}/blob/main/LICENSE-ASSETS.md`}>
+              Official artwork license ↗
+            </a>
+          </li>
+          <li>
+            <a
+              href={`${repositoryUrl}/blob/main/packages/stickers/ATTRIBUTION.md`}
+            >
+              Attribution record ↗
+            </a>
+          </li>
+          <li>
+            <a href={`${repositoryUrl}/blob/main/CONTRIBUTING.md`}>
+              Contributing ↗
+            </a>
+          </li>
+          <li>
+            <a href={`${repositoryUrl}/blob/main/CODE_OF_CONDUCT.md`}>
+              Code of conduct ↗
+            </a>
+          </li>
+          <li>
+            <a href={`${repositoryUrl}/blob/main/SECURITY.md`}>
+              Security policy ↗
+            </a>
+          </li>
+          <li>
+            <a href={`${repositoryUrl}/blob/main/SUPPORT.md`}>Support ↗</a>
+          </li>
+          <li>
+            <a href={`${repositoryUrl}/issues/new/choose`}>Open an issue ↗</a>
+          </li>
+        </ul>
+        <p>
+          Scout UI generalizes an open-source interface language. It does not
+          ship private Scout product code, product screenshots, product claims,
+          or uncleared product artwork.
+        </p>
+      </section>
     </div>
   );
 }

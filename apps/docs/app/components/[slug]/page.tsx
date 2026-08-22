@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { ComponentPageShell } from "../../../components/component-page-shell";
 import { componentCatalog } from "../../../lib/registry";
-import { routeMetadata } from "../../../lib/site";
+import { absoluteUrl, repositoryUrl, routeMetadata } from "../../../lib/site";
 
 export function generateStaticParams() {
   return componentCatalog.entries.map((component) => ({
@@ -23,6 +23,7 @@ export async function generateMetadata({
     path: `/components/${component.slug}`,
     title: component.name,
     description: component.purpose,
+    category: "Component",
   });
 }
 
@@ -34,5 +35,23 @@ export default async function ComponentPage({
   const { slug } = await params;
   const component = componentCatalog.get(slug);
   if (!component) notFound();
-  return <ComponentPageShell component={component} />;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: `${component.name} — Scout UI`,
+    description: component.purpose,
+    url: absoluteUrl(`/components/${component.slug}`),
+    codeRepository: repositoryUrl,
+  };
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replaceAll("<", "\\u003c"),
+        }}
+        type="application/ld+json"
+      />
+      <ComponentPageShell component={component} />
+    </>
+  );
 }

@@ -2,6 +2,7 @@ node_modules/
 .artifacts/
 .turbo/
 .next/
+apps/docs/public/_pagefind/
 dist/
 coverage/
 playwright-report/

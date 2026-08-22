@@ -26,10 +26,22 @@ const searchResults = [
     summary: `Scout UI ${item.label.toLowerCase()} foundation`,
   })),
   {
-    href: "/guides/getting-started",
-    id: "getting-started",
-    label: "Getting started",
+    href: "/guides/installation",
+    id: "installation",
+    label: "Installation",
     summary: "Install styles and render your first sticker-native control.",
+  },
+  {
+    href: "/guides/accessibility",
+    id: "accessibility-guide",
+    label: "Accessibility",
+    summary: "Keyboard, reduced-motion, forced-colors, and touch contracts.",
+  },
+  {
+    href: "/examples/sticker-trail-hero",
+    id: "trail-example",
+    label: "Bounded StickerTrail hero",
+    summary: "A runnable pointer-trail recipe with finite work.",
   },
 ] as const satisfies readonly SearchResult[];
 

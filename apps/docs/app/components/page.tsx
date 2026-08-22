@@ -12,9 +12,17 @@ export const metadata: Metadata = routeMetadata({
   description: "Browse Scout UI's eight sticker-native React primitives.",
 });
 
+const clientComponents = new Set([
+  "sticker-trail",
+  "sticker-cursor",
+  "sticker-peel",
+  "sticker-stack",
+  "sticker-navbar",
+]);
+
 export default function ComponentsPage() {
   return (
-    <div className="sui-docs-page sui-docs-components-page">
+    <div className="sui-docs-page sui-docs-components-page" data-pagefind-body>
       <PageHeading
         eyebrow="The pinboard"
         lede="Eight primitives, arranged by the job they do—not forced into an identical card grid."
@@ -42,6 +50,11 @@ export default function ComponentsPage() {
                 </StickerBadge>
                 <code>{component.packageName}</code>
                 <span>{component.capabilities.join(" · ")}</span>
+                <span>
+                  {clientComponents.has(component.slug)
+                    ? "narrow client leaf"
+                    : "server-compatible leaf"}
+                </span>
               </div>
             </Link>
           </li>

@@ -13,6 +13,8 @@ describe("typed MDX document boundary", () => {
         title: "Getting started",
         description: "A real guide.",
         order: 1,
+        slug: "getting-started",
+        searchTerms: ["install", "first component"],
       },
       tableOfContents: [
         { id: "install", label: "Install", level: 2 },
@@ -38,7 +40,13 @@ describe("typed MDX document boundary", () => {
     expect(() =>
       defineMdxDocument({
         Content,
-        metadata: { title: "Fine", description: "Fine", order: 1 },
+        metadata: {
+          title: "Fine",
+          description: "Fine",
+          order: 1,
+          slug: "fine",
+          searchTerms: ["fine"],
+        },
         tableOfContents: [{ id: "bad", label: "Bad", level: 4 }],
       }),
     ).toThrow("Invalid MDX table of contents");

@@ -1,0 +1,42 @@
+export const metadata = {
+  slug: "motion",
+  title: "Motion and reduced motion",
+  description:
+    "Apply Scout UI motion as bounded feedback with coarse-pointer and reduced-motion fallbacks.",
+  order: 5,
+  searchTerms: [
+    "motion",
+    "reduced motion",
+    "prefers-reduced-motion",
+    "touch",
+    "coarse pointer",
+    "one loud effect",
+  ],
+};
+
+Motion in Scout UI communicates stick, lift, press, peel, settle, and shuffle.
+It is never required to understand content or complete an action.
+
+## Budget the viewport
+
+Run no more than one loud effect in a viewport. A Trail hero and a draggable
+Stack may exist on the same page, but offscreen demos must settle or pause and
+adjacent reading sections should remain calm.
+
+## Honor the system request
+
+`reducedMotion="system"` is the default. `"always"` lets an application choose
+the static branch, but there is no option that ignores an operating-system
+request for less motion.
+
+## Design touch deliberately
+
+Coarse pointers do not receive a custom cursor. Trail is off by default and may
+use deliberate tap mode. Peel and Stack retain button/tap alternatives; touch is
+not simulated hover.
+
+## Know when to stop
+
+Avoid Trail in reading or data-entry regions, Cursor across an application, and
+simultaneous ambient loops. Use borders, color, outline, and hard-shadow state
+for feedback when translation and rotation are removed.

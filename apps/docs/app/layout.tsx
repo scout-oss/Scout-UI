@@ -17,6 +17,16 @@ export const metadata: Metadata = {
   },
   description:
     "Sticker-native React primitives engineered for accessibility, performance, and controlled chaos.",
+  applicationName: "Scout UI",
+  authors: [{ name: "Scout OSS", url: "https://github.com/scout-oss" }],
+  creator: "Scout OSS",
+  keywords: [
+    "React",
+    "component library",
+    "stickers",
+    "accessible UI",
+    "Scout UI",
+  ],
 };
 
 export default function RootLayout({

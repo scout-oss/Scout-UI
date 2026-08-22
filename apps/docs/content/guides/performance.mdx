@@ -1,0 +1,44 @@
+export const metadata = {
+  slug: "performance",
+  title: "Performance and cleanup",
+  description:
+    "Understand bounded pools, frame-coalesced pointer work, cleanup, visibility handling, and bundle boundaries.",
+  order: 7,
+  searchTerms: [
+    "performance",
+    "requestAnimationFrame",
+    "bounded pool",
+    "cleanup",
+    "offscreen",
+    "bundle",
+  ],
+};
+
+Scout UI treats performance as a public behavior rather than an invisible
+implementation detail. Existing component milestones record exact test results;
+this guide describes the contracts without inventing universal frame-rate
+claims.
+
+## Keep frequency outside React
+
+Trail and Cursor store the latest pointer sample, schedule at most one animation
+frame, and write transforms imperatively. Peel and Stack keep drag progress in
+refs and CSS variables. React state records only low-frequency semantic changes.
+
+## Bound every collection
+
+Trail uses a fixed recycled node pool and a six-spawn-per-frame ceiling. Cursor
+uses one visual plus at most four echoes. Stack renders visible cards plus at
+most one outgoing card.
+
+## Stop work that cannot help
+
+Trail observes intersection and document visibility. All engines cancel frames,
+listeners, observers, pointer capture, and transient animation work on cleanup.
+Reduced-motion and unsupported capability branches do not attach movement loops.
+
+## Measure composition cost
+
+Prefer explicit component leaves, lazy search and highlighting, one loud effect
+per viewport, and no simultaneous full-page pointer systems. Profile the actual
+consumer rather than repeating isolated benchmark numbers without context.

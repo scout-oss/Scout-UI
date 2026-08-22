@@ -1,0 +1,42 @@
+export const metadata = {
+  slug: "migration",
+  title: "Migration during alpha",
+  description:
+    "Understand Scout UI's v0.1 alpha API freeze and how future breaking changes will be communicated.",
+  order: 10,
+  searchTerms: [
+    "migration",
+    "alpha",
+    "API freeze",
+    "Changesets",
+    "breaking changes",
+    "changelog",
+  ],
+};
+
+Scout UI has no published historical release to migrate from. This page does not
+invent versions, deprecations, or upgrade steps that do not exist.
+
+## Current migration status
+
+The M11 public alpha surface is frozen in repository snapshots while packages
+remain private and unpublished. There is currently no released migration path.
+
+## How a future break is handled
+
+An intentional public API change requires an authoritative specification update,
+a Changeset with migration intent, implementation and packed-fixture changes,
+and a reviewed public-API snapshot update. During 0.x, breaking changes should
+be batched and explained rather than hidden in examples.
+
+## Where to look
+
+Development milestones appear on the [changelog](/changelog) and are clearly
+separated from future npm release notes. Package release entries and migration
+instructions will appear only when M18 establishes the release workflow.
+
+## Avoid deep-import coupling
+
+Use declared root or component subpath exports. Imports through `src`, `dist`,
+or private geometry helpers are outside the contract and cannot receive a
+migration guarantee.

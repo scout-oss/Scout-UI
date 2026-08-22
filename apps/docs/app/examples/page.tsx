@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { PageHeading } from "../../components/page-heading";
 import { routeMetadata } from "../../lib/site";
+import { examples } from "../../lib/content/examples";
 
 export const metadata: Metadata = routeMetadata({
   path: "/examples",
@@ -10,39 +12,26 @@ export const metadata: Metadata = routeMetadata({
     "See how Scout UI interactions fit inside real interface regions.",
 });
 
-const examples = [
-  [
-    "A campaign moment",
-    "A bounded StickerTrail adds energy to one launch panel—not the entire page.",
-  ],
-  [
-    "A tactile reveal",
-    "StickerPeel reveals optional context while preserving both layers and focus.",
-  ],
-  [
-    "A story stack",
-    "StickerStack presents a small collection with bounded rendering and native controls.",
-  ],
-] as const;
-
 export default function ExamplesPage() {
   return (
-    <div className="sui-docs-page sui-docs-examples-page">
+    <div className="sui-docs-page sui-docs-examples-page" data-pagefind-body>
       <PageHeading
         eyebrow="Authored foundations"
-        lede="Examples show where an interaction belongs, what stays semantic, and when a calmer primitive is the better choice. Full runnable recipes arrive with M16."
+        lede="Six runnable recipes show where each interaction belongs, what stays semantic, and how the experience adapts."
       >
         Examples with boundaries
       </PageHeading>
       <ol className="sui-docs-example-notes">
-        {examples.map(([title, description], index) => (
-          <li key={title}>
+        {examples.map((example, index) => (
+          <li key={example.slug}>
             <span>{String(index + 1).padStart(2, "0")}</span>
             <div>
-              <h2>{title}</h2>
-              <p>{description}</p>
+              <h2>
+                <Link href={`/examples/${example.slug}`}>{example.title}</Link>
+              </h2>
+              <p>{example.description}</p>
             </div>
-            <small>Foundation note</small>
+            <small>{example.packageName}</small>
           </li>
         ))}
       </ol>

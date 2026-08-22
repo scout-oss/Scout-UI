@@ -4,6 +4,6 @@
     "incremental": false,
     "noEmit": true
   },
-  "include": ["lib/**/*.ts", "tests/**/*.test-d.tsx"],
+  "include": ["mdx.d.ts", "lib/**/*.ts", "tests/**/*.test-d.tsx"],
   "exclude": ["node_modules"]
 }

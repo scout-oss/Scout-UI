@@ -20,16 +20,36 @@ export interface RouteMetadataInput {
   path: `/${string}` | "/";
   title: string;
   description: string;
+  category?: "Component" | "Example" | "Guide" | "Reference";
+}
+
+export function absoluteUrl(path: `/${string}` | "/"): string {
+  return new URL(path, siteOrigin).href;
 }
 
 export function routeMetadata({
   description,
   path,
   title,
+  category = "Reference",
 }: RouteMetadataInput): Metadata {
   return {
     alternates: { canonical: path },
     description,
+    openGraph: {
+      description,
+      images: [`/og/${category.toLowerCase()}/${encodeURIComponent(title)}`],
+      siteName: "Scout UI",
+      title,
+      type: "website",
+      url: path,
+    },
     title,
+    twitter: {
+      card: "summary_large_image",
+      description,
+      images: [`/og/${category.toLowerCase()}/${encodeURIComponent(title)}`],
+      title,
+    },
   };
 }

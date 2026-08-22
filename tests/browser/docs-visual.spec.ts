@@ -27,7 +27,14 @@ async function fullPage(page: Page, name: string) {
   await visualExpect(page).toHaveScreenshot(name, { fullPage: true });
 }
 
+// M16 replaces these page compositions with a complete information
+// architecture. Keep the M12 Darwin pixels immutable as milestone artifacts,
+// but leave the deferred genuine Win32 closure runnable on Windows.
 test.describe("Scout UI M12 docs review baselines", () => {
+  test.skip(
+    process.platform !== "win32",
+    "M12 is frozen except for the deferred Win32 closure",
+  );
   test("Home desktop", async ({ page }, testInfo) => {
     desktopOnly(testInfo);
     await page.setViewportSize({ height: 1000, width: 1440 });

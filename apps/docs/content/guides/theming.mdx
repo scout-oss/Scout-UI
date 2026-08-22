@@ -1,0 +1,52 @@
+export const metadata = {
+  slug: "theming",
+  title: "Theming with CSS variables",
+  description:
+    "Remap Scout UI's paper, night, accents, typography, focus, and component hooks with plain CSS.",
+  order: 2,
+  searchTerms: [
+    "theming",
+    "CSS variables",
+    "paper",
+    "night",
+    "focus",
+    "Tailwind",
+  ],
+};
+
+Scout UI ships a recognizable default skin, not a JavaScript theme runtime.
+Every component works without Tailwind, CSS-in-JS, or a theme provider.
+
+## Start from semantic foundations
+
+Set variables on `.sui-theme`, `[data-sui-theme]`, or your own ancestor. Keep
+paper and night readable, and remap focus independently from decorative accents.
+
+<CodeBlock
+  language="css"
+  code={`.my-scout-theme {
+  --sui-paper: #fffaf0;
+  --sui-ink: #17131b;
+  --sui-ultraviolet: #6330e8;
+  --sui-focus: #005fcc;
+  --sui-focus-separation: #fffefa;
+}`}
+/>
+
+## Keep focus semantic
+
+An accent may become a brand color, but focus, danger, disabled, and
+forced-color roles must remain independently legible. Test focus outside hard
+shadows on both paper and night surfaces.
+
+## Supply typography locally
+
+Override `--sui-font-display`, `--sui-font-body`, and `--sui-font-mono`. Scout
+UI does not download fonts or require Bricolage, Inter, or Geist Mono at
+runtime.
+
+## Customize intentionally
+
+Use documented `.sui-*` classes and public `--sui-*` component variables for
+meaningful contracts. Do not depend on variables containing `-internal-`; they
+belong to imperative engines and may change.

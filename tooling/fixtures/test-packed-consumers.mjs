@@ -414,6 +414,52 @@ async function createConsumer(record, tarballs) {
       !path.basename(sourcePath).startsWith("dist"),
     recursive: true,
   });
+  if (record.key === "vite") {
+    const docsExampleRoot = path.join(destination, "src", "m16-docs");
+    await mkdir(path.join(docsExampleRoot, "components", "examples"), {
+      recursive: true,
+    });
+    await mkdir(path.join(docsExampleRoot, "lib", "content"), {
+      recursive: true,
+    });
+    await cp(
+      path.join(
+        root,
+        "apps",
+        "docs",
+        "components",
+        "examples",
+        "example-canvas.tsx",
+      ),
+      path.join(
+        docsExampleRoot,
+        "components",
+        "examples",
+        "example-canvas.tsx",
+      ),
+    );
+    await cp(
+      path.join(root, "apps", "docs", "lib", "content", "examples.ts"),
+      path.join(docsExampleRoot, "lib", "content", "examples.ts"),
+    );
+    // The authored example catalog imports only this public docs type from the
+    // much larger registry barrel. Keep the isolated packed-consumer proof
+    // focused on the example source and npm tarballs instead of copying the
+    // docs application's complete schema implementation into the fixture.
+    await writeFile(
+      path.join(docsExampleRoot, "lib", "registry.ts"),
+      `export type ComponentSlug =
+  | "sticker"
+  | "sticker-button"
+  | "sticker-badge"
+  | "sticker-trail"
+  | "sticker-cursor"
+  | "sticker-peel"
+  | "sticker-stack"
+  | "sticker-navbar";
+`,
+    );
+  }
   await assertFixtureImports(destination);
 
   // Backslashes are an escape sequence inside double-quoted YAML and would
@@ -1209,6 +1255,21 @@ export async function preparePackedConsumers() {
   await run("corepack", ["pnpm", "fixture:typecheck"], { cwd: consumers.next });
   await assertNextServerOutput(consumers.next);
   await run("corepack", ["pnpm", "fixture:build"], { cwd: consumers.vite });
+  await buildWithEsbuild({
+    absWorkingDir: consumers.vite,
+    bundle: true,
+    entryPoints: ["src/m16-docs/components/examples/example-canvas.tsx"],
+    format: "esm",
+    jsx: "automatic",
+    outfile: path.join(consumers.vite, "dist-m16-docs", "examples.js"),
+    platform: "browser",
+    sourcemap: true,
+    target: "es2022",
+  });
+  await readFile(
+    path.join(consumers.vite, "dist-m16-docs", "examples.js"),
+    "utf8",
+  );
   const bundleProbes = await assertTreeShaking(consumers.vite);
   await assertStandaloneIndependence(consumers.vite);
 

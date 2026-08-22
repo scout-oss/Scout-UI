@@ -1,0 +1,50 @@
+export const metadata = {
+  slug: "asset-authoring",
+  title: "Sticker asset authoring",
+  description:
+    "Author safe, optically balanced sticker definitions with auditable provenance and accurate public imports.",
+  order: 3,
+  searchTerms: [
+    "asset authoring",
+    "provenance",
+    "SVG safety",
+    "manifest",
+    "CC0",
+    "transparent bounds",
+  ],
+};
+
+The official pack is framework-neutral and React-free. Its manifest—not a
+manually maintained gallery—is the authority for IDs, tags, dimensions,
+transparent bounds, creator, source, license, attribution status, and checksum.
+
+## Use the shipped format honestly
+
+The frozen v0.1 pack ships SVG files. `StickerDefinition` and React rendering
+are format-agnostic for SVG, PNG, and WebP, but no raster asset export exists
+until a cleared raster asset actually ships.
+
+## Meet the safe SVG contract
+
+Use a stable kebab-case ID, preserve the viewBox, include transparent cut-line
+padding, and avoid scripts, event handlers, external resources, `foreignObject`,
+unsafe URLs, or embedded private marks. Official artwork already owns its paper
+cut line and ink outline; do not add a second wrapper treatment by default.
+
+## Record provenance
+
+Every contribution needs creator/source, license, attribution status, editable
+source, transparent bounds, and deterministic checksum. CC0 removes an
+attribution requirement; it does not remove the audit trail.
+
+## Know what cannot enter
+
+Do not contribute Scout product logos, screenshots, product claims, third-party
+logos, copyrighted characters, or artwork without clear redistribution rights.
+Read the repository's asset contribution policy before opening a change.
+
+## Bring your own stickers
+
+Consumers can pass image-like URLs or React content directly to the components.
+They do not need to publish a pack or adopt Scout UI artwork to use its bounded
+interaction behavior.

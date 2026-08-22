@@ -1,8 +1,8 @@
-import { Sticker } from "@scout-ui/react";
 import { officialStickerPack, stickerDefinitions } from "@scout-ui/stickers";
 import type { Metadata } from "next";
 
 import { PageHeading } from "../../components/page-heading";
+import { StickerBrowser } from "../../components/sticker-browser";
 import { repositoryUrl, routeMetadata } from "../../lib/site";
 
 export const metadata: Metadata = routeMetadata({
@@ -20,25 +20,9 @@ export default function StickersPage() {
       >
         The sticker drawer
       </PageHeading>
-      <ul className="sui-docs-contact-sheet">
-        {stickerDefinitions.map((sticker, index) => (
-          <li data-category={sticker.category} key={sticker.id}>
-            <span>{String(index + 1).padStart(2, "0")}</span>
-            <Sticker
-              alt={sticker.name}
-              rotation={(index % 5) * 2 - 4}
-              size="lg"
-              source={sticker}
-            />
-            <div>
-              <strong>{sticker.name}</strong>
-              <small>
-                {sticker.category} · {sticker.format.toUpperCase()}
-              </small>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div data-pagefind-body>
+        <StickerBrowser />
+      </div>
       <section className="sui-docs-license-note">
         <p className="sui-docs-eyebrow">License boundary</p>
         <h2>Code and artwork are documented separately.</h2>
@@ -51,6 +35,16 @@ export default function StickersPage() {
         <a href={`${repositoryUrl}/tree/main/packages/stickers`}>
           Read the sticker package source ↗
         </a>
+      </section>
+      <section className="sui-docs-license-note">
+        <p className="sui-docs-eyebrow">Bring your own stickers</p>
+        <h2>SVG is a current asset format, not a component assumption.</h2>
+        <p>
+          Pass official definitions, image URLs, PNG or WebP sources, or
+          consumer-rendered React content where the component contract permits.
+          Keep provenance and alternative text alongside your assets.
+        </p>
+        <a href="/guides/asset-authoring">Read the asset authoring guide →</a>
       </section>
     </div>
   );

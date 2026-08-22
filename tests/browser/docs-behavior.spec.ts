@@ -71,17 +71,17 @@ test.describe("Scout UI docs server foundation", () => {
     request,
   }, testInfo) => {
     test.skip(testInfo.project.name !== "chromium-desktop");
-    const response = await request.get("/guides/getting-started");
+    const response = await request.get("/guides/installation");
     const html = await response.text();
-    expect(html).toContain('id="install-the-foundation"');
-    expect(html).toContain('id="keep-semantics-native"');
+    expect(html).toContain('id="choose-a-package"');
+    expect(html).toContain('id="respect-react-boundaries"');
     expect(html).toContain("@scout-ui/react/styles.css");
-    await page.goto("/guides/getting-started");
+    await page.goto("/guides/installation");
     await expect(page.locator(".sui-docs-mdx pre code")).toContainText(
       "StickerButton",
     );
     await expect(
-      page.getByRole("link", { name: "component pinboard" }),
+      page.getByRole("link", { name: "component reference", exact: true }),
     ).toHaveAttribute("href", "/components");
     await expectNoAxeViolations(page, testInfo);
   });
@@ -124,9 +124,9 @@ test.describe("Scout UI docs keyboard and resilience", () => {
     test.skip(testInfo.project.name !== "chromium-desktop");
     await page.goto("/");
     await page.keyboard.press("/");
-    await page.getByRole("searchbox").fill("getting started");
-    await page.getByRole("link", { name: /getting started/iu }).click();
-    await expect(page).toHaveURL(/\/guides\/getting-started$/u);
+    await page.getByRole("searchbox").fill("installation");
+    await page.getByRole("link", { name: /installation/iu }).click();
+    await expect(page).toHaveURL(/\/guides\/installation$/u);
     await expect(page.locator("[data-route-heading]")).toBeFocused();
   });
 
@@ -294,7 +294,7 @@ test.describe("Scout UI docs keyboard and resilience", () => {
     await expectNoDocumentOverflow(page);
     await expect(page.locator(".sui-docs-page-edge-mobile")).toBeVisible();
     await page.setViewportSize({ height: 500, width: 640 });
-    await page.goto("/guides/getting-started");
+    await page.goto("/guides/installation");
     await expectNoDocumentOverflow(page);
     await expect(page.locator(".sui-docs-code pre")).toHaveCSS(
       "overflow-x",
@@ -311,7 +311,7 @@ test.describe("Scout UI docs keyboard and resilience", () => {
     await expect(current).toHaveAttribute("aria-current", "page");
     await current.focus();
     await expect(current).toBeFocused();
-    await expect(page.locator(".sui-docs-code")).toHaveCSS(
+    await expect(page.locator(".sui-docs-code").first()).toHaveCSS(
       "border-top-style",
       "solid",
     );

@@ -1,9 +1,11 @@
 import type { ComponentType } from "react";
 
 export interface MdxMetadata {
+  readonly slug: string;
   readonly title: string;
   readonly description: string;
   readonly order: number;
+  readonly searchTerms: readonly string[];
 }
 
 export interface TableOfContentsItem {
@@ -27,7 +29,11 @@ function isMetadata(value: unknown): value is MdxMetadata {
     typeof metadata.description === "string" &&
     metadata.description.length > 0 &&
     typeof metadata.order === "number" &&
-    Number.isFinite(metadata.order)
+    Number.isFinite(metadata.order) &&
+    typeof metadata.slug === "string" &&
+    metadata.slug.length > 0 &&
+    Array.isArray(metadata.searchTerms) &&
+    metadata.searchTerms.every((term) => typeof term === "string")
   );
 }
 

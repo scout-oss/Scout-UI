@@ -1,0 +1,48 @@
+export const metadata = {
+  slug: "accessibility",
+  title: "Accessibility",
+  description:
+    "Understand Scout UI's native semantics, focus, drag alternatives, artwork policy, and current verification boundary.",
+  order: 6,
+  searchTerms: [
+    "accessibility",
+    "keyboard",
+    "forced colors",
+    "alt text",
+    "focus",
+    "drag alternative",
+  ],
+};
+
+Accessibility is part of each component contract. M16 documents and tests the
+current behavior; M17 still owns final screen-reader and full compatibility
+hardening, so this guide does not claim certification that has not happened.
+
+## Start with native semantics
+
+Actions are buttons, navigation destinations are anchors, select badges expose
+`aria-pressed`, and remove badges are one named button without nested controls.
+Decorative artwork uses empty alternative text; meaningful images need useful
+text or adjacent meaning.
+
+## Preserve keyboard alternatives
+
+Peel always has a named toggle. Stack always has previous and next buttons.
+Navbar uses anchors and a focus-managed mobile Dialog. Drag and pointer effects
+remain enhancements.
+
+## Make focus survive the material
+
+Focus sits outside hard shadows, survives overlap and 200% zoom, and remains a
+system outline in forced colors. Motion or color alone never communicates state.
+
+## Restore native affordances
+
+StickerCursor returns the native cursor for editable fields, media/native
+regions, coarse pointers, reduced motion, load failure, blur, leave, and
+unmount. Trail layers are `aria-hidden` and pointer-transparent.
+
+## Test the fallback
+
+Review keyboard order, 320px reflow, reduced motion, forced colors, touch, and
+the server-rendered content—not only an automated axe result.

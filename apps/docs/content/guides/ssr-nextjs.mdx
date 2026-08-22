@@ -1,0 +1,47 @@
+export const metadata = {
+  slug: "ssr-nextjs",
+  title: "SSR and Next.js",
+  description:
+    "Use Scout UI's mixed server/client leaf architecture safely in the Next.js App Router.",
+  order: 4,
+  searchTerms: [
+    "SSR",
+    "Next.js",
+    "App Router",
+    "RSC",
+    "use client",
+    "hydration",
+  ],
+};
+
+All Scout UI modules are safe to evaluate on the server. Browser capabilities
+are read after mount, and hydration uses deterministic markup.
+
+## Use server-compatible leaves
+
+`Sticker`, `StickerButton`, and `StickerBadge` leaves are unmarked. Static,
+serializable usage can render in a Server Component.
+
+<CodeBlock language="tsx" code={`import { StickerButton } from "@scout-ui/react/sticker-button";
+
+export default function Page() {
+  return <StickerButton href="/guides">Read the guides</StickerButton>;
+}`} />
+
+## Keep client leaves narrow
+
+Trail, Cursor, Navbar, Peel, and Stack carry their own `"use client"`
+directives. Do not mark the package root—or an entire documentation route—as a
+client component merely because one local interaction needs effects.
+
+## Respect serialization
+
+Direct Server Component usage of a client leaf may pass serializable props.
+Callbacks, `renderItem`, and router adapters belong inside a small
+consumer-authored Client Component wrapper.
+
+## Expect stable hydration
+
+Trail and Cursor hydrate inert effect layers; Peel keeps both layers mounted;
+Stack derives geometry from stable keys. No public module reads browser globals
+at module scope.

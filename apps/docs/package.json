@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "next build --webpack",
+    "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind --glob \"**/*.html\" --force-language en",
     "dev": "next dev --webpack",
-    "lint": "eslint app components content lib tests next.config.mjs && stylelint \"**/*.css\" --allow-empty-input",
+    "lint": "eslint app components content lib tests next.config.mjs && stylelint \"**/*.css\" --ignore-pattern \"public/_pagefind/**\" --allow-empty-input",
     "start": "next start",
     "test": "vitest run --coverage --config ../../vitest.config.ts",
     "test:browser": "node tests/browser/run-docs-browser.mjs",
@@ -33,6 +34,7 @@
     "@types/node": "24.13.3",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
+    "pagefind": "1.5.2",
     "typescript": "6.0.3"
   }
 }

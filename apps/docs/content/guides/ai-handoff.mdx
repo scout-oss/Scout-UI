@@ -1,0 +1,44 @@
+export const metadata = {
+  slug: "ai-handoff",
+  title: "Code and AI handoff",
+  description:
+    "Use deterministic Copy Code and configuration-aware Copy AI Prompt without sending project data anywhere.",
+  order: 8,
+  searchTerms: [
+    "Copy Code",
+    "Copy AI Prompt",
+    "AI handoff",
+    "privacy",
+    "local generation",
+    "no model call",
+  ],
+};
+
+Scout UI provides two local handoff surfaces. Neither scans a repository or
+calls a hosted generation service.
+
+## Copy deterministic code
+
+Copy Code validates the current configuration, emits public imports and required
+styles, includes non-default props in stable order, and shows the exact text
+before copying. A lazy Shiki worker improves presentation only after plain code
+is already visible.
+
+## Copy an implementation prompt
+
+Copy AI Prompt assembles an ordered local template from the same registry and
+configuration. It includes the component, package, exact selected values,
+integration intent, accessibility, reduced motion, SSR, cleanup, and
+verification requirements relevant to that component.
+
+## Understand what Scout UI does not know
+
+The prompt generator does not know repository structure, styling conventions,
+framework choices, or target files unless the developer supplies context. It
+instructs a coding agent to inspect unknown facts rather than asserting them.
+
+## Keep context private
+
+Target location and project context stay in the prompt sheet only. They are not
+placed in Share URLs, history, analytics, localStorage, or sessionStorage. There
+is no model call, API key, repository scan, or prompt transmission.

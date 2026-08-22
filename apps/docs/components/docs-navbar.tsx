@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { primaryNavigation } from "../lib/navigation";
+import { repositoryUrl } from "../lib/site";
 import { SearchDialog } from "./search-dialog";
 
 function activeNavigationId(pathname: string): string {
@@ -25,7 +26,15 @@ export function DocsNavbar() {
 
   return (
     <StickerNavbar
-      action={<SearchDialog />}
+      action={
+        <div className="sui-docs-navbar-actions">
+          <a href={repositoryUrl}>GitHub ↗</a>
+          <SearchDialog />
+          <Link className="sui-docs-navbar-start" href="/components">
+            Start sticking
+          </Link>
+        </div>
+      }
       activeId={activeNavigationId(pathname)}
       aria-label="Scout UI documentation"
       brand={

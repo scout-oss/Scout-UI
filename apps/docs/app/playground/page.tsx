@@ -14,7 +14,7 @@ export const metadata: Metadata = routeMetadata({
 
 export default function PlaygroundPage() {
   return (
-    <div className="sui-docs-page sui-docs-playground-page">
+    <div className="sui-docs-page sui-docs-playground-page" data-pagefind-body>
       <PageHeading
         eyebrow="Typed workbench · M13"
         lede="Choose one component, shape it with safe controls, and share the exact normalized state. Code and AI handoff enrich this same registry in the next milestones."

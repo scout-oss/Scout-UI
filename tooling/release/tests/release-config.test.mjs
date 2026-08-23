@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+import path from "node:path";
 
 import {
   classifyRegistryResponse,
@@ -11,6 +13,25 @@ import {
   validateManifest,
 } from "../release-config.mjs";
 import { validateReleaseText } from "../release-notes.mjs";
+
+test("clean builds generate route and package declarations deterministically", async () => {
+  const docs = JSON.parse(
+    await readFile(path.join(process.cwd(), "apps/docs/package.json"), "utf8"),
+  );
+  assert.match(docs.scripts.typecheck, /^next typegen && /u);
+
+  for (const directory of ["react", "sticker-trail", "stickers"]) {
+    const manifest = JSON.parse(
+      await readFile(
+        path.join(process.cwd(), "packages", directory, "package.json"),
+        "utf8",
+      ),
+    );
+    assert.match(manifest.scripts.build, /--emitDeclarationOnly/u);
+    assert.match(manifest.scripts.build, /--composite false/u);
+    assert.match(manifest.scripts.build, /--incremental false/u);
+  }
+});
 
 test("semver and prerelease policy rejects malformed versions", () => {
   assert.equal(isSemver("0.1.0"), true);

@@ -285,3 +285,23 @@ tarball, Pagefind output, Playwright report, `.npmrc`, `.vercel` state, or
    provenance present, and clean public Next/Vite/docs installs.
 8. Update this evidence and the gate table using only observed remote results.
    Only then may M18 become complete. Do not begin M19 before that decision.
+
+## First remote validation repairs
+
+The first M18 pull-request run found two clean-runner defects. These repairs are
+locally verified but remain pending a new remote run, so no GitHub or Vercel
+gate has been promoted to `PASS`.
+
+- GitHub docs typecheck started before Next had generated the route declarations
+  imported by the canonical `next-env.d.ts`. The docs typecheck now begins with
+  `next typegen`, retaining route-aware typing without tracking `.next` output.
+- Public package declaration emission reused incremental build information from
+  `node_modules/.cache` even when ignored `dist` directories were absent. The
+  Trail build therefore exited successfully after emitting JavaScript but no
+  `dist/index.d.ts`; React then correctly refused to treat Trail as `any`.
+  Declaration-only build invocations for all three public packages now disable
+  composite/incremental reuse, while normal typechecking keeps its incremental
+  cache. Real Trail declarations are emitted on every clean package build.
+- `SCOUT_UI_DOCS_ORIGIN` affects canonical build output and is now declared only
+  on the `@scout-ui/docs#build` Turbo task, so production and preview origins
+  participate in the docs cache key without becoming global package inputs.

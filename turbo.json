@@ -19,6 +19,16 @@
         "public/_pagefind/**"
       ]
     },
+    "@scout-ui/docs#build": {
+      "dependsOn": ["^build"],
+      "env": ["SCOUT_UI_DOCS_ORIGIN"],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        "public/_pagefind/**"
+      ]
+    },
     "dev": {
       "cache": false,
       "persistent": true

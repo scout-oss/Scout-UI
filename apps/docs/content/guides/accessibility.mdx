@@ -14,9 +14,11 @@ export const metadata = {
   ],
 };
 
-Accessibility is part of each component contract. M16 documents and tests the
-current behavior; M17 still owns final screen-reader and full compatibility
-hardening, so this guide does not claim certification that has not happened.
+Accessibility is part of each component contract. The M17 hardening matrix found
+no known critical or serious axe violations across the recorded component and
+documentation states. That automated result is one input, not a conformance
+claim: real VoiceOver/Safari and NVDA/Firefox review remains a manual release
+check and is tracked explicitly when it has not been executed.
 
 ## Start with native semantics
 
@@ -46,3 +48,9 @@ unmount. Trail layers are `aria-hidden` and pointer-transparent.
 
 Review keyboard order, 320px reflow, reduced motion, forced colors, touch, and
 the server-rendered content—not only an automated axe result.
+
+The repository's M17 accessibility review records the exact automated matrix,
+keyboard paths, accessibility-tree checks, platform limitations, and separate
+VoiceOver and NVDA re-entry checklists. Drag remains an enhancement: Peel has a
+named toggle, Stack has previous/next controls, and neither requires a pointer
+gesture to expose its complete behavior.

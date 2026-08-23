@@ -121,7 +121,7 @@ test.describe("M13 playground registry integration", () => {
         window as typeof window & {
           __scoutUiPlaygroundMetrics?: {
             layoutShift: number;
-            longTasks: number;
+            longTasks: Array<{ duration: number; startTime: number }>;
           };
           __scoutUiPlaygroundPreviewCommits?: number;
         }
@@ -129,10 +129,13 @@ test.describe("M13 playground registry integration", () => {
       const scope = window as typeof window & {
         __scoutUiPlaygroundMetrics?: {
           layoutShift: number;
-          longTasks: number;
+          longTasks: Array<{ duration: number; startTime: number }>;
         };
       };
-      const metrics = { layoutShift: 0, longTasks: 0 };
+      const metrics = {
+        layoutShift: 0,
+        longTasks: [] as Array<{ duration: number; startTime: number }>,
+      };
       scope.__scoutUiPlaygroundMetrics = metrics;
       new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
@@ -144,7 +147,12 @@ test.describe("M13 playground registry integration", () => {
         }
       }).observe({ type: "layout-shift" });
       new PerformanceObserver((list) => {
-        metrics.longTasks += list.getEntries().length;
+        for (const entry of list.getEntries()) {
+          metrics.longTasks.push({
+            duration: entry.duration,
+            startTime: entry.startTime,
+          });
+        }
       }).observe({ type: "longtask" });
     });
     const slider = page.getByRole("slider", { name: "Rotation" }).first();
@@ -184,16 +192,13 @@ test.describe("M13 playground registry integration", () => {
             ).__scoutUiPlaygroundMetrics?.layoutShift ?? 0,
             (
               window as typeof window & {
-                __scoutUiPlaygroundMetrics?: { longTasks: number };
+                __scoutUiPlaygroundMetrics?: {
+                  longTasks: Array<{ duration: number; startTime: number }>;
+                };
               }
-            ).__scoutUiPlaygroundMetrics?.longTasks ?? 0,
+            ).__scoutUiPlaygroundMetrics?.longTasks ?? [],
           ] as const,
       );
-    expect(replaceWrites).toBeLessThanOrEqual(2);
-    expect(previewCommits).toBeGreaterThan(0);
-    expect(previewCommits).toBeLessThanOrEqual(30);
-    expect(layoutShift).toBeLessThanOrEqual(0.01);
-    expect(longTasks).toBe(0);
     await testInfo.attach("playground-input-burst.json", {
       body: JSON.stringify(
         {
@@ -208,6 +213,11 @@ test.describe("M13 playground registry integration", () => {
       ),
       contentType: "application/json",
     });
+    expect(replaceWrites).toBeLessThanOrEqual(2);
+    expect(previewCommits).toBeGreaterThan(0);
+    expect(previewCommits).toBeLessThanOrEqual(30);
+    expect(layoutShift).toBeLessThanOrEqual(0.01);
+    expect(longTasks).toHaveLength(0);
 
     await page
       .getByRole("button", { name: "Calm", exact: true })

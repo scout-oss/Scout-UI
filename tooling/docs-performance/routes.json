@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "routes": [
+    { "category": "home", "path": "/" },
+    { "category": "content", "path": "/components" },
+    { "category": "component", "path": "/components/sticker" },
+    { "category": "component", "path": "/components/sticker-trail" },
+    { "category": "component", "path": "/components/sticker-cursor" },
+    { "category": "component", "path": "/components/sticker-peel" },
+    { "category": "component", "path": "/components/sticker-stack" },
+    { "category": "playground", "path": "/playground/sticker-trail" },
+    { "category": "content", "path": "/stickers" },
+    { "category": "content", "path": "/examples" },
+    { "category": "content", "path": "/examples/sticker-trail-hero" },
+    { "category": "calm", "path": "/guides/accessibility" }
+  ]
+}

@@ -998,6 +998,34 @@ async function assertTreeShaking(viteConsumer) {
     "Peel narrow build retained unrelated Navbar, Cursor, Stack, or sticker-pack code",
   );
 
+  const cursorOutput = await readJavaScript(
+    path.join(viteConsumer, "dist-cursor-tree-shake"),
+  );
+  assert.match(
+    cursorOutput,
+    /sui-sticker-cursor/u,
+    "Cursor narrow build lost StickerCursor",
+  );
+  assert.doesNotMatch(
+    cursorOutput,
+    /sui-sticker-navbar|data-radix-focus-guard|sui-sticker-peel|sui-sticker-stack|sui-trail|officialStickerPack/u,
+    "Cursor narrow build retained unrelated Navbar, Peel, Stack, Trail, or sticker-pack code",
+  );
+
+  const stackOutput = await readJavaScript(
+    path.join(viteConsumer, "dist-stack-tree-shake"),
+  );
+  assert.match(
+    stackOutput,
+    /sui-sticker-stack/u,
+    "Stack narrow build lost StickerStack",
+  );
+  assert.doesNotMatch(
+    stackOutput,
+    /sui-sticker-navbar|data-radix-focus-guard|sui-sticker-cursor|sui-sticker-peel|sui-trail|officialStickerPack/u,
+    "Stack narrow build retained unrelated Navbar, Cursor, Peel, Trail, or sticker-pack code",
+  );
+
   const broadTrailOutput = await readJavaScript(
     path.join(viteConsumer, "dist-trail-tree-shake"),
   );
@@ -1088,17 +1116,20 @@ async function assertTreeShaking(viteConsumer) {
   );
 
   const stickerOnly = measure(source);
+  const cursor = measure(cursorOutput);
   const nonNavbarInteractive = measure(peelOutput);
   const navbar = measure(navbarOutput);
   const broadTrail = measure(broadTrailOutput);
   const standaloneTrail = measure(standaloneTrailOutput);
   const singleSticker = measure(stickerOutput);
+  const stack = measure(stackOutput);
   assert.ok(
     navbar.rawBytes > stickerOnly.rawBytes,
     "Navbar-positive bundle should retain more implementation than Sticker-only",
   );
   return {
     broadTrail,
+    cursor,
     navbar,
     navbarIncremental: {
       gzipBytes: navbar.gzipBytes - stickerOnly.gzipBytes,
@@ -1106,6 +1137,7 @@ async function assertTreeShaking(viteConsumer) {
     },
     nonNavbarInteractive,
     singleSticker,
+    stack,
     standaloneTrail,
     stickerOnly,
   };

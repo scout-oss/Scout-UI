@@ -1,6 +1,6 @@
 # Scout UI v0.1 Implementation Plan
 
-**Status:** Milestones 1–16 complete; Milestone 17 has not started<br />
+**Status:** Milestones 1–17 complete; Milestone 18 has not started<br />
 **Source documents:** `SCOUT_UI_MASTER_SPEC.md`, `SCOUT_UI_DESIGN_SYSTEM.md`,
 `SCOUT_UI_ENGINEERING_SPEC.md`<br /> **Scope:** Eight components, three public
 packages, one documentation/playground application

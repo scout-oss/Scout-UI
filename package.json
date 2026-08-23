@@ -17,6 +17,7 @@
     "test": "turbo run test",
     "test:browser": "pnpm --filter @scout-ui/fixture-harness test:browser && pnpm --filter @scout-ui/docs test:browser",
     "test:fixtures": "node tooling/fixtures/test-packed-consumers.mjs",
+    "test:docs-budgets": "node tooling/docs-performance/check-docs-budgets.mjs",
     "test:packages": "node tooling/package-preflight/package-preflight.mjs",
     "test:packages:update": "node tooling/package-preflight/package-preflight.mjs --update",
     "test:visual": "pnpm --filter @scout-ui/fixture-harness test:visual && pnpm --filter @scout-ui/docs test:visual",

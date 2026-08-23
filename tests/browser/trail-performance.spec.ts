@@ -395,4 +395,101 @@ test.describe("sustained motion", () => {
       "95th percentile frame time regressed",
     ).toBeLessThan(100);
   });
+
+  test("thirty seconds at the hard maxActive boundary stays bounded", async ({
+    page,
+    browserName,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== "chromium-desktop",
+      "The sustained benchmark runs on the designated reference project only.",
+    );
+    test.setTimeout(180_000);
+    await installResourceTracker(page);
+    await page.addInitScript(() => {
+      const scope = window as typeof window & {
+        __scoutUiCeilingLongTasks?: number[];
+      };
+      scope.__scoutUiCeilingLongTasks = [];
+      try {
+        new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            scope.__scoutUiCeilingLongTasks?.push(entry.duration);
+          }
+        }).observe({ entryTypes: ["longtask"] });
+      } catch {
+        // Chromium is the numeric reference; the invariant remains valid if
+        // this supplemental timing API is unavailable.
+      }
+    });
+    await page.goto("/test-surfaces/trail");
+    const box = await visibleBox(page, "ceiling-trail");
+    await page.waitForTimeout(500);
+    const baseline = await readResourceCounts(page);
+    const poolSize = await slots(page, "ceiling-trail").count();
+    expect(poolSize, "the public maxActive request must clamp to 48").toBe(48);
+
+    const durationMs = 30_000;
+    const started = Date.now();
+    let moves = 0;
+    let peakActive = 0;
+    while (Date.now() - started < durationMs) {
+      const elapsed = Date.now() - started;
+      const phase = (elapsed / durationMs) * Math.PI * 12;
+      await page.mouse.move(
+        box.x + box.width / 2 + Math.cos(phase) * (box.width * 0.44),
+        box.y + box.height / 2 + Math.sin(phase * 2.1) * (box.height * 0.4),
+      );
+      moves += 1;
+      if (moves % 20 === 0) {
+        peakActive = Math.max(
+          peakActive,
+          await activeSlots(page, "ceiling-trail").count(),
+        );
+      }
+    }
+    await page.waitForTimeout(5500);
+    const after = await readResourceCounts(page);
+    const longTasks = await page.evaluate(
+      () =>
+        (
+          window as typeof window & {
+            __scoutUiCeilingLongTasks?: number[];
+          }
+        ).__scoutUiCeilingLongTasks ?? [],
+    );
+    const report = {
+      browser: browserName,
+      browserVersion: page.context().browser()?.version() ?? "unknown",
+      durationMs,
+      longTaskCount: longTasks.length,
+      longTaskMaxMs: Number(Math.max(0, ...longTasks).toFixed(2)),
+      nodeVersion: process.version,
+      peakActiveNodes: peakActive,
+      platform: process.platform,
+      pointerMoves: moves,
+      poolSize,
+      resourcesAfter: after,
+      resourcesBefore: baseline,
+      scenario: "maxActive request clamped to hard ceiling; spacing 4px",
+    };
+    console.log(`TRAIL_CEILING_PERFORMANCE ${JSON.stringify(report)}`);
+    await testInfo.attach("trail-ceiling-performance.json", {
+      body: Buffer.from(JSON.stringify(report, null, 2)),
+      contentType: "application/json",
+    });
+
+    expect(peakActive).toBeGreaterThan(0);
+    expect(peakActive).toBeLessThanOrEqual(poolSize);
+    expect(await activeSlots(page, "ceiling-trail").count()).toBe(0);
+    expect(await slots(page, "ceiling-trail").count()).toBe(poolSize);
+    expect(trailListenerTotal(after)).toBe(trailListenerTotal(baseline));
+    expect(after.resizeObservers).toBe(baseline.resizeObservers);
+    expect(after.intersectionObservers).toBe(baseline.intersectionObservers);
+    expect(after.timeouts).toBe(baseline.timeouts);
+    expect(after.intervals).toBe(baseline.intervals);
+    expect(after.pointerCaptures).toBe(0);
+    expect(after.animations).toBe(0);
+    expect(after.frames).toBeLessThanOrEqual(baseline.frames);
+  });
 });

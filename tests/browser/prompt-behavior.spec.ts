@@ -483,12 +483,23 @@ test.describe("M15 configuration-aware Copy AI Prompt", () => {
         openedDialogs: 0,
         renders: 0,
       };
-      (window as typeof window & { __m15LongTasks?: number }).__m15LongTasks =
-        0;
+      (
+        window as typeof window & {
+          __m15LongTasks?: Array<{ duration: number; startTime: number }>;
+        }
+      ).__m15LongTasks = [];
       new PerformanceObserver((entries) => {
-        (window as typeof window & { __m15LongTasks?: number }).__m15LongTasks =
-          ((window as typeof window & { __m15LongTasks?: number })
-            .__m15LongTasks ?? 0) + entries.getEntries().length;
+        const longTasks = (
+          window as typeof window & {
+            __m15LongTasks?: Array<{ duration: number; startTime: number }>;
+          }
+        ).__m15LongTasks;
+        for (const entry of entries.getEntries()) {
+          longTasks?.push({
+            duration: entry.duration,
+            startTime: entry.startTime,
+          });
+        }
       }).observe({ type: "longtask" });
     });
     await openPrompt(page, "/playground/sticker");
@@ -511,8 +522,12 @@ test.describe("M15 configuration-aware Copy AI Prompt", () => {
         metrics.calculations = 0;
         metrics.renders = 0;
       }
-      (window as typeof window & { __m15LongTasks?: number }).__m15LongTasks =
-        0;
+      const longTasks = (
+        window as typeof window & {
+          __m15LongTasks?: Array<{ duration: number; startTime: number }>;
+        }
+      ).__m15LongTasks;
+      if (longTasks) longTasks.length = 0;
     });
     await page.getByRole("button", { name: "Close AI Prompt" }).click();
     const slider = page.getByRole("slider", { name: "Rotation" }).first();
@@ -529,11 +544,30 @@ test.describe("M15 configuration-aware Copy AI Prompt", () => {
     });
     await page.getByRole("button", { name: "Copy AI Prompt" }).click();
     await expect(page.getByRole("dialog")).toContainText("Rotation: 12");
-    await page.waitForTimeout(950);
+    await expect
+      .poll(
+        () =>
+          page.evaluate(() => {
+            const metrics = (
+              window as typeof window & {
+                __scoutUiPromptMetrics?: Record<string, number>;
+              }
+            ).__scoutUiPromptMetrics;
+            return {
+              activeCopyTimers: metrics?.activeCopyTimers ?? 0,
+              activeEmphasisTimers: metrics?.activeEmphasisTimers ?? 0,
+            };
+          }),
+        { timeout: 3_000 },
+      )
+      .toEqual({ activeCopyTimers: 0, activeEmphasisTimers: 0 });
     const result = await page.evaluate(() => ({
       longTasks:
-        (window as typeof window & { __m15LongTasks?: number })
-          .__m15LongTasks ?? 0,
+        (
+          window as typeof window & {
+            __m15LongTasks?: Array<{ duration: number; startTime: number }>;
+          }
+        ).__m15LongTasks ?? [],
       metrics: (
         window as typeof window & {
           __scoutUiPromptMetrics?: Record<string, number>;
@@ -553,17 +587,17 @@ test.describe("M15 configuration-aware Copy AI Prompt", () => {
           ) === selector,
       ),
     }));
+    await testInfo.attach("prompt-rapid-update.json", {
+      body: JSON.stringify(result, null, 2),
+      contentType: "application/json",
+    });
     expect(result.stable).toBe(true);
     expect(result.portals).toBe(1);
     expect(result.metrics?.calculations).toBeGreaterThan(0);
     expect(result.metrics?.calculations).toBeLessThanOrEqual(25);
     expect(result.metrics?.activeCopyTimers).toBe(0);
     expect(result.metrics?.activeEmphasisTimers).toBe(0);
-    expect(result.longTasks).toBe(0);
-    await testInfo.attach("prompt-rapid-update.json", {
-      body: JSON.stringify(result, null, 2),
-      contentType: "application/json",
-    });
+    expect(result.longTasks).toHaveLength(0);
   });
 
   test("preview failure leaves prompt, Code, reference content, and Copy actions available", async ({

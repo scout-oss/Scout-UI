@@ -42,3 +42,19 @@ Reduced-motion and unsupported capability branches do not attach movement loops.
 Prefer explicit component leaves, lazy search and highlighting, one loud effect
 per viewport, and no simultaneous full-page pointer systems. Profile the actual
 consumer rather than repeating isolated benchmark numbers without context.
+
+## Read the recorded budgets
+
+M17 records route-specific raw and gzip JavaScript budgets for the homepage,
+calm guides, component references, playgrounds, and content indexes. The local
+checker measures production output and applies modest headroom to the measured
+baseline; it does not make a universal network or frame-rate promise. Pagefind
+1.5.2 remains a local static index loaded only after a search query reaches two
+characters. The Shiki worker remains separate from initial route JavaScript and
+starts only for a code surface that requests highlighting.
+
+The sustained interaction baseline is also environment-qualified. Trail and
+Cursor are exercised for at least 30 seconds on the reference Chromium project,
+while Peel and Stack run repeated committed and cancelled gestures. Hard
+invariants—bounded DOM, zero pointer-progress React commits, and complete
+resource cleanup—are enforced independently from tolerant timing observations.

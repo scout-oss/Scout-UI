@@ -15,6 +15,16 @@
         "rawBytes": 63281
       }
     },
+    "cursor": {
+      "baseline": {
+        "gzipBytes": 15052,
+        "rawBytes": 56901
+      },
+      "budget": {
+        "gzipBytes": 16257,
+        "rawBytes": 61454
+      }
+    },
     "navbar": {
       "baseline": {
         "gzipBytes": 31209,
@@ -63,6 +73,16 @@
       "budget": {
         "gzipBytes": 16640,
         "rawBytes": 62591
+      }
+    },
+    "stack": {
+      "baseline": {
+        "gzipBytes": 14758,
+        "rawBytes": 56649
+      },
+      "budget": {
+        "gzipBytes": 15939,
+        "rawBytes": 61181
       }
     },
     "stickerOnly": {

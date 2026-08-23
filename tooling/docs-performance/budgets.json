@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "m16ReportedHomepage": {
+    "gzipBytes": 235928,
+    "rawBytes": 763050,
+    "scriptCount": 12
+  },
+  "routeCategories": {
+    "home": {
+      "gzipBudgetBytes": 285000,
+      "rawBudgetBytes": 900000
+    },
+    "calm": {
+      "gzipBudgetBytes": 245000,
+      "rawBudgetBytes": 780000
+    },
+    "component": {
+      "gzipBudgetBytes": 285000,
+      "rawBudgetBytes": 900000
+    },
+    "playground": {
+      "gzipBudgetBytes": 320000,
+      "rawBudgetBytes": 1020000
+    },
+    "content": {
+      "gzipBudgetBytes": 285000,
+      "rawBudgetBytes": 900000
+    }
+  },
+  "pagefind": {
+    "coreRuntimeBudgetBytes": 52000,
+    "indexBudgetBytes": 1250000,
+    "version": "1.5.2"
+  },
+  "shikiWorker": {
+    "rawBudgetBytes": 210000
+  }
+}

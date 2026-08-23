@@ -3237,6 +3237,13 @@
       transform: none;
     }
 
+    /* This lives in the component layer so it can override the four-column
+       component-layer declaration above. The earlier layout-layer rule was
+       lower priority and left the principles grid wider than a 320px page. */
+    .sui-docs-home-principles > div {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
     .sui-docs-prompt-heading,
     .sui-docs-prompt-actions {
       padding-inline: var(--sui-space-4);
@@ -3319,10 +3326,28 @@
     .sui-docs-home-field-guide li,
     .sui-docs-home-field-guide li:nth-child(odd),
     .sui-docs-home-field-guide li:nth-child(even) {
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto minmax(0, 1fr);
+      width: 100%;
+      min-width: 0;
       margin-inline: 0;
       padding: var(--sui-space-5);
       rotate: 0deg;
+    }
+
+    .sui-docs-home-field-guide li > div {
+      min-width: 0;
+    }
+
+    .sui-docs-home-field-guide li > div:last-child {
+      grid-column: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sui-space-3);
+    }
+
+    .sui-docs-home-field-guide li code {
+      overflow-wrap: anywhere;
+      white-space: normal;
     }
 
     .sui-docs-home-field-guide li a {

@@ -1,10 +1,22 @@
 {
   "name": "@scout-ui/react",
   "version": "0.0.0",
-  "private": true,
   "description": "React components for sticker-led interfaces.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scout-oss/Scout-UI.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://design.scoutapp.in/",
+  "bugs": {
+    "url": "https://github.com/scout-oss/Scout-UI/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "sideEffects": [
     "**/*.css"
   ],

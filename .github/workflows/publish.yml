@@ -1,0 +1,152 @@
+name: Publish Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: Select canary or the M19-approved production release.
+        required: true
+        type: choice
+        options: [canary, production]
+      version:
+        description: Exact production version (required for production only).
+        required: false
+        type: string
+      confirm:
+        description: Type publish-canary or publish-v0.1 exactly.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Protected exact-artifact publication
+    if:
+      github.repository == 'scout-oss/Scout-UI' && github.ref ==
+      'refs/heads/main'
+    environment: npm-release
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Check out trusted main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Set up Node.js and the public npm registry
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.18.0
+          package-manager-cache: false
+          registry-url: https://registry.npmjs.org
+      - name: Enable pinned pnpm and trusted-publishing npm
+        run: |
+          corepack enable
+          corepack prepare pnpm@11.21.0 --activate
+          npm install --global npm@11.15.0
+          node --version
+          corepack pnpm --version
+          npm --version
+      - name: Validate protected operator input
+        shell: bash
+        env:
+          CHANNEL: ${{ inputs.channel }}
+          CONFIRM: ${{ inputs.confirm }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = scout-oss/Scout-UI
+          test "$GITHUB_REF" = refs/heads/main
+          if [ "$CHANNEL" = canary ]; then
+            test "$CONFIRM" = publish-canary
+          else
+            test "$CHANNEL" = production
+            test "$CONFIRM" = publish-v0.1
+            node -e 'if (!/^(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)$/.test(process.argv[1])) process.exit(1)' "$VERSION"
+          fi
+      - name: Install frozen dependencies
+        run: corepack pnpm install --frozen-lockfile
+      - name: Run release workflow policy
+        run: corepack pnpm test:release
+      - name: Run full release quality matrix
+        run: |
+          corepack pnpm format
+          corepack pnpm lint
+          corepack pnpm typecheck
+          corepack pnpm test
+          corepack pnpm build
+          corepack pnpm lint:assets
+          corepack pnpm test:packages
+          corepack pnpm test:docs-budgets
+      - name: Install release browsers
+        run:
+          corepack pnpm exec playwright install --with-deps chromium firefox
+          webkit
+      - name: Run browser, accessibility, and visual release matrix
+        run: |
+          corepack pnpm test:browser:ci
+          corepack pnpm test:visual:ci
+      - name: Prepare inspected canary artifacts
+        if: inputs.channel == 'canary'
+        run:
+          corepack pnpm release:canary-dry-run -- --identifier ${{ github.run_id
+          }}.${{ github.run_attempt }}
+      - name: Prepare inspected production artifacts
+        if: inputs.channel == 'production'
+        run:
+          node tooling/release/release-dry-run.mjs --mode production
+          --expected-version "${{ inputs.version }}"
+      - name: Refuse unknown or existing canary versions
+        if: inputs.channel == 'canary'
+        run:
+          node tooling/release/registry-gate.mjs --report
+          .artifacts/release/canary/report.json --phase before --tag canary
+          --baseline .artifacts/release/canary/registry-before.json
+      - name: Refuse unknown or existing production versions
+        if: inputs.channel == 'production'
+        run:
+          node tooling/release/registry-gate.mjs --report
+          .artifacts/release/production/report.json --phase before --tag latest
+          --baseline .artifacts/release/production/registry-before.json
+      - name: Publish exact inspected canary tarballs with OIDC
+        if: inputs.channel == 'canary'
+        env:
+          SCOUT_UI_RELEASE_CONFIRMATION: ${{ inputs.confirm }}
+        run:
+          node tooling/release/publish-artifacts.mjs --publish --report
+          .artifacts/release/canary/report.json --tag canary
+      - name: Publish exact inspected production tarballs with OIDC
+        if: inputs.channel == 'production'
+        env:
+          SCOUT_UI_RELEASE_CONFIRMATION: ${{ inputs.confirm }}
+        run:
+          node tooling/release/publish-artifacts.mjs --publish --report
+          .artifacts/release/production/report.json --tag latest
+      - name: Verify canary tags, unchanged latest, and provenance
+        if: inputs.channel == 'canary'
+        run:
+          node tooling/release/registry-gate.mjs --report
+          .artifacts/release/canary/report.json --phase after --tag canary
+          --baseline .artifacts/release/canary/registry-before.json
+      - name: Verify production tags and provenance
+        if: inputs.channel == 'production'
+        run:
+          node tooling/release/registry-gate.mjs --report
+          .artifacts/release/production/report.json --phase after --tag latest
+          --baseline .artifacts/release/production/registry-before.json
+      - name: Install public canary in Next, Vite, and docs
+        if: inputs.channel == 'canary'
+        run:
+          node tooling/release/verify-public-consumers.mjs --report
+          .artifacts/release/canary/report.json
+      - name: Install public production packages in Next, Vite, and docs
+        if: inputs.channel == 'production'
+        run:
+          node tooling/release/verify-public-consumers.mjs --report
+          .artifacts/release/production/report.json

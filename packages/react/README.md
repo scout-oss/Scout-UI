@@ -6,6 +6,11 @@ React components for sticker-led interfaces. The v0.1 surface so far is
 
 Documentation: [design.scoutapp.in](https://design.scoutapp.in/)
 
+> Release status: prepared for the first public v0.1 release, but not yet
+> published. The install command below becomes valid after the M19-approved npm
+> promotion; use only a registry version or canary that you have verified
+> exists.
+
 ## Install
 
 ```sh

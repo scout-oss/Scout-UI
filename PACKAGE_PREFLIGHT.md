@@ -2,7 +2,8 @@
 
 **Milestone:** 11<br /> **Source baseline:**
 `30abbc3d58eefa12266efd772c8d207eed80e419`<br /> **Status:** local alpha freeze;
-packages remain unpublished and `private: true`
+packages remain unpublished, with publishable metadata guarded by Milestone 18
+release workflows
 
 This document explains the regression numbers enforced by `pnpm test:packages`.
 Exact API and package-content inventories live in the machine-readable snapshots

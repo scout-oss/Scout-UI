@@ -502,9 +502,23 @@ async function inspectPackage(record, packedManifest) {
   assert.equal(manifest.type, "module", `${record.name} must remain ESM-only`);
   assert.equal(
     manifest.private,
-    true,
-    `${record.name} release protection changed`,
+    undefined,
+    `${record.name} must be publishable`,
   );
+  assert.deepEqual(manifest.repository, {
+    directory: record.sourceDirectory,
+    type: "git",
+    url: "git+https://github.com/scout-oss/Scout-UI.git",
+  });
+  assert.equal(manifest.homepage, "https://design.scoutapp.in/");
+  assert.equal(
+    manifest.bugs?.url,
+    "https://github.com/scout-oss/Scout-UI/issues",
+  );
+  assert.deepEqual(manifest.publishConfig, {
+    access: "public",
+    registry: "https://registry.npmjs.org/",
+  });
   assert.equal(
     manifest.main,
     undefined,
@@ -620,7 +634,11 @@ async function assertPackageGraph(inspections) {
   assert.equal(react.peerDependencies.react, "^19.0.0");
   assert.equal(react.peerDependencies["react-dom"], "^19.0.0");
   assert.equal(react.dependencies["@radix-ui/react-dialog"], "1.1.23");
-  assert.equal(react.dependencies["@scout-ui/sticker-trail"], "0.0.0");
+  assert.equal(
+    react.dependencies["@scout-ui/sticker-trail"],
+    inspections["sticker-trail"].manifest.version,
+    "the packed React package must depend on the exact packed StickerTrail version",
+  );
   assert.equal(react.dependencies["@scout-ui/stickers"], undefined);
 
   const trail = inspections["sticker-trail"].manifest;

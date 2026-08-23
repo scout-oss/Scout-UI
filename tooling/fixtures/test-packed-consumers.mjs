@@ -1263,13 +1263,22 @@ export async function preparePackedConsumers() {
 
   const tarballFiles = await readdir(tarballDirectory);
   const tarballs = Object.fromEntries(
-    packageRecords.map((record) => {
-      const filename = tarballFiles.find(
-        (file) => file === `scout-ui-${record.slug}-0.0.0.tgz`,
-      );
-      assert.ok(filename, `missing tarball for ${record.name}`);
-      return [record.slug, path.join(tarballDirectory, filename)];
-    }),
+    await Promise.all(
+      packageRecords.map(async (record) => {
+        const sourceManifest = JSON.parse(
+          await readFile(
+            path.join(root, record.directory, "package.json"),
+            "utf8",
+          ),
+        );
+        const filename = tarballFiles.find(
+          (file) =>
+            file === `scout-ui-${record.slug}-${sourceManifest.version}.tgz`,
+        );
+        assert.ok(filename, `missing tarball for ${record.name}`);
+        return [record.slug, path.join(tarballDirectory, filename)];
+      }),
+    ),
   );
 
   const consumers = {};

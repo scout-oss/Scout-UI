@@ -1,0 +1,90 @@
+name: Security
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Review dependency changes
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: high
+
+  codeql:
+    name: CodeQL JavaScript and TypeScript
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@db488ddef3bf6cb639b32c2e9a7c0a7ea8271d28 # v4.37.8
+        with:
+          languages: javascript-typescript
+          queries: security-extended
+      - name: Analyze
+        uses: github/codeql-action/analyze@db488ddef3bf6cb639b32c2e9a7c0a7ea8271d28 # v4.37.8
+
+  audit:
+    name: Scheduled high-severity dependency audit
+    if:
+      github.event_name == 'schedule' || github.event_name ==
+      'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.18.0
+          package-manager-cache: false
+      - name: Enable pinned pnpm
+        run: corepack enable && corepack prepare pnpm@11.21.0 --activate
+      - name: Install frozen dependencies
+        run: corepack pnpm install --frozen-lockfile
+      - name: Audit dependencies without mutation
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p .artifacts/security
+          set +e
+          corepack pnpm audit --audit-level high --json > .artifacts/security/pnpm-audit.json
+          audit_status=$?
+          set -e
+          node tooling/release/audit-result.mjs .artifacts/security/pnpm-audit.json "$audit_status"
+      - name: Upload audit evidence on failure
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dependency-audit-${{ github.sha }}
+          path: .artifacts/security/pnpm-audit.json
+          retention-days: 7
+
+  required:
+    name: Security / required
+    if: always()
+    needs: [dependency-review, codeql]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require applicable security jobs
+        env:
+          CODEQL_RESULT: ${{ needs.codeql.result }}
+          DEPENDENCY_RESULT: ${{ needs.dependency-review.result }}
+        run: |
+          test "$CODEQL_RESULT" = success
+          test "$DEPENDENCY_RESULT" = success -o "$DEPENDENCY_RESULT" = skipped

@@ -31,6 +31,29 @@ Warnings are treated as failures. User-visible package changes require a
 Changeset after the relevant API is implemented. Visual changes should include
 screenshots or recordings plus keyboard, reduced-motion, and touch notes.
 
+Pull requests run the stable `CI / required`, `Browser / required`,
+`Visual / required`, and `Security / required` checks. Fork pull requests run
+unprivileged test code and never receive npm or deployment credentials. A public
+API change must update the specification, add a Changeset, update fixtures, and
+intentionally update the API snapshot. Documentation-only changes do not require
+a Changeset unless they alter a published package's user-visible contract.
+
+Visual baselines are platform-specific. CI never commits screenshots. If Linux
+baselines are missing, the Visual workflow uploads genuine Linux candidates and
+fails until a maintainer reviews and commits them; do not copy Darwin, Win32, or
+`_original-platform` images into `linux/`.
+
+Local equivalents for release infrastructure are:
+
+```sh
+pnpm test:release
+pnpm release:check
+pnpm release:dry-run
+pnpm release:canary-dry-run
+```
+
+These commands do not publish. See `RELEASE.md` for maintainer-only operations.
+
 ## Assets
 
 Do not contribute Scout product assets, third-party logos, copyrighted

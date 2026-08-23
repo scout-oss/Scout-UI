@@ -5,6 +5,18 @@ Scout and generalized for broader use.
 
 Official documentation: [design.scoutapp.in](https://design.scoutapp.in/)
 
+## Release status
+
+Scout UI is prepared for its first public v0.1 release but has not been
+published to npm. Package install commands in the package READMEs are
+prospective until a verified canary or the M19-approved `latest` release exists.
+Maintainers use Changesets, an isolated `pnpm release:dry-run`, and the
+protected OIDC workflow described in [RELEASE.md](./RELEASE.md); ordinary local
+commands never publish.
+
+Maintainers use the [release checklist](./RELEASE_CHECKLIST.md) to distinguish
+repository readiness from GitHub, npm, Vercel, and M19 approval gates.
+
 ## Workspace
 
 - `apps/docs` — documentation site

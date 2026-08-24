@@ -43,7 +43,7 @@
   "license": "MIT",
   "packageManager": "pnpm@11.21.0",
   "devDependencies": {
-    "@axe-core/playwright": "4.12.1",
+    "@axe-core/playwright": "4.13.0",
     "@changesets/cli": "2.31.1",
     "@eslint/js": "9.39.5",
     "@playwright/test": "1.62.1",

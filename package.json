@@ -68,7 +68,7 @@
     "stylelint-config-standard": "40.0.0",
     "turbo": "2.10.9",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.66.0",
+    "typescript-eslint": "8.67.0",
     "vitest": "4.1.10"
   }
 }

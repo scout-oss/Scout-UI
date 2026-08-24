@@ -1,0 +1,59 @@
+name: Browser
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: browser-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    name: Interaction and accessibility matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.18.0
+          package-manager-cache: false
+      - name: Enable pinned pnpm
+        run: corepack enable && corepack prepare pnpm@11.21.0 --activate
+      - name: Install frozen dependencies
+        run: corepack pnpm install --frozen-lockfile
+      - name: Install Playwright browsers
+        run:
+          corepack pnpm exec playwright install --with-deps chromium firefox
+          webkit
+      - name: Build
+        run: corepack pnpm build
+      - name: Run interaction and automated accessibility matrix
+        run: corepack pnpm test:browser:ci
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: browser-failure-${{ github.sha }}
+          path: .artifacts/playwright/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  required:
+    name: Browser / required
+    if: always()
+    needs: [browser]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require browser matrix
+        env:
+          BROWSER_RESULT: ${{ needs.browser.result }}
+        run: test "$BROWSER_RESULT" = success

@@ -1697,9 +1697,10 @@ authoritative specification update
 
 An internal refactor that does not alter the public contract does not need an
 API snapshot change. Milestone 11 itself does not create a Changeset because it
-establishes, rather than changes, the unpublished alpha contract. The package
-versions remain `0.0.0` and all three manifests remain `private: true` until
-Milestone 18 owns publication infrastructure and release protection changes.
+establishes, rather than changes, the unpublished alpha contract. Milestone 18
+removes `private: true` only from the three approved public manifests and adds
+publication metadata; versions stay `0.0.0` in development until the initial
+Changeset is consumed by an auditable version PR.
 
 The frozen peer range is React `^19.0.0` and React DOM `^19.0.0` for
 `@scout-ui/react`, and React `^19.0.0` for `@scout-ui/sticker-trail`. The packed
@@ -1708,6 +1709,37 @@ claimed by this range. The browser policy remains current evergreen Chromium,
 Firefox, and Safari as represented by the Playwright Chromium/Firefox/WebKit
 projects and the documented capability projects for reduced motion, coarse
 pointers, mobile, and forced colors.
+
+### 32.2 Protected v0.1 publication architecture
+
+Milestone 18 makes exactly the three public packages publishable while the root,
+docs, fixtures, and tooling remain private. The initial Changeset applies a
+minor bump from `0.0.0` to the prospective `0.1.0`; it does not claim a release
+already exists. A Changesets action pinned to an immutable commit creates or
+updates only an auditable version PR from trusted `main` and has no npm
+credential or publishing command.
+
+Package publication uses one stable `.github/workflows/publish.yml` identity and
+one protected `npm-release` GitHub Environment because current npm trusted
+publishing permits one trusted publisher per package. The npm configuration for
+each package names organization `scout-oss`, repository `Scout-UI`, workflow
+`publish.yml`, environment `npm-release`, and allowed action `npm publish`.
+Canary and production are guarded manual modes within that workflow. Canary uses
+only the `canary` dist-tag; `latest` exists only in the M19-approved production
+branch. The workflow runs on a GitHub-hosted runner with Node 24.18.0, pnpm
+11.21.0, npm 11.15.0, `contents: read`, and `id-token: write`. It uses OIDC, not
+a long-lived npm write token. Trusted publishing automatically supplies
+provenance for public packages built from this public repository.
+
+Release preparation copies the repository to an isolated temporary workspace,
+installs frozen dependencies, applies the Changesets plan only there, validates
+versions/changelogs/internal ranges, builds, packs once, verifies the exact
+tarballs in Next and Vite, builds docs against those tarballs, and records
+SHA-256 checksums. Publication consumes those exact inspected artifacts in
+dependency order. Registry failures fail closed; already-published versions,
+wrong refs, wrong confirmation phrases, checksum drift, changed `latest` during
+canary, and missing provenance all fail the workflow. Ordinary local `release`
+is the stable dry run and cannot publish.
 
 ## 33. CI/CD
 
@@ -1724,6 +1756,13 @@ GitHub Actions workflows:
 6. **Security:** dependency review for pull requests, scheduled audit, CodeQL
    where applicable, and secret scanning.
 
+The required aggregate checks are `CI / required`, `Browser / required`,
+`Visual / required`, and `Security / required`. Reusable Actions are pinned to
+immutable full commit SHAs. No workflow uses `pull_request_target`, `write-all`,
+or an npm token. A separate manual canary dry-run workflow creates inspectable
+artifacts without OIDC or publication capability; real canary and production
+publication share the protected publisher identity described above.
+
 Concurrency cancels stale preview and CI runs on the same branch. Release jobs
 never run on forked pull-request code.
 
@@ -1733,6 +1772,17 @@ The docs application is deployment-provider-neutral Next.js, with Vercel as the
 recommended initial host because preview deployments and App Router support are
 straightforward. Production deploys from protected `main`; pull requests receive
 isolated previews.
+
+The initial Vercel project is `scout-ui`, rooted at `apps/docs`. Vercel Git
+integration remains the single preview system. Forks still build and test docs
+in GitHub Actions but do not receive privileged preview credentials. Production
+Git auto-deployment must be disabled for `main` externally; after successful
+trusted-main CI, `docs-production.yml` calls the existing project's deployment
+hook from the protected `docs-production` environment. Production builds set
+`SCOUT_UI_DOCS_ORIGIN=https://design.scoutapp.in`; previews retain their own URL
+and do not become canonical. Vercel project settings, environment protection,
+the deployment hook, and preview behavior are external gates and are never
+claimed configured from repository YAML alone.
 
 Environment variables are documented and validated at build time. The site
 should not require a database for v0.1. Search index, component registry,

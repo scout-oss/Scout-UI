@@ -1,0 +1,81 @@
+name: Docs Production
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description:
+          Type deploy-docs-production after required main checks pass.
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  checks: read
+  contents: read
+
+concurrency:
+  group: docs-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Protected production deployment hook
+    if: >-
+      github.repository == 'scout-oss/Scout-UI' && github.ref ==
+      'refs/heads/main' && ((github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.full_name ==
+      'scout-oss/Scout-UI') || (github.event_name == 'workflow_dispatch' &&
+      inputs.confirm == 'deploy-docs-production'))
+    environment: docs-production
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Require every trusted-main gate for this exact commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            "CI / required"
+            "Browser / required"
+            "Visual / required"
+            "Security / required"
+          )
+          for attempt in {1..40}; do
+            checks="$(gh api \
+              -H "Accept: application/vnd.github+json" \
+              "/repos/$GITHUB_REPOSITORY/commits/$TARGET_SHA/check-runs?per_page=100" \
+              --jq '.check_runs[] | [.name, .conclusion] | @tsv')"
+            missing=0
+            for name in "${required[@]}"; do
+              if ! grep -Fqx "$name"$'\t'"success" <<<"$checks"; then
+                missing=1
+                break
+              fi
+            done
+            if [ "$missing" -eq 0 ]; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 40 ]; then
+              printf '%s\n' "$checks"
+              echo "Required checks did not all succeed for $TARGET_SHA" >&2
+              exit 1
+            fi
+            sleep 60
+          done
+      - name: Trigger the existing Vercel project's protected production hook
+        env:
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$VERCEL_DEPLOY_HOOK_URL"
+          curl --fail-with-body --silent --show-error --request POST "$VERCEL_DEPLOY_HOOK_URL"

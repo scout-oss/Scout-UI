@@ -12,7 +12,7 @@
     "test": "vitest run --coverage --config ../../vitest.config.ts",
     "test:browser": "node tests/browser/run-docs-browser.mjs",
     "test:visual": "node tests/browser/run-docs-browser.mjs --update-snapshots=all",
-    "typecheck": "tsc --project tsconfig.json --noEmit --pretty false && tsc --project tsconfig.type-tests.json --pretty false && tsc --project tsconfig.browser-tests.json --pretty false"
+    "typecheck": "next typegen && tsc --project tsconfig.json --noEmit --pretty false && tsc --project tsconfig.type-tests.json --pretty false && tsc --project tsconfig.browser-tests.json --pretty false"
   },
   "dependencies": {
     "@mdx-js/loader": "3.1.1",

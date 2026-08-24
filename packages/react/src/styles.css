@@ -1979,12 +1979,10 @@
 
   @keyframes sui-navbar-dialog-enter {
     from {
-      opacity: 0;
       transform: translate3d(0, -1.75rem, 0) rotate(-0.35deg);
     }
 
     to {
-      opacity: 1;
       transform: translate3d(0, 0, 0) rotate(0deg);
     }
   }

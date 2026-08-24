@@ -1,0 +1,620 @@
+# Milestone 18 acceptance gates
+
+Status vocabulary is literal: `PASS` is supported by local or observed read-only
+evidence; `NOT EXECUTED` means the remote operation was not run; `BLOCKED` means
+an attempted requirement cannot proceed. Repository readiness does not convert a
+remote gate into `PASS`.
+
+Overall: **M18 INCOMPLETE — repository implementation ready; external gates
+pending.**
+
+## Gates 001–100
+
+-
+- 001 PASS — exact M17 baseline `b2ee72acd7112f196ff22fa2f07762d0a04c2bb6`
+  verified.
+-
+- 002 PASS — initial HEAD/main/origin matched the baseline.
+-
+- 003 PASS — initial Scout UI worktree was clean.
+-
+- 004 PASS — initial index was empty.
+- 005 PASS — `../scout-in` was initially clean.
+-
+- 006 PASS — M19 was not started.
+- 007 PASS — all three npm reads returned 404; no v0.1 `latest` exists.
+-
+- 008 PASS — GitHub release inventory was empty.
+-
+- 009 PASS — no production tag exists or was created.
+-
+- 010 PASS — M11 public API snapshot is byte-unchanged.
+-
+- 011 PASS — authoritative repository and official service sources were read.
+-
+- 012 PASS — initial workflow inventory completed: none existed.
+-
+- 013 PASS — Changesets config and empty release-plan inventory completed.
+-
+- 014 PASS — every workspace/package manifest was inventoried.
+-
+- 015 PASS — docs origin, metadata, Pagefind, Vercel project, and Git
+  integration were inventoried.
+-
+- 016 PASS — all three public npm names were checked read-only.
+-
+- 017 PASS — GitHub external state was inventoried read-only.
+-
+- 018 PASS — Vercel external state was inventoried read-only.
+- 019 PASS — no credential value was printed.
+-
+- 020 PASS — no external mutation was performed.
+-
+- 021 PASS — release discovery enforces exactly three public packages.
+-
+- 022 PASS — root remains private.
+-
+- 023 PASS — docs remains private.
+-
+- 024 PASS — fixtures remain private.
+-
+- 025 PASS — tooling remains private.
+-
+- 026 PASS — React publishable metadata validates and packs.
+-
+- 027 PASS — Trail publishable metadata validates and packs.
+-
+- 028 PASS — Stickers publishable metadata validates and packs.
+-
+- 029 PASS — repository URL and package-directory fields are exact.
+- 030 PASS — MIT package licenses are present and packed.
+-
+- 031 PASS — all three package READMEs are packed.
+-
+- 032 PASS — Stickers asset license is packed.
+-
+- 033 PASS — Stickers attribution/provenance material is packed.
+-
+- 034 PASS — public npm access and registry are explicit.
+-
+- 035 PASS — packed manifests contain no workspace/file/local dependency leak.
+-
+- 036 PASS — tarballs contain no private path leak.
+-
+- 037 PASS — no consumer lifecycle script was introduced.
+-
+- 038 PASS — `@scout-ui/react` checked at `2026-08-23T08:26:55Z`: 404.
+-
+- 039 PASS — `@scout-ui/sticker-trail` checked at that time: 404.
+-
+- 040 PASS — `@scout-ui/stickers` checked at that time: 404.
+-
+- 041 PASS — 404, version-exists, and unknown/network states are distinct and
+  tested.
+-
+- 042 PASS — npm scope ownership is not inferred from 404.
+-
+- 043 PASS — scope control is honestly reported unknown; npm auth is
+  unavailable.
+-
+- 044 PASS — Changesets config validates.
+-
+- 045 PASS — only the three public packages have non-`none` release plans.
+-
+- 046 PASS — synchronized initial 0.1 strategy is documented.
+-
+- 047 PASS — Changesets status produces `0.1.0` for all three packages.
+-
+- 048 PASS — React's internal Trail dependency becomes the exact release
+  version.
+-
+- 049 PASS — Changesets changelog strategy is configured and validated.
+-
+- 050 PASS — no fabricated historical publication exists.
+-
+- 051 PASS — one honest initial v0.1 Changeset was added.
+-
+- 052 PASS — Changeset describes prospective, unpublished functionality.
+-
+- 053 PASS — source package versions remain `0.0.0` after dry runs.
+-
+- 054 PASS — dry runs copy into isolated temporary workspaces.
+-
+- 055 PASS — both dry runs begin with frozen installs.
+-
+- 056 PASS — stable dry run applies the Changesets version plan.
+-
+- 057 PASS — stable versions are exactly `0.1.0`.
+- 058 PASS — all three stable changelogs validate.
+-
+- 059 PASS — React-to-Trail range is exactly `0.1.0`.
+-
+- 060 PASS — isolated stable build passes.
+-
+- 061 PASS — isolated package preflight passes.
+-
+- 062 PASS — three stable tarballs are generated.
+- 063 PASS — tarball manifests/content/file counts validate.
+-
+- 064 PASS — SHA-256 is generated for each exact tarball.
+-
+- 065 PASS — exact stable tarballs pass the Next consumer.
+-
+- 066 PASS — exact stable tarballs pass the Vite consumer.
+-
+- 067 PASS — required legal and asset-license files pass.
+-
+- 068 PASS — package README packing passes.
+-
+- 069 PASS — runtime/package/docs budgets pass in the dry run.
+-
+- 070 PASS — stable dry run records no publication and no dist-tag.
+-
+- 071 PASS — canary version dry run completes.
+-
+- 072 PASS — `0.0.0-canary-m18-final-20260823082406` is valid prerelease semver.
+-
+- 073 PASS — canary React range equals the exact canary Trail version.
+-
+- 074 PASS — canary artifacts build and preflight.
+-
+- 075 PASS — canary tarball Next consumer passes.
+-
+- 076 PASS — canary tarball Vite consumer passes.
+-
+- 077 PASS — canary report and publish path permit only `canary`.
+-
+- 078 PASS — canary confirmation cannot select `latest`.
+-
+- 079 PASS — canary preparation/publication paths are manual only.
+-
+- 080 PASS — `prepare-canary` and `publish-canary` confirmations are required.
+-
+- 081 PASS — real canary publication references protected `npm-release`.
+-
+- 082 PASS — repository/ref assertions reject non-main or wrong-repository
+  canary.
+-
+- 083 PASS — no fork event enters the canary path.
+-
+- 084 PASS — postpublish exact-version/tag/provenance registry verification
+  exists.
+-
+- 085 PASS — canary compares every `latest` tag to its prepublish baseline.
+-
+- 086 PASS — clean public Next/Vite/docs install verification exists.
+-
+- 087 PASS — isolated docs target builds the exact canary versions.
+
+- 088 NOT EXECUTED — no real public canary was authorized or published.
+-
+- 089 NOT EXECUTED — no public `@canary` install could be performed.
+-
+- 090 NOT EXECUTED — no real canary provenance exists to inspect.
+-
+- 091 PASS — current official npm trusted-publishing docs were reviewed.
+-
+- 092 PASS — Node 24.18.0 exceeds Node 22.14.0 requirement.
+-
+- 093 PASS — npm 11.15.0 exceeds npm 11.5.1 requirement.
+- 094 PASS — GitHub Actions OIDC is the primary publication auth.
+-
+- 095 PASS — primary workflow has no npm write token.
+-
+- 096 PASS — only `publish.yml` has `id-token: write`.
+-
+- 097 PASS — publication uses GitHub-hosted Ubuntu.
+-
+- 098 PASS — public repository and package metadata satisfy provenance
+  architecture.
+- 099 PASS — automatic public-package provenance expectation and verification
+  are documented.
+-
+- 100 PASS — trusted publisher filename `publish.yml` is fixed and documented.
+
+## Gates 101–200
+
+-
+- 101 PASS — trusted publisher environment `npm-release` is fixed and
+  documented.
+-
+- 102 PASS — current one-trusted-publisher-per-package constraint was verified.
+-
+- 103 PASS — external publishers are honestly reported unconfigured/unverified.
+-
+- 104 PASS — repository OIDC architecture is not presented as remote OIDC
+  success.
+-
+- 105 PASS — expected provenance is not presented as observed provenance.
+- 106 PASS — core CI workflow is implemented.
+-
+- 107 PASS — PR CI uses a frozen install.
+- 108 PASS — PR CI runs formatting verification.
+-
+- 109 PASS — PR CI runs lint.
+- 110 PASS — PR CI runs typecheck.
+-
+- 111 PASS — PR CI runs unit tests.
+-
+- 112 PASS — PR CI runs the build.
+-
+- 113 PASS — PR CI runs asset/provenance checks.
+-
+- 114 PASS — PR CI runs package preflight and packed consumers.
+-
+- 115 PASS — PR CI runs docs budgets.
+- 116 PASS — package preflight enforces runtime/package budgets.
+-
+- 117 PASS — stable `CI / required` aggregator exists.
+-
+- 118 PASS — core CI has read-only contents permission.
+-
+- 119 PASS — stale same-ref CI is canceled safely.
+-
+- 120 PASS — browser workflow is implemented.
+-
+- 121 PASS — Chromium desktop coverage is preserved.
+- 122 PASS — Firefox desktop coverage is preserved.
+-
+- 123 PASS — WebKit/Safari-representative coverage is preserved.
+-
+- 124 PASS — mobile/touch/coarse-pointer coverage is preserved.
+-
+- 125 PASS — reduced-motion coverage is preserved.
+-
+- 126 PASS — supported forced-colors coverage is preserved.
+-
+- 127 PASS — browser artifacts upload only on failure.
+-
+- 128 PASS — policy skips are reported separately from applicable tests.
+-
+- 129 PASS — stable `Browser / required` aggregator exists.
+-
+- 130 PASS — browser workflow has no secret or write permission.
+-
+- 131 PASS — axe/accessibility tests are part of the required browser signal.
+-
+- 132 PASS — M17 serious/critical axe policy is unchanged.
+-
+- 133 PASS — CI documentation retains manual screen-reader requirements.
+-
+- 134 PASS — visual workflow is implemented.
+-
+- 135 PASS — platform-specific screenshot comparison uses real Playwright
+  output.
+-
+- 136 PASS — no fake Linux image is created or copied.
+-
+- 137 PASS — workflow never auto-commits snapshots.
+-
+- 138 PASS — candidates/diffs are uploaded as seven-day artifacts.
+- 139 PASS — stable `Visual / required` aggregator exists.
+-
+- 140 PASS — Darwin screenshots are untouched.
+-
+- 141 PASS — Win32 screenshots are untouched.
+- 142 PASS — `_original-platform` is untouched.
+-
+- 143 PASS — Linux baseline absence is explicitly reported.
+-
+- 144 NOT EXECUTED — genuine Linux candidates have not run/reviewed in CI.
+-
+- 145 NOT EXECUTED — visual workflow has not run remotely.
+- 146 PASS — PR dependency review is implemented.
+-
+- 147 PASS — dependency review is read-only.
+-
+- 148 PASS — high-severity dependency failure policy is documented/configured.
+-
+- 149 PASS — repository CodeQL workflow is configured for JS/TS.
+-
+- 150 PASS — only the CodeQL job writes security events.
+-
+- 151 PASS — weekly/manual dependency audit is configured.
+-
+- 152 PASS — audit never runs auto-fix.
+-
+- 153 PASS — external secret-scanning state is honestly reported disabled.
+-
+- 154 PASS — disabled remote secret scanning is not called PASS.
+- 155 PASS — every referenced Action is pinned to a verified full SHA.
+-
+- 156 PASS — Changesets and all release Actions are not floating.
+-
+- 157 PASS — no Action SHA was fabricated.
+-
+- 158 PASS — workflow permissions are explicit.
+-
+- 159 PASS — no workflow uses `write-all`.
+-
+- 160 PASS — contents write is limited to release-PR creation.
+-
+- 161 PASS — id-token write is limited to exact-artifact publication.
+-
+- 162 PASS — no `pull_request_target` exists.
+-
+- 163 PASS — no fork-controlled event has a credential path.
+-
+- 164 PASS — static workflow-security policy passes for eight workflows.
+-
+- 165 PASS — Changesets release-PR workflow is implemented.
+- 166 PASS — it runs only for trusted `scout-oss/Scout-UI` main.
+-
+- 167 PASS — it receives no npm auth/OIDC.
+-
+- 168 PASS — writes are limited to contents and pull requests.
+-
+- 169 PASS — no release PR auto-merge exists.
+-
+- 170 PASS — release PR review/content policy is documented.
+-
+- 171 NOT EXECUTED — Changesets release-PR workflow has not run remotely.
+-
+- 172 PASS — production publish workflow is implemented.
+-
+- 173 PASS — publication is manual and crosses protected `npm-release`.
+-
+- 174 PASS — production requires exact `publish-v0.1` confirmation.
+-
+- 175 PASS — approved repository and `refs/heads/main` are asserted twice.
+- 176 PASS — exact stable version and three-package plan are validated.
+-
+- 177 PASS — existing version causes a prepublish failure.
+-
+- 178 PASS — registry is queried immediately before publish.
+-
+- 179 PASS — publication reruns release policy, quality, browsers, visuals,
+  packages, and budgets.
+-
+- 180 PASS — only inspected checksum-bound tarballs are published.
+-
+- 181 PASS — npm publication uses OIDC.
+- 182 PASS — no long-lived npm token exists in primary path.
+-
+- 183 PASS — publication references `npm-release`.
+-
+- 184 PASS — only the protected production branch can request `latest`.
+-
+- 185 PASS — ordinary main pushes cannot publish.
+-
+- 186 PASS — PRs cannot publish.
+-
+- 187 PASS — schedules cannot publish.
+-
+- 188 PASS — production workflow was not executed in M18.
+-
+- 189 PASS — preflight plus per-package postflight detects partial publication.
+-
+- 190 PASS — immutable-version retry/idempotency policy is documented and
+  fail-closed.
+-
+- 191 PASS — publish order is derived from package dependency edges.
+-
+- 192 PASS — `canary` and `latest` ownership is documented.
+-
+- 193 PASS — Git tag policy defers `v0.1.0` to M19.
+- 194 PASS — GitHub Release policy defers creation to M19.
+-
+- 195 PASS — release-note template exists.
+-
+- 196 PASS — release/changelog text rejects placeholders, private paths, and
+  false claims.
+-
+- 197 PASS — rollback/fix-forward guide exists.
+- 198 PASS — exact-version deprecation guide exists.
+-
+- 199 PASS — partial-publication recovery is documented.
+-
+- 200 PASS — one Vercel Git-preview/protected-hook architecture is documented.
+
+## Gates 201–300
+
+-
+- 201 PASS — Git integration previews and hook-based production are
+  non-duplicative roles.
+-
+- 202 PASS — PR preview isolation architecture is documented.
+-
+- 203 PASS — fork previews receive no privileged GitHub secret path.
+-
+- 204 PASS — production canonical remains `https://design.scoutapp.in`.
+-
+- 205 PASS — `SCOUT_UI_DOCS_ORIGIN` architecture is preserved.
+-
+- 206 PASS — PR/fork code cannot invoke the protected production hook.
+-
+- 207 PASS — the deploy-hook secret is isolated to `docs-production`.
+-
+- 208 PASS — exact SHA must have all four required main checks before the hook.
+-
+- 209 PASS — actual Vercel production protection is honestly unverified.
+-
+- 210 NOT EXECUTED — no remote docs preview was created/inspected in M18.
+-
+- 211 PASS — no production docs deployment was executed.
+-
+- 212 PASS — GitHub environment plan is documented.
+-
+- 213 PASS — canary publication uses documented `npm-release` protection.
+-
+- 214 PASS — npm production uses documented `npm-release` protection.
+-
+- 215 PASS — docs production uses documented `docs-production` protection.
+-
+- 216 PASS — reviewer/main protection expectations are documented.
+-
+- 217 PASS — actual state is honest: required environments absent; unprotected
+  `Production` exists.
+-
+- 218 PASS — main ruleset requirements are documented.
+-
+- 219 PASS — four stable required check names are documented.
+- 220 PASS — normal force-push/deletion protection policy is documented.
+-
+- 221 PASS — actual ruleset state is honestly empty.
+-
+- 222 PASS — no external ruleset mutation occurred.
+-
+- 223 PASS — CI and release concurrency policies are explicit and safe.
+-
+- 224 PASS — one noncancelable `npm-release` group prevents publication races.
+- 225 PASS — canary and production share the release lock; dry-run is
+  nonpublishing.
+-
+- 226 PASS — release jobs do not use stale-CI cancellation.
+-
+- 227 PASS — each inspected tarball has a recorded SHA-256.
+-
+- 228 PASS — publish script rehashes and publishes the exact report artifact.
+-
+- 229 PASS — no post-inspection rebuild occurs before `npm publish`.
+-
+- 230 PASS — workflow artifacts retain for seven days.
+-
+- 231 PASS — release artifacts exclude auth/credential files.
+-
+- 232 PASS — M17 docs route budgets pass.
+-
+- 233 PASS — M17 package/runtime budgets pass.
+-
+- 234 PASS — Pagefind is still absent from initial route payloads.
+-
+- 235 PASS — Shiki worker is still lazy.
+-
+- 236 PASS — private release tooling is absent from public/client bundles.
+-
+- 237 PASS — runtime telemetry remains absent.
+-
+- 238 PASS — runtime package networking remains absent.
+-
+- 239 PASS — asset manifest gate is preserved.
+- 240 PASS — asset provenance gate is preserved.
+-
+- 241 PASS — no artwork was added or changed.
+-
+- 242 PASS — no Scout protected asset was copied.
+-
+- 243 PASS — code and asset license separation is preserved.
+-
+- 244 PASS — M13 registry/share coverage passes in unit/browser matrices.
+-
+- 245 PASS — M14 Copy Code unit/browser/visual coverage passes.
+-
+- 246 PASS — M15 Copy AI Prompt unit/browser/visual coverage passes.
+-
+- 247 PASS — M16 content/search/SEO/Pagefind coverage passes.
+-
+- 248 PASS — M17 a11y/performance/compatibility regressions pass final CI-shaped
+  matrices.
+-
+- 249 PASS — packed Next consumer passes.
+-
+- 250 PASS — packed Vite consumer passes.
+-
+- 251 PASS — production-origin docs build passes for 46 routes.
+-
+- 252 PASS — Pagefind indexes 32 production-build pages.
+-
+- 253 PASS — Prettier YAML parsing and workflow-policy validation pass.
+-
+- 254 PASS — workflow-policy tests pass for all eight workflows.
+-
+- 255 PASS — seven release-tooling tests pass.
+-
+- 256 PASS — malformed semver is rejected by unit/release checks.
+-
+- 257 PASS — wrong repository metadata and runtime repository identity are
+  rejected.
+-
+- 258 PASS — private public-package manifests are rejected; nonpublic workspaces
+  are unplanned.
+- 259 PASS — package discovery test rejects an unexpected fourth package.
+-
+- 260 PASS — local/file/workspace dependency leak validation passes.
+-
+- 261 PASS — simulated registry timeout returns UNKNOWN and fails closed.
+-
+- 262 PASS — mocked existing version is classified/rejected before publication.
+-
+- 263 PASS — CONTRIBUTING documents checks, Changesets, visuals, and fork
+  safety.
+-
+- 264 PASS — SECURITY remains accurate and unchanged.
+-
+- 265 PASS — SUPPORT remains accurate and unchanged.
+-
+- 266 PASS — stable/canary/production operator guide is complete.
+- 267 PASS — canary dry-run/publication/verification guide is complete.
+-
+- 268 PASS — GitHub/npm/Vercel external setup checklist is complete.
+-
+- 269 PASS — workflow events/permissions/check matrix is documented.
+-
+- 270 PASS — M18 evidence and 300-gate report are complete.
+-
+- 271 PASS — no machine-specific absolute project path is committed.
+-
+- 272 PASS — no Windows local path is committed.
+-
+- 273 PASS — secret audit finds no credential material.
+-
+- 274 PASS — no auth-bearing `.npmrc` is tracked.
+-
+- 275 PASS — no `.vercel` local/account metadata is tracked.
+- 276 PASS — generated tarballs remain under ignored `.artifacts`.
+-
+- 277 PASS — no Playwright report is tracked.
+-
+- 278 PASS — generated Pagefind output remains ignored/untracked.
+-
+- 279 PASS — `apps/docs/next-env.d.ts` has no diff.
+-
+- 280 PASS — final `git diff --check` passes.
+-
+- 281 PASS — final `../scout-in` status is clean.
+-
+- 282 PASS — final Scout UI index is empty.
+-
+- 283 PASS — all M18 changes are unstaged.
+-
+- 284 PASS — all M18 changes are uncommitted.
+-
+- 285 PASS — no Git push occurred.
+-
+- 286 PASS — no npm publication occurred.
+-
+- 287 PASS — no npm dist-tag was mutated.
+-
+- 288 PASS — no Git tag was created.
+-
+- 289 PASS — no GitHub Release was created.
+-
+- 290 PASS — M19 has not started.
+-
+- 291 NOT EXECUTED — no remote GitHub M18 CI run exists yet.
+-
+- 292 NOT EXECUTED — fork-safety behavior has not been exercised remotely.
+-
+- 293 NOT EXECUTED — release-PR workflow has not been exercised remotely.
+-
+- 294 NOT EXECUTED — `npm-release` and `docs-production` are not configured.
+-
+- 295 NOT EXECUTED — the documented main ruleset is not configured.
+-
+- 296 NOT EXECUTED — isolated Vercel preview behavior is not remotely verified.
+-
+- 297 NOT EXECUTED — protected Vercel production behavior is not remotely
+  verified.
+-
+- 298 NOT EXECUTED — npm trusted publishers are not configured/verified.
+-
+- 299 NOT EXECUTED — no public canary was published.
+- 300 NOT EXECUTED — no public canary clean install was possible.
+
+## Strict completion blockers
+
+M18 remains incomplete until gates 088–090, 144–145, 171, 210, and 291–300 are
+replaced with evidence-backed results where the authoritative milestone requires
+execution. npm scope ownership/trusted-publisher setup, GitHub
+environments/rulesets/Linux visuals/remote workflows, and Vercel preview and
+protected production are the current external dependencies.

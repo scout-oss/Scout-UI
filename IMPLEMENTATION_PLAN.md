@@ -1,9 +1,11 @@
 # Scout UI v0.1 Implementation Plan
 
-**Status:** Milestones 1–17 complete; Milestone 18 has not started<br />
-**Source documents:** `SCOUT_UI_MASTER_SPEC.md`, `SCOUT_UI_DESIGN_SYSTEM.md`,
-`SCOUT_UI_ENGINEERING_SPEC.md`<br /> **Scope:** Eight components, three public
-packages, one documentation/playground application
+**Status:** Milestones 1–17 complete; Milestone 18 repository implementation is
+ready but strict completion remains blocked on external release-infrastructure
+verification<br /> **Source documents:** `SCOUT_UI_MASTER_SPEC.md`,
+`SCOUT_UI_DESIGN_SYSTEM.md`, `SCOUT_UI_ENGINEERING_SPEC.md`<br /> **Scope:**
+Eight components, three public packages, one documentation/playground
+application
 
 ## 1. Execution rules
 
@@ -581,6 +583,10 @@ though attribution is not required.
 - Package and docs bundle budgets pass or have an approved documented exception.
 
 ## 20. Milestone 18 — CI, publication, and release infrastructure
+
+**Status:** Repository implementation ready; strict milestone incomplete because
+remote GitHub, npm, Vercel, Linux visual, and public-canary gates are not yet
+executed
 
 ### Work
 

@@ -332,3 +332,21 @@ repairs; neither gate is promoted to `PASS` here.
   and proves both the Navbar and global frame tracker are idle before resetting
   the measurement. The one-frame ceiling and zero-after-rest contracts remain
   unchanged.
+
+## Genuine Linux visual baseline import
+
+GitHub Actions artifact
+`linux-visual-review-b4f135373d992f0173f66d8d06abf2dd4cffc4a2`
+was verified with SHA-256
+`e2662d1d52c92a2d06f4e27285eca659a624ab58b6f2c49ef99600c71d811126`.
+The reported 136 first-baseline failures produced 149 PNGs because the Cursor
+hotspot, Trail preset, and four M16 content tests intentionally capture multiple
+screenshots per test. All 149 artifact sources resolved exactly to approved
+`tests/browser/__screenshots__/linux/` destinations with no missing, ambiguous,
+duplicate-path, corrupt, empty, or invalid-dimension candidate.
+
+Human review approved all ten Linux visual groups. The 149 genuine GitHub Linux
+PNGs were then imported byte-for-byte from the validated mapping; no Darwin,
+Win32, or `_original-platform` baseline supplied any pixels. A subsequent
+GitHub Linux Visual rerun is still pending, so `Visual / required` is not yet
+promoted to `PASS` and M18 remains incomplete.

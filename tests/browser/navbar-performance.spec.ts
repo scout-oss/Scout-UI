@@ -55,6 +55,31 @@ async function resetMetrics(page: Page) {
   });
 }
 
+async function settleNavbarFrames(page: Page, root: Locator) {
+  await expect(root).toHaveAttribute("data-navbar-frame-pending", "false");
+  await expect
+    .poll(async () => (await readMetrics(page)).pendingFrames)
+    .toBe(0);
+  // Cross two real frame boundaries so ResizeObserver or scroll work queued by
+  // mount/unmount has a deterministic chance to run before instrumentation is
+  // reset. The fixture tracks these frames too, so the final poll proves the
+  // baseline is genuinely idle rather than hiding one allowed pending frame.
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            resolve();
+          });
+        });
+      }),
+  );
+  await expect(root).toHaveAttribute("data-navbar-frame-pending", "false");
+  await expect
+    .poll(async () => (await readMetrics(page)).pendingFrames)
+    .toBe(0);
+}
+
 test.describe("StickerNavbar scroll and lifecycle performance", () => {
   test("development renderLink diagnostics warn once per invalid item under Strict Mode", async ({
     page,
@@ -115,6 +140,7 @@ test.describe("StickerNavbar scroll and lifecycle performance", () => {
     expect(liveInstrument.childRenders).toBeGreaterThan(0);
     await page.getByTestId("navbar-toggle-mount").click();
     await expect(page.getByTestId("lifecycle-navbar")).toHaveCount(0);
+    await settleNavbarFrames(page, root);
     await resetMetrics(page);
     const baseline = await readMetrics(page);
     expect(baseline.pendingFrames).toBe(0);

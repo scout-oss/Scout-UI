@@ -33,6 +33,39 @@ test("clean builds generate route and package declarations deterministically", a
   }
 });
 
+test("browser and visual CI keep interaction and screenshot contracts separate", async () => {
+  const runner = await readFile(
+    path.join(process.cwd(), "tooling/release/run-browser-ci.mjs"),
+    "utf8",
+  );
+  assert.match(runner, /--ignore-snapshots/u);
+  assert.match(runner, /consumerVisualPattern/u);
+  assert.match(runner, /chromium-desktop/u);
+  assert.match(runner, /chromium-reduced-motion/u);
+  assert.match(runner, /chromium-coarse-pointer/u);
+  assert.match(runner, /chromium-forced-colors/u);
+  assert.doesNotMatch(runner, /\["pnpm", "test:visual"\]/u);
+
+  const browserWorkflow = await readFile(
+    path.join(process.cwd(), ".github/workflows/browser.yml"),
+    "utf8",
+  );
+  assert.match(
+    browserWorkflow,
+    /playwright install --with-deps chromium firefox\s+webkit/u,
+  );
+  const visualWorkflow = await readFile(
+    path.join(process.cwd(), ".github/workflows/visual.yml"),
+    "utf8",
+  );
+  assert.match(visualWorkflow, /playwright install --with-deps chromium/u);
+  assert.doesNotMatch(
+    visualWorkflow,
+    /playwright install --with-deps[^\n]*(?:firefox|webkit)/u,
+  );
+  assert.match(visualWorkflow, /tests\/browser\/__screenshots__\/linux\//u);
+});
+
 test("semver and prerelease policy rejects malformed versions", () => {
   assert.equal(isSemver("0.1.0"), true);
   assert.equal(isPrerelease("0.1.0-canary.12"), true);

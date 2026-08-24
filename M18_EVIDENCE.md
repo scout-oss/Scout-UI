@@ -305,3 +305,30 @@ gate has been promoted to `PASS`.
 - `SCOUT_UI_DOCS_ORIGIN` affects canonical build output and is now declared only
   on the `@scout-ui/docs#build` Turbo task, so production and preview origins
   participate in the docs cache key without becoming global package inputs.
+
+## Second remote validation repairs
+
+The next pull-request run proved Quality and packages, both required CI/security
+aggregates, CodeQL, Dependency Review, and the Vercel deployment. Browser and
+Linux visual validation remain pending a new remote run after these local
+repairs; neither gate is promoted to `PASS` here.
+
+- Interaction CI selected non-visual files, but four historical screenshot
+  assertions remain in `consumer.spec.ts`. Interaction now uses Playwright's
+  screenshot-ignore mode while retaining every behavioral and accessibility
+  assertion. The dedicated Visual runner owns those four exact-title contracts.
+- The first-platform Visual path called the broad local update command, causing
+  the full multi-browser behavioral matrix to run despite only Chromium being
+  installed. Visual CI now selects only screenshot specs and the four consumer
+  contracts, scopes execution to the Chromium projects that own baselines, and
+  attempts every group so genuine Linux candidates are all uploaded in their
+  intended repository structure for manual review.
+- The WebKit-mobile Stack failure reproduced as a test synchronization race: the
+  helper accepted the first positive coalesced drag frame before the final
+  pointer sample was written. The test now polls for the intended progress and a
+  settled frame; the imperative component is unchanged.
+- Navbar instrumentation could be reset while a mount/observer frame was still
+  pending. The performance test now drains two real animation-frame boundaries
+  and proves both the Navbar and global frame tracker are idle before resetting
+  the measurement. The one-frame ceiling and zero-after-rest contracts remain
+  unchanged.

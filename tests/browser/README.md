@@ -9,6 +9,21 @@ On failure Playwright retains a screenshot, trace, and video under
 `.artifacts/playwright/test-results`. Accessibility violations and captured
 browser errors are attached to the failing test result.
 
+CI deliberately separates these responsibilities:
+
+- `Browser / Interaction and accessibility matrix` runs every non-visual spec
+  across the supported Chromium, Firefox, and WebKit projects with Playwright's
+  screenshot comparisons ignored. Behavioral and accessibility assertions are
+  unchanged.
+- `Visual / Linux visual contract` runs only screenshot-contract specs in the
+  Chromium projects that own committed baselines. Four historical consumer
+  screenshots remain in `consumer.spec.ts` to preserve their snapshot paths and
+  are selected by exact test title.
+
+The Browser workflow installs Chromium, Firefox, and WebKit. The Visual workflow
+installs Chromium only; Firefox and WebKit visual pixels are not part of the
+v0.1 baseline contract.
+
 ## Visual baselines are scoped per operating system
 
 Screenshot baselines live under:
@@ -44,6 +59,13 @@ so refreshing on one machine cannot silently invalidate another.
 
 Every baseline change still requires review and a written explanation, exactly
 as before.
+
+On GitHub Linux, all visual groups are attempted even when one group discovers
+missing snapshots. The workflow uploads `.artifacts/playwright/` together with
+`tests/browser/__screenshots__/linux/`, whose files already use their intended
+repository paths. A maintainer downloads and inspects every candidate, imports
+only approved genuine Linux images, and commits them manually. CI never copies
+another platform, commits a candidate, pushes a baseline, or approves pixels.
 
 ### `_original-platform/`
 

@@ -262,7 +262,17 @@ test.describe("StickerStack semantics and interaction", () => {
     await expect(page.getByTestId("stack-main-callback-count")).toHaveText("0");
     if (testInfo.project.name === "firefox-desktop") return;
     await dragStack(page, "stack-main", { fraction: 0.5, release: false });
-    expect(await stackDragProgress(page, "stack-main")).toBeGreaterThan(0.3);
+    // Pointer samples are intentionally coalesced into rAF writes. WebKit can
+    // return from the synthetic move after an earlier positive frame but
+    // before the final sample has been painted, so wait for the intended drag
+    // state rather than treating the first non-zero value as settled.
+    await expect
+      .poll(async () => await stackDragProgress(page, "stack-main"))
+      .toBeGreaterThan(0.3);
+    await expect(stack(page, "stack-main")).toHaveAttribute(
+      "data-stack-frame-pending",
+      "false",
+    );
     await activeStackCard(page, "stack-main").dispatchEvent("pointercancel", {
       pointerId: 1,
     });

@@ -38,7 +38,6 @@ jobs:
         uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
         with:
           commit: "chore: version Scout UI packages"
+          github-token: ${{ secrets.RELEASE_PR_TOKEN }}
           title: "chore: version Scout UI packages"
           version: corepack pnpm release:version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

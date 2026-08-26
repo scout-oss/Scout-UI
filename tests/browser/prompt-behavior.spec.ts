@@ -3,6 +3,27 @@ import { expect, test, type Page } from "@playwright/test";
 import { expectNoAxeViolations } from "./helpers/accessibility.ts";
 import { captureBrowserDiagnostics } from "./helpers/browser-diagnostics.ts";
 
+interface M15LongTaskEntry {
+  readonly duration: number;
+  readonly startTime: number;
+}
+
+interface M15LongTaskMeasurement {
+  measurementEnd: number | null;
+  measurementStart: number | null;
+  navigationStart: number;
+  observed: M15LongTaskEntry[];
+  pageReady: number | null;
+  rapidUpdateEnd: number | null;
+  rapidUpdateStart: number | null;
+  syntaxHighlightSettled: number | null;
+}
+
+interface M15PerformanceWindow extends Window {
+  __m15LongTaskMeasurement?: M15LongTaskMeasurement;
+  __m15LongTaskObserver?: PerformanceObserver;
+}
+
 const slugs = [
   "sticker",
   "sticker-button",
@@ -483,27 +504,43 @@ test.describe("M15 configuration-aware Copy AI Prompt", () => {
         openedDialogs: 0,
         renders: 0,
       };
-      (
-        window as typeof window & {
-          __m15LongTasks?: Array<{ duration: number; startTime: number }>;
-        }
-      ).__m15LongTasks = [];
-      new PerformanceObserver((entries) => {
-        const longTasks = (
-          window as typeof window & {
-            __m15LongTasks?: Array<{ duration: number; startTime: number }>;
-          }
-        ).__m15LongTasks;
+      const scope = window as M15PerformanceWindow;
+      scope.__m15LongTaskMeasurement = {
+        measurementEnd: null,
+        measurementStart: null,
+        navigationStart: 0,
+        observed: [],
+        pageReady: null,
+        rapidUpdateEnd: null,
+        rapidUpdateStart: null,
+        syntaxHighlightSettled: null,
+      };
+      const observer = new PerformanceObserver((entries) => {
+        const measurement = scope.__m15LongTaskMeasurement;
         for (const entry of entries.getEntries()) {
-          longTasks?.push({
+          measurement?.observed.push({
             duration: entry.duration,
             startTime: entry.startTime,
           });
         }
-      }).observe({ type: "longtask" });
+      });
+      observer.observe({ type: "longtask" });
+      scope.__m15LongTaskObserver = observer;
     });
-    await openPrompt(page, "/playground/sticker");
+    const dialog = await openPrompt(page, "/playground/sticker");
     await page.evaluate(() => {
+      const measurement = (window as M15PerformanceWindow)
+        .__m15LongTaskMeasurement;
+      if (measurement) measurement.pageReady = performance.now();
+    });
+    await expect(page.locator(".sui-docs-code-output")).toHaveAttribute(
+      "data-code-highlight",
+      "settled",
+    );
+    await page.evaluate(() => {
+      const measurement = (window as M15PerformanceWindow)
+        .__m15LongTaskMeasurement;
+      if (measurement) measurement.syntaxHighlightSettled = performance.now();
       for (const selector of [
         ".sui-docs-playground-session",
         ".sui-docs-preview-stage",
@@ -522,16 +559,33 @@ test.describe("M15 configuration-aware Copy AI Prompt", () => {
         metrics.calculations = 0;
         metrics.renders = 0;
       }
-      const longTasks = (
-        window as typeof window & {
-          __m15LongTasks?: Array<{ duration: number; startTime: number }>;
-        }
-      ).__m15LongTasks;
-      if (longTasks) longTasks.length = 0;
     });
-    await page.getByRole("button", { name: "Close AI Prompt" }).click();
+    await dialog.getByRole("button", { name: "Close AI Prompt" }).click();
+    await page.evaluate(async () => {
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            resolve();
+          });
+        });
+      });
+      const scope = window as M15PerformanceWindow;
+      const measurement = scope.__m15LongTaskMeasurement;
+      const observer = scope.__m15LongTaskObserver;
+      if (!measurement) return;
+      for (const entry of observer?.takeRecords() ?? []) {
+        measurement.observed.push({
+          duration: entry.duration,
+          startTime: entry.startTime,
+        });
+      }
+      measurement.measurementStart = performance.now();
+    });
     const slider = page.getByRole("slider", { name: "Rotation" }).first();
     await slider.evaluate((element) => {
+      const measurement = (window as M15PerformanceWindow)
+        .__m15LongTaskMeasurement;
+      if (measurement) measurement.rapidUpdateStart = performance.now();
       const input = element as HTMLInputElement;
       const setter = Object.getOwnPropertyDescriptor(
         HTMLInputElement.prototype,
@@ -541,6 +595,7 @@ test.describe("M15 configuration-aware Copy AI Prompt", () => {
         setter?.(String(index - 12));
         input.dispatchEvent(new Event("input", { bubbles: true }));
       }
+      if (measurement) measurement.rapidUpdateEnd = performance.now();
     });
     await page.getByRole("button", { name: "Copy AI Prompt" }).click();
     await expect(page.getByRole("dialog")).toContainText("Rotation: 12");
@@ -561,32 +616,59 @@ test.describe("M15 configuration-aware Copy AI Prompt", () => {
         { timeout: 3_000 },
       )
       .toEqual({ activeCopyTimers: 0, activeEmphasisTimers: 0 });
-    const result = await page.evaluate(() => ({
-      longTasks:
-        (
+    const result = await page.evaluate(async () => {
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            resolve();
+          });
+        });
+      });
+      const scope = window as M15PerformanceWindow;
+      const measurement = scope.__m15LongTaskMeasurement;
+      for (const entry of scope.__m15LongTaskObserver?.takeRecords() ?? []) {
+        measurement?.observed.push({
+          duration: entry.duration,
+          startTime: entry.startTime,
+        });
+      }
+      if (measurement) measurement.measurementEnd = performance.now();
+      const measurementStart = measurement?.measurementStart ?? 0;
+      const measurementEnd = measurement?.measurementEnd ?? performance.now();
+      const longTasks = (measurement?.observed ?? []).filter(
+        (entry) =>
+          entry.startTime >= measurementStart &&
+          entry.startTime < measurementEnd,
+      );
+      return {
+        allLongTasks: measurement?.observed ?? [],
+        longTasks,
+        maxLongTaskDuration: Math.max(
+          0,
+          ...longTasks.map((entry) => entry.duration),
+        ),
+        metrics: (
           window as typeof window & {
-            __m15LongTasks?: Array<{ duration: number; startTime: number }>;
+            __scoutUiPromptMetrics?: Record<string, number>;
           }
-        ).__m15LongTasks ?? [],
-      metrics: (
-        window as typeof window & {
-          __scoutUiPromptMetrics?: Record<string, number>;
-        }
-      ).__scoutUiPromptMetrics,
-      portals: document.querySelectorAll(".sui-docs-prompt-overlay").length,
-      stable: [
-        ".sui-docs-playground-session",
-        ".sui-docs-preview-stage",
-        ".sui-docs-code-output",
-        "body > .sui-sticker-navbar",
-      ].every(
-        (selector) =>
-          Reflect.get(
-            document.querySelector(selector) ?? {},
-            "__m15RapidStable",
-          ) === selector,
-      ),
-    }));
+        ).__scoutUiPromptMetrics,
+        portals: document.querySelectorAll(".sui-docs-prompt-overlay").length,
+        stable: [
+          ".sui-docs-playground-session",
+          ".sui-docs-preview-stage",
+          ".sui-docs-code-output",
+          "body > .sui-sticker-navbar",
+        ].every(
+          (selector) =>
+            Reflect.get(
+              document.querySelector(selector) ?? {},
+              "__m15RapidStable",
+            ) === selector,
+        ),
+        timing: measurement,
+      };
+    });
+    console.log(`PROMPT_RAPID_UPDATE ${JSON.stringify(result)}`);
     await testInfo.attach("prompt-rapid-update.json", {
       body: JSON.stringify(result, null, 2),
       contentType: "application/json",

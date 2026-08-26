@@ -155,14 +155,16 @@ export function PromptSheet({
   const promptId = useId().replaceAll(":", "");
 
   const document = useMemo(() => {
-    return definition.generatePrompt(config, context);
-  }, [config, context, definition]);
+    return open ? definition.generatePrompt(config, context) : null;
+  }, [config, context, definition, open]);
+  const documentText = document?.text ?? null;
 
   useEffect(() => {
+    if (documentText === null) return;
     instrument((metrics) => {
       metrics.calculations += 1;
     });
-  }, [document.text]);
+  }, [documentText]);
 
   useEffect(() => {
     instrument((metrics) => {
@@ -191,7 +193,7 @@ export function PromptSheet({
   }, []);
 
   useEffect(() => {
-    if (!open || !changedField) return undefined;
+    if (!open || !changedField || documentText === null) return undefined;
     const frame = window.requestAnimationFrame(() => {
       clearEmphasisTimer();
       setEmphasizedField(changedField);
@@ -209,7 +211,7 @@ export function PromptSheet({
     return () => {
       window.cancelAnimationFrame(frame);
     };
-  }, [changedField, clearEmphasisTimer, document.text, open]);
+  }, [changedField, clearEmphasisTimer, documentText, open]);
 
   useEffect(
     () => () => {
@@ -233,6 +235,7 @@ export function PromptSheet({
   };
 
   const copy = async () => {
+    if (!document) return;
     clearCopyTimer();
     const source = document.text;
     try {
@@ -261,9 +264,11 @@ export function PromptSheet({
   };
 
   const activeCopyState =
-    copyState.source === document.text ? copyState.status : "idle";
+    document && copyState.source === document.text ? copyState.status : "idle";
   const changedLines = new Set(
-    emphasizedField ? (document.fieldLines[emphasizedField] ?? []) : [],
+    emphasizedField && document
+      ? (document.fieldLines[emphasizedField] ?? [])
+      : [],
   );
 
   return (
@@ -290,274 +295,280 @@ export function PromptSheet({
           AI Prompt · M15
         </button>
       </Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.Overlay className="sui-docs-prompt-overlay" />
-        <Dialog.Content
-          aria-describedby={`${promptId}-description`}
-          className="sui-docs-prompt-sheet"
-          data-prompt-mode={mode}
-          onOpenAutoFocus={(event) => {
-            event.preventDefault();
-            contentRef.current?.scrollTo(0, 0);
-            closeRef.current?.focus({ preventScroll: true });
-          }}
-          ref={contentRef}
-        >
-          <header className="sui-docs-prompt-heading">
-            <div>
-              <p className="sui-docs-eyebrow">Local implementation handoff</p>
-              <Dialog.Title>AI Prompt · {definition.name}</Dialog.Title>
-              <Dialog.Description id={`${promptId}-description`}>
-                A deterministic brief generated from the same configuration as
-                the preview and code.
-              </Dialog.Description>
-            </div>
-            <Dialog.Close asChild>
-              <button
-                aria-label="Close AI Prompt"
-                className="sui-docs-prompt-close"
-                ref={closeRef}
-                type="button"
-              >
-                Close
-              </button>
-            </Dialog.Close>
-          </header>
-
-          <p className="sui-docs-prompt-privacy" role="note">
-            <strong>Generated locally.</strong> No repository data is sent. No
-            model, API key, analytics payload, or hosted generation service is
-            used.
-          </p>
-
-          <div className="sui-docs-prompt-layout">
-            <aside className="sui-docs-prompt-context">
-              <section aria-labelledby={`${promptId}-summary-heading`}>
-                <div className="sui-docs-prompt-section-heading">
-                  <p className="sui-docs-eyebrow">Selected brief</p>
-                  <h2 id={`${promptId}-summary-heading`}>
-                    Configuration summary
-                  </h2>
-                </div>
-                <dl className="sui-docs-prompt-summary">
-                  {document.configurationSummary.map((item) => (
-                    <div data-prompt-summary-field={item.field} key={item.id}>
-                      <dt>{item.label}</dt>
-                      <dd>{item.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </section>
-
-              <fieldset className="sui-docs-prompt-controls">
-                <legend>Implementation context</legend>
-
-                <label htmlFor={`${promptId}-framework`}>
-                  Target framework
-                </label>
-                <select
-                  id={`${promptId}-framework`}
-                  onChange={(event) => {
-                    updateContext({
-                      framework: event.currentTarget.value as PromptFramework,
-                    });
-                  }}
-                  value={context.framework}
+      {document ? (
+        <Dialog.Portal>
+          <Dialog.Overlay className="sui-docs-prompt-overlay" />
+          <Dialog.Content
+            aria-describedby={`${promptId}-description`}
+            className="sui-docs-prompt-sheet"
+            data-prompt-mode={mode}
+            onOpenAutoFocus={(event) => {
+              event.preventDefault();
+              contentRef.current?.scrollTo(0, 0);
+              closeRef.current?.focus({ preventScroll: true });
+            }}
+            ref={contentRef}
+          >
+            <header className="sui-docs-prompt-heading">
+              <div>
+                <p className="sui-docs-eyebrow">Local implementation handoff</p>
+                <Dialog.Title>AI Prompt · {definition.name}</Dialog.Title>
+                <Dialog.Description id={`${promptId}-description`}>
+                  A deterministic brief generated from the same configuration as
+                  the preview and code.
+                </Dialog.Description>
+              </div>
+              <Dialog.Close asChild>
+                <button
+                  aria-label="Close AI Prompt"
+                  className="sui-docs-prompt-close"
+                  ref={closeRef}
+                  type="button"
                 >
-                  {frameworkOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                  Close
+                </button>
+              </Dialog.Close>
+            </header>
 
-                <label htmlFor={`${promptId}-location`}>Target location</label>
-                <input
-                  data-max-code-points={TARGET_LOCATION_LIMIT}
-                  id={`${promptId}-location`}
-                  onChange={(event) => {
-                    updateContext({
-                      targetLocation: event.currentTarget.value,
-                    });
-                  }}
-                  placeholder="Hero section, product card…"
-                  type="text"
-                  value={context.targetLocation ?? ""}
-                />
-                <span className="sui-docs-prompt-count">
-                  {codePointLength(context.targetLocation ?? "")}/
-                  {TARGET_LOCATION_LIMIT}
-                </span>
+            <p className="sui-docs-prompt-privacy" role="note">
+              <strong>Generated locally.</strong> No repository data is sent. No
+              model, API key, analytics payload, or hosted generation service is
+              used.
+            </p>
 
-                <label htmlFor={`${promptId}-assets`}>Asset strategy</label>
-                <select
-                  id={`${promptId}-assets`}
-                  onChange={(event) => {
-                    updateContext({
-                      assetStrategy: event.currentTarget
-                        .value as PromptAssetStrategy,
-                    });
-                  }}
-                  value={context.assetStrategy}
-                >
-                  {assetOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+            <div className="sui-docs-prompt-layout">
+              <aside className="sui-docs-prompt-context">
+                <section aria-labelledby={`${promptId}-summary-heading`}>
+                  <div className="sui-docs-prompt-section-heading">
+                    <p className="sui-docs-eyebrow">Selected brief</p>
+                    <h2 id={`${promptId}-summary-heading`}>
+                      Configuration summary
+                    </h2>
+                  </div>
+                  <dl className="sui-docs-prompt-summary">
+                    {document.configurationSummary.map((item) => (
+                      <div data-prompt-summary-field={item.field} key={item.id}>
+                        <dt>{item.label}</dt>
+                        <dd>{item.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </section>
 
-                <label className="sui-docs-prompt-check">
-                  <input
-                    checked={context.preserveLayout}
+                <fieldset className="sui-docs-prompt-controls">
+                  <legend>Implementation context</legend>
+
+                  <label htmlFor={`${promptId}-framework`}>
+                    Target framework
+                  </label>
+                  <select
+                    id={`${promptId}-framework`}
                     onChange={(event) => {
                       updateContext({
-                        preserveLayout: event.currentTarget.checked,
+                        framework: event.currentTarget.value as PromptFramework,
                       });
                     }}
-                    type="checkbox"
+                    value={context.framework}
+                  >
+                    {frameworkOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+
+                  <label htmlFor={`${promptId}-location`}>
+                    Target location
+                  </label>
+                  <input
+                    data-max-code-points={TARGET_LOCATION_LIMIT}
+                    id={`${promptId}-location`}
+                    onChange={(event) => {
+                      updateContext({
+                        targetLocation: event.currentTarget.value,
+                      });
+                    }}
+                    placeholder="Hero section, product card…"
+                    type="text"
+                    value={context.targetLocation ?? ""}
                   />
-                  <span aria-hidden="true" />
-                  Preserve existing layout
-                </label>
+                  <span className="sui-docs-prompt-count">
+                    {codePointLength(context.targetLocation ?? "")}/
+                    {TARGET_LOCATION_LIMIT}
+                  </span>
 
-                <div className="sui-docs-prompt-detail">
-                  <span>Prompt detail</span>
-                  <div role="radiogroup" aria-label="Prompt detail">
-                    {(["detailed", "concise"] as const).map((detail) => {
-                      const id = `${promptId}-detail-${detail}`;
-                      return (
-                        <label htmlFor={id} key={detail}>
-                          <input
-                            checked={context.detail === detail}
-                            id={id}
-                            name={`${promptId}-detail`}
-                            onChange={() => {
-                              updateContext({ detail });
-                            }}
-                            type="radio"
-                            value={detail}
-                          />
-                          <span>
-                            {detail === "detailed" ? "Detailed" : "Concise"}
-                          </span>
-                        </label>
-                      );
-                    })}
-                  </div>
-                </div>
+                  <label htmlFor={`${promptId}-assets`}>Asset strategy</label>
+                  <select
+                    id={`${promptId}-assets`}
+                    onChange={(event) => {
+                      updateContext({
+                        assetStrategy: event.currentTarget
+                          .value as PromptAssetStrategy,
+                      });
+                    }}
+                    value={context.assetStrategy}
+                  >
+                    {assetOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
 
-                <label htmlFor={`${promptId}-project-context`}>
-                  Project context <span>optional</span>
-                </label>
-                <textarea
-                  data-max-code-points={PROJECT_CONTEXT_LIMIT}
-                  id={`${promptId}-project-context`}
-                  onChange={(event) => {
-                    updateContext({
-                      projectContext: event.currentTarget.value,
-                    });
-                  }}
-                  placeholder="Use the existing hero CTA and keep typography unchanged."
-                  rows={5}
-                  value={context.projectContext ?? ""}
-                />
-                <span className="sui-docs-prompt-count">
-                  {codePointLength(context.projectContext ?? "")}/
-                  {PROJECT_CONTEXT_LIMIT}
-                </span>
-              </fieldset>
-
-              <dl className="sui-docs-prompt-context-summary">
-                <div>
-                  <dt>Framework</dt>
-                  <dd>{frameworkLabel(context.framework)}</dd>
-                </div>
-                <div>
-                  <dt>Location</dt>
-                  <dd>{context.targetLocation || "Inspect project"}</dd>
-                </div>
-                <div>
-                  <dt>Assets</dt>
-                  <dd>{assetLabel(context.assetStrategy)}</dd>
-                </div>
-                <div>
-                  <dt>Layout</dt>
-                  <dd>
-                    {context.preserveLayout ? "Preserve" : "Allow changes"}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Mode</dt>
-                  <dd>
-                    {context.detail === "detailed" ? "Detailed" : "Concise"}
-                  </dd>
-                </div>
-              </dl>
-            </aside>
-
-            <section
-              aria-labelledby={`${promptId}-output-heading`}
-              className="sui-docs-prompt-output"
-              data-emphasis={changedLines.size > 0 ? "line" : "none"}
-            >
-              <div className="sui-docs-prompt-section-heading">
-                <p className="sui-docs-eyebrow">Plain text · ready to paste</p>
-                <h2 id={`${promptId}-output-heading`}>Generated prompt</h2>
-              </div>
-              {/* One visible canonical string; no Markdown or HTML parser. */}
-              <div
-                aria-label="Generated AI implementation prompt"
-                className="sui-docs-prompt-scroll"
-                role="region"
-                tabIndex={0}
-              >
-                <pre>
-                  <code>
-                    <PromptLines
-                      changedLines={changedLines}
-                      document={document}
+                  <label className="sui-docs-prompt-check">
+                    <input
+                      checked={context.preserveLayout}
+                      onChange={(event) => {
+                        updateContext({
+                          preserveLayout: event.currentTarget.checked,
+                        });
+                      }}
+                      type="checkbox"
                     />
-                  </code>
-                </pre>
-              </div>
+                    <span aria-hidden="true" />
+                    Preserve existing layout
+                  </label>
 
-              {activeCopyState === "manual" ? (
-                <div className="sui-docs-prompt-copy-fallback" role="alert">
-                  <label htmlFor={`${promptId}-manual-copy`}>
-                    Clipboard unavailable. Copy the selected prompt manually.
+                  <div className="sui-docs-prompt-detail">
+                    <span>Prompt detail</span>
+                    <div role="radiogroup" aria-label="Prompt detail">
+                      {(["detailed", "concise"] as const).map((detail) => {
+                        const id = `${promptId}-detail-${detail}`;
+                        return (
+                          <label htmlFor={id} key={detail}>
+                            <input
+                              checked={context.detail === detail}
+                              id={id}
+                              name={`${promptId}-detail`}
+                              onChange={() => {
+                                updateContext({ detail });
+                              }}
+                              type="radio"
+                              value={detail}
+                            />
+                            <span>
+                              {detail === "detailed" ? "Detailed" : "Concise"}
+                            </span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <label htmlFor={`${promptId}-project-context`}>
+                    Project context <span>optional</span>
                   </label>
                   <textarea
-                    id={`${promptId}-manual-copy`}
-                    readOnly
-                    ref={fallbackRef}
-                    rows={8}
-                    value={document.text}
+                    data-max-code-points={PROJECT_CONTEXT_LIMIT}
+                    id={`${promptId}-project-context`}
+                    onChange={(event) => {
+                      updateContext({
+                        projectContext: event.currentTarget.value,
+                      });
+                    }}
+                    placeholder="Use the existing hero CTA and keep typography unchanged."
+                    rows={5}
+                    value={context.projectContext ?? ""}
                   />
-                </div>
-              ) : null}
-            </section>
-          </div>
+                  <span className="sui-docs-prompt-count">
+                    {codePointLength(context.projectContext ?? "")}/
+                    {PROJECT_CONTEXT_LIMIT}
+                  </span>
+                </fieldset>
 
-          <footer className="sui-docs-prompt-actions">
-            <button onClick={resetContext} type="button">
-              Reset prompt context
-            </button>
-            <p aria-live="polite" role="status">
-              {activeCopyState === "copied"
-                ? "Generated AI prompt copied to the clipboard."
-                : ""}
-            </p>
-            <button
-              className="sui-docs-copy-prompt"
-              onClick={() => void copy()}
-              type="button"
-            >
-              {activeCopyState === "copied" ? "Copied" : "Copy Prompt"}
-            </button>
-          </footer>
-        </Dialog.Content>
-      </Dialog.Portal>
+                <dl className="sui-docs-prompt-context-summary">
+                  <div>
+                    <dt>Framework</dt>
+                    <dd>{frameworkLabel(context.framework)}</dd>
+                  </div>
+                  <div>
+                    <dt>Location</dt>
+                    <dd>{context.targetLocation || "Inspect project"}</dd>
+                  </div>
+                  <div>
+                    <dt>Assets</dt>
+                    <dd>{assetLabel(context.assetStrategy)}</dd>
+                  </div>
+                  <div>
+                    <dt>Layout</dt>
+                    <dd>
+                      {context.preserveLayout ? "Preserve" : "Allow changes"}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Mode</dt>
+                    <dd>
+                      {context.detail === "detailed" ? "Detailed" : "Concise"}
+                    </dd>
+                  </div>
+                </dl>
+              </aside>
+
+              <section
+                aria-labelledby={`${promptId}-output-heading`}
+                className="sui-docs-prompt-output"
+                data-emphasis={changedLines.size > 0 ? "line" : "none"}
+              >
+                <div className="sui-docs-prompt-section-heading">
+                  <p className="sui-docs-eyebrow">
+                    Plain text · ready to paste
+                  </p>
+                  <h2 id={`${promptId}-output-heading`}>Generated prompt</h2>
+                </div>
+                {/* One visible canonical string; no Markdown or HTML parser. */}
+                <div
+                  aria-label="Generated AI implementation prompt"
+                  className="sui-docs-prompt-scroll"
+                  role="region"
+                  tabIndex={0}
+                >
+                  <pre>
+                    <code>
+                      <PromptLines
+                        changedLines={changedLines}
+                        document={document}
+                      />
+                    </code>
+                  </pre>
+                </div>
+
+                {activeCopyState === "manual" ? (
+                  <div className="sui-docs-prompt-copy-fallback" role="alert">
+                    <label htmlFor={`${promptId}-manual-copy`}>
+                      Clipboard unavailable. Copy the selected prompt manually.
+                    </label>
+                    <textarea
+                      id={`${promptId}-manual-copy`}
+                      readOnly
+                      ref={fallbackRef}
+                      rows={8}
+                      value={document.text}
+                    />
+                  </div>
+                ) : null}
+              </section>
+            </div>
+
+            <footer className="sui-docs-prompt-actions">
+              <button onClick={resetContext} type="button">
+                Reset prompt context
+              </button>
+              <p aria-live="polite" role="status">
+                {activeCopyState === "copied"
+                  ? "Generated AI prompt copied to the clipboard."
+                  : ""}
+              </p>
+              <button
+                className="sui-docs-copy-prompt"
+                onClick={() => void copy()}
+                type="button"
+              >
+                {activeCopyState === "copied" ? "Copied" : "Copy Prompt"}
+              </button>
+            </footer>
+          </Dialog.Content>
+        </Dialog.Portal>
+      ) : null}
     </Dialog.Root>
   );
 }

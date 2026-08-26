@@ -72,6 +72,21 @@ assert.match(publish, /publish-v0\.1/u);
 assert.match(publish, /--tag\s+canary/u);
 assert.match(publish, /--tag\s+latest/u);
 
+const releasePr = await readFile(
+  path.join(workflowDirectory, "release-pr.yml"),
+  "utf8",
+);
+assert.match(
+  releasePr,
+  /github-token:\s*\$\{\{\s*secrets\.RELEASE_PR_TOKEN\s*\}\}/u,
+  "release PR must use the repository-scoped release PR credential",
+);
+assert.doesNotMatch(
+  releasePr,
+  /secrets\.GITHUB_TOKEN/u,
+  "release PR must not fall back to the policy-restricted GITHUB_TOKEN",
+);
+
 const docsProduction = await readFile(
   path.join(workflowDirectory, "docs-production.yml"),
   "utf8",

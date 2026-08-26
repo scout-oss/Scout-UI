@@ -17,6 +17,7 @@ async function openCode(page: Page, path: string) {
 async function prepareVisualCapture(
   page: Page,
   preserveTransientState = false,
+  preserveInsetOutline = false,
 ) {
   await page.addStyleTag({
     content: `
@@ -28,15 +29,20 @@ async function prepareVisualCapture(
         outline: 1px dashed var(--sui-ink) !important;
         animation: none !important;
       }
+      .sui-docs-code-line[data-visual-emphasis-inset="true"] {
+        outline-offset: -1px !important;
+      }
     `,
   });
   if (preserveTransientState) {
     await page
       .locator('.sui-docs-code-line[data-emphasized="true"]')
-      .evaluateAll((lines) => {
-        for (const line of lines)
+      .evaluateAll((lines, inset) => {
+        for (const line of lines) {
           line.setAttribute("data-visual-emphasis", "true");
-      });
+          if (inset) line.setAttribute("data-visual-emphasis-inset", "true");
+        }
+      }, preserveInsetOutline);
   }
   if (!preserveTransientState) await page.waitForTimeout(950);
 }
@@ -45,8 +51,13 @@ async function expectCodeShot(
   page: Page,
   name: string,
   preserveTransientState = false,
+  preserveInsetOutline = false,
 ) {
-  await prepareVisualCapture(page, preserveTransientState);
+  await prepareVisualCapture(
+    page,
+    preserveTransientState,
+    preserveInsetOutline,
+  );
   await expect(page.locator(".sui-docs-code-output")).toHaveScreenshot(name, {
     animations: "disabled",
     caret: "hide",
@@ -206,7 +217,7 @@ test.describe("M14 deterministic Copy Code visuals", () => {
       "data-emphasis",
       "line",
     );
-    await expectCodeShot(page, "copy-code-19-reduced-effects.png", true);
+    await expectCodeShot(page, "copy-code-19-reduced-effects.png", true, true);
   });
 
   test("20 forced colors", async ({ page }) => {

@@ -1,6 +1,6 @@
 {
   "name": "@scout-ui/stickers",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Framework-neutral sticker assets, metadata, and definitions.",
   "type": "module",
   "license": "MIT",

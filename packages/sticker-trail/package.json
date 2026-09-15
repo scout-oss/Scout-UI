@@ -1,6 +1,6 @@
 {
   "name": "@scout-ui/sticker-trail",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A standalone, bounded sticker trail interaction for React.",
   "type": "module",
   "license": "MIT",

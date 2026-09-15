@@ -6,6 +6,11 @@ packages:
 engineStrict: true
 saveExact: true
 strictPeerDependencies: true
+overrides:
+  fast-uri@3.1.5: 3.1.6
+  js-yaml@3.15.1: 3.15.2
+  js-yaml@4.3.1: 4.3.2
+  sharp@0.35.3: 0.35.4
 allowBuilds:
   esbuild: true
   unrs-resolver: true

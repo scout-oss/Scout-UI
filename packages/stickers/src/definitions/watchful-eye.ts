@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/watchful-eye.svg.
 import type { StickerDefinition } from "../types.js";
+import { watchfulEyeUrl } from "../asset-urls.js";
 
 export const watchfulEye = {
   ...{
@@ -29,6 +30,6 @@ export const watchfulEye = {
     checksum:
       "sha256-edf6c9ee2cde4f4cdb84e64c5f746d86bf79b5105c414cc8fd923087b1cda11f",
   },
-  src: new URL("../../assets/watchful-eye.svg", import.meta.url).href,
+  src: watchfulEyeUrl,
 } as const satisfies StickerDefinition;
 export default watchfulEye;

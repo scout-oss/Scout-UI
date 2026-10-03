@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/forward-arrow.svg.
 import type { StickerDefinition } from "../types.js";
+import { forwardArrowUrl } from "../asset-urls.js";
 
 export const forwardArrow = {
   ...{
@@ -29,6 +30,6 @@ export const forwardArrow = {
     checksum:
       "sha256-a03ff3b1c76b91d4f39e801fcb627f23c040b45f039902b33809abe076ae029d",
   },
-  src: new URL("../../assets/forward-arrow.svg", import.meta.url).href,
+  src: forwardArrowUrl,
 } as const satisfies StickerDefinition;
 export default forwardArrow;

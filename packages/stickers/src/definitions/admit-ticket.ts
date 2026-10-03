@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/admit-ticket.svg.
 import type { StickerDefinition } from "../types.js";
+import { admitTicketUrl } from "../asset-urls.js";
 
 export const admitTicket = {
   ...{
@@ -29,6 +30,6 @@ export const admitTicket = {
     checksum:
       "sha256-a33ed7b1f2bfb8cfe1fe18609cf409940ef800596b812226bae221d91899c997",
   },
-  src: new URL("../../assets/admit-ticket.svg", import.meta.url).href,
+  src: admitTicketUrl,
 } as const satisfies StickerDefinition;
 export default admitTicket;

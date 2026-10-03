@@ -1,0 +1,7 @@
+packages:
+  - "."
+overrides:
+  "@scout-ui/sticker-trail": "file:./tarballs/scout-ui-sticker-trail-0.0.0.tgz"
+allowBuilds:
+  core-js: false
+  core-js-pure: false

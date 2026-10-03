@@ -342,6 +342,12 @@ embed their sources. Intended package source content is allowed inside maps;
 unrelated repository files, tests, credentials and local environment files are
 not.
 
+Official sticker definitions resolve their unchanged packaged artwork through a
+private native `.mjs` URL module. This keeps CRA 5's `.js`-issuer SVGR rule out
+of image URL dependencies while preserving Next/Vite asset handling, server-safe
+evaluation and per-definition tree shaking. Public definition and asset export
+paths do not change; the private URL module is not a public API.
+
 Internal modules below an entry may be bundled only when doing so cannot move
 code across a server/client boundary. Public component entry points remain
 separate and tree-shakeable. Side effects are limited to CSS files and declared

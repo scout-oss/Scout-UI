@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/scribble-pointer.svg.
 import type { StickerDefinition } from "../types.js";
+import { scribblePointerUrl } from "../asset-urls.js";
 
 export const scribblePointer = {
   ...{
@@ -29,6 +30,6 @@ export const scribblePointer = {
     checksum:
       "sha256-8ed4e664e4e0602f2b6d64ebaed539fa87683457fc3e90e8507c042763ed6452",
   },
-  src: new URL("../../assets/scribble-pointer.svg", import.meta.url).href,
+  src: scribblePointerUrl,
 } as const satisfies StickerDefinition;
 export default scribblePointer;

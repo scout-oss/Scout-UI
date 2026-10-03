@@ -180,7 +180,7 @@ async function listFiles(directory, prefix = "") {
 function categoryFor(file) {
   if (file.endsWith(".d.ts")) return "declarationBytes";
   if (file.endsWith(".map")) return "mapBytes";
-  if (file.endsWith(".js")) return "jsBytes";
+  if (/\.m?js$/u.test(file)) return "jsBytes";
   if (file.endsWith(".css")) return "cssBytes";
   if (/\.(?:png|svg|webp)$/u.test(file)) return "assetBytes";
   return "otherBytes";
@@ -300,7 +300,7 @@ async function assertMaps(installed, files, name) {
     packagedSources: 0,
   };
   for (const file of files) {
-    if (file.path.endsWith(".js")) {
+    if (/\.m?js$/u.test(file.path)) {
       assert.ok(
         paths.has(`${file.path}.map`),
         `${name} JavaScript entry ${file.path} has no source map`,
@@ -382,7 +382,7 @@ function assertSafeFileNames(files, name) {
 async function emittedBareImports(installed, files) {
   const imports = new Set();
   const pattern = /(?:\bfrom\s*|\bimport\s*\()\s*["']([^"']+)["']/gu;
-  for (const file of files.filter((entry) => entry.path.endsWith(".js"))) {
+  for (const file of files.filter((entry) => /\.m?js$/u.test(entry.path))) {
     const source = await readFile(path.join(installed, file.path), "utf8");
     for (const match of source.matchAll(pattern)) {
       const specifier = match[1];
@@ -690,7 +690,7 @@ async function assertPackageGraph(inspections) {
   const reactOutput = (
     await Promise.all(
       inspections.react.files
-        .filter((file) => file.path.endsWith(".js"))
+        .filter((file) => /\.m?js$/u.test(file.path))
         .map((file) =>
           readFile(path.join(inspections.react.installed, file.path), "utf8"),
         ),
@@ -704,7 +704,7 @@ async function assertPackageGraph(inspections) {
   const trailOutput = (
     await Promise.all(
       inspections["sticker-trail"].files
-        .filter((file) => file.path.endsWith(".js"))
+        .filter((file) => /\.m?js$/u.test(file.path))
         .map((file) =>
           readFile(
             path.join(inspections["sticker-trail"].installed, file.path),

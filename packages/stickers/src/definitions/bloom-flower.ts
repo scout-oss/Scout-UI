@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/bloom-flower.svg.
 import type { StickerDefinition } from "../types.js";
+import { bloomFlowerUrl } from "../asset-urls.js";
 
 export const bloomFlower = {
   ...{
@@ -29,6 +30,6 @@ export const bloomFlower = {
     checksum:
       "sha256-7f0b0e67dc695a4855bca73fe4624756055374cf92857b2051f1b2002c445247",
   },
-  src: new URL("../../assets/bloom-flower.svg", import.meta.url).href,
+  src: bloomFlowerUrl,
 } as const satisfies StickerDefinition;
 export default bloomFlower;

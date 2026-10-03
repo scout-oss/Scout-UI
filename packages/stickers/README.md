@@ -26,13 +26,17 @@ import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 import starUrl from "@scout-ui/stickers/assets/wonky-star.svg";
 ```
 
-Definitions resolve their packaged asset with `new URL(..., import.meta.url)`.
-Direct asset subpaths allow consumers to select a single SVG without importing
-the manifest. Import `@scout-ui/stickers/manifest` for the runtime manifest or
-`@scout-ui/stickers/manifest.json` for the serializable generated metadata.
-Definition and asset wildcard exports are limited to the approved manifest;
-imports through `src/`, `dist/`, editable masters, or package tooling are not
-public.
+Definitions resolve their packaged asset with `new URL(..., import.meta.url)`
+inside a private native ESM URL module. This keeps CRA 5's SVG component loader
+(including when using CRACO) from turning image requests into SVGR JavaScript.
+Next and Vite also resolve these URLs without consumer webpack customization.
+The private module is not a supported import path; use the public definitions or
+asset subpaths. Direct asset subpaths allow consumers to select a single SVG
+without importing the manifest. Import `@scout-ui/stickers/manifest` for the
+runtime manifest or `@scout-ui/stickers/manifest.json` for the serializable
+generated metadata. Definition and asset wildcard exports are limited to the
+approved manifest; imports through `src/`, `dist/`, editable masters, or package
+tooling are not public.
 
 Artwork is CC0 1.0; package code remains MIT licensed. `LICENSE-ASSETS.md` and
 `ATTRIBUTION.md` ship with the package so the artwork and provenance boundary is

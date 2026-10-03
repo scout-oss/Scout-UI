@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/paper-tab.svg.
 import type { StickerDefinition } from "../types.js";
+import { paperTabUrl } from "../asset-urls.js";
 
 export const paperTab = {
   ...{
@@ -29,6 +30,6 @@ export const paperTab = {
     checksum:
       "sha256-9babe60f3610402ca7f94c0286b5cbbeaf5f41896b5828d9b257c7c5a4bd657d",
   },
-  src: new URL("../../assets/paper-tab.svg", import.meta.url).href,
+  src: paperTabUrl,
 } as const satisfies StickerDefinition;
 export default paperTab;

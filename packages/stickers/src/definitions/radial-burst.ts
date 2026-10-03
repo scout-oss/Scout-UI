@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/radial-burst.svg.
 import type { StickerDefinition } from "../types.js";
+import { radialBurstUrl } from "../asset-urls.js";
 
 export const radialBurst = {
   ...{
@@ -29,6 +30,6 @@ export const radialBurst = {
     checksum:
       "sha256-222fae5c1a7cfc5d1b00f72d201734f7f746b8c7cd364f49a9e9bd855df5277c",
   },
-  src: new URL("../../assets/radial-burst.svg", import.meta.url).href,
+  src: radialBurstUrl,
 } as const satisfies StickerDefinition;
 export default radialBurst;

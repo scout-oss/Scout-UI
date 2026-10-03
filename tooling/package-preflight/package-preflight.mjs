@@ -14,7 +14,7 @@ import { pathToFileURL, fileURLToPath } from "node:url";
 import ts from "typescript";
 
 import { preparePackedConsumers } from "../fixtures/test-packed-consumers.mjs";
-import { validateJavaScriptMap } from "./javascript-maps.mjs";
+import { isJavaScriptMap, validateJavaScriptMap } from "./javascript-maps.mjs";
 
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -314,7 +314,7 @@ async function assertMaps(installed, files, name) {
     }
     if (!file.path.endsWith(".map")) continue;
     const raw = await readFile(path.join(installed, file.path), "utf8");
-    if (file.path.endsWith(".js.map")) {
+    if (isJavaScriptMap(file.path)) {
       const checked = validateJavaScriptMap(
         raw,
         file.path,

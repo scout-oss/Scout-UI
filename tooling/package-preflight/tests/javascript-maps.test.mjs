@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { validateJavaScriptMap } from "../javascript-maps.mjs";
+import { isJavaScriptMap, validateJavaScriptMap } from "../javascript-maps.mjs";
 
 const mapPath = "dist/sticker/index.js.map";
 const paths = new Set(["dist/sticker/index.js", mapPath]);
@@ -147,3 +147,62 @@ test("embedded local paths and credential material are rejected", () => {
     assert.throws(() => validate({ sourcesContent: [content] }));
   }
 });
+
+test("preflight selects exactly the executable JavaScript map family", () => {
+  for (const extension of ["js", "mjs", "cjs"]) {
+    assert.equal(isJavaScriptMap(`dist/asset-urls.${extension}.map`), true);
+  }
+  for (const file of [
+    "dist/types.d.ts.map",
+    "dist/styles.css.map",
+    "dist/index.js",
+    "dist/index.jsx.map",
+  ]) {
+    assert.equal(isJavaScriptMap(file), false);
+    assert.throws(
+      () => validateJavaScriptMap("{}", file, new Set()),
+      /not a JavaScript map/u,
+    );
+  }
+});
+
+for (const extension of ["js", "mjs", "cjs"]) {
+  test(`${extension} maps receive the same strict target, source and privacy checks`, () => {
+    const target = `dist/asset-urls.${extension}`;
+    const file = `${target}.map`;
+    const inventory = new Set([target, file]);
+    const check = (patch = {}, files = inventory) =>
+      validateJavaScriptMap(
+        JSON.stringify(
+          sourceMap({
+            file: `asset-urls.${extension}`,
+            sources: ["../src/asset-urls.ts"],
+            ...patch,
+          }),
+        ),
+        file,
+        files,
+      );
+    assert.equal(check().embeddedSources, 1);
+    assert.throws(() => check({}, new Set([file])), /no packaged generated/u);
+    assert.throws(() => check({ file: "other.js" }), /wrong generated/u);
+    assert.throws(
+      () => check({ sourcesContent: [null] }),
+      /neither embedded nor packaged/u,
+    );
+    assert.throws(() => check({ sourcesContent: [] }), /length mismatch/u);
+    for (const source of [
+      "/Users/person/source.ts",
+      "C:/Users/person/source.ts",
+      "../../outside.ts",
+      "../scout-in/source.ts",
+      "../tests/source.ts",
+    ]) {
+      assert.throws(() => check({ sources: [source] }));
+    }
+    assert.throws(
+      () => check({ sourcesContent: ["ghp_" + "a".repeat(40)] }),
+      /credential material/u,
+    );
+  });
+}

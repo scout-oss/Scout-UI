@@ -37,13 +37,19 @@ function packagePath(directory, reference, label) {
   return resolved;
 }
 
-/** Validate a JS map against the inventory of its actual installed tarball. */
+export function isJavaScriptMap(file) {
+  return /\.(?:[cm]?js)\.map$/u.test(file);
+}
+
+/** Validate a JS-family map against its actual installed tarball inventory. */
 export function validateJavaScriptMap(
   raw,
   mapPath,
   packagedPaths,
   label = mapPath,
 ) {
+  assert.ok(isJavaScriptMap(mapPath), `${label} is not a JavaScript map`);
+  safeReference(mapPath, `${label} map path`);
   const map = JSON.parse(raw);
   assert.ok(
     map !== null && typeof map === "object" && !Array.isArray(map),

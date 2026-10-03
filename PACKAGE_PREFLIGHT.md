@@ -22,6 +22,14 @@ bytes. Vite probe metrics distinguish raw JavaScript from deterministic gzip
 bytes. These are regression baselines for this repository and toolchain, not
 claims about the final size of every consumer application.
 
+The private Stickers `asset-urls.mjs` implementation and its embedded-source
+JavaScript map ship normally. Its unexported `asset-urls.d.ts` and declaration
+map are excluded: no public declaration refers to this private module. This
+avoids redundant private typing/source payload while retaining all public
+declarations, declaration maps, artwork, provenance and debugging support. The
+exact tarball inventory and packed TypeScript consumer checks enforce this
+boundary; package size limits are unchanged.
+
 JavaScript and declaration maps embed their referenced TypeScript source so they
 remain useful outside the monorepo without shipping editable `src` trees. This
 intentionally increases map bytes relative to the approved M10 artifacts.

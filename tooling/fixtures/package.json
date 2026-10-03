@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "node --test ../package-preflight/tests/*.test.mjs",
     "lint": "eslint . ../package-preflight ../rollup ../../tests/browser ../../playwright.config.ts",
     "test:browser": "node run-browser-harness.mjs",
     "test:visual": "node run-browser-harness.mjs --visual"

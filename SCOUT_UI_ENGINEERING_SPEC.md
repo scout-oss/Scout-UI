@@ -333,6 +333,15 @@ Build outputs:
 - copied sticker assets and manifest files;
 - no bundled React, React DOM, or framework runtime.
 
+Published JavaScript maps embed their original package sources in
+`sourcesContent`; consumers must not need the repository's unshipped `src/`
+directory. Packed preflight validates every source reference, rejects paths that
+escape the package or reveal local/private repository locations, and verifies
+the corresponding generated JavaScript target. Declaration maps continue to
+embed their sources. Intended package source content is allowed inside maps;
+unrelated repository files, tests, credentials and local environment files are
+not.
+
 Internal modules below an entry may be bundled only when doing so cannot move
 code across a server/client boundary. Public component entry points remain
 separate and tree-shakeable. Side effects are limited to CSS files and declared

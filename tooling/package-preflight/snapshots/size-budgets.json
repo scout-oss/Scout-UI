@@ -115,7 +115,7 @@
       },
       "budget": {
         "packedBytes": 116976,
-        "unpackedBytes": 532796
+        "unpackedBytes": 658263
       },
       "largestFiles": [
         {
@@ -174,7 +174,7 @@
       },
       "budget": {
         "packedBytes": 41825,
-        "unpackedBytes": 152624
+        "unpackedBytes": 182768
       },
       "largestFiles": [
         {
@@ -233,7 +233,7 @@
       },
       "budget": {
         "packedBytes": 29100,
-        "unpackedBytes": 218783
+        "unpackedBytes": 252643
       },
       "largestFiles": [
         {

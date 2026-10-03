@@ -14,6 +14,7 @@ import { pathToFileURL, fileURLToPath } from "node:url";
 import ts from "typescript";
 
 import { preparePackedConsumers } from "../fixtures/test-packed-consumers.mjs";
+import { validateJavaScriptMap } from "./javascript-maps.mjs";
 
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -284,6 +285,7 @@ function isAbsoluteLeak(source) {
   return (
     source.includes(root) ||
     source.includes("/Users/") ||
+    source.includes("/home/") ||
     /[A-Za-z]:[\\/]Users[\\/]/u.test(source) ||
     source.includes("scout-pk-version")
   );
@@ -291,6 +293,12 @@ function isAbsoluteLeak(source) {
 
 async function assertMaps(installed, files, name) {
   const paths = new Set(files.map((file) => file.path));
+  const javascript = {
+    maps: 0,
+    sources: 0,
+    embeddedSources: 0,
+    packagedSources: 0,
+  };
   for (const file of files) {
     if (file.path.endsWith(".js")) {
       assert.ok(
@@ -306,6 +314,16 @@ async function assertMaps(installed, files, name) {
     }
     if (!file.path.endsWith(".map")) continue;
     const raw = await readFile(path.join(installed, file.path), "utf8");
+    if (file.path.endsWith(".js.map")) {
+      const checked = validateJavaScriptMap(
+        raw,
+        file.path,
+        paths,
+        `${name} ${file.path}`,
+      );
+      for (const key of Object.keys(javascript))
+        javascript[key] += checked[key];
+    }
     const map = JSON.parse(raw);
     assert.equal(
       map.version,
@@ -332,6 +350,7 @@ async function assertMaps(installed, files, name) {
       );
     }
   }
+  return javascript;
 }
 
 function assertSafeFileNames(files, name) {
@@ -531,7 +550,7 @@ async function inspectPackage(record, packedManifest) {
   );
   assertSafeFileNames(files, record.name);
   await validateExportTargets(installed, files, manifest);
-  await assertMaps(installed, files, record.name);
+  const javascriptMaps = await assertMaps(installed, files, record.name);
 
   const allText = (
     await Promise.all(
@@ -597,6 +616,7 @@ async function inspectPackage(record, packedManifest) {
     installed,
     manifest,
     metrics,
+    javascriptMaps,
     topFiles: [...files]
       .sort((left, right) => right.bytes - left.bytes)
       .slice(0, 10),
@@ -1098,6 +1118,7 @@ async function main() {
             exportCount: Object.keys(inspection.manifest.exports).length,
             fileCount: inspection.metrics.fileCount,
             metrics: inspection.metrics,
+            javascriptMaps: inspection.javascriptMaps,
             peerDependencies: inspection.manifest.peerDependencies ?? {},
             private: inspection.manifest.private,
             purpose: record.purpose,

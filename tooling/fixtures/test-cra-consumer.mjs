@@ -8,6 +8,7 @@ import {
   readdir,
   readFile,
   realpath,
+  rm,
   writeFile,
 } from "node:fs/promises";
 import { createRequire } from "node:module";
@@ -24,6 +25,9 @@ const output = path.join(root, ".artifacts/cra-consumer");
 const consumer = path.join(output, "consumer");
 const report = { builds: {}, runtime: {}, sourceMapWarnings: {} };
 await mkdir(output, { recursive: true });
+// pnpm keeps orphaned virtual-store entries, so stale packages from an earlier
+// graph could survive a reused consumer. Always install from a clean copy.
+await rm(consumer, { recursive: true, force: true });
 await cp(path.join(root, "tooling/fixtures/cra-consumer"), consumer, {
   recursive: true,
   filter: (file) => !["node_modules", "build"].includes(path.basename(file)),
@@ -81,20 +85,29 @@ try {
   // through the same private adapter as the root workspace.
   const adapter = path.join(root, "tooling/glob-matcher");
   const link = path.relative(consumer, adapter).split(path.sep).join("/");
-  await writeFile(
-    path.join(consumer, "pnpm-workspace.yaml"),
-    `packages:\n  - "."\noverrides:\n  "@scout-ui/sticker-trail": "${manifest.dependencies["@scout-ui/sticker-trail"]}"\n  micromatch@4.0.8: link:${link}\n  braces@3.0.3: link:${link}/braces\nallowBuilds:\n  core-js: false\n  core-js-pure: false\n`,
-  );
-  // Only tarball identities and the adapter link path vary; the private CRA
-  // fixture has its own lockfile.
+  // Keep every template security override. Only the Trail tarball identity and
+  // the adapter link path vary; the private CRA fixture has its own lockfile.
+  const workspacePath = path.join(consumer, "pnpm-workspace.yaml");
+  const workspace = (await readFile(workspacePath, "utf8"))
+    .replace(
+      /("@scout-ui\/sticker-trail": )"[^"]*"/u,
+      `$1"${manifest.dependencies["@scout-ui/sticker-trail"]}"`,
+    )
+    .replaceAll("link:../../glob-matcher", `link:${link}`);
+  assert.ok(workspace.includes(`braces@3.0.3: link:${link}/braces`));
+  await writeFile(workspacePath, workspace);
   await run(["install", "--lockfile-only"], "install-lock.log");
   await run(["install", "--frozen-lockfile"], "install-frozen.log");
   const store = path.join(consumer, "node_modules/.pnpm");
   const entries = await readdir(store);
   assert.deepEqual(
-    entries.filter((entry) => /^(?:braces|micromatch)@/u.test(entry)),
+    entries.filter((entry) =>
+      /^(?:braces@|micromatch@|nth-check@1\.|svgo@1\.|node-forge@|selfsigned@|webpack-dev-(?:middleware|server)@)/u.test(
+        entry,
+      ),
+    ),
     [],
-    "vulnerable glob packages must not be installed",
+    "vulnerable or removed packages must not be installed",
   );
   report.globAdapter = { micromatch: 0, braces: 0 };
   for (const entry of entries)

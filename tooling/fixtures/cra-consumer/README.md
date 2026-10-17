@@ -8,6 +8,15 @@ no patched release, so this graph overrides micromatch 4.0.8 and braces 3.0.3
 with the root workspace's private `tooling/glob-matcher` adapter, as described
 in `M19_BRACES_REMEDIATION.md`. Neither vulnerable package is installed.
 
+The graph carries no high or critical advisory. Patched releases replace the
+vulnerable versions through exact overrides, and Router 7.18.4 and PostCSS
+8.5.28 are pinned directly. SVGR moves from 5.5.0 to 6.5.1 so that SVG
+optimization uses patched svgo 2 and nth-check 2. The fixture only builds, so
+optional peers are not installed and the webpack-dev-server subtree is removed;
+node-forge <=1.4.0 has no patched release. `craco start` is therefore
+unavailable here. TypeScript 4.9.5, previously an auto-installed peer, is
+declared explicitly. See `M19_DEPENDENCY_ADVISORIES.md`.
+
 From the repository root, with Playwright Chromium installed:
 
 ```sh
@@ -25,10 +34,11 @@ The runner copies this template into `.artifacts/cra-consumer/consumer`,
 installs the actual tarballs, and refreshes only the generated consumer
 lockfile's tarball identities and adapter link path before a frozen install. It
 then requires every installed micromatch/braces parent link to resolve to the
-adapter and no vulnerable package directory to exist. It builds with both
-`CI=false` and `CI=true`, then opens the production build in Chromium. Reports,
-logs and the runtime screenshot live in `.artifacts/cra-consumer/`. Next/Vite
-browser reports live in `.artifacts/packed-artwork/`.
+adapter and no vulnerable or removed package directory to exist. Each run starts
+from a clean consumer copy. It builds with both `CI=false` and `CI=true`, then
+opens the production build in Chromium. Reports, logs and the runtime screenshot
+live in `.artifacts/cra-consumer/`. Next/Vite browser reports live in
+`.artifacts/packed-artwork/`.
 
 Assertions cover definition-based Sticker and emitted Trail artwork, direct SVG
 imports, HTTP body/content type, image decoding, mouse and keyboard activation,

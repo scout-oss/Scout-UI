@@ -6,7 +6,7 @@
   "main": "./index.cjs",
   "description": "Private glob compatibility adapter for the pinned release and CSS lint tools.",
   "scripts": {
-    "lint": "eslint index.cjs tests",
+    "lint": "eslint index.cjs braces tests",
     "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {

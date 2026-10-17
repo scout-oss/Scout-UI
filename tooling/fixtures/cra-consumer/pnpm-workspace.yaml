@@ -2,6 +2,8 @@ packages:
   - "."
 overrides:
   "@scout-ui/sticker-trail": "file:./tarballs/scout-ui-sticker-trail-0.0.0.tgz"
+  micromatch@4.0.8: link:../../glob-matcher
+  braces@3.0.3: link:../../glob-matcher/braces
 allowBuilds:
   core-js: false
   core-js-pure: false

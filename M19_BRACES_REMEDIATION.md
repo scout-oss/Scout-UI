@@ -153,6 +153,23 @@ necessary and is preserved by the private replacement.
 | 42  | micromatch 4.0.8 | ^3.0.3                | `.>stylelint>globby>fast-glob>micromatch>braces`                                                                                                                             |
 | 43  | micromatch 4.0.8 | ^3.0.3                | `.>stylelint>micromatch>braces`                                                                                                                                              |
 
+## Separately locked CRA fixture
+
+PR #22 adds `tooling/fixtures/cra-consumer/pnpm-lock.yaml`, an independent
+workspace that the root override cannot reach. Dependency Review found braces
+3.0.3 there through micromatch 4.0.8 (Jest 27, Tailwind 3, fast-glob,
+http-proxy-middleware and eslint-webpack-plugin) and directly through chokidar
+3.6.0, the latest 3.x release. The fixture workspace therefore applies the same
+adapter: micromatch@4.0.8 links to `tooling/glob-matcher`, and braces@3.0.3
+links to its private `braces` entry, which implements only chokidar's
+`braces.expand(path)` with the same limits. The adapter adds only the micromatch
+aliases these parents call, `some` and `any`. Their results, and `expand`, were
+compared once with micromatch 4.0.8 and braces 3.0.3 (175 cases, no
+differences); representative cases are fixed regression tests. The CRA runner
+writes the same overrides into its generated workspace, rejects any installed
+micromatch/braces package, requires each parent link to resolve to the adapter,
+and checks that Tailwind content globbing emits the fixture's utility class.
+
 ## Qualification
 
 Fresh audit after replacement: 0 critical, 0 high, 6 moderate. The six remaining

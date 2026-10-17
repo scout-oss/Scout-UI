@@ -1,0 +1,8 @@
+{
+  "name": "@scout-ui/tooling-brace-expand",
+  "version": "0.0.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "./index.cjs",
+  "description": "Private braces.expand adapter for chokidar in the separately locked CRA fixture."
+}

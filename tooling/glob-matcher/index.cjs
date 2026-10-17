@@ -116,6 +116,15 @@ function braces(pattern, options = {}) {
 }
 
 match.isMatch = (value, patterns, options) => matcher(patterns, options)(value);
+// The private CRA fixture's Jest and Tailwind parents also use these aliases.
+match.any = match.isMatch;
+match.some = (list, patterns, options) => {
+  const values = Array.isArray(list) ? list : [list];
+  return patternsOf(patterns).some((pattern) => {
+    const test = picomatch(pattern, options);
+    return values.some((value) => test(value));
+  });
+};
 match.matcher = matcher;
 match.makeRe = (pattern, options) =>
   picomatch.makeRe(validate(pattern), options);

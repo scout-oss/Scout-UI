@@ -2,7 +2,14 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { createServer } from "node:http";
-import { cp, mkdir, readFile, realpath, writeFile } from "node:fs/promises";
+import {
+  cp,
+  mkdir,
+  readdir,
+  readFile,
+  realpath,
+  writeFile,
+} from "node:fs/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -70,13 +77,38 @@ try {
   }
   report.tarballs = tarballs;
   await writeFile(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
+  // braces <=3.0.3 has no patched release; route this graph's only parents
+  // through the same private adapter as the root workspace.
+  const adapter = path.join(root, "tooling/glob-matcher");
+  const link = path.relative(consumer, adapter).split(path.sep).join("/");
   await writeFile(
     path.join(consumer, "pnpm-workspace.yaml"),
-    `packages:\n  - "."\noverrides:\n  "@scout-ui/sticker-trail": "${manifest.dependencies["@scout-ui/sticker-trail"]}"\nallowBuilds:\n  core-js: false\n  core-js-pure: false\n`,
+    `packages:\n  - "."\noverrides:\n  "@scout-ui/sticker-trail": "${manifest.dependencies["@scout-ui/sticker-trail"]}"\n  micromatch@4.0.8: link:${link}\n  braces@3.0.3: link:${link}/braces\nallowBuilds:\n  core-js: false\n  core-js-pure: false\n`,
   );
-  // Only tarball identities vary; the private CRA fixture has its own lockfile.
+  // Only tarball identities and the adapter link path vary; the private CRA
+  // fixture has its own lockfile.
   await run(["install", "--lockfile-only"], "install-lock.log");
   await run(["install", "--frozen-lockfile"], "install-frozen.log");
+  const store = path.join(consumer, "node_modules/.pnpm");
+  const entries = await readdir(store);
+  assert.deepEqual(
+    entries.filter((entry) => /^(?:braces|micromatch)@/u.test(entry)),
+    [],
+    "vulnerable glob packages must not be installed",
+  );
+  report.globAdapter = { micromatch: 0, braces: 0 };
+  for (const entry of entries)
+    for (const [name, target] of [
+      ["micromatch", adapter],
+      ["braces", path.join(adapter, "braces")],
+    ]) {
+      const dependency = path.join(store, entry, "node_modules", name);
+      const resolved = await realpath(dependency).catch(() => undefined);
+      if (!resolved) continue;
+      assert.equal(resolved, await realpath(target), `${entry} -> ${name}`);
+      report.globAdapter[name]++;
+    }
+  assert.ok(report.globAdapter.micromatch > 0 && report.globAdapter.braces > 0);
   const require = createRequire(manifestPath);
   const react = await realpath(require.resolve("react"));
   for (const name of ["@scout-ui/react", "@scout-ui/sticker-trail"]) {
@@ -106,6 +138,18 @@ try {
   }
 
   const build = path.join(consumer, "build");
+  // Tailwind discovers ./src/**/*.{js,jsx} through fast-glob and the adapter.
+  const css = path.join(build, "static/css");
+  const styles = await Promise.all(
+    (await readdir(css))
+      .filter((file) => file.endsWith(".css"))
+      .map((file) => readFile(path.join(css, file), "utf8")),
+  );
+  assert.ok(
+    styles.some((text) => text.includes(".p-8{padding:2rem}")),
+    "Tailwind content globbing must emit the fixture's utility class",
+  );
+  report.tailwindContent = "PASS";
   server = createServer(async (request, response) => {
     try {
       const url = new URL(request.url, "http://127.0.0.1");

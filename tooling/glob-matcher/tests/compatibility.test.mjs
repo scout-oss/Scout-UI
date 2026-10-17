@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
+import { expand as expandBraces } from "../braces/index.cjs";
 import match from "../index.cjs";
 
 const baseline = JSON.parse(
@@ -62,15 +63,48 @@ test("Changesets and Stylelint matcher APIs accept single and array patterns", (
   );
 });
 
+// Expected values were compared once against micromatch 4.0.8 and braces 3.0.3.
+test("CRA fixture Jest, Tailwind and chokidar APIs keep legacy results", () => {
+  assert.equal(match.any, match.isMatch);
+  assert.equal(match.some(["src/a.js", "lib/b.ts"], "**/*.js"), true);
+  assert.equal(match.some("node_modules/x/index.js", "**/*.ts"), false);
+  assert.equal(match.some([".hidden/a.js"], "**/*.js"), false);
+  assert.equal(match.some([".hidden/a.js"], "**/*.js", { dot: true }), true);
+  assert.equal(match.some(["lib/b.ts"], ["**/*.ts", "!lib/**"]), true);
+  assert.equal(match.some(["src/a.js"], ["!**/node_modules/**"]), true);
+  assert.equal(match.some([], "**/*"), false);
+  assert.equal(
+    match.some(
+      ["a/b/c.test.js"],
+      ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+    ),
+    true,
+  );
+  for (const [pattern, expected] of [
+    ["/watch/{x,y}/*.js", ["/watch/x/*.js", "/watch/y/*.js"]],
+    ["a{1..3}b", ["a1b", "a2b", "a3b"]],
+    ["plain/path", ["plain/path"]],
+    ["{a,,b}", ["a", "", "b"]],
+    ["a/{b,b}/c", ["a/b/c", "a/b/c"]],
+  ])
+    assert.deepEqual(expandBraces(pattern), expected, pattern);
+  assert.throws(
+    () => expandBraces("{a,b}", { nodupes: true }),
+    /default expansion/u,
+  );
+});
+
 test("untrusted or accidentally excessive nesting fails before recursive expansion", () => {
   const nested = "{".repeat(65) + "a,b" + "}".repeat(65);
   for (const operation of [
     () => match(["a"], nested),
     () => match.matcher(nested),
     () => match.isMatch("a", nested),
+    () => match.some(["a"], nested),
     () => match.makeRe(nested),
     () => match.scan(nested),
     () => match.braces(nested, expansionOptions),
+    () => expandBraces(nested),
   ])
     assert.throws(operation, /nesting depth limit/u);
   assert.throws(() => match.makeRe("a".repeat(65537)), /input length limit/u);

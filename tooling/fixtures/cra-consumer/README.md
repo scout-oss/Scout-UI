@@ -3,8 +3,10 @@
 This private, separately locked fixture approximates Scout's bundler
 environment: React 19, React Scripts 5, CRACO 7, Router 7, Tailwind 3 and
 PostCSS 8. It is not a public package or a supported recommendation to start new
-CRA apps. Its legacy dependency graph is separate from the workspace security
-repair.
+CRA apps. Its legacy dependency graph has its own lockfile. braces <=3.0.3 has
+no patched release, so this graph overrides micromatch 4.0.8 and braces 3.0.3
+with the root workspace's private `tooling/glob-matcher` adapter, as described
+in `M19_BRACES_REMEDIATION.md`. Neither vulnerable package is installed.
 
 From the repository root, with Playwright Chromium installed:
 
@@ -21,7 +23,9 @@ workspace source.
 
 The runner copies this template into `.artifacts/cra-consumer/consumer`,
 installs the actual tarballs, and refreshes only the generated consumer
-lockfile's tarball identities before a frozen install. It builds with both
+lockfile's tarball identities and adapter link path before a frozen install. It
+then requires every installed micromatch/braces parent link to resolve to the
+adapter and no vulnerable package directory to exist. It builds with both
 `CI=false` and `CI=true`, then opens the production build in Chromium. Reports,
 logs and the runtime screenshot live in `.artifacts/cra-consumer/`. Next/Vite
 browser reports live in `.artifacts/packed-artwork/`.
@@ -29,8 +33,9 @@ browser reports live in `.artifacts/packed-artwork/`.
 Assertions cover definition-based Sticker and emitted Trail artwork, direct SVG
 imports, HTTP body/content type, image decoding, mouse and keyboard activation,
 Badge selection, Peel reveal, Router navigation, a bounded 24-node Trail pool,
-browser errors, and a single React instance. `craco.config.js` is intentionally
-empty: the package must work without consumer webpack customization.
+browser errors, a single React instance, and Tailwind's `p-8` utility emitted
+through content globbing. `craco.config.js` is intentionally empty: the package
+must work without consumer webpack customization.
 
 ## Defect and internal repair
 

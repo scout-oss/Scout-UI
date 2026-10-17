@@ -28,6 +28,18 @@ next and @next/\*, sharp and @img/\* (including libvips 1.3.4), and
 source-map-js. fdir now shares the existing picomatch 4.0.7. Each release was
 public for more than two weeks.
 
+Next 16.3.8 also changes where prerendered HTML is written when a deployment
+adapter is active, as on Vercel:
+`.next/server/route-cache/APP_PAGE/<sha256 of the source route>/$/<pathname>.html`
+replaces `.next/server/app/<pathname>.html`. The previous
+`pagefind --site .next/server/app` postbuild therefore indexed no files on
+Vercel and failed the preview build, while local builds without an adapter
+passed. `apps/docs/tooling/build-search-index.mjs` now reads either layout and
+gives Pagefind the same site-relative source paths. With and without a no-op
+adapter (`NEXT_ADAPTER_PATH`), it writes byte-identical output: 32 indexed pages
+whose fragments (URL, title, content and filters) match the previous CLI index
+exactly.
+
 ### Remaining root advisories: 8 moderate, 0 high, 0 critical
 
 | Package                 | Version | Advisory            | Fix available | Path (private tooling only)                |
@@ -92,6 +104,25 @@ coverage tooling. postcss-selector-parser 6.1.4 (GHSA-rj75-hqrm-r3gf) comes
 through cssnano 5 and stylehacks. @tootallnate/once 1.1.2 (GHSA-vpq2-c234-7xj6,
 low) comes through jsdom in Jest's environment. They are below the high gate and
 are recorded for the same separate maintenance decision.
+
+## Known local test race (not fixed)
+
+`tests/browser/prompt-behavior.spec.ts` "rapid component updates keep page
+identities stable and resources bounded" (chromium-desktop) failed locally on 17
+October after the search-index change: `activeEmphasisTimers` was 1, expected 0.
+It also failed 5 of 5 times with the previous CLI-built index restored, and 20
+of 20 times in isolation, so it does not depend on the search change. Remote
+Browser passed on `424a1a6`.
+
+The test polls until the copy and emphasis timers are 0, then measures. The
+prompt sheet schedules its 900 ms emphasis timer one animation frame after the
+document updates. In passing runs, the measurement ended about 2,000 ms after it
+started: the poll saw the timer start and expire. In failing runs it ended 83 ms
+after starting, so the poll was satisfied before the timer existed, and the
+timer was then counted as active. Faster local page readiness (211 ms vs 310 ms)
+exposes the race. The test is unchanged and no assertion is relaxed. A fix
+should wait for the emphasis to begin before waiting for it to end; it needs
+separate approval.
 
 ## Remote gates still required
 

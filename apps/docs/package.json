@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "next build --webpack",
-    "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind --glob \"**/*.html\" --force-language en",
+    "postbuild": "node tooling/build-search-index.mjs",
     "dev": "next dev --webpack",
     "lint": "eslint app components content lib tests next.config.mjs && stylelint \"**/*.css\" --ignore-pattern \"public/_pagefind/**\" --allow-empty-input",
     "start": "next start",

@@ -2,14 +2,7 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { createServer } from "node:http";
-import {
-  cp,
-  mkdir,
-  readFile,
-  realpath,
-  stat,
-  writeFile,
-} from "node:fs/promises";
+import { cp, mkdir, readFile, realpath, writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -130,7 +123,6 @@ try {
         "Content-Type",
         types[path.extname(file)] ?? "application/octet-stream",
       );
-      await stat(file);
       response.end(await readFile(file));
     } catch {
       response.writeHead(404).end();
@@ -138,6 +130,14 @@ try {
   });
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   const origin = `http://127.0.0.1:${server.address().port}`;
+  report.server = {};
+  for (const [name, route] of [
+    ["missing", "/static/js/missing.js"],
+    ["traversal", "/..%2fpackage.json"],
+  ]) {
+    report.server[name] = (await fetch(origin + route)).status;
+    assert.equal(report.server[name], 404, `${name} must not be served`);
+  }
   browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1280, height: 1000 },

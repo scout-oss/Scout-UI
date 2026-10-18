@@ -1,12 +1,11 @@
 # M19 repository-side release-candidate evidence
 
-Status: **Repository-side qualification at `6de9c75` is not clean: M19-001 is
-resolved; the full local Darwin Chromium matrix had an intermittent Navbar
-outside-click failure (M19-002), since classified as a test-timing race with a
-test-only fix proposed in PR #35. M18 and M19 remain OPEN.** The external
-release gates 025–029 are BLOCKED pending separate authorization and were not
-run. No publication, tag, release, deployment or other external mutation
-occurred.
+Status: **Repository-side qualification PASS at `85c0faa`. M18 and M19 remain
+OPEN.** M19-001 is resolved; M19-002, an intermittent Navbar test-timing race
+found in the `6de9c75` run below, is fixed by PR #35, and a clean full rerun at
+`85c0faa` passes. The external release gates 025–029 are BLOCKED pending
+separate authorization and were not run. No publication, tag, release,
+deployment or other external mutation occurred.
 
 This document supersedes the 3 October qualification of `f74c235`, which stopped
 at M19-001 (published JavaScript source maps). That defect, and the CRA/CRACO
@@ -58,6 +57,37 @@ As a result PR #9 (`changeset-release/main`) is still at `d3ac35b`, last updated
 Docs Production `39101733868` (`7434d32`) is waiting for environment approval
 and `39105570098` (`6de9c75`) is pending. Neither was approved. There are no
 tags, no GitHub releases and no npm publication.
+
+## Clean rerun at `85c0faa`
+
+After PR #35 (the M19-002 test fix) and PR #34 (these documents) merged, the
+whole local matrix was rerun from a fresh detached worktree at `85c0faa` with
+the same environment, cache bypass and `--update-snapshots=none`. Between
+`6de9c75` and `85c0faa` only `M19_ACCEPTANCE_GATES.md`, `M19_EVIDENCE.md`,
+`tests/browser/helpers/navbar.ts` and `tests/browser/navbar.spec.ts` changed, so
+no package or docs-app input changed.
+
+| Run                                        | Result                                       |
+| ------------------------------------------ | -------------------------------------------- |
+| Root commands (same 14 as the table below) | All PASS; 0 Turbo cache hits                 |
+| `corepack pnpm audit --audit-level high`   | PASS, 0 critical, 0 high, 8 moderate         |
+| Fixture interaction and accessibility (8)  | 547 passed, 0 failed, 669 skipped by project |
+| Docs interaction and accessibility (8)     | 132 passed, 0 failed, 668 skipped by project |
+| Fixture / consumer / docs visual (Darwin)  | 43 + 4 + 89 passed, 0 failed                 |
+| Packed CRA/CRACO normal and CI builds      | PASS, 0 source-map warnings                  |
+
+The Navbar outside-interaction test passed in all 8 projects. No run reported
+`EADDRINUSE`; ports 4310–4312 were checked free before and after. Tarball
+SHA-256 values are unchanged (`408bf553…`, `8ab08939…`, `e69c89d1…`). The 377
+baselines are byte-identical and the worktree had no tracked changes afterwards.
+Logs: `.artifacts/m19-rerun/` in that worktree.
+
+GitHub Actions on `85c0faa` (push): CI `39125946305`, Security `39125946253`,
+Visual `39125946166` and Browser `39125946241` all succeeded. Release PR
+`39125946270` failed again with `Bad credentials`; Docs Production `39126249338`
+is pending approval and was not approved.
+
+The sections below are the original `6de9c75` qualification, kept as recorded.
 
 ## Root qualification commands
 
@@ -278,16 +308,17 @@ Root cause (diagnosed after this qualification run):
 - Uniform slowdown does not reproduce it: CDP CPU throttling (4×–20×) and
   saturating all 10 cores both passed 30/30 unfixed.
 
-Proposed fix: PR #35 (`m19-002-navbar-dismiss`, test-only). Before the overlay
-click, the test waits until focus is inside the Dialog (proving Radix's listener
-timer is already queued), then lets a same-delay page timer run. No assertion,
-timeout or retry setting changes. With the race forced through the real harness
-(temporary instrumented spec, 20× on two projects), the unfixed test passed 17
-and failed 23; the fixed test passed 40 of 40. The full `navbar.spec.ts` passed
-on all 8 projects (154 passed), and the fixed test passed 80 of 80 on repeat.
+Fix: PR #35 (merged as `3f85e14`) (`m19-002-navbar-dismiss`, test-only). Before
+the overlay click, the test waits until focus is inside the Dialog (proving
+Radix's listener timer is already queued), then lets a same-delay page timer
+run. No assertion, timeout or retry setting changes. With the race forced
+through the real harness (temporary instrumented spec, 20× on two projects), the
+unfixed test passed 17 and failed 23; the fixed test passed 40 of 40. The full
+`navbar.spec.ts` passed on all 8 projects (154 passed), and the fixed test
+passed 80 of 80 on repeat.
 
 This branch still records the failure as executed: gates 002 and 015 stay FAIL
-for this run. A clean matrix rerun after PR #35 lands is needed to clear them.
+for this run. The clean rerun at `85c0faa` (above) clears them.
 
 ## Asset, runtime and security audits
 

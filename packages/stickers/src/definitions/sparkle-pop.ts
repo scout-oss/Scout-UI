@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/sparkle-pop.svg.
 import type { StickerDefinition } from "../types.js";
+import { sparklePopUrl } from "../asset-urls.js";
 
 export const sparklePop = {
   ...{
@@ -29,6 +30,6 @@ export const sparklePop = {
     checksum:
       "sha256-d3c2b67badcb8fb4d12261682f09cacd57357fb1b863ca8136e16bc72238e51d",
   },
-  src: new URL("../../assets/sparkle-pop.svg", import.meta.url).href,
+  src: sparklePopUrl,
 } as const satisfies StickerDefinition;
 export default sparklePop;

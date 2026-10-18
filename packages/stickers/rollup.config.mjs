@@ -11,7 +11,7 @@ const definitions = Object.fromEntries(
     ]),
 );
 
-export default createLibraryConfig({
+const config = createLibraryConfig({
   input: {
     index: "src/index.ts",
     manifest: "src/manifest.ts",
@@ -21,3 +21,10 @@ export default createLibraryConfig({
     ...definitions,
   },
 });
+
+// CRA 5's SVGR rule matches .js issuers but not native .mjs issuers.
+// Only this private URL module uses .mjs; every public export stays unchanged.
+config.output.entryFileNames = (chunk) =>
+  chunk.name === "asset-urls" ? "asset-urls.mjs" : "[name].js";
+
+export default config;

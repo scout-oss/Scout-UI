@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/chat-bubble.svg.
 import type { StickerDefinition } from "../types.js";
+import { chatBubbleUrl } from "../asset-urls.js";
 
 export const chatBubble = {
   ...{
@@ -29,6 +30,6 @@ export const chatBubble = {
     checksum:
       "sha256-305ea9c6b616024c3c03bb52e4efc5e5158c449141495ace0851378965746b0a",
   },
-  src: new URL("../../assets/chat-bubble.svg", import.meta.url).href,
+  src: chatBubbleUrl,
 } as const satisfies StickerDefinition;
 export default chatBubble;

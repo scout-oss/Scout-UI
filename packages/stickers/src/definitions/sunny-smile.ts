@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/sunny-smile.svg.
 import type { StickerDefinition } from "../types.js";
+import { sunnySmileUrl } from "../asset-urls.js";
 
 export const sunnySmile = {
   ...{
@@ -29,6 +30,6 @@ export const sunnySmile = {
     checksum:
       "sha256-190bf89d14ac4d8fb20252fd6565bff48971ad477c9c413273b3e26906d0632b",
   },
-  src: new URL("../../assets/sunny-smile.svg", import.meta.url).href,
+  src: sunnySmileUrl,
 } as const satisfies StickerDefinition;
 export default sunnySmile;

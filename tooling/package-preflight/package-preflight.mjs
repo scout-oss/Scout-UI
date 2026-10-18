@@ -14,6 +14,7 @@ import { pathToFileURL, fileURLToPath } from "node:url";
 import ts from "typescript";
 
 import { preparePackedConsumers } from "../fixtures/test-packed-consumers.mjs";
+import { isJavaScriptMap, validateJavaScriptMap } from "./javascript-maps.mjs";
 
 const root = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -179,7 +180,7 @@ async function listFiles(directory, prefix = "") {
 function categoryFor(file) {
   if (file.endsWith(".d.ts")) return "declarationBytes";
   if (file.endsWith(".map")) return "mapBytes";
-  if (file.endsWith(".js")) return "jsBytes";
+  if (/\.m?js$/u.test(file)) return "jsBytes";
   if (file.endsWith(".css")) return "cssBytes";
   if (/\.(?:png|svg|webp)$/u.test(file)) return "assetBytes";
   return "otherBytes";
@@ -284,6 +285,7 @@ function isAbsoluteLeak(source) {
   return (
     source.includes(root) ||
     source.includes("/Users/") ||
+    source.includes("/home/") ||
     /[A-Za-z]:[\\/]Users[\\/]/u.test(source) ||
     source.includes("scout-pk-version")
   );
@@ -291,8 +293,14 @@ function isAbsoluteLeak(source) {
 
 async function assertMaps(installed, files, name) {
   const paths = new Set(files.map((file) => file.path));
+  const javascript = {
+    maps: 0,
+    sources: 0,
+    embeddedSources: 0,
+    packagedSources: 0,
+  };
   for (const file of files) {
-    if (file.path.endsWith(".js")) {
+    if (/\.m?js$/u.test(file.path)) {
       assert.ok(
         paths.has(`${file.path}.map`),
         `${name} JavaScript entry ${file.path} has no source map`,
@@ -306,6 +314,16 @@ async function assertMaps(installed, files, name) {
     }
     if (!file.path.endsWith(".map")) continue;
     const raw = await readFile(path.join(installed, file.path), "utf8");
+    if (isJavaScriptMap(file.path)) {
+      const checked = validateJavaScriptMap(
+        raw,
+        file.path,
+        paths,
+        `${name} ${file.path}`,
+      );
+      for (const key of Object.keys(javascript))
+        javascript[key] += checked[key];
+    }
     const map = JSON.parse(raw);
     assert.equal(
       map.version,
@@ -332,6 +350,7 @@ async function assertMaps(installed, files, name) {
       );
     }
   }
+  return javascript;
 }
 
 function assertSafeFileNames(files, name) {
@@ -363,7 +382,7 @@ function assertSafeFileNames(files, name) {
 async function emittedBareImports(installed, files) {
   const imports = new Set();
   const pattern = /(?:\bfrom\s*|\bimport\s*\()\s*["']([^"']+)["']/gu;
-  for (const file of files.filter((entry) => entry.path.endsWith(".js"))) {
+  for (const file of files.filter((entry) => /\.m?js$/u.test(entry.path))) {
     const source = await readFile(path.join(installed, file.path), "utf8");
     for (const match of source.matchAll(pattern)) {
       const specifier = match[1];
@@ -531,7 +550,7 @@ async function inspectPackage(record, packedManifest) {
   );
   assertSafeFileNames(files, record.name);
   await validateExportTargets(installed, files, manifest);
-  await assertMaps(installed, files, record.name);
+  const javascriptMaps = await assertMaps(installed, files, record.name);
 
   const allText = (
     await Promise.all(
@@ -597,6 +616,7 @@ async function inspectPackage(record, packedManifest) {
     installed,
     manifest,
     metrics,
+    javascriptMaps,
     topFiles: [...files]
       .sort((left, right) => right.bytes - left.bytes)
       .slice(0, 10),
@@ -670,7 +690,7 @@ async function assertPackageGraph(inspections) {
   const reactOutput = (
     await Promise.all(
       inspections.react.files
-        .filter((file) => file.path.endsWith(".js"))
+        .filter((file) => /\.m?js$/u.test(file.path))
         .map((file) =>
           readFile(path.join(inspections.react.installed, file.path), "utf8"),
         ),
@@ -684,7 +704,7 @@ async function assertPackageGraph(inspections) {
   const trailOutput = (
     await Promise.all(
       inspections["sticker-trail"].files
-        .filter((file) => file.path.endsWith(".js"))
+        .filter((file) => /\.m?js$/u.test(file.path))
         .map((file) =>
           readFile(
             path.join(inspections["sticker-trail"].installed, file.path),
@@ -1098,6 +1118,7 @@ async function main() {
             exportCount: Object.keys(inspection.manifest.exports).length,
             fileCount: inspection.metrics.fileCount,
             metrics: inspection.metrics,
+            javascriptMaps: inspection.javascriptMaps,
             peerDependencies: inspection.manifest.peerDependencies ?? {},
             private: inspection.manifest.private,
             purpose: record.purpose,

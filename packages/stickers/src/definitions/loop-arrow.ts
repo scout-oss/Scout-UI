@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/loop-arrow.svg.
 import type { StickerDefinition } from "../types.js";
+import { loopArrowUrl } from "../asset-urls.js";
 
 export const loopArrow = {
   ...{
@@ -29,6 +30,6 @@ export const loopArrow = {
     checksum:
       "sha256-b09f4dfb737f9e2d66ef2451dd8b65ab0727c5548de667da174b2e56c6cd42ea",
   },
-  src: new URL("../../assets/loop-arrow.svg", import.meta.url).href,
+  src: loopArrowUrl,
 } as const satisfies StickerDefinition;
 export default loopArrow;

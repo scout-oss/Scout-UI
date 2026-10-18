@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/sealed-envelope.svg.
 import type { StickerDefinition } from "../types.js";
+import { sealedEnvelopeUrl } from "../asset-urls.js";
 
 export const sealedEnvelope = {
   ...{
@@ -29,6 +30,6 @@ export const sealedEnvelope = {
     checksum:
       "sha256-e5011d3c86893ea0fc8dff9efd8407882f9f51129a94b92c5c45e622524d4c85",
   },
-  src: new URL("../../assets/sealed-envelope.svg", import.meta.url).href,
+  src: sealedEnvelopeUrl,
 } as const satisfies StickerDefinition;
 export default sealedEnvelope;

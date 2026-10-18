@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/chunky-check.svg.
 import type { StickerDefinition } from "../types.js";
+import { chunkyCheckUrl } from "../asset-urls.js";
 
 export const chunkyCheck = {
   ...{
@@ -29,6 +30,6 @@ export const chunkyCheck = {
     checksum:
       "sha256-fd3783c0140fd2e600379b4b6cb73301f6f07538390719db3bf9efb009ae4743",
   },
-  src: new URL("../../assets/chunky-check.svg", import.meta.url).href,
+  src: chunkyCheckUrl,
 } as const satisfies StickerDefinition;
 export default chunkyCheck;

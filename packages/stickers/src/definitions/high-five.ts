@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/high-five.svg.
 import type { StickerDefinition } from "../types.js";
+import { highFiveUrl } from "../asset-urls.js";
 
 export const highFive = {
   ...{
@@ -29,6 +30,6 @@ export const highFive = {
     checksum:
       "sha256-4dece2aabf54d162c34747d3eaa0eb5418c5ccc8749961d7133e1fc9db5a9fd3",
   },
-  src: new URL("../../assets/high-five.svg", import.meta.url).href,
+  src: highFiveUrl,
 } as const satisfies StickerDefinition;
 export default highFive;

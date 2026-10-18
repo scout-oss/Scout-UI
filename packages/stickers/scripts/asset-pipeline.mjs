@@ -107,7 +107,7 @@ async function renderDefinition(record) {
   const name = variableName(record.id);
   const data = JSON.stringify(record, null, 2);
   return prettier.format(
-    `// Generated from source/catalog.json and assets/${record.id}.${record.format}.\nimport type { StickerDefinition } from "../types.js";\n\nexport const ${name} = { ...${data}, src: new URL("../../assets/${record.id}.${record.format}", import.meta.url).href } as const satisfies StickerDefinition;\nexport default ${name};\n`,
+    `// Generated from source/catalog.json and assets/${record.id}.${record.format}.\nimport type { StickerDefinition } from "../types.js";\nimport { ${name}Url } from "../asset-urls.js";\n\nexport const ${name} = { ...${data}, src: ${name}Url } as const satisfies StickerDefinition;\nexport default ${name};\n`,
     { parser: "typescript" },
   );
 }
@@ -199,6 +199,13 @@ for (const sticker of catalog.stickers) {
   );
 }
 
+await writeOrCheck(
+  path.join(packageRoot, "src", "asset-urls.ts"),
+  await prettier.format(
+    `// Generated from source/catalog.json. Published as asset-urls.mjs.\n// CRA 5 excludes .mjs issuers from its SVGR component-loader rule.\n// Keep each URL statically analyzable and independently tree-shakeable.\n${records.map((record) => `export const ${variableName(record.id)}Url: string = /* @__PURE__ */ (() => new URL("../assets/${record.id}.${record.format}", import.meta.url).href)();`).join("\n")}\n`,
+    { parser: "typescript" },
+  ),
+);
 await writeOrCheck(
   path.join(packageRoot, "src", "manifest.generated.ts"),
   await renderManifest(records),

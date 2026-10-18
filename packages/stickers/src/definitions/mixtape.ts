@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/mixtape.svg.
 import type { StickerDefinition } from "../types.js";
+import { mixtapeUrl } from "../asset-urls.js";
 
 export const mixtape = {
   ...{
@@ -29,6 +30,6 @@ export const mixtape = {
     checksum:
       "sha256-d38f003cb59aba4c1a93ddc4ae5f799940a9b0a5942603a3838c1ae9430956a1",
   },
-  src: new URL("../../assets/mixtape.svg", import.meta.url).href,
+  src: mixtapeUrl,
 } as const satisfies StickerDefinition;
 export default mixtape;

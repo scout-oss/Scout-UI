@@ -1,0 +1,4574 @@
+{
+  "origin": "micromatch 4.0.8 before the private tooling replacement",
+  "values": [
+    "a",
+    "b",
+    "A",
+    "a.js",
+    "b.ts",
+    "src/x.css",
+    "src/.hidden.css",
+    "src/x/a.css",
+    "packages/react",
+    "packages/stickers",
+    "apps/docs",
+    "./src/x.css",
+    "src\\x.css",
+    ""
+  ],
+  "braces": [
+    {
+      "pattern": "",
+      "expected": [""]
+    },
+    {
+      "pattern": "src/**/*.css",
+      "expected": ["src/**/*.css"]
+    },
+    {
+      "pattern": "app/**/*.css",
+      "expected": ["app/**/*.css"]
+    },
+    {
+      "pattern": "**/*.css",
+      "expected": ["**/*.css"]
+    },
+    {
+      "pattern": "packages/*",
+      "expected": ["packages/*"]
+    },
+    {
+      "pattern": "apps/*",
+      "expected": ["apps/*"]
+    },
+    {
+      "pattern": "fixtures/*",
+      "expected": ["fixtures/*"]
+    },
+    {
+      "pattern": "tooling/*",
+      "expected": ["tooling/*"]
+    },
+    {
+      "pattern": "**/{node_modules,dist}/**",
+      "expected": ["**/node_modules/**", "**/dist/**"]
+    },
+    {
+      "pattern": "{a,b}",
+      "expected": ["a", "b"]
+    },
+    {
+      "pattern": "{a,b,a}",
+      "expected": ["a", "b"]
+    },
+    {
+      "pattern": "{a,}",
+      "expected": ["a", ""]
+    },
+    {
+      "pattern": "{,a}",
+      "expected": ["", "a"]
+    },
+    {
+      "pattern": "{}",
+      "expected": ["{}"]
+    },
+    {
+      "pattern": "{a}",
+      "expected": ["{a}"]
+    },
+    {
+      "pattern": "a/{b,}/{c,}/*",
+      "expected": ["a/b/c/*", "a/b//*", "a//c/*", "a///*"]
+    },
+    {
+      "pattern": "{1..3}",
+      "expected": ["1", "2", "3"]
+    },
+    {
+      "pattern": "{3..1}",
+      "expected": ["3", "2", "1"]
+    },
+    {
+      "pattern": "{01..03}",
+      "expected": ["01", "02", "03"]
+    },
+    {
+      "pattern": "{1..5..2}",
+      "expected": ["1", "3", "5"]
+    },
+    {
+      "pattern": "{a..e..2}",
+      "expected": ["a", "c", "e"]
+    },
+    {
+      "pattern": "${a,b}",
+      "expected": ["${a,b}"]
+    },
+    {
+      "pattern": "\\{a,b\\}",
+      "expected": ["\\{a,b\\}"]
+    },
+    {
+      "pattern": "{a\\,b,c}",
+      "expected": ["a\\,b", "c"]
+    },
+    {
+      "pattern": "{a,b}/x{1..3}",
+      "expected": ["a/x1", "a/x2", "a/x3", "b/x1", "b/x2", "b/x3"]
+    },
+    {
+      "pattern": "{a,{b,c}}",
+      "expected": ["a", "b", "c"]
+    },
+    {
+      "pattern": "{{a,b},{c,d}}",
+      "expected": ["a", "b", "c", "d"]
+    },
+    {
+      "pattern": "foo/{bar,}",
+      "expected": ["foo/bar", "foo/"]
+    },
+    {
+      "pattern": "{,,}",
+      "expected": [""]
+    },
+    {
+      "pattern": "{a,b}{c,d}",
+      "expected": ["ac", "ad", "bc", "bd"]
+    },
+    {
+      "pattern": "x{a,{b,}}y",
+      "expected": ["xay", "xby", "xy"]
+    },
+    {
+      "pattern": "\"{a,b}\"",
+      "expected": ["{a,b}"]
+    },
+    {
+      "pattern": "\\{x,y}",
+      "expected": ["\\{x,y}"]
+    }
+  ],
+  "matching": [
+    {
+      "patterns": ["*", "*"],
+      "options": {},
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*", "*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "**/*.css"],
+      "options": {},
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["*", "**/*.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["*", "**/*.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["*", "**/*.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["*", "*.{js,ts}"],
+      "options": {},
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "*.{js,ts}"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "*.{js,ts}"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*", "*.{js,ts}"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "!*.js"],
+      "options": {},
+      "expected": ["a", "b", "A", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "!*.js"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a", "b", "A", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "!*.js"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a", "b", "A", "b.ts"]
+    },
+    {
+      "patterns": ["*", "!*.js"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a", "b", "A", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "!(a)"],
+      "options": {},
+      "expected": ["b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "!(a)"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "!(a)"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*", "!(a)"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["b", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "@scout-ui/*"],
+      "options": {},
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "@scout-ui/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "@scout-ui/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*", "@scout-ui/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["*", "packages/*"],
+      "options": {},
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["*", "packages/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["*", "packages/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["*", "packages/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["*", "**/.hidden.css"],
+      "options": {},
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/.hidden.css"
+      ]
+    },
+    {
+      "patterns": ["*", "**/.hidden.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/.hidden.css"
+      ]
+    },
+    {
+      "patterns": ["*", "**/.hidden.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["*", "**/.hidden.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/.hidden.css"
+      ]
+    },
+    {
+      "patterns": ["*", "src/**"],
+      "options": {},
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["*", "src/**"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["*", "src/**"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["*", "src/**"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["*", "src/!(a).css"],
+      "options": {},
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/.hidden.css"
+      ]
+    },
+    {
+      "patterns": ["*", "src/!(a).css"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/.hidden.css"
+      ]
+    },
+    {
+      "patterns": ["*", "src/!(a).css"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src/x.css",
+        "src/.hidden.css"
+      ]
+    },
+    {
+      "patterns": ["*", "src/!(a).css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/.hidden.css"
+      ]
+    },
+    {
+      "patterns": ["*", "**/{x,a}.css"],
+      "options": {},
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["*", "**/{x,a}.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["*", "**/{x,a}.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["*", "**/{x,a}.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["**/*.css", "*"],
+      "options": {},
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "src\\x.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts"
+      ]
+    },
+    {
+      "patterns": ["**/*.css", "*"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "src\\x.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts"
+      ]
+    },
+    {
+      "patterns": ["**/*.css", "*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "a", "b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/*.css", "*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "src\\x.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts"
+      ]
+    },
+    {
+      "patterns": ["**/*.css", "**/*.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "**/*.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "**/*.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/*.css", "**/*.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "*.{js,ts}"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/*.css", "*.{js,ts}"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "src\\x.css",
+        "a.js",
+        "b.ts"
+      ]
+    },
+    {
+      "patterns": ["**/*.css", "*.{js,ts}"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/*.css", "*.{js,ts}"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/*.css", "!*.js"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "!*.js"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "!*.js"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/*.css", "!*.js"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "!(a)"],
+      "options": {},
+      "expected": ["src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "!(a)"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "!(a)"],
+      "options": {
+        "windows": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["**/*.css", "!(a)"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "@scout-ui/*"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "@scout-ui/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "@scout-ui/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/*.css", "@scout-ui/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "packages/*"],
+      "options": {},
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "src\\x.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["**/*.css", "packages/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "src\\x.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["**/*.css", "packages/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["**/*.css", "packages/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "src\\x.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["**/*.css", "**/.hidden.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/*.css", "**/.hidden.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "**/.hidden.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/*.css", "**/.hidden.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/*.css", "src/**"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "src/**"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "src/**"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/*.css", "src/**"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "src/!(a).css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/*.css", "src/!(a).css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "src/!(a).css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/*.css", "src/!(a).css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/*.css", "**/{x,a}.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "**/{x,a}.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/*.css", "**/{x,a}.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/*.css", "**/{x,a}.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "*"],
+      "options": {},
+      "expected": ["a.js", "b.ts", "a", "b", "A", "src\\x.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a.js", "b.ts", "a", "b", "A", "src\\x.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts", "a", "b", "A"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts", "a", "b", "A", "src\\x.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/*.css"],
+      "options": {},
+      "expected": ["a.js", "b.ts", "src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/*.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "a.js",
+        "b.ts",
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/*.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/*.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts", "src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "*.{js,ts}"],
+      "options": {},
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "*.{js,ts}"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "*.{js,ts}"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "*.{js,ts}"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "!*.js"],
+      "options": {},
+      "expected": ["b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "!*.js"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "!*.js"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "!*.js"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "!(a)"],
+      "options": {},
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "!(a)"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "!(a)"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "!(a)"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "@scout-ui/*"],
+      "options": {},
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "@scout-ui/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "@scout-ui/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "@scout-ui/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "packages/*"],
+      "options": {},
+      "expected": ["a.js", "b.ts", "packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "packages/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a.js", "b.ts", "packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "packages/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts", "packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "packages/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts", "packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/.hidden.css"],
+      "options": {},
+      "expected": ["a.js", "b.ts", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/.hidden.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a.js", "b.ts", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/.hidden.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/.hidden.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "src/**"],
+      "options": {},
+      "expected": ["a.js", "b.ts", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "src/**"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "a.js",
+        "b.ts",
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["*.{js,ts}", "src/**"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "src/**"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "src/!(a).css"],
+      "options": {},
+      "expected": ["a.js", "b.ts", "src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "src/!(a).css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a.js", "b.ts", "src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "src/!(a).css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts", "src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "src/!(a).css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts", "src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/{x,a}.css"],
+      "options": {},
+      "expected": ["a.js", "b.ts", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/{x,a}.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a.js", "b.ts", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/{x,a}.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["*.{js,ts}", "**/{x,a}.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!*.js", "*"],
+      "options": {},
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!*.js", "*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!*.js", "*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["!*.js", "*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!*.js", "**/*.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["!*.js", "**/*.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["!*.js", "**/*.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!*.js", "**/*.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["!*.js", "*.{js,ts}"],
+      "options": {},
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["!*.js", "*.{js,ts}"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["!*.js", "*.{js,ts}"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["!*.js", "*.{js,ts}"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["!*.js", "!*.js"],
+      "options": {},
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "b.ts",
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers",
+        "apps/docs",
+        "./src/x.css",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["!*.js", "!*.js"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "b.ts",
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers",
+        "apps/docs",
+        "./src/x.css",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["!*.js", "!*.js"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "b.ts",
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers",
+        "apps/docs",
+        "./src/x.css"
+      ]
+    },
+    {
+      "patterns": ["!*.js", "!*.js"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "a",
+        "b",
+        "A",
+        "b.ts",
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers",
+        "apps/docs",
+        "./src/x.css",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["!*.js", "!(a)"],
+      "options": {},
+      "expected": ["b", "A", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!*.js", "!(a)"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["b", "A", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!*.js", "!(a)"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["b", "A", "b.ts"]
+    },
+    {
+      "patterns": ["!*.js", "!(a)"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["b", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!*.js", "@scout-ui/*"],
+      "options": {},
+      "expected": []
+    },
+    {
+      "patterns": ["!*.js", "@scout-ui/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["!*.js", "@scout-ui/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["!*.js", "@scout-ui/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["!*.js", "packages/*"],
+      "options": {},
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["!*.js", "packages/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["!*.js", "packages/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["!*.js", "packages/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["!*.js", "**/.hidden.css"],
+      "options": {},
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["!*.js", "**/.hidden.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["!*.js", "**/.hidden.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["!*.js", "**/.hidden.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["!*.js", "src/**"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!*.js", "src/**"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!*.js", "src/**"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!*.js", "src/**"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!*.js", "src/!(a).css"],
+      "options": {},
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["!*.js", "src/!(a).css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["!*.js", "src/!(a).css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["!*.js", "src/!(a).css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["!*.js", "**/{x,a}.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!*.js", "**/{x,a}.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!*.js", "**/{x,a}.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!*.js", "**/{x,a}.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!(a)", "*"],
+      "options": {},
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["!(a)", "*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "**/*.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "**/*.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "**/*.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!(a)", "**/*.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "*.{js,ts}"],
+      "options": {},
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["!(a)", "*.{js,ts}"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["!(a)", "*.{js,ts}"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["!(a)", "*.{js,ts}"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["!(a)", "!*.js"],
+      "options": {},
+      "expected": ["b", "A", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "!*.js"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["b", "A", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "!*.js"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["b", "A", "b.ts"]
+    },
+    {
+      "patterns": ["!(a)", "!*.js"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["b", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "!(a)"],
+      "options": {},
+      "expected": ["b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "!(a)"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "!(a)"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["!(a)", "!(a)"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["b", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["!(a)", "@scout-ui/*"],
+      "options": {},
+      "expected": []
+    },
+    {
+      "patterns": ["!(a)", "@scout-ui/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["!(a)", "@scout-ui/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["!(a)", "@scout-ui/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["!(a)", "packages/*"],
+      "options": {},
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["!(a)", "packages/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["!(a)", "packages/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["!(a)", "packages/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["!(a)", "**/.hidden.css"],
+      "options": {},
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["!(a)", "**/.hidden.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["!(a)", "**/.hidden.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["!(a)", "**/.hidden.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["!(a)", "src/**"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!(a)", "src/**"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!(a)", "src/**"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!(a)", "src/**"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!(a)", "src/!(a).css"],
+      "options": {},
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["!(a)", "src/!(a).css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["!(a)", "src/!(a).css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["!(a)", "src/!(a).css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["!(a)", "**/{x,a}.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!(a)", "**/{x,a}.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!(a)", "**/{x,a}.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["!(a)", "**/{x,a}.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "*"],
+      "options": {},
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a", "b", "A", "a.js", "b.ts", "src\\x.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/*.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/*.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/*.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/*.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "*.{js,ts}"],
+      "options": {},
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "*.{js,ts}"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "*.{js,ts}"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "*.{js,ts}"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["a.js", "b.ts"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "!*.js"],
+      "options": {},
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "!*.js"],
+      "options": {
+        "dot": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "!*.js"],
+      "options": {
+        "windows": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "!*.js"],
+      "options": {
+        "nocase": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "!(a)"],
+      "options": {},
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "!(a)"],
+      "options": {
+        "dot": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "!(a)"],
+      "options": {
+        "windows": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "!(a)"],
+      "options": {
+        "nocase": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "@scout-ui/*"],
+      "options": {},
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "@scout-ui/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "@scout-ui/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "@scout-ui/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["@scout-ui/*", "packages/*"],
+      "options": {},
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "packages/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "packages/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "packages/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/.hidden.css"],
+      "options": {},
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/.hidden.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/.hidden.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/.hidden.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "src/**"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "src/**"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "src/**"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "src/**"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "src/!(a).css"],
+      "options": {},
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "src/!(a).css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "src/!(a).css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "src/!(a).css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/{x,a}.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/{x,a}.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/{x,a}.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["@scout-ui/*", "**/{x,a}.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["packages/*", "*"],
+      "options": {},
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "*"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "*"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "**/*.css"],
+      "options": {},
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/x/a.css",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "**/*.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "**/*.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "**/*.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/x/a.css",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "*.{js,ts}"],
+      "options": {},
+      "expected": ["packages/react", "packages/stickers", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["packages/*", "*.{js,ts}"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["packages/react", "packages/stickers", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["packages/*", "*.{js,ts}"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["packages/react", "packages/stickers", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["packages/*", "*.{js,ts}"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["packages/react", "packages/stickers", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["packages/*", "!*.js"],
+      "options": {},
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "!*.js"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "!*.js"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "!*.js"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "!(a)"],
+      "options": {},
+      "expected": []
+    },
+    {
+      "patterns": ["packages/*", "!(a)"],
+      "options": {
+        "dot": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["packages/*", "!(a)"],
+      "options": {
+        "windows": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["packages/*", "!(a)"],
+      "options": {
+        "nocase": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["packages/*", "@scout-ui/*"],
+      "options": {},
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "@scout-ui/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "@scout-ui/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "@scout-ui/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "packages/*"],
+      "options": {},
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "packages/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "packages/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "packages/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["packages/*", "**/.hidden.css"],
+      "options": {},
+      "expected": ["packages/react", "packages/stickers", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["packages/*", "**/.hidden.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["packages/react", "packages/stickers", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["packages/*", "**/.hidden.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["packages/react", "packages/stickers", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["packages/*", "**/.hidden.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["packages/react", "packages/stickers", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["packages/*", "src/**"],
+      "options": {},
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "src/**"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "src/**"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "src/**"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "src/!(a).css"],
+      "options": {},
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/.hidden.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "src/!(a).css"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/.hidden.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "src/!(a).css"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/.hidden.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "src/!(a).css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/.hidden.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "**/{x,a}.css"],
+      "options": {},
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "**/{x,a}.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "**/{x,a}.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["packages/*", "**/{x,a}.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "packages/react",
+        "packages/stickers",
+        "src/x.css",
+        "src/x/a.css"
+      ]
+    },
+    {
+      "patterns": ["**/.hidden.css", "*"],
+      "options": {},
+      "expected": [
+        "src/.hidden.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["**/.hidden.css", "*"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "src/.hidden.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["**/.hidden.css", "*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css", "a", "b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "src/.hidden.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/*.css"],
+      "options": {},
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/*.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/*.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/*.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "*.{js,ts}"],
+      "options": {},
+      "expected": ["src/.hidden.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "*.{js,ts}"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "*.{js,ts}"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "*.{js,ts}"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "!*.js"],
+      "options": {},
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "!*.js"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "!*.js"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "!*.js"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "!(a)"],
+      "options": {},
+      "expected": []
+    },
+    {
+      "patterns": ["**/.hidden.css", "!(a)"],
+      "options": {
+        "dot": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["**/.hidden.css", "!(a)"],
+      "options": {
+        "windows": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["**/.hidden.css", "!(a)"],
+      "options": {
+        "nocase": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["**/.hidden.css", "@scout-ui/*"],
+      "options": {},
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "@scout-ui/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "@scout-ui/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "@scout-ui/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "packages/*"],
+      "options": {},
+      "expected": ["src/.hidden.css", "packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "packages/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css", "packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "packages/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css", "packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "packages/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css", "packages/react", "packages/stickers"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/.hidden.css"],
+      "options": {},
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/.hidden.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/.hidden.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/.hidden.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "src/**"],
+      "options": {},
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "src/**"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "src/**"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "src/**"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "src/!(a).css"],
+      "options": {},
+      "expected": ["src/.hidden.css", "src/x.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "src/!(a).css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "src/!(a).css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "src/!(a).css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/{x,a}.css"],
+      "options": {},
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/{x,a}.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/{x,a}.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/.hidden.css", "**/{x,a}.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/.hidden.css", "src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "*"],
+      "options": {},
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["src/**", "*"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["src/**", "*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "a", "b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["src/**", "*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["src/**", "**/*.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["src/**", "**/*.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["src/**", "**/*.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "**/*.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["src/**", "*.{js,ts}"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["src/**", "*.{js,ts}"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "a.js",
+        "b.ts"
+      ]
+    },
+    {
+      "patterns": ["src/**", "*.{js,ts}"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["src/**", "*.{js,ts}"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["src/**", "!*.js"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "!*.js"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "!*.js"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "!*.js"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "!(a)"],
+      "options": {},
+      "expected": []
+    },
+    {
+      "patterns": ["src/**", "!(a)"],
+      "options": {
+        "dot": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["src/**", "!(a)"],
+      "options": {
+        "windows": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["src/**", "!(a)"],
+      "options": {
+        "nocase": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["src/**", "@scout-ui/*"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "@scout-ui/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "@scout-ui/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "@scout-ui/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "packages/*"],
+      "options": {},
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["src/**", "packages/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["src/**", "packages/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["src/**", "packages/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["src/**", "**/.hidden.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/**", "**/.hidden.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "**/.hidden.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/**", "**/.hidden.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/**", "src/**"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "src/**"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "src/**"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "src/**"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "src/!(a).css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/**", "src/!(a).css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "src/!(a).css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/**", "src/!(a).css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/**", "**/{x,a}.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "**/{x,a}.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "**/{x,a}.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/**", "**/{x,a}.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "*"],
+      "options": {},
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["src/!(a).css", "*"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["src/!(a).css", "*"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts"
+      ]
+    },
+    {
+      "patterns": ["src/!(a).css", "*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/*.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/*.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/*.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/*.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "*.{js,ts}"],
+      "options": {},
+      "expected": ["src/x.css", "src/.hidden.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["src/!(a).css", "*.{js,ts}"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["src/!(a).css", "*.{js,ts}"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["src/!(a).css", "*.{js,ts}"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["src/!(a).css", "!*.js"],
+      "options": {},
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "!*.js"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "!*.js"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "!*.js"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "!(a)"],
+      "options": {},
+      "expected": []
+    },
+    {
+      "patterns": ["src/!(a).css", "!(a)"],
+      "options": {
+        "dot": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["src/!(a).css", "!(a)"],
+      "options": {
+        "windows": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["src/!(a).css", "!(a)"],
+      "options": {
+        "nocase": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["src/!(a).css", "@scout-ui/*"],
+      "options": {},
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "@scout-ui/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "@scout-ui/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "@scout-ui/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "packages/*"],
+      "options": {},
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["src/!(a).css", "packages/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["src/!(a).css", "packages/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["src/!(a).css", "packages/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/.hidden.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/.hidden.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/.hidden.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/.hidden.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/.hidden.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "src/**"],
+      "options": {},
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "src/**"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "src/**"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "src/**"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "src/!(a).css"],
+      "options": {},
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "src/!(a).css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "src/!(a).css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "src/!(a).css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/{x,a}.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/{x,a}.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/{x,a}.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["src/!(a).css", "**/{x,a}.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/.hidden.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "*"],
+      "options": {},
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "*"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "a", "b", "A", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "a",
+        "b",
+        "A",
+        "a.js",
+        "b.ts",
+        "src\\x.css"
+      ]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/*.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/*.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/*.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/*.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src\\x.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "*.{js,ts}"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "*.{js,ts}"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "*.{js,ts}"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "*.{js,ts}"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "a.js", "b.ts"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "!*.js"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "!*.js"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "!*.js"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "!*.js"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "!(a)"],
+      "options": {},
+      "expected": []
+    },
+    {
+      "patterns": ["**/{x,a}.css", "!(a)"],
+      "options": {
+        "dot": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["**/{x,a}.css", "!(a)"],
+      "options": {
+        "windows": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["**/{x,a}.css", "!(a)"],
+      "options": {
+        "nocase": true
+      },
+      "expected": []
+    },
+    {
+      "patterns": ["**/{x,a}.css", "@scout-ui/*"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "@scout-ui/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "@scout-ui/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "@scout-ui/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "packages/*"],
+      "options": {},
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "packages/*"],
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "packages/*"],
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "packages/*"],
+      "options": {
+        "nocase": true
+      },
+      "expected": [
+        "src/x.css",
+        "src/x/a.css",
+        "packages/react",
+        "packages/stickers"
+      ]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/.hidden.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/.hidden.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/.hidden.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/.hidden.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "src/**"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "src/**"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "src/**"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "src/**"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "src/!(a).css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "src/!(a).css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "src/!(a).css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "src/!(a).css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css", "src/.hidden.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/{x,a}.css"],
+      "options": {},
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/{x,a}.css"],
+      "options": {
+        "dot": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/{x,a}.css"],
+      "options": {
+        "windows": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    },
+    {
+      "patterns": ["**/{x,a}.css", "**/{x,a}.css"],
+      "options": {
+        "nocase": true
+      },
+      "expected": ["src/x.css", "src/x/a.css"]
+    }
+  ],
+  "compilation": [
+    {
+      "pattern": "*",
+      "options": {},
+      "expected": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "*",
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "*",
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "**/*.css",
+      "options": {},
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "parts": ["**", "*.css"]
+    },
+    {
+      "pattern": "**/*.css",
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "parts": ["**", "*.css"]
+    },
+    {
+      "pattern": "**/*.css",
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "parts": ["**", "*.css"]
+    },
+    {
+      "pattern": "*.{js,ts}",
+      "options": {},
+      "expected": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "*.{js,ts}",
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "*.{js,ts}",
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "!*.js",
+      "options": {},
+      "expected": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "!*.js",
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "!*.js",
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "!(a)",
+      "options": {},
+      "expected": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "!(a)",
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "!(a)",
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": []
+    },
+    {
+      "pattern": "packages/*",
+      "options": {},
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["packages", "*"]
+    },
+    {
+      "pattern": "packages/*",
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["packages", "*"]
+    },
+    {
+      "pattern": "packages/*",
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["packages", "*"]
+    },
+    {
+      "pattern": "**/.hidden.css",
+      "options": {},
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["**", ".hidden.css"]
+    },
+    {
+      "pattern": "**/.hidden.css",
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["**", ".hidden.css"]
+    },
+    {
+      "pattern": "**/.hidden.css",
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["**", ".hidden.css"]
+    },
+    {
+      "pattern": "src/**",
+      "options": {},
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["src", "**"]
+    },
+    {
+      "pattern": "src/**",
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["src", "**"]
+    },
+    {
+      "pattern": "src/**",
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "parts": ["src", "**"]
+    },
+    {
+      "pattern": "src/!(a).css",
+      "options": {},
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["src", "!(a).css"]
+    },
+    {
+      "pattern": "src/!(a).css",
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["src", "!(a).css"]
+    },
+    {
+      "pattern": "src/!(a).css",
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "parts": ["src", "!(a).css"]
+    },
+    {
+      "pattern": "**/{x,a}.css",
+      "options": {},
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["**", "{x,a}.css"]
+    },
+    {
+      "pattern": "**/{x,a}.css",
+      "options": {
+        "dot": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parts": ["**", "{x,a}.css"]
+    },
+    {
+      "pattern": "**/{x,a}.css",
+      "options": {
+        "windows": true
+      },
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "parts": ["**", "{x,a}.css"]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@scout-ui/tooling-glob-match",
+  "version": "0.0.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "./index.cjs",
+  "description": "Private glob compatibility adapter for the pinned release and CSS lint tools.",
+  "scripts": {
+    "lint": "eslint index.cjs braces tests",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "brace-expansion": "5.0.12",
+    "picomatch": "4.0.7"
+  }
+}

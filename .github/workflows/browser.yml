@@ -38,12 +38,21 @@ jobs:
         run: corepack pnpm build
       - name: Run interaction and automated accessibility matrix
         run: corepack pnpm test:browser:ci
+      - name: Packed CRA/CRACO artwork and runtime regression
+        run: |
+          node tooling/fixtures/test-packed-artwork.mjs
+          corepack pnpm test:cra
       - name: Upload failure evidence
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: browser-failure-${{ github.sha }}
-          path: .artifacts/playwright/
+          path: |
+            .artifacts/playwright/
+            .artifacts/packed-artwork/
+            .artifacts/cra-consumer/report.json
+            .artifacts/cra-consumer/build-*.log
+            .artifacts/cra-consumer/output/playwright/
           if-no-files-found: ignore
           retention-days: 7
 

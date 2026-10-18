@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/highlight-swipe.svg.
 import type { StickerDefinition } from "../types.js";
+import { highlightSwipeUrl } from "../asset-urls.js";
 
 export const highlightSwipe = {
   ...{
@@ -29,6 +30,6 @@ export const highlightSwipe = {
     checksum:
       "sha256-fb4116de3114ec83c5b5a5ca39cf44f4ba3ec44c44370cfc33929ca23e037841",
   },
-  src: new URL("../../assets/highlight-swipe.svg", import.meta.url).href,
+  src: highlightSwipeUrl,
 } as const satisfies StickerDefinition;
 export default highlightSwipe;

@@ -21,6 +21,8 @@
   "files": [
     "assets",
     "dist",
+    "!dist/asset-urls.d.ts",
+    "!dist/asset-urls.d.ts.map",
     "ART_DIRECTION.md",
     "ATTRIBUTION.md",
     "CONTRIBUTING_ASSETS.md",

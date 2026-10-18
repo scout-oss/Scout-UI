@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/tape-strip.svg.
 import type { StickerDefinition } from "../types.js";
+import { tapeStripUrl } from "../asset-urls.js";
 
 export const tapeStrip = {
   ...{
@@ -29,6 +30,6 @@ export const tapeStrip = {
     checksum:
       "sha256-a33d87ed89b29949f3ef864fe41d14b1708f20de5006af978acd215286389e06",
   },
-  src: new URL("../../assets/tape-strip.svg", import.meta.url).href,
+  src: tapeStripUrl,
 } as const satisfies StickerDefinition;
 export default tapeStrip;

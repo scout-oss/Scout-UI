@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/attention-bolt.svg.
 import type { StickerDefinition } from "../types.js";
+import { attentionBoltUrl } from "../asset-urls.js";
 
 export const attentionBolt = {
   ...{
@@ -29,6 +30,6 @@ export const attentionBolt = {
     checksum:
       "sha256-406377f7a2f8108ae5b673db3bd10fff5ec468e1e6b563914014ff45df4bbc97",
   },
-  src: new URL("../../assets/attention-bolt.svg", import.meta.url).href,
+  src: attentionBoltUrl,
 } as const satisfies StickerDefinition;
 export default attentionBolt;

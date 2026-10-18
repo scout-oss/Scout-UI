@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/pocket-camera.svg.
 import type { StickerDefinition } from "../types.js";
+import { pocketCameraUrl } from "../asset-urls.js";
 
 export const pocketCamera = {
   ...{
@@ -29,6 +30,6 @@ export const pocketCamera = {
     checksum:
       "sha256-2e572cd13639f0d9687eb383407c409eaeae8d4b4e8ad2a0406bb8868bcf6266",
   },
-  src: new URL("../../assets/pocket-camera.svg", import.meta.url).href,
+  src: pocketCameraUrl,
 } as const satisfies StickerDefinition;
 export default pocketCamera;

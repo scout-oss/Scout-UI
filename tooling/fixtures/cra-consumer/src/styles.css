@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #fffdf5;
+  color: #141414;
+}
+main {
+  max-width: 900px;
+  margin: auto;
+}
+nav {
+  margin-block: 1rem;
+}
+nav a {
+  margin-right: 1rem;
+}
+.sui-sticker-peel {
+  width: 260px;
+  min-height: 180px;
+  margin-block: 2rem;
+}

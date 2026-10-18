@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/blank-ribbon.svg.
 import type { StickerDefinition } from "../types.js";
+import { blankRibbonUrl } from "../asset-urls.js";
 
 export const blankRibbon = {
   ...{
@@ -29,6 +30,6 @@ export const blankRibbon = {
     checksum:
       "sha256-55c56c1f909d46be9d941d4b3af4fb15f95bfde0a26ab2eadb819385e54b39f2",
   },
-  src: new URL("../../assets/blank-ribbon.svg", import.meta.url).href,
+  src: blankRibbonUrl,
 } as const satisfies StickerDefinition;
 export default blankRibbon;

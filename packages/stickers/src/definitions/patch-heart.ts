@@ -1,5 +1,6 @@
 // Generated from source/catalog.json and assets/patch-heart.svg.
 import type { StickerDefinition } from "../types.js";
+import { patchHeartUrl } from "../asset-urls.js";
 
 export const patchHeart = {
   ...{
@@ -29,6 +30,6 @@ export const patchHeart = {
     checksum:
       "sha256-e3ea18c82ba65b8a3dc6320ea3d56aad5ace11223927d6b5e5c742a409a2bc35",
   },
-  src: new URL("../../assets/patch-heart.svg", import.meta.url).href,
+  src: patchHeartUrl,
 } as const satisfies StickerDefinition;
 export default patchHeart;

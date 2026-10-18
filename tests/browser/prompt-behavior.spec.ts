@@ -599,6 +599,12 @@ test.describe("M15 configuration-aware Copy AI Prompt", () => {
     });
     await page.getByRole("button", { name: "Copy AI Prompt" }).click();
     await expect(page.getByRole("dialog")).toContainText("Rotation: 12");
+    // The sheet starts its changed-line emphasis timer one animation frame
+    // after the reopened prompt renders. Wait for the emphasis to begin and
+    // end so the timer poll below cannot pass before the timer exists.
+    const promptOutput = page.locator(".sui-docs-prompt-output");
+    await expect(promptOutput).toHaveAttribute("data-emphasis", "line");
+    await expect(promptOutput).toHaveAttribute("data-emphasis", "none");
     await expect
       .poll(
         () =>

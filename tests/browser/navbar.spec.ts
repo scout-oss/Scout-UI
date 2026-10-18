@@ -24,6 +24,7 @@ import {
   NAVBAR_STATIC_PATH,
   openNavbarMenu,
   readNavbarProgress,
+  waitForNavbarOutsideDismissal,
 } from "./helpers/navbar.ts";
 
 test.describe("StickerNavbar semantics and navigation", () => {
@@ -253,6 +254,7 @@ test.describe("StickerNavbar responsive Radix Dialog", () => {
     await expect(trigger).toBeFocused();
 
     await openNavbarMenu(page);
+    await waitForNavbarOutsideDismissal(page);
     const overlayBox = await navbarOverlay(page).boundingBox();
     expect(overlayBox).not.toBeNull();
     if (overlayBox !== null) {

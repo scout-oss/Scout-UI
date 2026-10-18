@@ -61,6 +61,21 @@ export async function openNavbarMenu(page: Page): Promise<Locator> {
   return dialog;
 }
 
+// Radix's DismissableLayer attaches its document pointerdown listener in a
+// zero-delay timer queued before Dialog autofocus. Chromium may dispatch a
+// synthetic pointer event ahead of that timer, so an immediate outside click
+// can be ignored. Once focus is inside the Dialog, a page timer queued with
+// the same delay runs after the listener is attached.
+export async function waitForNavbarOutsideDismissal(page: Page): Promise<void> {
+  await expect(navbarDialog(page).locator(":focus")).toHaveCount(1);
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        window.setTimeout(resolve, 0);
+      }),
+  );
+}
+
 export async function readNavbarProgress(page: Page): Promise<number> {
   return await navbarProgress(page).evaluate((element: HTMLElement) => {
     const declared = element.style.transform;

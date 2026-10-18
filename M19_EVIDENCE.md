@@ -1,11 +1,12 @@
 # M19 repository-side release-candidate evidence
 
 Status: **Repository-side qualification at `6de9c75` is not clean: M19-001 is
-resolved, but M19-002 (an intermittent Navbar outside-click failure in the local
-Darwin Chromium matrix) needs classification. M18 and M19 remain OPEN.** The
-external release gates 025–029 are BLOCKED pending separate authorization and
-were not run. No publication, tag, release, deployment or other external
-mutation occurred.
+resolved; the full local Darwin Chromium matrix had an intermittent Navbar
+outside-click failure (M19-002), since classified as a test-timing race with a
+test-only fix proposed in PR #35. M18 and M19 remain OPEN.** The external
+release gates 025–029 are BLOCKED pending separate authorization and were not
+run. No publication, tag, release, deployment or other external mutation
+occurred.
 
 This document supersedes the 3 October qualification of `f74c235`, which stopped
 at M19-001 (published JavaScript source maps). That defect, and the CRA/CRACO
@@ -223,7 +224,7 @@ Stack 0 frames after settle. Listener and observer counts match before and after
 every run. These are machine-specific reference numbers, not cross-browser
 claims.
 
-### M19-002: intermittent Navbar outside-click dismissal (open)
+### M19-002: intermittent Navbar outside-click dismissal (classified: test race)
 
 `navbar.spec.ts:241` ("Escape, explicit close, and outside interaction close and
 return focus") failed in chromium-desktop, chromium-reduced-motion and
@@ -233,12 +234,14 @@ corner leaves the Radix Dialog open after 5 s. The same test passed in Firefox,
 WebKit, chromium-tablet and webkit-mobile in the same run, and on Linux CI.
 Artifacts: `.artifacts/m19-rerun/failures/fixture-interaction/`.
 
-Characterization (no test, timeout, retry setting or product code was changed):
+Characterization (no test, timeout, retry setting or product code was changed on
+this branch):
 
 - Not a regression from PR #22 or #33. At `f74c235` (scratch worktree, same
   command) it failed in chromium-tablet and chromium-reduced-motion on the first
   pass. Repeated 10 times per Chromium project: `f74c235` 39/40, `6de9c75`
-  40/40.
+  40/40. The Radix Dialog (1.1.23) and DismissableLayer (1.1.19) versions are
+  the same at both commits.
 - A standalone script replaying the test's exact sequence against the packed
   Next fixture failed 2 of 2 while the full matrix was loading the machine, and
   passed 20 of 20 immediately and 20 of 20 after a 300 ms pause when the machine
@@ -248,17 +251,43 @@ Characterization (no test, timeout, retry setting or product code was changed):
   and `body` has `pointer-events: none`, which is the expected modal state.
 - A manual check on the production docs (in-app Chromium, 375×812) at human
   speed closed the menu with Escape, the Close button and an overlay click, and
-  returned focus to the trigger each time. - A second complete fixture
-  interaction run afterwards (same command, idle machine, 17.6 min) passed 547 /
-  0 failed / 669 skipped. It is recorded as characterization only and does not
-  replace the failing first run.
+  returned focus to the trigger each time.
+- A second complete fixture interaction run afterwards (17.6 min) reported 547
+  passed, 0 failed, 669 skipped. **Caveat:** a diagnostic Next server started
+  for the replay above was still bound to port 4310, so the harness's own Next
+  server failed with `EADDRINUSE` and the run's Next-fixture pages were served
+  by that stale process from the same packed-consumer directory while the
+  harness rebuilt it. Treat this run as unreliable characterization only. The
+  first, failing run, the visual runs and the 10× repeats show no `EADDRINUSE`
+  and are unaffected.
 
-Working hypothesis: the click lands before the dismissable layer's deferred
-outside-pointer listener is attached when the main thread is busy. That would
-make this a test-timing race rather than a user-facing defect, but it is not
-proven. Classifying it (test race versus product defect) and any fix need a
-maintainer decision. The test was not weakened, and the failure is not counted
-as a pass.
+Root cause (diagnosed after this qualification run):
+
+- Radix Dialog sets `deferPointerDownOutside`, and DismissableLayer attaches its
+  document `pointerdown` listener in a `setTimeout(0)` queued from the
+  passive-effect flush, 1–2 ms before Dialog autofocus. If the main thread is
+  busy, Chromium dispatches the test's synthetic overlay pointerdown ahead of
+  that timer, and the outside click is ignored.
+- An instrumented replay recorded the listener-attach and pointerdown times. In
+  60 of 60 runs the Dialog closed exactly when the listener was attached before
+  the pointerdown. Failing runs had the pointerdown 5–17 ms too early.
+- The window is about 10–17 ms after the dialog opens, which a person cannot
+  hit, and the deferral is intentional Radix behaviour that stops the opening
+  click from dismissing the dialog. Classification: **test-timing race, not a
+  product defect.** No spec or component change is needed.
+- Uniform slowdown does not reproduce it: CDP CPU throttling (4×–20×) and
+  saturating all 10 cores both passed 30/30 unfixed.
+
+Proposed fix: PR #35 (`m19-002-navbar-dismiss`, test-only). Before the overlay
+click, the test waits until focus is inside the Dialog (proving Radix's listener
+timer is already queued), then lets a same-delay page timer run. No assertion,
+timeout or retry setting changes. With the race forced through the real harness
+(temporary instrumented spec, 20× on two projects), the unfixed test passed 17
+and failed 23; the fixed test passed 40 of 40. The full `navbar.spec.ts` passed
+on all 8 projects (154 passed), and the fixed test passed 80 of 80 on repeat.
+
+This branch still records the failure as executed: gates 002 and 015 stay FAIL
+for this run. A clean matrix rerun after PR #35 lands is needed to clear them.
 
 ## Asset, runtime and security audits
 

@@ -358,7 +358,11 @@
     font-family: var(--sui-font-display);
 
     /* Fill the measure: the word is ~3.3em wide at rest (wdth 90). */
-    font-size: min(calc((100vw - 2 * var(--sui-k-edge)) / 3.36), 25rem);
+    width: max-content;
+    font-size: calc(
+      min(calc((100vw - 2 * var(--sui-k-edge)) / 3.36), 25rem) *
+        var(--sui-k-fit, 1)
+    );
     font-weight: 800;
     letter-spacing: 0;
     line-height: 0.84;

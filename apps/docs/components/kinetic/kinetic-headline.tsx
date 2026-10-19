@@ -63,6 +63,36 @@ export function KineticHeadline({
   const reduced = useReducedEffects();
   const letters = Array.from(word);
 
+  // Fit-to-measure, for every visitor (also reduced effects): the word is
+  // sized for Bricolage's condensed width, but with `font-display: optional`
+  // a slow first load keeps the wider fallback face. Shrink to fit; never
+  // grow past the designed size.
+  useEffect(() => {
+    const art = artRef.current;
+    const word = art?.querySelector<HTMLElement>(".sui-k-headline-word");
+    if (!art || !word) return;
+    // Stateless: the applied scale is read back from the element, so extra
+    // effect instances (Strict Mode, Fast Refresh) can never disagree.
+    const apply = () => {
+      const fit = Number(word.style.getPropertyValue("--sui-k-fit")) || 1;
+      const natural = word.offsetWidth / fit;
+      const available = art.clientWidth;
+      const next = Math.max(0.4, Math.min(1, available / natural));
+      if (Math.abs(next - fit) < 0.002) return;
+      word.style.setProperty("--sui-k-fit", next.toFixed(4));
+    };
+    apply();
+    // Watch the word as well as the container: a font swap changes only the
+    // word's width. Re-entry is stable because natural = width / fit.
+    const observer = new ResizeObserver(apply);
+    observer.observe(art);
+    observer.observe(word);
+    void document.fonts.ready.then(apply);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     const art = artRef.current;
     if (!art || isReducedEffects()) return;

@@ -1,10 +1,11 @@
 "use client";
 
-import { attentionBolt } from "@scout-ui/stickers/definitions/attention-bolt";
 import type { ErrorInfo, ReactNode } from "react";
 import { Component, useSyncExternalStore } from "react";
 
 import { Sticker } from "@scout-ui/react/sticker";
+
+import { collageSticker } from "../../lib/collage";
 
 interface PreviewBoundaryProps {
   readonly children: (attempt: number) => ReactNode;
@@ -35,10 +36,10 @@ class ConfigPreviewErrorBoundary extends Component<
       return (
         <div className="sui-docs-preview-error" data-preview-error="true">
           <Sticker
-            alt="Attention bolt sticker"
+            alt="Fragile label sticker"
             shadow="stuck"
             size="lg"
-            source={attentionBolt}
+            source={collageSticker("fragile-label")}
           />
           <div role="status">
             <strong>This preview lost its stick.</strong>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
+import { collageStickers } from "../../lib/collage";
 import {
   isReducedEffects,
   watchReducedEffects,
@@ -27,22 +28,7 @@ const LIFETIME_MS = 1000;
 const SPACING_PX = 20;
 const MAX_STAMPS_PER_FRAME = 8;
 
-export const collageStickers = [
-  "ticket-stub",
-  "mixtape",
-  "airmail-envelope",
-  "postage-stamp",
-  "embroidered-patch",
-  "instant-photo",
-  "floppy-disk",
-  "receipt",
-  "name-tag",
-  "fragile-label",
-  "foil-seal",
-  "pixel-heart",
-] as const;
-
-const sources = collageStickers.map((id) => `/collage/${id}.webp`);
+const sources = collageStickers.map((sticker) => sticker.src);
 
 interface Slot {
   readonly node: HTMLImageElement;

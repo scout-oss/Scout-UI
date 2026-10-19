@@ -29,6 +29,11 @@ test.describe("Kinetic candidate baselines", () => {
       await page.setViewportSize({ height: 900, width: 1440 });
       await prepareStableScreenshot(page);
       await page.goto(route);
+      // Element captures must not depend on where the sticky navbar happens
+      // to overlap them; it has its own release coverage.
+      await page.addStyleTag({
+        content: ".sui-sticker-navbar { position: static !important; }",
+      });
       const target = page.locator(selector).first();
       await target.scrollIntoViewIfNeeded();
       await page.waitForTimeout(300);

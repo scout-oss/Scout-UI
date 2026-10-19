@@ -2,6 +2,7 @@ import { officialStickerPack, stickerDefinitions } from "@scout-ui/stickers";
 import type { Metadata } from "next";
 
 import { StickerDesk } from "../../components/kinetic/sticker-desk";
+import { collageStickers } from "../../lib/collage";
 import { PageHeading } from "../../components/page-heading";
 import { StickerBrowser } from "../../components/sticker-browser";
 import { componentDefinitions } from "../../lib/component-registry/definitions";
@@ -37,10 +38,26 @@ export default function StickersPage() {
       >
         The sticker drawer
       </PageHeading>
-      <section aria-label="Sticker desk" className="sui-k-drawer-desk">
+      <section
+        aria-labelledby="printed-matter-heading"
+        className="sui-k-drawer-desk"
+      >
+        <div className="sui-k-drawer-desk-head">
+          <p className="sui-k-kicker">
+            <span>{String(collageStickers.length)}</span> Printed matter
+          </p>
+          <h2 id="printed-matter-heading">The site&apos;s own sticker set</h2>
+          <p>
+            Tickets, tapes, stamps and seals used across these docs. They are
+            plain WebP passed to the same Sticker contract as any art — not part
+            of <code>@scout-ui/stickers</code>. The installable official pack is
+            the contact sheet below.
+          </p>
+        </div>
         <StickerDesk
-          label={`All ${String(stickerDefinitions.length)} official stickers scattered on a desk. Drag to throw them; use Shuffle or Tidy up from the keyboard. The inspectable list follows.`}
-          stickers={stickerDefinitions}
+          artScale={1.3}
+          label={`A desk of ${String(collageStickers.length)} printed-matter stickers used by the docs site. Drag to throw them; use Shuffle or Tidy up from the keyboard. The installable official pack is listed below.`}
+          stickers={collageStickers}
         />
       </section>
       <div data-pagefind-body>

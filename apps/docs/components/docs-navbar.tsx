@@ -1,12 +1,10 @@
 "use client";
 
 import { StickerNavbar } from "@scout-ui/react/sticker-navbar";
-import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
-import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
-import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { collageSticker } from "../lib/collage";
 import { primaryNavigation } from "../lib/navigation";
 import { repositoryUrl } from "../lib/site";
 import { SearchDialog } from "./search-dialog";
@@ -42,7 +40,11 @@ export function DocsNavbar() {
           SCOUT UI <sup>α</sup>
         </Link>
       }
-      collage={[sunnySmile, wonkyStar, sparklePop]}
+      collage={[
+        collageSticker("pixel-heart"),
+        collageSticker("postage-stamp"),
+        collageSticker("ticket-stub"),
+      ]}
       items={primaryNavigation}
       reducedMotion="system"
       renderLink={(item, props) => (

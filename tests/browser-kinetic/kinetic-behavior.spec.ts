@@ -330,7 +330,9 @@ test.describe("Sticker desk and drawer", () => {
     only(testInfo, "chromium-desktop", "webkit-mobile");
     await installProbes(page);
     await page.goto("/stickers");
-    const board = page.getByRole("img", { name: /official stickers/iu });
+    const board = page.getByRole("img", {
+      name: /printed-matter stickers/iu,
+    });
     await expect(board).toBeVisible();
     await expect(board.locator("[data-k-desk-item]").first()).toHaveAttribute(
       "aria-hidden",

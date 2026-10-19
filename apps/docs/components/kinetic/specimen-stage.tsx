@@ -3,6 +3,7 @@
 import {
   Sticker,
   StickerBadge,
+  type StickerSource,
   StickerButton,
   StickerCursor,
   StickerNavbar,
@@ -10,10 +11,9 @@ import {
   StickerStack,
   StickerTrail,
 } from "@scout-ui/react";
-import { stickerDefinitions, type StickerDefinition } from "@scout-ui/stickers";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-import { playgroundStickerSources } from "../../lib/component-registry/sticker-options";
+import { collageSticker } from "../../lib/collage";
 import type { ComponentSlug } from "../../lib/component-registry/types";
 import {
   isOnScreen,
@@ -22,17 +22,18 @@ import {
 } from "../../lib/kinetic/visibility";
 import { StickerDesk } from "./sticker-desk";
 
-const {
-  "attention-bolt": attentionBolt,
-  "chunky-check": chunkyCheck,
-  "sparkle-pop": sparklePop,
-  "sunny-smile": sunnySmile,
-  "wonky-star": wonkyStar,
-} = playgroundStickerSources;
+// Specimens are live material, not code samples, so they use the site's
+// printed-matter set (lib/collage.ts) rather than the official v0.1 pack.
+const ticket = collageSticker("ticket-stub");
+const mixtape = collageSticker("mixtape");
+const stamp = collageSticker("postage-stamp");
+const patch = collageSticker("embroidered-patch");
+const heart = collageSticker("pixel-heart");
+const seal = collageSticker("foil-seal");
+const photo = collageSticker("instant-photo");
+const floppy = collageSticker("floppy-disk");
 
-const deskTrio = stickerDefinitions.filter((sticker) =>
-  ["sunny-smile", "wonky-star", "chunky-check"].includes(sticker.id),
-);
+const deskTrio = [ticket, patch, heart];
 
 /**
  * Mounts a live specimen the first time its tile approaches the viewport, so
@@ -188,12 +189,12 @@ function Poster({
   source,
   verb,
 }: {
-  readonly source: StickerDefinition;
+  readonly source: StickerSource;
   readonly verb: string;
 }) {
   return (
     <div className="sui-k-specimen-poster">
-      <Sticker alt="" rotation={-6} size="lg" source={source} />
+      <Sticker alt="" rotation={-6} size="xl" source={source} />
       <span>{verb}</span>
     </div>
   );
@@ -203,8 +204,9 @@ export function SpecimenStage({ slug }: { readonly slug: ComponentSlug }) {
   switch (slug) {
     case "sticker":
       return (
-        <WhenNear poster={<Poster source={chunkyCheck} verb="carry" />}>
+        <WhenNear poster={<Poster source={heart} verb="carry" />}>
           <StickerDesk
+            artScale={1.4}
             compact
             label="Three Sticker components you can pick up and throw"
             stickers={deskTrio}
@@ -217,13 +219,15 @@ export function SpecimenStage({ slug }: { readonly slug: ComponentSlug }) {
       return <SelectSpecimen />;
     case "sticker-trail":
       return (
-        <WhenNear poster={<Poster source={sparklePop} verb="trail" />}>
+        <WhenNear poster={<Poster source={mixtape} verb="trail" />}>
           <StickerTrail
             aria-label="Move a pointer here to leave a short sticker trail"
             className="sui-k-specimen-field"
             maxActive={10}
             preset="calm"
-            stickers={[sparklePop, wonkyStar, sunnySmile]}
+            size={{ max: 132, min: 104 }}
+            spacing={{ max: 96, min: 64 }}
+            stickers={[mixtape, stamp, ticket, patch]}
           >
             <span className="sui-k-specimen-hint">Draw here →</span>
           </StickerTrail>
@@ -231,15 +235,15 @@ export function SpecimenStage({ slug }: { readonly slug: ComponentSlug }) {
       );
     case "sticker-cursor":
       return (
-        <WhenNear poster={<Poster source={attentionBolt} verb="follow" />}>
+        <WhenNear poster={<Poster source={seal} verb="follow" />}>
           <StickerCursor
             className="sui-k-specimen-field"
             clickFeedback="echo"
-            size={56}
+            size={84}
             tilt={14}
             visuals={{
-              default: { source: attentionBolt },
-              hover: { source: chunkyCheck },
+              default: { source: heart },
+              hover: { source: seal },
             }}
           >
             <div className="sui-k-specimen-center">
@@ -257,7 +261,7 @@ export function SpecimenStage({ slug }: { readonly slug: ComponentSlug }) {
       );
     case "sticker-peel":
       return (
-        <WhenNear poster={<Poster source={sunnySmile} verb="peel" />}>
+        <WhenNear poster={<Poster source={photo} verb="peel" />}>
           <StickerPeel
             back={
               <div className="sui-k-peel-face" data-side="back">
@@ -269,7 +273,7 @@ export function SpecimenStage({ slug }: { readonly slug: ComponentSlug }) {
             drag
             front={
               <div className="sui-k-peel-face" data-side="front">
-                <Sticker alt="" shadow="none" size="md" source={sunnySmile} />
+                <Sticker alt="" shadow="none" size="lg" source={photo} />
                 <strong>Peel the corner.</strong>
               </div>
             }
@@ -280,7 +284,7 @@ export function SpecimenStage({ slug }: { readonly slug: ComponentSlug }) {
       );
     case "sticker-stack":
       return (
-        <WhenNear poster={<Poster source={wonkyStar} verb="shuffle" />}>
+        <WhenNear poster={<Poster source={floppy} verb="shuffle" />}>
           <StickerStack
             className="sui-k-specimen-stack"
             drag
@@ -299,7 +303,7 @@ export function SpecimenStage({ slug }: { readonly slug: ComponentSlug }) {
       );
     case "sticker-navbar":
       return (
-        <WhenNear poster={<Poster source={wonkyStar} verb="frame" />}>
+        <WhenNear poster={<Poster source={stamp} verb="frame" />}>
           <NavbarSpecimen />
         </WhenNear>
       );

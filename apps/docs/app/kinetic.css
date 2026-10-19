@@ -2216,3 +2216,28 @@
     }
   }
 }
+
+/* The printed-matter desk on /stickers: labelled as site artwork. */
+@layer scout-ui-kinetic {
+  .sui-k-drawer-desk-head {
+    max-width: 44rem;
+    padding: 1rem 0.5rem 1.25rem;
+    color: var(--sui-night-text);
+  }
+
+  .sui-k-drawer-desk-head h2 {
+    margin: 0 0 0.6rem;
+    color: var(--sui-night-text);
+    font-size: clamp(1.8rem, 3.6vw, 3rem);
+    line-height: 0.95;
+  }
+
+  .sui-k-drawer-desk-head > p:last-child {
+    margin: 0;
+    color: var(--sui-night-muted);
+  }
+
+  .sui-k-drawer-desk-head code {
+    color: var(--sui-ink);
+  }
+}

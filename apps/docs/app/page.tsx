@@ -1,5 +1,4 @@
 import { StickerBadge, StickerButton } from "@scout-ui/react";
-import { stickerDefinitions } from "@scout-ui/stickers";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { CSSProperties } from "react";
@@ -15,6 +14,7 @@ import { SplitWords } from "../components/kinetic/split-words";
 import { StickerDesk } from "../components/kinetic/sticker-desk";
 import { VelocityStrip } from "../components/kinetic/velocity-strip";
 import { PlaygroundSession } from "../components/playground/playground-session";
+import { collageStickers } from "../lib/collage";
 import { componentCatalog } from "../lib/registry";
 import { repositoryUrl, routeMetadata } from "../lib/site";
 
@@ -72,7 +72,7 @@ const stack = [
 export default function HomePage() {
   const trail = componentCatalog.get("sticker-trail");
   if (!trail) throw new Error("StickerTrail registry definition is missing.");
-  const deskStickers = stickerDefinitions.slice(0, 14);
+  const deskStickers = collageStickers;
 
   return (
     <div className="sui-docs-home sui-k-home" data-pagefind-body>
@@ -202,16 +202,17 @@ export default function HomePage() {
             <span>03</span> The sticker drawer
           </p>
           <h2 id="drawer-heading">
-            <SplitWords text="Twenty-five originals. Go on, make a *mess*." />
+            <SplitWords text="Printed matter. Go on, make a *mess*." />
           </h2>
           <p>
-            The official pack is framework-neutral SVG with documented
-            provenance. Pick a sticker up, flick it, watch it skid — then bring
-            your own PNG, WebP, SVG, or React art with the same contract.
+            Tickets, tapes, stamps and seals: the site&apos;s printed-matter set
+            is plain WebP passed to the same Sticker contract as any other art.
+            Pick one up, flick it, watch it skid — then bring your own PNG,
+            WebP, SVG, or React art, or start from the official SVG pack.
           </p>
           <div className="sui-k-drawer-actions">
             <StickerButton href="/stickers" tone="cyan">
-              Open the drawer
+              See the official pack
             </StickerButton>
             <ul aria-label="Supported artwork" className="sui-k-format-tags">
               <li>SVG</li>
@@ -222,7 +223,8 @@ export default function HomePage() {
           </div>
         </header>
         <StickerDesk
-          label={`A desk of ${String(deskStickers.length)} official Scout UI stickers. Drag to throw them; use Shuffle or Tidy up from the keyboard.`}
+          artScale={1.3}
+          label={`A desk of ${String(deskStickers.length)} printed-matter stickers. Drag to throw them; use Shuffle or Tidy up from the keyboard.`}
           stickers={deskStickers}
         />
       </section>

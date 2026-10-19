@@ -1,7 +1,6 @@
 "use client";
 
-import { Sticker } from "@scout-ui/react";
-import type { StickerDefinition } from "@scout-ui/stickers";
+import { Sticker, type StickerSource } from "@scout-ui/react";
 import { useEffect, useRef, type CSSProperties } from "react";
 
 import { createGrabIntent, VelocityTracker } from "../../lib/kinetic/grab";
@@ -61,14 +60,20 @@ function scatter(index: number, seed = 0) {
 const sizes = [7.5, 6.25, 8.5, 6.75, 7.25, 9, 6.5, 7.75];
 
 export function StickerDesk({
+  artScale = 1,
   compact = false,
   label,
   stickers,
 }: {
+  /**
+   * Multiplier for artwork that carries transparent margin inside its canvas
+   * (the printed-matter set sits in a padded square, so it needs ~1.3x).
+   */
+  readonly artScale?: number;
   /** Specimen-sized: fewer, smaller stickers and only the Shuffle control. */
   readonly compact?: boolean;
   readonly label: string;
-  readonly stickers: readonly StickerDefinition[];
+  readonly stickers: readonly StickerSource[];
 }) {
   const boardRef = useRef<HTMLDivElement>(null);
   const shuffleRef = useRef<HTMLButtonElement>(null);
@@ -370,7 +375,9 @@ export function StickerDesk({
         {stickers.map((sticker, index) => {
           const spot = scatter(index);
           const size =
-            (sizes[index % sizes.length] ?? 7) * (compact ? 0.62 : 1);
+            (sizes[index % sizes.length] ?? 7) *
+            (compact ? 0.62 : 1) *
+            artScale;
           return (
             <div
               aria-hidden="true"

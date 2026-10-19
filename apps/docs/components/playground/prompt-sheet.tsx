@@ -560,6 +560,7 @@ export function PromptSheet({
               </p>
               <button
                 className="sui-docs-copy-prompt"
+                data-copy-state={activeCopyState}
                 onClick={() => void copy()}
                 type="button"
               >

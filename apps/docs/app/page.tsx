@@ -1,9 +1,18 @@
-import { Sticker, StickerBadge, StickerButton } from "@scout-ui/react";
-import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
+import { StickerBadge, StickerButton } from "@scout-ui/react";
+import { stickerDefinitions } from "@scout-ui/stickers";
 import type { Metadata } from "next";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
-import { HomeHeroDemo } from "../components/home/home-hero-demo";
+import {
+  AdhesiveTestButton,
+  KineticHeadline,
+} from "../components/kinetic/kinetic-headline";
+import { Magnetic } from "../components/kinetic/magnetic";
+import { SpecimenSheet } from "../components/kinetic/specimen-sheet";
+import { SplitWords } from "../components/kinetic/split-words";
+import { StickerDesk } from "../components/kinetic/sticker-desk";
+import { VelocityStrip } from "../components/kinetic/velocity-strip";
 import { PlaygroundSession } from "../components/playground/playground-session";
 import { componentCatalog } from "../lib/registry";
 import { repositoryUrl, routeMetadata } from "../lib/site";
@@ -15,96 +24,165 @@ export const metadata: Metadata = routeMetadata({
     "Build accessible, high-performance React interfaces with sticker-native primitives and controlled chaos.",
 });
 
+const qualities = [
+  { label: "FUNCTIONAL", note: "Native semantics first." },
+  { label: "BOUNDED", note: "Motion with an exit plan." },
+  { label: "HANDOFF-READY", note: "Public contracts, not demos." },
+] as const;
+
+const verbs = [
+  "stick",
+  "peel",
+  "lift",
+  "press",
+  "carry",
+  "shuffle",
+  "trail",
+  "settle",
+] as const;
+
+const rules = [
+  {
+    title: "Native controls stay native.",
+    body: "Buttons are buttons, links are links, badges are real toggles. The sticker is a costume, never a replacement.",
+  },
+  {
+    title: "Motion follows capability and preference.",
+    body: "Reduced motion, coarse pointers, and the docs “Reduce effects” switch all resolve to calm, complete states.",
+  },
+  {
+    title: "High-frequency work stays bounded.",
+    body: "Pointer coordinates never touch React state. Fixed pools, transforms, and one frame loop that sleeps when idle.",
+  },
+  {
+    title: "Official art stays provenance-cleared.",
+    body: "Twenty-five original stickers with documented creators and licenses. Bring your own art with the same contract.",
+  },
+] as const;
+
+const stack = [
+  "React 19",
+  "Next.js App Router",
+  "CSS variables",
+  "SVG / PNG / WebP",
+  "Your own art",
+] as const;
+
 export default function HomePage() {
-  const signature = componentCatalog.entries.filter(
-    (component) => component.kind === "signature",
-  );
   const trail = componentCatalog.get("sticker-trail");
   if (!trail) throw new Error("StickerTrail registry definition is missing.");
+  const deskStickers = stickerDefinitions.slice(0, 14);
+
   return (
-    <div className="sui-docs-home" data-pagefind-body>
-      <section className="sui-docs-hero">
-        <div className="sui-docs-hero-copy">
+    <div className="sui-docs-home sui-k-home" data-pagefind-body>
+      <section className="sui-k-hero" data-k-pressure-field>
+        <div className="sui-k-hero-meta">
           <StickerBadge rotation={-2} shape="stamp" tone="acid">
             Open source · React · alpha
           </StickerBadge>
-          <h1 data-route-heading tabIndex={-1}>
-            UI THAT <span>STICKS.</span>
-          </h1>
           <p>
+            Eight primitives
+            <span aria-hidden="true"> / </span>
+            <br className="sui-k-break" />
+            three packages
+            <span aria-hidden="true"> / </span>
+            <br className="sui-k-break" />
+            zero animation libraries
+          </p>
+        </div>
+
+        <h1 className="sui-k-headline" data-route-heading tabIndex={-1}>
+          <KineticHeadline lead="UI THAT" word="STICKS." />
+        </h1>
+
+        <div className="sui-k-hero-foot">
+          <p className="sui-k-hero-lede">
             Scout UI is the open-source sticker UI library: tactile React
             primitives with native semantics, bounded motion, and enough
             controlled chaos to make interfaces memorable.
           </p>
-          <div className="sui-docs-hero-actions">
-            <StickerButton
-              href="/components"
-              shape="label"
-              size="large"
-              tone="acid"
-            >
-              Browse components
+          <div className="sui-k-hero-actions">
+            <Magnetic>
+              <StickerButton
+                href="/components"
+                shape="label"
+                size="large"
+                tone="acid"
+              >
+                Browse components
+              </StickerButton>
+            </Magnetic>
+            <StickerButton href="/playground" size="large" tone="paper">
+              Open the playground
             </StickerButton>
-            <StickerButton href={repositoryUrl} size="large" tone="paper">
+            <a className="sui-k-text-link" href={repositoryUrl}>
               GitHub ↗
-            </StickerButton>
+            </a>
+          </div>
+          <div className="sui-k-hero-note">
+            <p>
+              <span aria-hidden="true" className="sui-k-scribble-arrow">
+                ↖
+              </span>
+              Grab a letter. Throw it. It sticks back.
+            </p>
+            <AdhesiveTestButton />
           </div>
         </div>
-        <HomeHeroDemo />
-      </section>
 
-      <section aria-label="Scout UI qualities" className="sui-docs-proof-strip">
-        <div>
-          <strong>FUNCTIONAL</strong>
-          <span>Native semantics first.</span>
-        </div>
-        <div>
-          <strong>BOUNDED</strong>
-          <span>Motion with an exit plan.</span>
-        </div>
-        <div>
-          <strong>HANDOFF-READY</strong>
-          <span>Public contracts, not demos.</span>
-        </div>
-      </section>
-
-      <section className="sui-docs-home-field-guide">
-        <div className="sui-docs-section-heading">
-          <p className="sui-docs-eyebrow">Signature field guide</p>
-          <h2>Interactions with rules.</h2>
-          <p>
-            Five loud ideas, each engineered to remain polite around the rest of
-            your product.
-          </p>
-        </div>
-        <ol>
-          {signature.map((component, index) => (
-            <li data-accent={component.accent} key={component.slug}>
-              <span>0{String(index + 1)}</span>
-              <div>
-                <h3>{component.name}</h3>
-                <p>{component.purpose}</p>
-                <code>{`import { ${component.name} } from "${component.packageName}";`}</code>
-              </div>
-              <div>
-                <Link href={`/components/${component.slug}`}>Reference →</Link>
-                <Link href={`/playground/${component.slug}`}>Playground →</Link>
-              </div>
+        <ul aria-label="Scout UI qualities" className="sui-k-stamps">
+          {qualities.map((quality, index) => (
+            <li
+              key={quality.label}
+              style={{ "--sui-k-i": index } as CSSProperties}
+            >
+              <strong>{quality.label}</strong>
+              <span>{quality.note}</span>
             </li>
           ))}
-        </ol>
+        </ul>
       </section>
 
-      <section className="sui-docs-home-handoff" id="config-to-handoff">
-        <div className="sui-docs-section-heading">
-          <p className="sui-docs-eyebrow">From config to handoff</p>
-          <h2>One state. Three trustworthy outputs.</h2>
-          <p>
-            Change the bounded Trail once; preview, deterministic code, and
-            configuration-aware AI Prompt stay aligned through the M13–M15
-            registry.
+      <VelocityStrip words={verbs} />
+
+      <section
+        aria-labelledby="specimens-heading"
+        className="sui-k-section sui-k-gallery"
+      >
+        <header className="sui-k-section-head" data-k-reveal>
+          <p className="sui-k-kicker">
+            <span>01</span> The specimen sheet
           </p>
-        </div>
+          <h2 id="specimens-heading">
+            <SplitWords text="Eight components. Every one *live*." />
+          </h2>
+          <p>
+            Nothing below is a screenshot. Each tile is the published component
+            doing the one thing it is best at — peel it, throw it, press it,
+            draw on it. Arrow keys and buttons reach every one.
+          </p>
+        </header>
+        <SpecimenSheet />
+      </section>
+
+      <section
+        aria-labelledby="handoff-heading"
+        className="sui-k-section sui-k-handoff"
+        id="config-to-handoff"
+      >
+        <header className="sui-k-section-head" data-k-reveal>
+          <p className="sui-k-kicker">
+            <span>02</span> From config to handoff
+          </p>
+          <h2 id="handoff-heading">
+            <SplitWords text="Turn one knob. Three outputs *agree*." />
+          </h2>
+          <p>
+            Change the bounded Trail once: the live preview, deterministic code,
+            and configuration-aware AI prompt stay aligned through one registry.
+            Copy whichever your workflow needs.
+          </p>
+        </header>
         <PlaygroundSession
           initialConfig={{ ...trail.defaults }}
           mode="component"
@@ -112,80 +190,96 @@ export default function HomePage() {
         />
       </section>
 
-      <section className="sui-docs-home-pack" data-sui-theme="night">
-        <div>
-          <p className="sui-docs-eyebrow">
-            Three packages. One visual grammar.
+      <section
+        aria-labelledby="drawer-heading"
+        className="sui-k-section sui-k-drawer"
+        data-sui-theme="night"
+      >
+        <header className="sui-k-section-head" data-k-reveal>
+          <p className="sui-k-kicker">
+            <span>03</span> The sticker drawer
           </p>
-          <h2>Bring the art. Keep the engineering.</h2>
+          <h2 id="drawer-heading">
+            <SplitWords text="Twenty-five originals. Go on, make a *mess*." />
+          </h2>
           <p>
-            Use the framework-neutral official pack, your own raster or vector
-            assets, or React content. Scout UI does not require one artwork
-            format.
+            The official pack is framework-neutral SVG with documented
+            provenance. Pick a sticker up, flick it, watch it skid — then bring
+            your own PNG, WebP, SVG, or React art with the same contract.
           </p>
-          <StickerButton href="/stickers" tone="cyan">
-            See the contact sheet
-          </StickerButton>
-        </div>
-        <div className="sui-docs-pack-poster" aria-hidden="true">
-          <Sticker alt="" rotation={8} size="xl" source={chunkyCheck} />
-          <span>SVG</span>
-          <span>PNG</span>
-          <span>WebP</span>
-          <span>React</span>
+          <div className="sui-k-drawer-actions">
+            <StickerButton href="/stickers" tone="cyan">
+              Open the drawer
+            </StickerButton>
+            <ul aria-label="Supported artwork" className="sui-k-format-tags">
+              <li>SVG</li>
+              <li>PNG</li>
+              <li>WebP</li>
+              <li>React</li>
+            </ul>
+          </div>
+        </header>
+        <StickerDesk
+          label={`A desk of ${String(deskStickers.length)} official Scout UI stickers. Drag to throw them; use Shuffle or Tidy up from the keyboard.`}
+          stickers={deskStickers}
+        />
+      </section>
+
+      <section
+        aria-labelledby="rules-heading"
+        className="sui-k-section sui-k-rules"
+      >
+        <header className="sui-k-section-head" data-k-reveal>
+          <p className="sui-k-kicker">
+            <span>04</span> Production rules
+          </p>
+          <h2 id="rules-heading">
+            <SplitWords text="Expression with an *exit* plan." />
+          </h2>
+        </header>
+        <ol className="sui-k-rule-list">
+          {rules.map((rule, index) => (
+            <li
+              data-k-reveal
+              key={rule.title}
+              style={{ "--sui-k-i": index } as CSSProperties}
+            >
+              <span aria-hidden="true" className="sui-k-rule-number">
+                {index + 1}
+              </span>
+              <h3>{rule.title}</h3>
+              <p>{rule.body}</p>
+            </li>
+          ))}
+        </ol>
+        <div className="sui-k-stack-row">
+          <p>Works with your stack</p>
+          <ul aria-label="Works with your stack">
+            {stack.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      <section className="sui-docs-home-stack-row">
-        <p className="sui-docs-eyebrow">Works with your stack</p>
-        <h2>Public React. Ordinary CSS. Your assets.</h2>
-        <ul>
-          <li>React 19</li>
-          <li>Next.js App Router</li>
-          <li>CSS variables</li>
-          <li>Consumer SVG / PNG / WebP</li>
-        </ul>
-      </section>
-
-      <section className="sui-docs-home-principles">
-        <p className="sui-docs-eyebrow">Production rules</p>
-        <h2>Expression with an exit plan.</h2>
-        <div>
-          <p>Native controls stay native.</p>
-          <p>Motion follows capability and preference.</p>
-          <p>High-frequency work remains bounded.</p>
-          <p>Official art stays provenance-cleared.</p>
+      <section
+        aria-labelledby="final-heading"
+        className="sui-k-final"
+        data-sui-theme="night"
+      >
+        <p className="sui-k-kicker">Alpha preflight · not yet an npm release</p>
+        <h2 data-k-reveal id="final-heading">
+          <SplitWords text="Make something that *sticks.*" />
+        </h2>
+        <div className="sui-k-install">
+          <code>pnpm add @scout-ui/react</code>
+          <p>
+            Use the install command once a public alpha is announced. Today,
+            inspect the packages and verified consumer fixtures in the
+            repository.
+          </p>
         </div>
-      </section>
-
-      <section className="sui-docs-open-call">
-        <p className="sui-docs-eyebrow">Built in public</p>
-        <h2>Make something that sticks.</h2>
-        <p>
-          Contribute code, accessibility testing, original artwork, or clear
-          documentation.
-        </p>
-        <div>
-          <StickerButton href="/open-source" shape="label" tone="pink">
-            Open-source guide
-          </StickerButton>
-          <StickerButton href="/guides/installation" tone="ink">
-            Start with the guide
-          </StickerButton>
-        </div>
-      </section>
-
-      <section className="sui-docs-home-final" data-sui-theme="night">
-        <p className="sui-docs-eyebrow">
-          Alpha preflight · not yet an npm release
-        </p>
-        <h2>Make something that sticks.</h2>
-        <code>pnpm add @scout-ui/react</code>
-        <p>
-          Use the install command once a public alpha is announced. Today,
-          inspect the packages and verified consumer fixtures in the repository.
-        </p>
-        <div>
+        <div className="sui-k-final-actions">
           <StickerButton href="/components" size="large" tone="acid">
             Browse components
           </StickerButton>
@@ -193,6 +287,13 @@ export default function HomePage() {
             GitHub ↗
           </StickerButton>
         </div>
+        <nav aria-label="Ways to contribute" className="sui-k-contribute">
+          <p>Built in public —</p>
+          <Link href="/open-source">contribute code</Link>
+          <Link href="/guides/accessibility">test accessibility</Link>
+          <Link href="/guides/asset-authoring">draw stickers</Link>
+          <Link href="/guides/contributing">write docs</Link>
+        </nav>
       </section>
     </div>
   );

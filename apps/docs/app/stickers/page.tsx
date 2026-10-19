@@ -1,9 +1,26 @@
 import { officialStickerPack, stickerDefinitions } from "@scout-ui/stickers";
 import type { Metadata } from "next";
 
+import { StickerDesk } from "../../components/kinetic/sticker-desk";
 import { PageHeading } from "../../components/page-heading";
 import { StickerBrowser } from "../../components/sticker-browser";
+import { componentDefinitions } from "../../lib/component-registry/definitions";
+import { playgroundStickerCatalog } from "../../lib/component-registry/sticker-options";
+import { createShareUrl } from "../../lib/component-registry/url-state";
 import { repositoryUrl, routeMetadata } from "../../lib/site";
+
+// Deep links that open the Sticker playground with this artwork preselected,
+// built on the server from the same share-URL contract the playground uses.
+const playgroundHrefs = Object.fromEntries(
+  Object.keys(playgroundStickerCatalog).map((id) => [
+    id,
+    createShareUrl(
+      componentDefinitions.sticker,
+      { ...componentDefinitions.sticker.defaults, sourceId: id },
+      "https://scout-ui.invalid",
+    ).relativeUrl,
+  ]),
+);
 
 export const metadata: Metadata = routeMetadata({
   path: "/stickers",
@@ -20,8 +37,14 @@ export default function StickersPage() {
       >
         The sticker drawer
       </PageHeading>
+      <section aria-label="Sticker desk" className="sui-k-drawer-desk">
+        <StickerDesk
+          label={`All ${String(stickerDefinitions.length)} official stickers scattered on a desk. Drag to throw them; use Shuffle or Tidy up from the keyboard. The inspectable list follows.`}
+          stickers={stickerDefinitions}
+        />
+      </section>
       <div data-pagefind-body>
-        <StickerBrowser />
+        <StickerBrowser playgroundHrefs={playgroundHrefs} />
       </div>
       <section className="sui-docs-license-note">
         <p className="sui-docs-eyebrow">License boundary</p>

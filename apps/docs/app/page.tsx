@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 
+import { CollageTrailLayer } from "../components/kinetic/collage-trail";
 import {
   AdhesiveTestButton,
   KineticHeadline,
@@ -76,6 +77,7 @@ export default function HomePage() {
   return (
     <div className="sui-docs-home sui-k-home" data-pagefind-body>
       <section className="sui-k-hero" data-k-pressure-field>
+        <CollageTrailLayer />
         <div className="sui-k-hero-meta">
           <StickerBadge rotation={-2} shape="stamp" tone="acid">
             Open source · React · alpha

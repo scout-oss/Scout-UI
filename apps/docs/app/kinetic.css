@@ -2163,3 +2163,52 @@
     display: none;
   }
 }
+
+/* ------------------------------------------------------------------ */
+
+/* Collage trail (docs-level, printed-matter stickers)                  */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  .sui-k-hero {
+    isolation: isolate;
+  }
+
+  /* Stack: page < giant word < collage < actions. Like a real collage the
+     trail piles over the headline; primary actions never disappear. */
+  .sui-k-collage-layer {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+  }
+
+  .sui-k-headline {
+    position: relative;
+    z-index: 1;
+  }
+
+  .sui-k-hero-actions,
+  .sui-k-hero-note {
+    position: relative;
+    z-index: 3;
+  }
+
+  .sui-k-collage-sticker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: none;
+    height: auto;
+    visibility: hidden;
+    user-select: none;
+  }
+
+  @media (forced-colors: active) {
+    .sui-k-collage-layer {
+      display: none;
+    }
+  }
+}

@@ -34,6 +34,10 @@ apps/docs/lib/kinetic/        ticker (shared, self-sleeping rAF), spring,
 apps/docs/components/kinetic/ KineticHeadline, VelocityStrip, SpecimenSheet,
                               SpecimenStage, StickerDesk, Magnetic,
                               RevealObserver, SplitWords, SplitChars
+apps/docs/components/kinetic/collage-trail.tsx
+                              docs-level printed-matter collage trail (hero)
+apps/docs/public/collage/     12 original collage stickers (WebP + SVG source)
+tooling/docs-collage/         generator for the collage stickers (sharp/rsvg)
 apps/docs/app/kinetic.css     top-level `scout-ui-kinetic` cascade layer:
                               tokens, motion grammar, all new layouts
 ```

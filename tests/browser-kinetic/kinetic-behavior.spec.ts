@@ -162,6 +162,85 @@ test.describe("Kinetic hero", () => {
   });
 });
 
+test.describe("Collage trail", () => {
+  const liveStickers = (page: Page) =>
+    page.evaluate(() =>
+      [...document.querySelectorAll<HTMLElement>(".sui-k-collage-sticker")]
+        .filter((node) => node.style.visibility === "visible")
+        .map((node) => ({
+          src: node.getAttribute("src") ?? "",
+          z: Number(node.style.zIndex),
+        })),
+    );
+
+  test("stamps a dense ribbon, newest on top, hard-cut after one second", async ({
+    page,
+  }, testInfo) => {
+    only(testInfo, "chromium-desktop", "firefox-desktop", "webkit-desktop");
+    await installProbes(page);
+    await page.setViewportSize({ height: 900, width: 1440 });
+    await page.goto("/");
+    await page.waitForTimeout(800);
+    const before = await commits(page);
+    await expect(page.locator(".sui-k-collage-layer")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
+    for (let x = 200; x <= 1000; x += 40) {
+      await page.mouse.move(x, 420, { steps: 2 });
+    }
+    const live = await liveStickers(page);
+    expect(live.length).toBeGreaterThanOrEqual(20);
+    expect(live.length).toBeLessThanOrEqual(48);
+    expect(new Set(live.map((sticker) => sticker.src)).size).toBeGreaterThan(6);
+    expect(new Set(live.map((sticker) => sticker.z)).size).toBe(live.length);
+    // Primary actions stay above the collage.
+    const actionsOnTop = await page.evaluate(() => {
+      const button = document.querySelector(".sui-k-hero-actions a");
+      if (!button) return false;
+      const box = button.getBoundingClientRect();
+      const hit = document.elementFromPoint(box.left + 8, box.top + 8);
+      return hit !== null && button.contains(hit);
+    });
+    expect(actionsOnTop).toBe(true);
+    await page.mouse.move(4, 890);
+    await expect
+      .poll(() => liveStickers(page).then((s) => s.length), {
+        intervals: [100],
+        timeout: 1600,
+      })
+      .toBe(0);
+    await expect.poll(() => pendingFrames(page), { timeout: 2000 }).toBe(0);
+    expect(await runningAnimations(page)).toBe(0);
+    expect(await commits(page)).toBe(before);
+  });
+
+  test("touch: a tap stamps one sticker and never blocks scrolling", async ({
+    page,
+  }, testInfo) => {
+    only(testInfo, "chromium-coarse-pointer");
+    await page.goto("/");
+    await page.waitForTimeout(600);
+    const lede = page.locator(".sui-k-hero-lede");
+    await lede.tap();
+    await expect.poll(() => liveStickers(page).then((s) => s.length)).toBe(1);
+    await expect
+      .poll(() => liveStickers(page).then((s) => s.length), {
+        intervals: [100],
+        timeout: 1600,
+      })
+      .toBe(0);
+  });
+
+  test("reduced motion never stamps", async ({ page }, testInfo) => {
+    only(testInfo, "chromium-reduced-motion");
+    await page.goto("/");
+    for (let x = 200; x <= 900; x += 40) await page.mouse.move(x, 420);
+    expect(await liveStickers(page)).toEqual([]);
+    expect(await page.locator(".sui-k-collage-sticker").count()).toBe(0);
+  });
+});
+
 test.describe("Kinetic surfaces settle and respect preferences", () => {
   for (const route of ["/", "/components", "/stickers"]) {
     test(`${route} reduced motion: no running animations, no hidden content`, async ({

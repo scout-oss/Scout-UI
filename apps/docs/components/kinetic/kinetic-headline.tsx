@@ -66,6 +66,7 @@ export function KineticHeadline({
   useEffect(() => {
     const art = artRef.current;
     if (!art || isReducedEffects()) return;
+    const host = art.closest<HTMLElement>("[data-k-pressure-field]") ?? art;
 
     const elements = [
       ...art.querySelectorAll<HTMLSpanElement>("[data-k-letter]"),
@@ -180,6 +181,7 @@ export function KineticHeadline({
           state.grabbed = true;
           state.element.setPointerCapture(event.pointerId);
           state.element.dataset.kGrabbed = "true";
+          if (host !== art) host.dataset.kCarrying = "true";
           state.raise.target = 1;
           state.pressure.target = 1;
           state.x.config = springs.carry;
@@ -228,6 +230,7 @@ export function KineticHeadline({
           const velocity = tracker.velocity();
           state.grabbed = false;
           delete state.element.dataset.kGrabbed;
+          delete host.dataset.kCarrying;
           state.x.config = springs.adhesive;
           state.y.config = springs.adhesive;
           state.x.target = 0;
@@ -252,7 +255,6 @@ export function KineticHeadline({
       });
     }
 
-    const host = art.closest<HTMLElement>("[data-k-pressure-field]") ?? art;
     host.addEventListener("pointermove", onPointerMove);
     host.addEventListener("pointerleave", onPointerLeave);
 

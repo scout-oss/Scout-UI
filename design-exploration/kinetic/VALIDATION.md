@@ -25,7 +25,16 @@ look and are expected to fail on a redesign branch; they were deliberately not
 run with any update flag. Fixture-harness suites were not run because no package
 changed.
 
-## Docs initial-JS budgets (gzip bytes)
+## Collage trail (ugly.cash-style, added after the first commit)
+
+| Check                                                                              | Result                                                                                          |
+| ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Scripted sweep (same path used to measure ugly.cash)                               | 48 live at saturation, 12 distinct artworks, unique z per sticker (newest on top)               |
+| 1.1s after the pointer stops                                                       | 0 visible stickers, 0 pending frames, 0 running animations                                      |
+| Kinetic suite incl. 5 collage tests (3 desktop engines, touch tap, reduced motion) | PASS — 42 passed / 0 failed                                                                     |
+| React commits during the sweep                                                     | 0 (DevTools-hook probe)                                                                         |
+| Primary actions stay hit-testable above the collage                                | PASS (`elementFromPoint`)                                                                       |
+| Artwork weight                                                                     | 12 WebP, 232 KB total, fetched only after the first pointer interaction; not part of initial JS |
 
 | Route                       | main (M19 evidence) |           This branch |  Budget |
 | --------------------------- | ------------------: | --------------------: | ------: |

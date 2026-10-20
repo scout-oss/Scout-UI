@@ -462,7 +462,7 @@ test.describe("M13 playground registry integration", () => {
     }
     await page.getByRole("button", { name: "Retry preview" }).click();
     await expect(
-      page.locator('[data-preview-value^="sunny-smile"]'),
+      page.locator('[data-preview-value^="pixel-heart"]'),
     ).toBeVisible();
   });
 

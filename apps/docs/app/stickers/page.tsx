@@ -5,23 +5,7 @@ import { StickerDesk } from "../../components/kinetic/sticker-desk";
 import { collageStickers } from "../../lib/collage";
 import { PageHeading } from "../../components/page-heading";
 import { StickerBrowser } from "../../components/sticker-browser";
-import { componentDefinitions } from "../../lib/component-registry/definitions";
-import { playgroundStickerCatalog } from "../../lib/component-registry/sticker-options";
-import { createShareUrl } from "../../lib/component-registry/url-state";
 import { repositoryUrl, routeMetadata } from "../../lib/site";
-
-// Deep links that open the Sticker playground with this artwork preselected,
-// built on the server from the same share-URL contract the playground uses.
-const playgroundHrefs = Object.fromEntries(
-  Object.keys(playgroundStickerCatalog).map((id) => [
-    id,
-    createShareUrl(
-      componentDefinitions.sticker,
-      { ...componentDefinitions.sticker.defaults, sourceId: id },
-      "https://scout-ui.invalid",
-    ).relativeUrl,
-  ]),
-);
 
 export const metadata: Metadata = routeMetadata({
   path: "/stickers",
@@ -34,7 +18,7 @@ export default function StickersPage() {
     <div className="sui-docs-page sui-docs-stickers-page">
       <PageHeading
         eyebrow={`${String(stickerDefinitions.length)} cleared originals · ${officialStickerPack.artworkLicense}`}
-        lede="A framework-neutral contact sheet of original SVG artwork. Bring these definitions—or bring your own PNG, WebP, SVG, or React content."
+        lede="The printed-matter set that dresses this site, and the installable official pack. Every component takes any art with the same { id, src, width, height } shape — bring your own PNG, WebP, SVG, or React content."
       >
         The sticker drawer
       </PageHeading>
@@ -60,8 +44,18 @@ export default function StickersPage() {
           stickers={collageStickers}
         />
       </section>
+      <header className="sui-k-section-head sui-k-official-head">
+        <p className="sui-k-kicker">
+          <span>{String(stickerDefinitions.length)}</span> Installable pack
+        </p>
+        <h2>The official @scout-ui/stickers pack</h2>
+        <p>
+          The framework-neutral SVG set that ships in the v0.1 package, with
+          documented provenance. Inspect any sticker and copy its public import.
+        </p>
+      </header>
       <div data-pagefind-body>
-        <StickerBrowser playgroundHrefs={playgroundHrefs} />
+        <StickerBrowser />
       </div>
       <section className="sui-docs-license-note">
         <p className="sui-docs-eyebrow">License boundary</p>

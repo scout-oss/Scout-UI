@@ -111,3 +111,26 @@ absent from initial scripts (Pagefind 715 694 / 45 555 bytes; Shiki worker 173
   generated on approval.
 - Live studio sites were analysed via fetched content and HTTP; heavy WebGL
   references could not be rendered while the browser pane was hidden.
+
+## Round 4 — navbar, turning smiley, footer, new art everywhere (2026-10-20)
+
+| Check                                                                                                       | Result                                                                                                            |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Docs lint, typecheck, unit tests (116; 52 codegen/prompt snapshots updated for the intended own-art output) | PASS                                                                                                              |
+| Docs route budgets                                                                                          | PASS 12/12 — home 245 092 gzip (down from 249 430: the playground no longer bundles official sticker definitions) |
+| v0.1 docs behaviour suite (8 projects)                                                                      | 131 passed / 1 failed — see "search race" below; forced-colors project 8/8 after fixes                            |
+| Kinetic suite (7 projects, incl. new navbar/smiley/footer tests)                                            | PASS 50/50 against regenerated candidate baselines                                                                |
+| WebKit hero test after the ResizeObserver fix                                                               | PASS 5/5 (was a reproducible "ResizeObserver loop" page error)                                                    |
+
+Release-test file touched intentionally:
+`tests/browser/playground-behavior.spec.ts` locates the Sticker preview by its
+default artwork id; the default changed from `sunny-smile` to `pixel-heart` at
+the user's request (one locator, same assertion).
+
+**Search race (pre-existing, not hidden):** `docs-behavior.spec.ts:121` clicks
+`getByRole("link", { name: /installation/iu })` right after typing. Once
+Pagefind results render, two links match (the Installation guide and the Guides
+index "01 Installation") on both `origin/main` and this branch (identical result
+sets, captured in both builds). Measured: main 0/20, this branch 1/10 — the
+heavier homepage only shifts timing. Suggested maintainer fix: target the result
+by href or an exact name. The test was not modified.

@@ -103,3 +103,8 @@ areas (desk, final CTA). At most three accents per composition.
    copy-import and a playground deep link.
 6. **Arrivals** — page titles rise out of word masks; component names stick on
    letter by letter.
+7. **The turning smiley** — the brand mark rotates with scroll (navbar, and as
+   the "O" of the giant footer wordmark), still at rest.
+8. **Calm frame, loud texture** — a dimmed sticker-bomb band behind one quiet
+   pill dock; the footer closes on the same band and an ultraviolet SC☺UT UI
+   wordmark.

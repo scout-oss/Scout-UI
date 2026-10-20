@@ -162,6 +162,102 @@ test.describe("Kinetic hero", () => {
   });
 });
 
+test.describe("Navigation and brand", () => {
+  test("scroll smiley turns with scroll position and is still at rest", async ({
+    page,
+  }, testInfo) => {
+    only(testInfo, "chromium-desktop", "firefox-desktop", "webkit-desktop");
+    await installProbes(page);
+    await page.goto("/");
+    const smiley = page.locator(".sui-k-navbar .sui-k-smiley");
+    const angleAt = async (y: number) => {
+      await page.evaluate((top) => {
+        window.scrollTo({ behavior: "instant", top });
+      }, y);
+      await expect
+        .poll(() =>
+          smiley.evaluate((node) =>
+            Number.parseFloat(
+              /rotate\(([-\d.]+)deg\)/u.exec(node.style.transform)?.[1] ??
+                "NaN",
+            ),
+          ),
+        )
+        .toBeCloseTo(y * 0.36, 1);
+    };
+    await angleAt(500);
+    await angleAt(1000);
+    await angleAt(250);
+    await angleAt(0);
+    await expect.poll(() => pendingFrames(page)).toBe(0);
+  });
+
+  test("reduced motion keeps the smiley upright", async ({
+    page,
+  }, testInfo) => {
+    only(testInfo, "chromium-reduced-motion");
+    await page.goto("/");
+    await page.evaluate(() => {
+      window.scrollTo({ behavior: "instant", top: 900 });
+    });
+    await page.waitForTimeout(200);
+    expect(
+      await page
+        .locator(".sui-k-navbar .sui-k-smiley")
+        .evaluate((node) => node.style.transform),
+    ).toBe("");
+  });
+
+  test("desktop bar shows five destinations with one active pill", async ({
+    page,
+  }, testInfo) => {
+    only(testInfo, "chromium-desktop");
+    await page.setViewportSize({ height: 900, width: 1440 });
+    await page.goto("/components");
+    const bar = page.locator('[data-navbar-nav="desktop"]');
+    await expect(bar.getByRole("link")).toHaveText([
+      "Components",
+      "Stickers",
+      "Playground",
+      "Examples",
+      "Guides",
+    ]);
+    await expect(bar.locator('[aria-current="page"]')).toHaveText("Components");
+    await expect(
+      page.getByRole("link", { name: /Start sticking/u }),
+    ).toBeVisible();
+  });
+
+  test("phones keep brand, search and menu reachable", async ({
+    page,
+  }, testInfo) => {
+    only(testInfo, "chromium-coarse-pointer", "webkit-mobile");
+    await page.goto("/");
+    await expect(
+      page.getByRole("button", { name: "Open navigation menu" }),
+    ).toBeInViewport();
+    await expect(
+      page.getByRole("link", { name: "Scout UI home" }),
+    ).toBeInViewport();
+    await expect(
+      page.locator(".sui-k-navbar .sui-docs-navbar-start"),
+    ).toBeHidden();
+  });
+
+  test("footer groups every destination, including the ones off the bar", async ({
+    page,
+  }, testInfo) => {
+    only(testInfo, "chromium-desktop");
+    await page.goto("/");
+    const footer = page.getByRole("navigation", { name: "Footer navigation" });
+    for (const name of ["Examples", "Changelog", "Open source", "Guides"]) {
+      await expect(
+        footer.getByRole("link", { name, exact: true }),
+      ).toBeVisible();
+    }
+  });
+});
+
 test.describe("Collage trail", () => {
   const liveStickers = (page: Page) =>
     page.evaluate(() =>
@@ -351,15 +447,13 @@ test.describe("Sticker desk and drawer", () => {
     await expect.poll(() => pendingFrames(page), { timeout: 6000 }).toBe(0);
   });
 
-  test("inspector follows selection and copies the public import", async ({
+  test("inspector follows selection and copies the official public import", async ({
     context,
     page,
   }, testInfo) => {
     only(testInfo, "chromium-desktop");
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await page.goto("/stickers");
-    // Wonky Star is not the Sticker playground default, so its deep link
-    // must carry an encoded configuration.
     const tile = page.getByRole("button", { name: /Wonky Star/u });
     await tile.click();
     await expect(tile).toHaveAttribute("aria-pressed", "true");
@@ -377,9 +471,6 @@ test.describe("Sticker desk and drawer", () => {
     expect(clipboard).toBe(
       'import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";',
     );
-    await expect(
-      inspector.getByRole("link", { name: /Sticker playground/u }),
-    ).toHaveAttribute("href", /\/playground\/sticker\?v=1&cfg=/u);
   });
 });
 

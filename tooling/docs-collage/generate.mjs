@@ -384,3 +384,57 @@ for (const [id, draw] of Object.entries(stickers)) {
 console.log(
   `Generated ${String(manifest.length)} collage stickers: ${manifest.join(", ")}`,
 );
+
+// Sticker-bomb band for the docs navbar: a horizontally seamless tile of the
+// same artwork, composed on an oversized canvas (so rotated stickers can
+// overhang the edges) and cropped. Stickers that cross the right edge are
+// repeated at the left so `repeat-x` shows no seam.
+const TILE_W = 1400;
+const TILE_H = 160;
+const MARGIN = 240;
+let seed = 20261020;
+const rand = () => {
+  seed = (seed * 16807) % 2147483647;
+  return seed / 2147483647;
+};
+const layers = [];
+const count = 44;
+for (let index = 0; index < count; index += 1) {
+  const id = manifest[(index * 5) % manifest.length];
+  const size = Math.round(104 + rand() * 50);
+  const angle = Math.round(rand() * 44 - 22);
+  const x = Math.round((index / count) * TILE_W + rand() * 30 - 15);
+  const y = Math.round(
+    (index % 2 === 0 ? 0.3 : 0.72) * TILE_H + (rand() - 0.5) * 40,
+  );
+  const input = await sharp(path.join(outDir, `${id}.webp`))
+    .resize(size, size)
+    .rotate(angle, { background: { alpha: 0, b: 0, g: 0, r: 0 } })
+    .png()
+    .toBuffer();
+  const { width = size, height = size } = await sharp(input).metadata();
+  for (const shift of [-TILE_W, 0, TILE_W]) {
+    const left = MARGIN + x + shift - Math.round(width / 2);
+    const top = MARGIN + y - Math.round(height / 2);
+    if (left + width < 0 || left > TILE_W + MARGIN * 2) continue;
+    layers.push({ input, left, top });
+  }
+}
+await sharp({
+  create: {
+    background: { alpha: 0, b: 0, g: 0, r: 0 },
+    channels: 4,
+    height: TILE_H + MARGIN * 2,
+    width: TILE_W + MARGIN * 2,
+  },
+})
+  .composite(layers)
+  .png()
+  .toBuffer()
+  .then((buffer) =>
+    sharp(buffer)
+      .extract({ height: TILE_H, left: MARGIN, top: MARGIN, width: TILE_W })
+      .webp({ alphaQuality: 70, effort: 6, quality: 62 })
+      .toFile(path.join(outDir, "band.webp")),
+  );
+console.log("Generated navbar band tile: band.webp");

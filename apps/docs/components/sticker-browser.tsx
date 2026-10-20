@@ -136,12 +136,7 @@ function CopyImport({ sticker }: { readonly sticker: StickerDefinition }) {
   );
 }
 
-export function StickerBrowser({
-  playgroundHrefs,
-}: {
-  /** Precomputed share URLs for stickers the playground can preselect. */
-  readonly playgroundHrefs: Readonly<Record<string, string>>;
-}) {
+export function StickerBrowser() {
   const [category, setCategory] = useState<string>("all");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string>(
@@ -267,14 +262,6 @@ export function StickerBrowser({
               </div>
             </dl>
             <CopyImport key={selected.id} sticker={selected} />
-            {playgroundHrefs[selected.id] ? (
-              <a
-                className="sui-k-text-link"
-                href={playgroundHrefs[selected.id]}
-              >
-                Try {selected.name} in the Sticker playground →
-              </a>
-            ) : null}
           </div>
         </aside>
       </div>

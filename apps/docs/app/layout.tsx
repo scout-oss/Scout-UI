@@ -25,6 +25,16 @@ const displayFont = localFont({
   weight: "200 800",
 });
 
+// The giant hero word only: `block`, so it is never painted in the wider
+// fallback face (which overflowed the measure before hydration). Same file,
+// same download; the rest of the site keeps `optional` to avoid text shifts.
+const heroFont = localFont({
+  display: "block",
+  src: "../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-standard-normal.woff2",
+  variable: "--sui-docs-font-hero",
+  weight: "200 800",
+});
+
 const bodyFont = localFont({
   adjustFontFallback: "Arial",
   display: "optional",
@@ -59,7 +69,10 @@ export default function RootLayout({
   readonly children: ReactNode;
 }) {
   return (
-    <html className={`${displayFont.variable} ${bodyFont.variable}`} lang="en">
+    <html
+      className={`${displayFont.variable} ${heroFont.variable} ${bodyFont.variable}`}
+      lang="en"
+    >
       <body>
         <a className="sui-docs-skip-link" href="#main-content">
           Skip to content

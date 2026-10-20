@@ -4,23 +4,30 @@ import { StickerNavbar } from "@scout-ui/react/sticker-navbar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { collageSticker } from "../lib/collage";
 import { primaryNavigation } from "../lib/navigation";
 import { repositoryUrl } from "../lib/site";
+import { ScrollSmiley } from "./kinetic/scroll-smiley";
 import { SearchDialog } from "./search-dialog";
 
-function activeNavigationId(pathname: string): string {
-  if (pathname === "/") return "home";
-  return (
-    primaryNavigation.find(
-      (item) => item.href !== "/" && pathname.startsWith(item.href),
-    )?.id ?? "home"
-  );
+// The bar carries the five destinations people actually navigate between.
+// Home lives on the brand; Changelog and Open source stay one keystroke away
+// in search and in the footer (primaryNavigation still feeds both).
+const barIds = new Set([
+  "components",
+  "stickers",
+  "playground",
+  "examples",
+  "guides",
+]);
+const barNavigation = primaryNavigation.filter((item) => barIds.has(item.id));
+
+function activeNavigationId(pathname: string): string | undefined {
+  return barNavigation.find((item) => pathname.startsWith(item.href))?.id;
 }
 
 export function DocsNavbar() {
   const pathname = usePathname();
-  const expressive = pathname === "/" || pathname === "/playground";
+  const activeId = activeNavigationId(pathname);
 
   return (
     <StickerNavbar
@@ -29,23 +36,22 @@ export function DocsNavbar() {
           <a href={repositoryUrl}>GitHub ↗</a>
           <SearchDialog />
           <Link className="sui-docs-navbar-start" href="/components">
-            Start sticking
+            Start sticking <span aria-hidden="true">→</span>
           </Link>
         </div>
       }
-      activeId={activeNavigationId(pathname)}
+      {...(activeId === undefined ? {} : { activeId })}
       aria-label="Scout UI documentation"
       brand={
-        <Link aria-label="Scout UI home" href="/">
-          SCOUT UI <sup>α</sup>
+        <Link aria-label="Scout UI home" className="sui-k-brand" href="/">
+          <ScrollSmiley />
+          <span className="sui-k-brand-word">
+            SCOUT UI <sup>α</sup>
+          </span>
         </Link>
       }
-      collage={[
-        collageSticker("pixel-heart"),
-        collageSticker("postage-stamp"),
-        collageSticker("ticket-stub"),
-      ]}
-      items={primaryNavigation}
+      className="sui-k-navbar"
+      items={barNavigation}
       reducedMotion="system"
       renderLink={(item, props) => (
         <Link
@@ -59,7 +65,7 @@ export function DocsNavbar() {
       )}
       showScrollProgress
       sticky
-      variant={expressive ? "collage" : "ribbon"}
+      variant="ribbon"
     />
   );
 }

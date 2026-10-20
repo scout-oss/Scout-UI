@@ -203,8 +203,8 @@ function definition<C extends object>(value: ComponentDocDefinitionBase<C>) {
 }
 
 const stickerDefaults = {
-  sourceId: "sunny-smile",
-  alt: "Smiling sun sticker",
+  sourceId: "pixel-heart",
+  alt: "Pixel heart sticker",
   size: "lg",
   tone: "paper",
   material: "flat",
@@ -528,7 +528,7 @@ const buttonFields: readonly ConfigField<
 
 const trailDefaults = {
   preset: "scout",
-  stickerId: "sparkle-pop",
+  stickerId: "mixtape",
   enabled: true,
   size: 78,
   spacing: 42,
@@ -663,7 +663,7 @@ const trailFields: readonly ConfigField<ComponentConfigMap["sticker-trail"]>[] =
   ];
 
 const cursorDefaults = {
-  visualId: "scribble-pointer",
+  visualId: "pixel-heart",
   enabled: true,
   size: 48,
   tilt: 10,
@@ -929,7 +929,7 @@ const navbarDefaults = {
   activeId: "components",
   sticky: false,
   showScrollProgress: false,
-  collageAssetId: "wonky-star",
+  collageAssetId: "postage-stamp",
   reducedMotion: "system",
 } as const satisfies ComponentConfigMap["sticker-navbar"];
 const navbarFields: readonly ConfigField<
@@ -1019,8 +1019,8 @@ export const componentDefinitions = Object.freeze({
       }),
       preset("loud", "Loud", "A bounded high-energy object.", {
         ...stickerDefaults,
-        alt: "Attention bolt sticker",
-        sourceId: "attention-bolt",
+        alt: "Foil seal sticker",
+        sourceId: "foil-seal",
         tone: "orange",
         size: "xl",
         rotation: 9,
@@ -1166,7 +1166,7 @@ export const componentDefinitions = Object.freeze({
       }),
       preset("quiet", "Quiet", "Small and restrained.", {
         ...cursorDefaults,
-        visualId: "chunky-check",
+        visualId: "foil-seal",
         size: 34,
         tilt: 0,
         smoothing: 0.65,
@@ -1278,7 +1278,7 @@ export const componentDefinitions = Object.freeze({
       preset("collage", "Collage", "Art-directed sticker collage.", {
         ...navbarDefaults,
         variant: "collage",
-        collageAssetId: "attention-bolt",
+        collageAssetId: "ticket-stub",
         activeId: "examples",
       }),
       preset(

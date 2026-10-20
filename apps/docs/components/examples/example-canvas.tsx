@@ -10,16 +10,14 @@ import {
   StickerStack,
 } from "@scout-ui/react";
 import { StickerTrail } from "@scout-ui/sticker-trail";
-import { attentionBolt } from "@scout-ui/stickers/definitions/attention-bolt";
-import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
-import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 import { useState } from "react";
 
+import { collageSticker } from "../../lib/collage";
 import type { ExampleSlug } from "../../lib/content/examples";
 
-const sun = sunnySmile;
-const star = wonkyStar;
-const bolt = attentionBolt;
+const sun = collageSticker("instant-photo");
+const star = collageSticker("postage-stamp");
+const bolt = collageSticker("fragile-label");
 
 const stories = [
   {
@@ -130,14 +128,14 @@ export function ExampleCanvas({ slug }: { readonly slug: ExampleSlug }) {
       <div className="sui-docs-recipe-mood">
         <div>
           <Sticker
-            alt="Smiling sun"
+            alt="Instant photo"
             rotation={-7}
             shadow="lifted"
             size="xl"
             source={sun}
           />
           <Sticker
-            alt="Wonky star"
+            alt="Postage stamp"
             rotation={9}
             shadow="stuck"
             size="lg"

@@ -7,14 +7,14 @@ Implement the configured Sticker integration. Place accessible artwork with tact
 ## Package and installation
 Use Sticker from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Artwork: Sunny Smile ("sunny-smile"). Choose one approved open-source sticker definition.
-- Alternative text: "Smiling sun sticker". Describe meaningful artwork or leave empty when decorative.
+- Artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose one approved open-source sticker definition.
+- Alternative text: "Pixel heart sticker". Describe meaningful artwork or leave empty when decorative.
 - Size: XL. Change the named optical size without assuming SVG artwork.
 - Tone: paper. Choose the semantic accent role.
 - Material: photo. Select the wrapper material contract.
@@ -27,7 +27,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for Sticker; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -55,14 +55,14 @@ Implement the configured Sticker integration. Place accessible artwork with tact
 ## Package and installation
 Use Sticker from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Artwork: Sunny Smile ("sunny-smile"). Choose one approved open-source sticker definition.
-- Alternative text: "Smiling sun sticker". Describe meaningful artwork or leave empty when decorative.
+- Artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose one approved open-source sticker definition.
+- Alternative text: "Pixel heart sticker". Describe meaningful artwork or leave empty when decorative.
 - Size: LG. Change the named optical size without assuming SVG artwork.
 - Depth: lifted. Choose no, stuck, or lifted hard depth.
 - Rotation: -6. Apply bounded authored imperfection.
@@ -70,7 +70,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for Sticker; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -92,14 +92,14 @@ Implement the configured Sticker integration. Place accessible artwork with tact
 ## Package and installation
 Use Sticker from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Artwork: Sunny Smile ("sunny-smile"). Choose one approved open-source sticker definition.
-- Alternative text: "Smiling sun sticker". Describe meaningful artwork or leave empty when decorative.
+- Artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose one approved open-source sticker definition.
+- Alternative text: "Pixel heart sticker". Describe meaningful artwork or leave empty when decorative.
 - Size: LG. Change the named optical size without assuming SVG artwork.
 - Tone: paper. Choose the semantic accent role.
 - Material: flat. Select the wrapper material contract.
@@ -112,7 +112,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for Sticker; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -140,14 +140,14 @@ Implement the configured Sticker integration. Place accessible artwork with tact
 ## Package and installation
 Use Sticker from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Artwork: Sunny Smile ("sunny-smile"). Choose one approved open-source sticker definition.
-- Alternative text: "Smiling sun sticker". Describe meaningful artwork or leave empty when decorative.
+- Artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose one approved open-source sticker definition.
+- Alternative text: "Pixel heart sticker". Describe meaningful artwork or leave empty when decorative.
 - Size: MD. Change the named optical size without assuming SVG artwork.
 - Depth: stuck. Choose no, stuck, or lifted hard depth.
 - Rotation: 0. Apply bounded authored imperfection.
@@ -156,7 +156,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for Sticker; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -178,14 +178,14 @@ Implement the configured Sticker integration. Place accessible artwork with tact
 ## Package and installation
 Use Sticker from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Artwork: Sunny Smile ("sunny-smile"). Choose one approved open-source sticker definition.
-- Alternative text: "Smiling sun sticker". Describe meaningful artwork or leave empty when decorative.
+- Artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose one approved open-source sticker definition.
+- Alternative text: "Pixel heart sticker". Describe meaningful artwork or leave empty when decorative.
 - Size: MD. Change the named optical size without assuming SVG artwork.
 - Tone: paper. Choose the semantic accent role.
 - Material: flat. Select the wrapper material contract.
@@ -198,7 +198,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for Sticker; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -226,14 +226,14 @@ Implement the configured Sticker integration. Place accessible artwork with tact
 ## Package and installation
 Use Sticker from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Artwork: Sunny Smile ("sunny-smile"). Choose one approved open-source sticker definition.
-- Alternative text: "Smiling sun sticker". Describe meaningful artwork or leave empty when decorative.
+- Artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose one approved open-source sticker definition.
+- Alternative text: "Pixel heart sticker". Describe meaningful artwork or leave empty when decorative.
 - Size: LG. Change the named optical size without assuming SVG artwork.
 - Depth: lifted. Choose no, stuck, or lifted hard depth.
 - Rotation: -6. Apply bounded authored imperfection.
@@ -241,7 +241,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for Sticker; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -263,14 +263,14 @@ Implement the configured Sticker integration. Place accessible artwork with tact
 ## Package and installation
 Use Sticker from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Artwork: Sunny Smile ("sunny-smile"). Choose one approved open-source sticker definition.
-- Alternative text: "Smiling sun sticker". Describe meaningful artwork or leave empty when decorative.
+- Artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose one approved open-source sticker definition.
+- Alternative text: "Pixel heart sticker". Describe meaningful artwork or leave empty when decorative.
 - Size: LG. Change the named optical size without assuming SVG artwork.
 - Tone: paper. Choose the semantic accent role.
 - Material: flat. Select the wrapper material contract.
@@ -283,7 +283,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for Sticker; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -311,14 +311,14 @@ Implement the configured Sticker integration. Place accessible artwork with tact
 ## Package and installation
 Use Sticker from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Artwork: Attention Bolt ("attention-bolt"). Choose one approved open-source sticker definition.
-- Alternative text: "Attention bolt sticker". Describe meaningful artwork or leave empty when decorative.
+- Artwork: Foil seal ("foil-seal"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/foil-seal.webp. Choose one approved open-source sticker definition.
+- Alternative text: "Foil seal sticker". Describe meaningful artwork or leave empty when decorative.
 - Size: XL. Change the named optical size without assuming SVG artwork.
 - Tone: orange. Choose the semantic accent role.
 - Depth: lifted. Choose no, stuck, or lifted hard depth.
@@ -328,7 +328,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for Sticker; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -350,14 +350,14 @@ Implement the configured Sticker integration. Place accessible artwork with tact
 ## Package and installation
 Use Sticker from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Artwork: Attention Bolt ("attention-bolt"). Choose one approved open-source sticker definition.
-- Alternative text: "Attention bolt sticker". Describe meaningful artwork or leave empty when decorative.
+- Artwork: Foil seal ("foil-seal"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/foil-seal.webp. Choose one approved open-source sticker definition.
+- Alternative text: "Foil seal sticker". Describe meaningful artwork or leave empty when decorative.
 - Size: XL. Change the named optical size without assuming SVG artwork.
 - Tone: orange. Choose the semantic accent role.
 - Material: flat. Select the wrapper material contract.
@@ -370,7 +370,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for Sticker; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1111,13 +1111,13 @@ Implement the configured StickerCursor integration. Add a safety-first custom po
 ## Package and installation
 Use StickerCursor from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Cursor artwork: Scribble Pointer ("scribble-pointer"). Choose an approved visual for the bounded pointer.
+- Cursor artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose an approved visual for the bounded pointer.
 - Enabled: enabled. Enable only inside the preview region.
 - Size: 48. Keep artwork small enough to preserve target visibility.
 - Velocity tilt: 3. Bound horizontal velocity rotation.
@@ -1129,7 +1129,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerCursor; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1156,19 +1156,19 @@ Implement the configured StickerCursor integration. Add a safety-first custom po
 ## Package and installation
 Use StickerCursor from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Cursor artwork: Scribble Pointer ("scribble-pointer"). Choose an approved visual for the bounded pointer.
+- Cursor artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose an approved visual for the bounded pointer.
 - Size: 48. Keep artwork small enough to preserve target visibility.
 
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerCursor; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1190,13 +1190,13 @@ Implement the configured StickerCursor integration. Add a safety-first custom po
 ## Package and installation
 Use StickerCursor from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Cursor artwork: Scribble Pointer ("scribble-pointer"). Choose an approved visual for the bounded pointer.
+- Cursor artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose an approved visual for the bounded pointer.
 - Enabled: enabled. Enable only inside the preview region.
 - Size: 48. Keep artwork small enough to preserve target visibility.
 - Velocity tilt: 10. Bound horizontal velocity rotation.
@@ -1208,7 +1208,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerCursor; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1235,19 +1235,19 @@ Implement the configured StickerCursor integration. Add a safety-first custom po
 ## Package and installation
 Use StickerCursor from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Cursor artwork: Scribble Pointer ("scribble-pointer"). Choose an approved visual for the bounded pointer.
+- Cursor artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose an approved visual for the bounded pointer.
 - Size: 48. Keep artwork small enough to preserve target visibility.
 
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerCursor; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1269,13 +1269,13 @@ Implement the configured StickerCursor integration. Add a safety-first custom po
 ## Package and installation
 Use StickerCursor from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Cursor artwork: Scribble Pointer ("scribble-pointer"). Choose an approved visual for the bounded pointer.
+- Cursor artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose an approved visual for the bounded pointer.
 - Enabled: enabled. Enable only inside the preview region.
 - Size: 48. Keep artwork small enough to preserve target visibility.
 - Velocity tilt: 10. Bound horizontal velocity rotation.
@@ -1287,7 +1287,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerCursor; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1314,13 +1314,13 @@ Implement the configured StickerCursor integration. Add a safety-first custom po
 ## Package and installation
 Use StickerCursor from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Cursor artwork: Scribble Pointer ("scribble-pointer"). Choose an approved visual for the bounded pointer.
+- Cursor artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose an approved visual for the bounded pointer.
 - Size: 48. Keep artwork small enough to preserve target visibility.
 - Velocity tilt: 4. Bound horizontal velocity rotation.
 - Click feedback: press. Choose none, press, or a bounded echo pool.
@@ -1329,7 +1329,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerCursor; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1351,13 +1351,13 @@ Implement the configured StickerCursor integration. Add a safety-first custom po
 ## Package and installation
 Use StickerCursor from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Cursor artwork: Scribble Pointer ("scribble-pointer"). Choose an approved visual for the bounded pointer.
+- Cursor artwork: Pixel heart ("pixel-heart"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/pixel-heart.webp. Choose an approved visual for the bounded pointer.
 - Enabled: enabled. Enable only inside the preview region.
 - Size: 48. Keep artwork small enough to preserve target visibility.
 - Velocity tilt: 4. Bound horizontal velocity rotation.
@@ -1369,7 +1369,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerCursor; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1396,13 +1396,13 @@ Implement the configured StickerCursor integration. Add a safety-first custom po
 ## Package and installation
 Use StickerCursor from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Cursor artwork: Chunky Check ("chunky-check"). Choose an approved visual for the bounded pointer.
+- Cursor artwork: Foil seal ("foil-seal"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/foil-seal.webp. Choose an approved visual for the bounded pointer.
 - Size: 34. Keep artwork small enough to preserve target visibility.
 - Velocity tilt: 0. Bound horizontal velocity rotation.
 - Smoothing: 0.65. Tune cursor interpolation without changing semantic state.
@@ -1411,7 +1411,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerCursor; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1433,13 +1433,13 @@ Implement the configured StickerCursor integration. Add a safety-first custom po
 ## Package and installation
 Use StickerCursor from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Cursor artwork: Chunky Check ("chunky-check"). Choose an approved visual for the bounded pointer.
+- Cursor artwork: Foil seal ("foil-seal"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/foil-seal.webp. Choose an approved visual for the bounded pointer.
 - Enabled: enabled. Enable only inside the preview region.
 - Size: 34. Keep artwork small enough to preserve target visibility.
 - Velocity tilt: 0. Bound horizontal velocity rotation.
@@ -1451,7 +1451,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerCursor; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1478,7 +1478,7 @@ Implement the configured StickerNavbar integration. Frame a site with accessible
 ## Package and installation
 Use StickerNavbar from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
@@ -1488,13 +1488,13 @@ Inspect the existing React entry, component structure, styling convention, packa
 - Current page: Examples. Expose one current navigation destination.
 - Sticky: disabled. Exercise the documented sticky contract inside the bounded model.
 - Scroll progress: enabled. Show compositor-friendly decorative progress.
-- Collage hero: Wonky Star ("wonky-star"). Choose the leading approved collage asset.
+- Collage hero: Postage stamp ("postage-stamp"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/postage-stamp.webp. Choose the leading approved collage asset.
 - Motion policy: System. Show ribbon and collage in their composed resting state.
 
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerNavbar; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1520,7 +1520,7 @@ Implement the configured StickerNavbar integration. Frame a site with accessible
 ## Package and installation
 Use StickerNavbar from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
@@ -1531,7 +1531,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerNavbar; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1553,7 +1553,7 @@ Implement the configured StickerNavbar integration. Frame a site with accessible
 ## Package and installation
 Use StickerNavbar from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
@@ -1568,7 +1568,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerNavbar; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1594,7 +1594,7 @@ Implement the configured StickerNavbar integration. Frame a site with accessible
 ## Package and installation
 Use StickerNavbar from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
@@ -1602,12 +1602,12 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Exact selected configuration
 - Variant: collage. Choose ribbon or collage structure.
 - Current page: Examples. Expose one current navigation destination.
-- Collage hero: Attention Bolt ("attention-bolt"). Choose the leading approved collage asset.
+- Collage hero: Ticket stub ("ticket-stub"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/ticket-stub.webp. Choose the leading approved collage asset.
 
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerNavbar; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1629,7 +1629,7 @@ Implement the configured StickerNavbar integration. Frame a site with accessible
 ## Package and installation
 Use StickerNavbar from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
@@ -1639,13 +1639,13 @@ Inspect the existing React entry, component structure, styling convention, packa
 - Current page: Examples. Expose one current navigation destination.
 - Sticky: disabled. Exercise the documented sticky contract inside the bounded model.
 - Scroll progress: disabled. Show compositor-friendly decorative progress.
-- Collage hero: Attention Bolt ("attention-bolt"). Choose the leading approved collage asset.
+- Collage hero: Ticket stub ("ticket-stub"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/ticket-stub.webp. Choose the leading approved collage asset.
 - Motion policy: System. Show ribbon and collage in their composed resting state.
 
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerNavbar; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1671,7 +1671,7 @@ Implement the configured StickerNavbar integration. Frame a site with accessible
 ## Package and installation
 Use StickerNavbar from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
@@ -1682,7 +1682,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerNavbar; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1704,7 +1704,7 @@ Implement the configured StickerNavbar integration. Frame a site with accessible
 ## Package and installation
 Use StickerNavbar from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
@@ -1719,7 +1719,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerNavbar; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1745,7 +1745,7 @@ Implement the configured StickerNavbar integration. Frame a site with accessible
 ## Package and installation
 Use StickerNavbar from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
@@ -1758,7 +1758,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerNavbar; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -1780,7 +1780,7 @@ Implement the configured StickerNavbar integration. Frame a site with accessible
 ## Package and installation
 Use StickerNavbar from the public @scout-ui/react package and import @scout-ui/react/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/react only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
@@ -1795,7 +1795,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerNavbar; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -2518,14 +2518,14 @@ Implement the configured StickerTrail integration. Leave a bounded, performant t
 ## Package and installation
 Use StickerTrail from the public @scout-ui/sticker-trail package and import @scout-ui/sticker-trail/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/sticker-trail only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
 - Runtime preset: scout. Start from a bounded Trail preset.
-- Primary sticker: Sparkle Pop ("sparkle-pop"). Choose the first approved source in the authored sequence.
+- Primary sticker: Sticker mixtape ("mixtape"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/mixtape.webp. Choose the first approved source in the authored sequence.
 - Enabled: enabled. Run the bounded enhancement when capability policy permits.
 - Optical size: 78. Set the center of a safe size range.
 - Spacing: 66. Set the center of a velocity-aware spacing range.
@@ -2540,7 +2540,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerTrail; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -2568,19 +2568,19 @@ Implement the configured StickerTrail integration. Leave a bounded, performant t
 ## Package and installation
 Use StickerTrail from the public @scout-ui/sticker-trail package and import @scout-ui/sticker-trail/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/sticker-trail only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Primary sticker: Sparkle Pop ("sparkle-pop"). Choose the first approved source in the authored sequence.
+- Primary sticker: Sticker mixtape ("mixtape"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/mixtape.webp. Choose the first approved source in the authored sequence.
 - Spacing: 42. Set the center of a velocity-aware spacing range.
 
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerTrail; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -2602,14 +2602,14 @@ Implement the configured StickerTrail integration. Leave a bounded, performant t
 ## Package and installation
 Use StickerTrail from the public @scout-ui/sticker-trail package and import @scout-ui/sticker-trail/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/sticker-trail only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
 - Runtime preset: scout. Start from a bounded Trail preset.
-- Primary sticker: Sparkle Pop ("sparkle-pop"). Choose the first approved source in the authored sequence.
+- Primary sticker: Sticker mixtape ("mixtape"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/mixtape.webp. Choose the first approved source in the authored sequence.
 - Enabled: enabled. Run the bounded enhancement when capability policy permits.
 - Optical size: 78. Set the center of a safe size range.
 - Spacing: 42. Set the center of a velocity-aware spacing range.
@@ -2624,7 +2624,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerTrail; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -2652,14 +2652,14 @@ Implement the configured StickerTrail integration. Leave a bounded, performant t
 ## Package and installation
 Use StickerTrail from the public @scout-ui/sticker-trail package and import @scout-ui/sticker-trail/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/sticker-trail only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
 - Runtime preset: calm. Start from a bounded Trail preset.
-- Primary sticker: Sparkle Pop ("sparkle-pop"). Choose the first approved source in the authored sequence.
+- Primary sticker: Sticker mixtape ("mixtape"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/mixtape.webp. Choose the first approved source in the authored sequence.
 - Optical size: 60. Set the center of a safe size range.
 - Spacing: 72. Set the center of a velocity-aware spacing range.
 - Maximum active: 14. Bound the fixed DOM pool below the engine hard ceiling.
@@ -2667,7 +2667,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerTrail; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -2689,14 +2689,14 @@ Implement the configured StickerTrail integration. Leave a bounded, performant t
 ## Package and installation
 Use StickerTrail from the public @scout-ui/sticker-trail package and import @scout-ui/sticker-trail/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/sticker-trail only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
 - Runtime preset: calm. Start from a bounded Trail preset.
-- Primary sticker: Sparkle Pop ("sparkle-pop"). Choose the first approved source in the authored sequence.
+- Primary sticker: Sticker mixtape ("mixtape"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/mixtape.webp. Choose the first approved source in the authored sequence.
 - Enabled: enabled. Run the bounded enhancement when capability policy permits.
 - Optical size: 60. Set the center of a safe size range.
 - Spacing: 72. Set the center of a velocity-aware spacing range.
@@ -2711,7 +2711,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerTrail; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -2739,14 +2739,14 @@ Implement the configured StickerTrail integration. Leave a bounded, performant t
 ## Package and installation
 Use StickerTrail from the public @scout-ui/sticker-trail package and import @scout-ui/sticker-trail/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/sticker-trail only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
 - Runtime preset: chaos. Start from a bounded Trail preset.
-- Primary sticker: Sparkle Pop ("sparkle-pop"). Choose the first approved source in the authored sequence.
+- Primary sticker: Sticker mixtape ("mixtape"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/mixtape.webp. Choose the first approved source in the authored sequence.
 - Optical size: 92. Set the center of a safe size range.
 - Spacing: 30. Set the center of a velocity-aware spacing range.
 - Maximum active: 32. Bound the fixed DOM pool below the engine hard ceiling.
@@ -2756,7 +2756,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerTrail; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -2778,14 +2778,14 @@ Implement the configured StickerTrail integration. Leave a bounded, performant t
 ## Package and installation
 Use StickerTrail from the public @scout-ui/sticker-trail package and import @scout-ui/sticker-trail/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/sticker-trail only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
 - Runtime preset: chaos. Start from a bounded Trail preset.
-- Primary sticker: Sparkle Pop ("sparkle-pop"). Choose the first approved source in the authored sequence.
+- Primary sticker: Sticker mixtape ("mixtape"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/mixtape.webp. Choose the first approved source in the authored sequence.
 - Enabled: enabled. Run the bounded enhancement when capability policy permits.
 - Optical size: 92. Set the center of a safe size range.
 - Spacing: 30. Set the center of a velocity-aware spacing range.
@@ -2800,7 +2800,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerTrail; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -2828,19 +2828,19 @@ Implement the configured StickerTrail integration. Leave a bounded, performant t
 ## Package and installation
 Use StickerTrail from the public @scout-ui/sticker-trail package and import @scout-ui/sticker-trail/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/sticker-trail only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Primary sticker: Sparkle Pop ("sparkle-pop"). Choose the first approved source in the authored sequence.
+- Primary sticker: Sticker mixtape ("mixtape"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/mixtape.webp. Choose the first approved source in the authored sequence.
 - Spacing: 42. Set the center of a velocity-aware spacing range.
 
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerTrail; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion
@@ -2862,14 +2862,14 @@ Implement the configured StickerTrail integration. Leave a bounded, performant t
 ## Package and installation
 Use StickerTrail from the public @scout-ui/sticker-trail package and import @scout-ui/sticker-trail/styles.css once at the existing application style boundary.
 Inspect the manifest and current package manager; add @scout-ui/sticker-trail only if it is absent, without claiming an unpublished version.
-Add @scout-ui/stickers only if the selected public definition is not already available to the project.
+Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.
 
 ## Project inspection
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
 - Runtime preset: scout. Start from a bounded Trail preset.
-- Primary sticker: Sparkle Pop ("sparkle-pop"). Choose the first approved source in the authored sequence.
+- Primary sticker: Sticker mixtape ("mixtape"), consumer-hosted artwork downloadable from http://127.0.0.1:4300/collage/mixtape.webp. Choose the first approved source in the authored sequence.
 - Enabled: enabled. Run the bounded enhancement when capability policy permits.
 - Optical size: 78. Set the center of a safe size range.
 - Spacing: 42. Set the center of a velocity-aware spacing range.
@@ -2884,7 +2884,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerTrail; do not invent a filename.
 Preserve the existing layout and unrelated visual structure, integrate at the smallest necessary boundary, and do not rewrite unrelated application logic.
-Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package.
+Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork.
 No repository context was supplied. Inspect the project and ask for clarification rather than asserting unknown project facts.
 
 ## Accessibility and reduced motion

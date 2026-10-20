@@ -75,20 +75,35 @@ export function KineticHeadline({
     // effect instances (Strict Mode, Fast Refresh) can never disagree.
     const apply = () => {
       const fit = Number(word.style.getPropertyValue("--sui-k-fit")) || 1;
-      const natural = word.offsetWidth / fit;
-      const available = art.clientWidth;
+      // scrollWidth includes the die-cut overhang (cut-line stroke, shadow
+      // offset, the rotated last slot) that offsetWidth leaves out; keep a
+      // 2% margin so the shadow never kisses the viewport edge.
+      const natural = Math.max(word.offsetWidth, word.scrollWidth) / fit;
+      const available = art.clientWidth * 0.98;
       const next = Math.max(0.4, Math.min(1, available / natural));
       if (Math.abs(next - fit) < 0.002) return;
       word.style.setProperty("--sui-k-fit", next.toFixed(4));
     };
+    // Writes happen in the next frame, never inside the observer callback:
+    // resizing an observed element during delivery is a ResizeObserver loop
+    // (WebKit reports it as a page error).
+    let frame = 0;
+    const schedule = () => {
+      if (frame !== 0) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        apply();
+      });
+    };
     apply();
     // Watch the word as well as the container: a font swap changes only the
     // word's width. Re-entry is stable because natural = width / fit.
-    const observer = new ResizeObserver(apply);
+    const observer = new ResizeObserver(schedule);
     observer.observe(art);
     observer.observe(word);
-    void document.fonts.ready.then(apply);
+    void document.fonts.ready.then(schedule);
     return () => {
+      window.cancelAnimationFrame(frame);
       observer.disconnect();
     };
   }, []);

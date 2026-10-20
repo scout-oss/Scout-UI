@@ -151,7 +151,14 @@
   h3 {
     font-family: var(--sui-font-display);
     font-weight: 800;
-    letter-spacing: -0.035em;
+    letter-spacing: -0.018em;
+  }
+
+  /* Playground index: long component names must fit their cards. */
+  .sui-docs-playground-index strong {
+    font-size: clamp(1.8rem, 2.6vw, 2.9rem);
+    letter-spacing: -0.015em;
+    overflow-wrap: anywhere;
   }
 
   /* ---------------------------------------------------------------- */
@@ -355,7 +362,7 @@
 
   .sui-k-headline-word {
     display: flex;
-    font-family: var(--sui-font-display);
+    font-family: var(--sui-docs-font-hero), var(--sui-font-display);
 
     /* Fill the measure: the word is ~3.3em wide at rest (wdth 90). */
     width: max-content;
@@ -1635,30 +1642,304 @@
 
 /* ------------------------------------------------------------------ */
 
-/* Global frame: navigation                                            */
+/* Global frame: navigation — calm pills over a dimmed sticker band      */
 
 /* ------------------------------------------------------------------ */
 @layer scout-ui-kinetic {
-  /* With the real display/body fonts the eight desktop links no longer fit
-     beside the actions; they used to overflow under the brand. Compact the
-     ribbon and let the hero/footer carry the GitHub link at mid widths. */
-  @media (width > 1024px) {
-    .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile) {
-      justify-content: safe center;
-      gap: 0.3rem;
-    }
+  .sui-k-navbar.sui-sticker-navbar {
+    --sui-navbar-surface: var(--sui-night);
+    --sui-navbar-ink: var(--sui-night-text);
+    --sui-navbar-height: 4.75rem;
 
+    border-block-end: 0;
+    color: var(--sui-night-text);
+    background: var(--sui-night);
+  }
+
+  /* The band is texture, not content: dimmed, slightly desaturated, and
+     faded toward the dock so the pills always win. */
+  .sui-k-navbar.sui-sticker-navbar::before,
+  .sui-k-navbar.sui-sticker-navbar::after {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+  }
+
+  .sui-k-navbar.sui-sticker-navbar::before {
+    background: url("/collage/band.webp") repeat-x center / auto 9rem;
+    filter: saturate(0.85) brightness(0.8);
+    opacity: 0.55;
+  }
+
+  .sui-k-navbar.sui-sticker-navbar::after {
+    background:
+      radial-gradient(
+        ellipse 60% 120% at 50% 50%,
+        rgb(11 10 14 / 55%),
+        rgb(11 10 14 / 10%) 75%
+      ),
+      linear-gradient(rgb(11 10 14 / 0%) 70%, rgb(11 10 14 / 45%));
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-decoration {
+    display: none;
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-inner {
+    z-index: 2;
+    width: min(100%, var(--sui-k-max));
+    gap: 0.75rem;
+    padding-block: 0.7rem;
+  }
+
+  /* Brand: a white pill holding the scroll-turning smiley. */
+  .sui-k-navbar .sui-sticker-navbar-brand {
+    max-width: none;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    rotate: 0deg;
+  }
+
+  .sui-k-brand {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 2.9rem;
+    padding: 0.3rem 1rem 0.3rem 0.35rem;
+    border: 2px solid var(--sui-ink);
+    border-radius: 999px;
+    color: var(--sui-ink);
+    background: var(--sui-paper-raised);
+    box-shadow: 0 0.22rem 0 var(--sui-ink);
+    text-decoration: none;
+  }
+
+  .sui-k-brand-word {
+    font-family: var(--sui-font-display);
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .sui-k-brand-word sup {
+    color: var(--sui-ultraviolet);
+  }
+
+  .sui-k-smiley {
+    display: inline-grid;
+    width: 2.2rem;
+    height: 2.2rem;
+    flex: none;
+    will-change: transform;
+  }
+
+  .sui-k-smiley svg {
+    width: 100%;
+    height: 100%;
+    transition: scale var(--sui-k-dur-lift) var(--sui-k-ease-lift);
+  }
+
+  .sui-k-brand:hover .sui-k-smiley svg {
+    scale: 1.12;
+  }
+
+  /* Desktop links: one quiet dock instead of eight rotated cards. */
+  .sui-k-navbar .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile) {
+    justify-content: safe center;
+    justify-self: center;
+    gap: 0.1rem;
+    padding: 0.3rem;
+    border: 2px solid var(--sui-ink);
+    border-radius: 999px;
+    background: var(--sui-paper-raised);
+    box-shadow:
+      0 0.22rem 0 var(--sui-ink),
+      0 0.75rem 2rem rgb(0 0 0 / 35%);
+  }
+
+  .sui-k-navbar
     .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
-      .sui-sticker-navbar-item {
-      padding-inline: clamp(0.45rem, 0.6vw, 0.7rem);
-      font-size: clamp(0.76rem, 0.8vw, 0.88rem);
-      white-space: nowrap;
+    .sui-sticker-navbar-link-slot
+    .sui-sticker-navbar-item {
+    min-height: 2.6rem;
+    padding: 0.45rem 1.05rem;
+    border: 0;
+    border-radius: 999px;
+    color: var(--sui-ink);
+    background: transparent;
+    box-shadow: none;
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    rotate: 0deg;
+    transition:
+      background-color 140ms ease,
+      color 140ms ease,
+      scale var(--sui-k-dur-press) var(--sui-k-ease-press);
+  }
+
+  .sui-k-navbar
+    .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+    .sui-sticker-navbar-link-slot
+    .sui-sticker-navbar-item:hover {
+    background: var(--sui-paper-muted);
+    translate: none;
+  }
+
+  .sui-k-navbar
+    .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+    .sui-sticker-navbar-link-slot
+    .sui-sticker-navbar-item:active {
+    scale: 0.96;
+    translate: none;
+  }
+
+  .sui-k-navbar
+    .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+    .sui-sticker-navbar-link-slot
+    .sui-sticker-navbar-item[aria-current="page"] {
+    color: #fff;
+    background: var(--sui-ultraviolet);
+    box-shadow: inset 0 -0.18rem 0 rgb(0 0 0 / 22%);
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-item[aria-current="page"]::after {
+    display: none;
+  }
+
+  /* Actions: search pill + ringed primary CTA. GitHub lives in the hero and
+     footer; on a textured band a bare text link would not read. */
+  .sui-k-navbar .sui-docs-navbar-actions {
+    gap: 0.6rem;
+  }
+
+  .sui-k-navbar .sui-docs-navbar-actions > a:not(.sui-docs-navbar-start) {
+    display: none;
+  }
+
+  .sui-k-navbar .sui-docs-search-trigger {
+    min-height: 2.9rem;
+    padding: 0.45rem 0.55rem 0.45rem 1rem;
+    border: 2px solid var(--sui-ink);
+    border-radius: 999px;
+    color: var(--sui-ink);
+    background: var(--sui-paper-raised);
+    box-shadow: 0 0.22rem 0 var(--sui-ink);
+    font-weight: 700;
+  }
+
+  .sui-k-navbar .sui-docs-search-trigger kbd {
+    display: inline-grid;
+    min-width: 1.6rem;
+    height: 1.6rem;
+    place-items: center;
+    border: 1.5px solid var(--sui-ink);
+    border-radius: 0.45rem;
+    background: var(--sui-paper-muted);
+    font-size: 0.8rem;
+  }
+
+  .sui-k-navbar .sui-docs-navbar-start {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 2.9rem;
+    padding: 0.45rem 1.2rem;
+    border: 3px solid var(--sui-paper-raised);
+    border-radius: 999px;
+    color: #fff;
+    background: var(--sui-ultraviolet);
+    box-shadow:
+      0 0 0 2px var(--sui-ink),
+      0 0.6rem 1.6rem rgb(124 44 255 / 45%);
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: scale var(--sui-k-dur-press) var(--sui-k-ease-press);
+  }
+
+  .sui-k-navbar .sui-docs-navbar-start span {
+    display: inline-block;
+    transition: translate var(--sui-k-dur-lift) var(--sui-k-ease-lift);
+  }
+
+  .sui-k-navbar .sui-docs-navbar-start:hover span {
+    translate: 0.25rem 0;
+  }
+
+  .sui-k-navbar .sui-docs-navbar-start:active {
+    scale: 0.96;
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-menu-trigger {
+    min-height: 2.9rem;
+    padding-inline: 1rem;
+    border: 2px solid var(--sui-ink);
+    border-radius: 999px;
+    background: var(--sui-acid);
+    box-shadow: 0 0.22rem 0 var(--sui-ink);
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-progress {
+    inset-block-end: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--sui-acid),
+      var(--sui-cyan) 50%,
+      var(--sui-hot-pink)
+    );
+    box-shadow: none;
+  }
+
+  /* Phones: brand, search and menu only. The CTA's destination is in the
+     menu and the hero; keeping it here pushed the menu off-screen. */
+  @media (width <= 48rem) {
+    .sui-k-navbar .sui-docs-navbar-start {
+      display: none;
     }
   }
 
-  @media (width > 1024px) and (width < 92rem) {
-    .sui-docs-navbar-actions > a:not(.sui-docs-navbar-start) {
+  @media (width <= 680px) {
+    .sui-k-navbar.sui-sticker-navbar {
+      --sui-navbar-height: 4.25rem;
+    }
+
+    .sui-k-brand {
+      min-height: 2.6rem;
+      padding-inline-end: 0.8rem;
+    }
+
+    .sui-k-brand-word {
+      font-size: 0.95rem;
+    }
+
+    .sui-k-smiley {
+      width: 1.9rem;
+      height: 1.9rem;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sui-k-navbar.sui-sticker-navbar::before,
+    .sui-k-navbar.sui-sticker-navbar::after {
       display: none;
+    }
+
+    .sui-k-navbar
+      .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+      .sui-sticker-navbar-link-slot
+      .sui-sticker-navbar-item[aria-current="page"] {
+      border: 2px solid Highlight;
+      color: CanvasText;
+      background: Canvas;
     }
   }
 }
@@ -2239,5 +2520,215 @@
 
   .sui-k-drawer-desk-head code {
     color: var(--sui-ink);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Footer outro                                                         */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  .sui-k-footer.sui-docs-footer {
+    display: block;
+    padding: 0;
+    overflow: hidden;
+    border-top: 0;
+    color: var(--sui-night-text);
+    background: var(--sui-night);
+  }
+
+  .sui-k-footer-band {
+    height: 6.5rem;
+    background: url("/collage/band.webp") repeat-x center / auto 9rem;
+    filter: saturate(0.85) brightness(0.8);
+    opacity: 0.5;
+    mask-image: linear-gradient(#000 35%, transparent);
+  }
+
+  .sui-k-footer-inner {
+    display: grid;
+    width: min(100%, var(--sui-k-max));
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 3rem) var(--sui-k-edge) 0;
+    gap: 3rem var(--sui-docs-grid-gutter);
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr);
+  }
+
+  .sui-k-footer-lead > p {
+    margin: 0;
+    color: var(--sui-night-muted);
+  }
+
+  .sui-k-footer-lead > .sui-k-footer-statement {
+    margin-block-end: 1rem;
+    color: var(--sui-night-text);
+    font-family: var(--sui-font-display);
+    font-size: clamp(2.4rem, 4.6vw, 4.2rem);
+    font-variation-settings: "wdth" 85;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+  }
+
+  .sui-k-footer-statement span {
+    display: inline-block;
+    padding: 0 0.16em;
+    border: 0.05em solid var(--sui-paper-raised);
+    border-radius: 0.12em 0.18em 0.14em 0.1em;
+    color: var(--sui-ink);
+    background: var(--sui-acid);
+    rotate: -3deg;
+  }
+
+  .sui-k-footer-nav {
+    display: grid;
+    gap: 2rem var(--sui-docs-grid-gutter);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sui-k-footer-label {
+    margin: 0 0 1rem;
+    color: var(--sui-night-muted);
+    font-family: var(--sui-font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .sui-k-footer-nav ul {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sui-k-footer-nav a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    color: var(--sui-night-text);
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 140ms ease;
+  }
+
+  .sui-k-footer-nav a:hover {
+    color: var(--sui-acid);
+    text-decoration: underline;
+    text-decoration-thickness: 0.1em;
+    text-underline-offset: 0.25em;
+  }
+
+  /* Giant wordmark; the "O" is the scroll-turning smiley. */
+  .sui-k-footer-word {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: clamp(2rem, 5vw, 4rem) 0 -0.16em;
+
+    /* Ultraviolet on night is 3.44:1, above the 3:1 large-text minimum
+       even though the wordmark is decorative (aria-hidden). */
+    color: var(--sui-ultraviolet);
+    font-family: var(--sui-font-display);
+    font-size: clamp(4.5rem, 19vw, 21rem);
+    font-variation-settings: "wdth" 85;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 0.82;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .sui-k-footer-word .sui-k-smiley {
+    width: 0.74em;
+    height: 0.74em;
+    margin-inline: 0.02em;
+  }
+
+  .sui-k-footer-meta.sui-docs-footer-meta {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    width: min(100%, var(--sui-k-max));
+    margin-inline: auto;
+    padding: 1.25rem var(--sui-k-edge) 1.5rem;
+    border-top: 1px solid var(--sui-night-line);
+    background: var(--sui-night);
+  }
+
+  .sui-k-footer-meta p {
+    margin: 0;
+    color: var(--sui-night-muted);
+    font-size: 0.85rem;
+  }
+
+  @media (width < 64rem) {
+    .sui-k-footer-inner {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (width < 40rem) {
+    .sui-k-footer-nav {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sui-k-footer-band {
+      display: none;
+    }
+  }
+}
+
+/* Forced colours for the night surfaces: the browser replaces backgrounds
+   with Canvas, so every authored light-on-dark colour must yield to system
+   colours or it lands light-on-light. */
+@layer scout-ui-kinetic {
+  @media (forced-colors: active) {
+    .sui-k-footer.sui-docs-footer,
+    .sui-k-footer-meta.sui-docs-footer-meta,
+    .sui-k-drawer,
+    .sui-k-final,
+    .sui-k-drawer-desk {
+      color: CanvasText;
+      background: Canvas;
+    }
+
+    :is(
+        .sui-k-footer.sui-docs-footer,
+        .sui-k-drawer.sui-k-section,
+        .sui-k-final[data-sui-theme],
+        .sui-k-drawer-desk[aria-labelledby]
+      )
+      :is(h2, p, span, li, code, strong) {
+      color: CanvasText;
+    }
+
+    :is(
+        .sui-k-footer.sui-docs-footer,
+        .sui-k-drawer.sui-k-section,
+        .sui-k-final[data-sui-theme],
+        .sui-k-drawer-desk[aria-labelledby]
+      )
+      a {
+      color: LinkText;
+    }
+
+    .sui-k-footer-statement span,
+    .sui-k-word[data-k-highlight] .sui-k-word-inner {
+      border-color: CanvasText;
+      background: Canvas;
+    }
+
+    .sui-k-footer-word {
+      color: CanvasText;
+    }
   }
 }

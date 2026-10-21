@@ -13,7 +13,7 @@ export const metadata: Metadata = routeMetadata({
 export default function ComponentsPage() {
   return (
     <div
-      className="sui-docs-page sui-docs-components-page sui-k-wide-page"
+      className="sui-docs-page sui-docs-components-page sui-k-wide-page sui-k-gallery-page"
       data-pagefind-body
     >
       <PageHeading

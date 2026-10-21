@@ -134,3 +134,47 @@ index "01 Installation") on both `origin/main` and this branch (identical result
 sets, captured in both builds). Measured: main 0/20, this branch 1/10 — the
 heavier homepage only shifts timing. Suggested maintainer fix: target the result
 by href or an exact name. The test was not modified.
+
+## Round 5 — realistic peel, enamel/foil badges, deck stack, dark gallery (2026-10-21)
+
+Package opt-ins (`StickerPeel appearance="realistic"`, `StickerBadge finish`,
+`StickerStack appearance="deck"`) ship in `@scout-ui/react` with unchanged
+defaults; the docs showcase pages (home, components, stickers, playground index)
+move to a dark gallery art direction in `apps/docs/app/gallery.css`.
+
+| Check                                                              | Result                                                                                          |
+| ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `@scout-ui/react` lint, typecheck, unit tests                      | PASS — 107/107 (new realistic-peel geometry, deck and finish tests)                             |
+| Package preflight (`pnpm test:packages`)                           | PASS against re-baselined tarball and size snapshots (see below); public API snapshot unchanged |
+| Package fixture browser suite (frozen v0.1 visuals)                | PASS 590/590 — defaults render exactly as before                                                |
+| Docs lint, typecheck, unit tests                                   | PASS — 116; codegen/prompt snapshots updated only for the new registry defaults                 |
+| Docs route budgets                                                 | PASS 12/12                                                                                      |
+| v0.1 docs behaviour specs (non-visual, 8 projects)                 | PASS 132/132                                                                                    |
+| axe (9 routes + search and mobile menu) default / forced / reduced | 0 violations in all three modes                                                                 |
+| Kinetic suite                                                      | PASS 50/50 against regenerated candidate baselines                                              |
+
+The frozen v0.1 docs visual specs (`*-visual.spec.ts`) fail by design against
+the redesign, as in earlier rounds; their baselines were not touched.
+
+**Size re-baselines needing release sign-off**
+(`tooling/package-preflight/snapshots/size-budgets.json`):
+`nonNavbarInteractive` gzip 14 762 → 15 501 B, raw 56 550 → 58 411 B;
+`@scout-ui/react` packed 116 976 → 121 866 B, unpacked 658 263 → 677 715 B.
+Tarball contents gain `dist/sticker-peel/peel-realistic.*` (4 files).
+
+Defects found and fixed during this round:
+
+- Enamel badge background dropped entirely: a bare colour in a non-final
+  `background` layer (via `var()`) invalidates the declaration at computed time.
+  Wrapped in `linear-gradient()`.
+- Gallery accent token reused the existing per-specimen `--sui-k-accent` name;
+  renamed `--sui-k-lit` (violet-on-black contrast failure).
+- Dark-gallery text leaked into the playground's light panels; scoped out.
+- Forced colours: gallery tokens remap to system colours; smoked-glass navbar
+  pills get Canvas/Highlight; the mobile Customize label inherits.
+- WebKit collage ribbon under-stamped (19/20) because a blurred shadow under
+  each giant letter repainted per stamp; the blur was removed.
+- Hero CTAs as full pills put the corner hit-point outside the shape; squarer
+  radius restores the whole box as the target.
+- `preflight` fixture regression from commit 83616f6 (example imported a
+  docs-only module); examples now inline own-art sources.

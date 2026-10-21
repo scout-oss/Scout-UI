@@ -15,7 +15,7 @@ export const metadata: Metadata = routeMetadata({
 
 export default function StickersPage() {
   return (
-    <div className="sui-docs-page sui-docs-stickers-page">
+    <div className="sui-docs-page sui-docs-stickers-page sui-k-gallery-page">
       <PageHeading
         eyebrow={`${String(stickerDefinitions.length)} cleared originals · ${officialStickerPack.artworkLicense}`}
         lede="The printed-matter set that dresses this site, and the installable official pack. Every component takes any art with the same { id, src, width, height } shape — bring your own PNG, WebP, SVG, or React content."

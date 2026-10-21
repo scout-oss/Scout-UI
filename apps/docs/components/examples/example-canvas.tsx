@@ -12,12 +12,29 @@ import {
 import { StickerTrail } from "@scout-ui/sticker-trail";
 import { useState } from "react";
 
-import { collageSticker } from "../../lib/collage";
 import type { ExampleSlug } from "../../lib/content/examples";
 
-const sun = collageSticker("instant-photo");
-const star = collageSticker("postage-stamp");
-const bolt = collageSticker("fragile-label");
+// Examples consume only published packages, so the artwork is declared the
+// way an application would: its own StickerSource objects pointing at files
+// it serves. (These are the docs site's printed-matter stickers.)
+const sun = {
+  height: 400,
+  id: "instant-photo",
+  src: "/collage/instant-photo.webp",
+  width: 400,
+};
+const star = {
+  height: 400,
+  id: "postage-stamp",
+  src: "/collage/postage-stamp.webp",
+  width: 400,
+};
+const bolt = {
+  height: 400,
+  id: "fragile-label",
+  src: "/collage/fragile-label.webp",
+  width: 400,
+};
 
 const stories = [
   {

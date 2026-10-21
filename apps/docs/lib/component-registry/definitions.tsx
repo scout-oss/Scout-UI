@@ -332,6 +332,7 @@ const badgeDefaults = {
   size: "default",
   rotation: -1,
   selected: false,
+  finish: "enamel",
 } as const satisfies ComponentConfigMap["sticker-badge"];
 const badgeFields: readonly ConfigField<ComponentConfigMap["sticker-badge"]>[] =
   [
@@ -364,6 +365,20 @@ const badgeFields: readonly ConfigField<ComponentConfigMap["sticker-badge"]>[] =
       "Appearance",
       badgeDefaults.tone,
       toneOptions,
+      { omitWhenDefault: false },
+    ),
+    choiceField(
+      "segmented",
+      "finish",
+      "Finish",
+      "Choose the material: flat label, enamel pin, or holographic foil.",
+      "Appearance",
+      badgeDefaults.finish,
+      [
+        { label: "flat", value: "flat" },
+        { label: "enamel", value: "enamel" },
+        { label: "foil", value: "foil" },
+      ],
       { omitWhenDefault: false },
     ),
     choiceField(
@@ -758,6 +773,7 @@ const cursorFields: readonly ConfigField<
 ];
 
 const peelDefaults = {
+  appearance: "realistic",
   open: false,
   origin: "top-right",
   peelSize: 72,
@@ -767,6 +783,19 @@ const peelDefaults = {
   reducedMotion: "system",
 } as const satisfies ComponentConfigMap["sticker-peel"];
 const peelFields: readonly ConfigField<ComponentConfigMap["sticker-peel"]>[] = [
+  choiceField(
+    "segmented",
+    "appearance",
+    "Appearance",
+    "Choose the classic diagonal reveal or the physically modelled peel.",
+    "Appearance",
+    peelDefaults.appearance,
+    [
+      { label: "realistic", value: "realistic" },
+      { label: "classic", value: "classic" },
+    ],
+    { omitWhenDefault: false },
+  ),
   booleanField(
     "open",
     "Open",
@@ -840,6 +869,7 @@ const peelFields: readonly ConfigField<ComponentConfigMap["sticker-peel"]>[] = [
 ];
 
 const stackDefaults = {
+  appearance: "deck",
   index: 0,
   visibleCount: 3,
   loop: false,
@@ -851,6 +881,19 @@ const stackDefaults = {
 } as const satisfies ComponentConfigMap["sticker-stack"];
 const stackFields: readonly ConfigField<ComponentConfigMap["sticker-stack"]>[] =
   [
+    choiceField(
+      "segmented",
+      "appearance",
+      "Appearance",
+      "Choose paper cards or a fanned deck of prints you can throw.",
+      "Appearance",
+      stackDefaults.appearance,
+      [
+        { label: "deck", value: "deck" },
+        { label: "paper", value: "paper" },
+      ],
+      { omitWhenDefault: false },
+    ),
     numericField(
       "range",
       "index",

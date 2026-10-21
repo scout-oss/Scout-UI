@@ -7,92 +7,92 @@
   "bundleProbes": {
     "broadTrail": {
       "baseline": {
-        "gzipBytes": 15647,
-        "rawBytes": 58593
+        "gzipBytes": 15639,
+        "rawBytes": 58632
       },
       "budget": {
-        "gzipBytes": 16899,
-        "rawBytes": 63281
+        "gzipBytes": 16891,
+        "rawBytes": 63323
       }
     },
     "cursor": {
       "baseline": {
-        "gzipBytes": 15052,
-        "rawBytes": 56901
+        "gzipBytes": 15037,
+        "rawBytes": 56811
       },
       "budget": {
-        "gzipBytes": 16257,
-        "rawBytes": 61454
+        "gzipBytes": 16240,
+        "rawBytes": 61356
       }
     },
     "navbar": {
       "baseline": {
-        "gzipBytes": 31209,
-        "rawBytes": 120094
+        "gzipBytes": 31184,
+        "rawBytes": 120492
       },
       "budget": {
-        "gzipBytes": 33706,
-        "rawBytes": 129702
+        "gzipBytes": 33679,
+        "rawBytes": 130132
       }
     },
     "navbarIncremental": {
       "baseline": {
-        "gzipBytes": 19792,
-        "rawBytes": 75677
+        "gzipBytes": 19762,
+        "rawBytes": 76006
       },
       "budget": {
-        "gzipBytes": 21376,
-        "rawBytes": 81732
+        "gzipBytes": 21343,
+        "rawBytes": 82087
       }
     },
     "nonNavbarInteractive": {
       "baseline": {
-        "gzipBytes": 13668,
-        "rawBytes": 52361
+        "gzipBytes": 15501,
+        "rawBytes": 58411
       },
       "budget": {
-        "gzipBytes": 14762,
-        "rawBytes": 56550
+        "gzipBytes": 16742,
+        "rawBytes": 63084
       }
     },
     "singleSticker": {
       "baseline": {
-        "gzipBytes": 915,
-        "rawBytes": 1731
+        "gzipBytes": 917,
+        "rawBytes": 1744
       },
       "budget": {
-        "gzipBytes": 1427,
-        "rawBytes": 2243
-      }
-    },
-    "standaloneTrail": {
-      "baseline": {
-        "gzipBytes": 15407,
-        "rawBytes": 57954
-      },
-      "budget": {
-        "gzipBytes": 16640,
-        "rawBytes": 62591
+        "gzipBytes": 1429,
+        "rawBytes": 2256
       }
     },
     "stack": {
       "baseline": {
-        "gzipBytes": 14758,
-        "rawBytes": 56649
+        "gzipBytes": 15111,
+        "rawBytes": 57950
       },
       "budget": {
-        "gzipBytes": 15939,
-        "rawBytes": 61181
+        "gzipBytes": 16320,
+        "rawBytes": 62586
+      }
+    },
+    "standaloneTrail": {
+      "baseline": {
+        "gzipBytes": 15400,
+        "rawBytes": 57993
+      },
+      "budget": {
+        "gzipBytes": 16632,
+        "rawBytes": 62633
       }
     },
     "stickerOnly": {
       "baseline": {
-        "gzipBytes": 11417,
-        "rawBytes": 44417
+        "gzipBytes": 11422,
+        "rawBytes": 44486
       },
       "budget": {
-        "gzipBytes": 12331,
-        "rawBytes": 47971
+        "gzipBytes": 12336,
+        "rawBytes": 48045
       }
     }
   },
@@ -104,26 +104,46 @@
     "@scout-ui/react": {
       "baseline": {
         "assetBytes": 0,
-        "cssBytes": 74665,
-        "declarationBytes": 42876,
-        "fileCount": 88,
-        "jsBytes": 114584,
-        "mapBytes": 248346,
-        "otherBytes": 12858,
-        "packedBytes": 108311,
-        "unpackedBytes": 493329
+        "cssBytes": 82315,
+        "declarationBytes": 45993,
+        "fileCount": 92,
+        "jsBytes": 108944,
+        "mapBytes": 426929,
+        "otherBytes": 13534,
+        "packedBytes": 121866,
+        "unpackedBytes": 677715
       },
       "budget": {
-        "packedBytes": 116976,
-        "unpackedBytes": 658263
+        "packedBytes": 131616,
+        "unpackedBytes": 731933
       },
       "largestFiles": [
         {
-          "bytes": 74665,
+          "bytes": 82315,
           "path": "dist/styles.css"
         },
         {
-          "bytes": 21896,
+          "bytes": 42110,
+          "path": "dist/sticker-stack/StickerStack.js.map"
+        },
+        {
+          "bytes": 35049,
+          "path": "dist/sticker-cursor/engine.js.map"
+        },
+        {
+          "bytes": 30858,
+          "path": "dist/tokens.generated.js.map"
+        },
+        {
+          "bytes": 30324,
+          "path": "dist/sticker-peel/StickerPeel.js.map"
+        },
+        {
+          "bytes": 29205,
+          "path": "dist/sticker-navbar/StickerNavbar.js.map"
+        },
+        {
+          "bytes": 24617,
           "path": "dist/sticker-stack/StickerStack.d.ts.map"
         },
         {
@@ -131,32 +151,12 @@
           "path": "dist/sticker-cursor/engine.d.ts.map"
         },
         {
-          "bytes": 19716,
-          "path": "dist/sticker-cursor/engine.js"
-        },
-        {
-          "bytes": 19179,
+          "bytes": 20187,
           "path": "dist/sticker-stack/StickerStack.js"
         },
         {
-          "bytes": 18199,
-          "path": "dist/tokens.generated.d.ts"
-        },
-        {
-          "bytes": 17976,
-          "path": "dist/sticker-navbar/StickerNavbar.d.ts.map"
-        },
-        {
-          "bytes": 17325,
-          "path": "dist/tokens.generated.d.ts.map"
-        },
-        {
-          "bytes": 16980,
-          "path": "dist/tokens.generated.js"
-        },
-        {
-          "bytes": 16477,
-          "path": "dist/sticker-stack/StickerStack.js.map"
+          "bytes": 20161,
+          "path": "dist/sticker-peel/peel-realistic.js.map"
         }
       ]
     },
@@ -166,28 +166,36 @@
         "cssBytes": 2805,
         "declarationBytes": 13381,
         "fileCount": 40,
-        "jsBytes": 36725,
-        "mapBytes": 82512,
-        "otherBytes": 5895,
-        "packedBytes": 38726,
-        "unpackedBytes": 141318
+        "jsBytes": 27021,
+        "mapBytes": 119443,
+        "otherBytes": 6579,
+        "packedBytes": 36902,
+        "unpackedBytes": 169229
       },
       "budget": {
-        "packedBytes": 41825,
+        "packedBytes": 39855,
         "unpackedBytes": 182768
       },
       "largestFiles": [
+        {
+          "bytes": 30937,
+          "path": "dist/engine.js.map"
+        },
         {
           "bytes": 17897,
           "path": "dist/engine.d.ts.map"
         },
         {
-          "bytes": 17165,
+          "bytes": 12892,
           "path": "dist/engine.js"
         },
         {
-          "bytes": 14450,
-          "path": "dist/engine.js.map"
+          "bytes": 10366,
+          "path": "dist/presets.js.map"
+        },
+        {
+          "bytes": 7165,
+          "path": "dist/geometry.js.map"
         },
         {
           "bytes": 6993,
@@ -198,24 +206,16 @@
           "path": "dist/geometry.d.ts.map"
         },
         {
-          "bytes": 5207,
-          "path": "dist/presets.js"
+          "bytes": 6137,
+          "path": "dist/pool.js.map"
+        },
+        {
+          "bytes": 5946,
+          "path": "dist/StickerTrail.js.map"
         },
         {
           "bytes": 4702,
           "path": "dist/pool.d.ts.map"
-        },
-        {
-          "bytes": 4439,
-          "path": "dist/presets.js.map"
-        },
-        {
-          "bytes": 4074,
-          "path": "dist/types.d.ts.map"
-        },
-        {
-          "bytes": 3827,
-          "path": "dist/StickerTrail.d.ts.map"
         }
       ]
     },
@@ -224,16 +224,16 @@
         "assetBytes": 15588,
         "cssBytes": 0,
         "declarationBytes": 59576,
-        "fileCount": 149,
-        "jsBytes": 29898,
-        "mapBytes": 65620,
-        "otherBytes": 31894,
-        "packedBytes": 26944,
-        "unpackedBytes": 202576
+        "fileCount": 151,
+        "jsBytes": 30714,
+        "mapBytes": 103128,
+        "otherBytes": 32968,
+        "packedBytes": 28976,
+        "unpackedBytes": 241974
       },
       "budget": {
-        "packedBytes": 29100,
-        "unpackedBytes": 252643
+        "packedBytes": 31295,
+        "unpackedBytes": 261332
       },
       "largestFiles": [
         {
@@ -245,36 +245,36 @@
           "path": "assets/manifest.json"
         },
         {
+          "bytes": 5570,
+          "path": "dist/asset-urls.mjs.map"
+        },
+        {
           "bytes": 4262,
           "path": "dist/manifest.generated.d.ts.map"
+        },
+        {
+          "bytes": 3543,
+          "path": "dist/manifest.generated.js.map"
+        },
+        {
+          "bytes": 3177,
+          "path": "dist/asset-urls.mjs"
         },
         {
           "bytes": 2891,
           "path": "dist/types.d.ts.map"
         },
         {
-          "bytes": 2354,
+          "bytes": 2274,
           "path": "dist/manifest.generated.js"
         },
         {
-          "bytes": 1964,
-          "path": "ART_DIRECTION.md"
-        },
-        {
-          "bytes": 1848,
-          "path": "dist/manifest.generated.js.map"
-        },
-        {
-          "bytes": 1633,
+          "bytes": 2069,
           "path": "package.json"
         },
         {
-          "bytes": 1458,
-          "path": "dist/definitions/scribble-pointer.d.ts.map"
-        },
-        {
-          "bytes": 1449,
-          "path": "dist/definitions/highlight-swipe.d.ts.map"
+          "bytes": 2041,
+          "path": "dist/definitions/scribble-pointer.js.map"
         }
       ]
     }

@@ -16,6 +16,21 @@ proposed for a post-v0.1 minor release. Each is additive and opt-in.
 | P8  | `StickerTrail` / `Cursor` | Expose the `sleep-when-idle` guarantee as a documented contract and a test helper (pending-frame probe).                                                                                                                                                                                                                                   | Docs/test only.                                                                                                                                                                                                                                         | Codifies what the M17 runtime test already measures.                                                                                                                                                                                                                                        |
 | P9  | `StickerTrail`            | **Collage grammar** (from the ugly.cash study): `preset: "collage"` (large art, no rotation, ~20px spacing, 1000ms), `entrance?: "stick" \| "none"`, `exit?: … \| "cut"` (hard disappear, no fade), and newest-on-top stacking for recycled pool slots. Implemented today only as the docs-level `CollageTrailLayer` on the design branch. | Additive: new preset union member, new optional `entrance`, new exit member; stacking order is a behaviour change for all presets unless gated (`stacking?: "pool" \| "newest"`, default `"pool"`). Public type snapshot + changeset needed; post-v0.1. | Stacking via incrementing `z-index` on the recycled node (one style write per spawn, no DOM moves). A `cut` exit removes the per-frame opacity write. Large art (200px) should stay raster (WebP) — 48 filtered SVGs would be too expensive to paint. Reduced motion: unchanged (disabled). |
 
+## Implemented as opt-ins on the design branch (pending release approval)
+
+At the user's request (round 5) three proposals moved into `@scout-ui/react`
+behind new opt-in props. Defaults are unchanged, so v0.1 consumers see no
+difference, but the public type surface, the tarball contents and two size
+budgets changed. They ship only in a release after v0.1, with the changeset
+`.changeset/opt-in-realistic-peel-badge-finish-deck.md`, and need maintainer
+sign-off on the re-baselined snapshots.
+
+| Prop                                     | Supersedes | What it does                                                                                                                                                                                                                                              |
+| ---------------------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `StickerPeel appearance="realistic"`     | P6         | Fold-line geometry (perpendicular bisector of corner → pointer), clip-path front, reflected paper backside with crease shading, separate blurred cast shadow, spring settle, hover lift. Imperative, no React state per move. Forced colors: flap hidden. |
+| `StickerBadge finish="enamel" \| "foil"` | new        | CSS-only materials: enamel pin (metal rim, gloss, pressed selected state) and holographic foil (sweep on hover). Badge stays server-compatible.                                                                                                           |
+| `StickerStack appearance="deck"`         | P5 (part)  | Fanned deck of prints; the held card follows the pointer in 2D with rotation and is thrown from its release pose on commit. Buttons and keys keep the same navigation.                                                                                    |
+
 ## Explicitly not proposed
 
 - No animation-library dependency.

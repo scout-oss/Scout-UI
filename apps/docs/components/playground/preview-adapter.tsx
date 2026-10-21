@@ -83,6 +83,7 @@ function BadgePreview({
 }) {
   const shared = {
     children: config.label,
+    finish: config.finish,
     rotation: config.rotation,
     shape: config.shape,
     size: config.size,
@@ -227,6 +228,7 @@ function PeelPreview({
 }) {
   return (
     <StickerPeel
+      appearance={config.appearance}
       back={
         <div className="sui-docs-demo-peel-layer" data-side="back">
           <strong>Second layer.</strong>
@@ -264,6 +266,7 @@ function StackPreview({
 }) {
   return (
     <StickerStack
+      appearance={config.appearance}
       axis={config.axis}
       className="sui-docs-demo-stack"
       disabled={config.disabled}

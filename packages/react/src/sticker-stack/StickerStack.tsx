@@ -46,6 +46,11 @@ export interface StickerStackProps<T>
   previousLabel?: string;
   empty?: ReactNode;
   disabled?: boolean;
+  /**
+   * Post-v0.1 opt-in. `deck` presents a fanned deck of prints: the held card
+   * follows the pointer in 2D and a committed swipe throws it. Default `paper`.
+   */
+  appearance?: "paper" | "deck";
 }
 
 interface StackTransition<T> {
@@ -68,6 +73,15 @@ interface StackDragSession {
 }
 
 const TRANSITION_MS = 260;
+const DECK_TRANSITION_MS = 460;
+const THROW_VARS = [
+  "--sui-stack-internal-from-x",
+  "--sui-stack-internal-from-y",
+  "--sui-stack-internal-from-r",
+  "--sui-stack-internal-throw-x",
+  "--sui-stack-internal-throw-y",
+  "--sui-stack-internal-throw-r",
+] as const;
 
 function isReducedMotion(policy: ScoutMotionPolicy["reducedMotion"]) {
   return (
@@ -83,6 +97,7 @@ function keyEquals(left: Key | null, right: Key) {
 
 export function StickerStack<T>(props: StickerStackProps<T>) {
   const {
+    appearance = "paper",
     axis = "x",
     className,
     defaultIndex = 0,
@@ -126,6 +141,7 @@ export function StickerStack<T>(props: StickerStackProps<T>) {
   const transitionRef = useRef(false);
   const transitionTimerRef = useRef<number | null>(null);
   const suppressClickRef = useRef(false);
+  const deck = appearance === "deck";
   const keys = items.map((item) => getKey(item));
   const normalizedInputIndex = normalizeStackIndex(
     isControlled ? index : uncontrolledState.index,
@@ -162,6 +178,7 @@ export function StickerStack<T>(props: StickerStackProps<T>) {
     root.style.setProperty("--sui-stack-internal-drag-x", "0px");
     root.style.setProperty("--sui-stack-internal-drag-y", "0px");
     root.style.setProperty("--sui-stack-internal-drag-progress", "0");
+    root.style.setProperty("--sui-stack-internal-drag-rotate", "0deg");
     root.dataset.stackDragging = "false";
     root.dataset.stackDragProgress = "0";
   };
@@ -231,6 +248,14 @@ export function StickerStack<T>(props: StickerStackProps<T>) {
       return;
     }
 
+    if (deck) {
+      // Buttons and keys use the authored throw unless a drag armed one.
+      const root = rootRef.current;
+      if (root !== null && root.dataset.stackThrowArmed !== "true") {
+        THROW_VARS.forEach((name) => root.style.removeProperty(name));
+      }
+      if (root !== null) delete root.dataset.stackThrowArmed;
+    }
     transitionRef.current = true;
     setTransition({
       direction,
@@ -263,8 +288,18 @@ export function StickerStack<T>(props: StickerStackProps<T>) {
       });
       session.lastMeasurement = measurement;
       session.lastTime = performance.now();
-      const x = axis === "x" ? measurement.offset : 0;
-      const y = axis === "y" ? measurement.offset : 0;
+      // Deck cards are held: they follow the pointer freely and tilt with
+      // horizontal travel. Paper cards stay locked to the configured axis.
+      const freeX = session.latest.x - session.start.x;
+      const freeY = session.latest.y - session.start.y;
+      const x = deck ? freeX : axis === "x" ? measurement.offset : 0;
+      const y = deck ? freeY : axis === "y" ? measurement.offset : 0;
+      if (deck) {
+        root.style.setProperty(
+          "--sui-stack-internal-drag-rotate",
+          `${String(Math.max(-20, Math.min(20, freeX * 0.07)))}deg`,
+        );
+      }
       root.style.setProperty("--sui-stack-internal-drag-x", `${String(x)}px`);
       root.style.setProperty("--sui-stack-internal-drag-y", `${String(y)}px`);
       root.style.setProperty(
@@ -345,12 +380,38 @@ export function StickerStack<T>(props: StickerStackProps<T>) {
     const claimed = session.intent === "stack";
     releaseCapture(session);
     dragRef.current = null;
+    const root = rootRef.current;
+    if (deck && claimed && !cancelled && root !== null) {
+      // Hand the held pose to the outgoing card so the throw continues from
+      // where the card was released, in the direction it was moving.
+      const dx = session.latest.x - session.start.x;
+      const dy = session.latest.y - session.start.y;
+      const rotation = Math.max(-20, Math.min(20, dx * 0.07));
+      const sign = dx === 0 ? -1 : Math.sign(dx);
+      const values = [
+        `${String(dx)}px`,
+        `${String(dy)}px`,
+        `${String(rotation)}deg`,
+        `${String(dx + sign * session.extent * 1.6)}px`,
+        `${String(dy * 1.6 - session.extent * 0.08)}px`,
+        `${String(rotation * 2 + sign * 10)}deg`,
+      ];
+      THROW_VARS.forEach((name, position) => {
+        root.style.setProperty(name, values[position] ?? "0");
+      });
+      root.dataset.stackThrowArmed = "true";
+    }
     resetDragVisual();
     if (!claimed || cancelled) return;
     event.preventDefault();
     suppressClickRef.current = measurement.progress >= 0.03;
     const direction = resolveStackSwipe(measurement);
-    if (direction !== null) requestNavigation(direction);
+    if (direction !== null) {
+      requestNavigation(direction);
+    } else if (root !== null) {
+      // No commit: the held card simply settles back; drop the armed throw.
+      delete root.dataset.stackThrowArmed;
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -432,7 +493,7 @@ export function StickerStack<T>(props: StickerStackProps<T>) {
     if (transition === null) return;
     transitionTimerRef.current = window.setTimeout(
       clearTransition,
-      TRANSITION_MS,
+      deck ? DECK_TRANSITION_MS : TRANSITION_MS,
     );
     return () => {
       if (transitionTimerRef.current !== null) {
@@ -440,7 +501,7 @@ export function StickerStack<T>(props: StickerStackProps<T>) {
         transitionTimerRef.current = null;
       }
     };
-  }, [transition]);
+  }, [deck, transition]);
 
   const itemSignature = keys.map((key) => String(key)).join("\u001f");
   const itemSignatureRef = useRef(itemSignature);
@@ -506,6 +567,7 @@ export function StickerStack<T>(props: StickerStackProps<T>) {
       aria-roledescription="stack"
       role="group"
       className={joinClassNames("sui-sticker-stack", className)}
+      data-appearance={appearance}
       data-axis={axis}
       data-disabled={disabled ? "true" : "false"}
       data-reduced-motion={reducedMotion}

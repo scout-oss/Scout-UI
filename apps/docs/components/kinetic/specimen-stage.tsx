@@ -135,6 +135,7 @@ function SelectSpecimen() {
                 : current.filter((item) => item !== option),
             );
           }}
+          finish={index % 2 === 0 ? "enamel" : "foil"}
           rotation={[-4, 3, -2, 5][index] ?? 0}
           selected={selected.includes(option)}
           tone={(["acid", "pink", "cyan", "orange"] as const)[index] ?? "acid"}
@@ -147,9 +148,9 @@ function SelectSpecimen() {
 }
 
 const stackCards = [
-  { id: "one", label: "Drag me sideways.", tone: "acid" },
-  { id: "two", label: "Velocity decides.", tone: "pink" },
-  { id: "three", label: "Arrow keys work too.", tone: "cyan" },
+  { caption: "Hold it. Throw it.", id: "one", photo: "instant-photo" },
+  { caption: "It tucks back under.", id: "two", photo: "mixtape" },
+  { caption: "Arrow keys throw too.", id: "three", photo: "postage-stamp" },
 ] as const;
 
 function NavbarSpecimen() {
@@ -263,18 +264,20 @@ export function SpecimenStage({ slug }: { readonly slug: ComponentSlug }) {
       return (
         <WhenNear poster={<Poster source={photo} verb="peel" />}>
           <StickerPeel
+            appearance="realistic"
             back={
               <div className="sui-k-peel-face" data-side="back">
                 <strong>Underneath.</strong>
-                <span>Still semantic.</span>
+                <span>Still semantic. Still mounted.</span>
               </div>
             }
             className="sui-k-specimen-peel"
             drag
             front={
               <div className="sui-k-peel-face" data-side="front">
-                <Sticker alt="" shadow="none" size="lg" source={photo} />
-                <strong>Peel the corner.</strong>
+                <span className="sui-k-peel-brand">SCOUT · UI</span>
+                <strong>Peel me.</strong>
+                <span className="sui-k-peel-fine">Grab the lifted corner</span>
               </div>
             }
             origin="bottom-right"
@@ -286,16 +289,27 @@ export function SpecimenStage({ slug }: { readonly slug: ComponentSlug }) {
       return (
         <WhenNear poster={<Poster source={floppy} verb="shuffle" />}>
           <StickerStack
+            appearance="deck"
             className="sui-k-specimen-stack"
             drag
             getKey={(item) => item.id}
             items={stackCards}
+            keyboard
             loop
             renderItem={(item, context) => (
-              <article data-tone={item.tone}>
-                <span>0{String(context.index + 1)}</span>
-                <strong>{item.label}</strong>
-              </article>
+              <figure className="sui-k-print">
+                <span className="sui-k-print-photo">
+                  <Sticker
+                    alt=""
+                    shadow="none"
+                    size="100%"
+                    source={collageSticker(item.photo)}
+                  />
+                </span>
+                <figcaption>
+                  <span>0{String(context.index + 1)}</span> {item.caption}
+                </figcaption>
+              </figure>
             )}
             visibleCount={3}
           />

@@ -132,6 +132,7 @@ export default function StickerBadgeExample() {
     <StickerBadge
       mode="select"
       tone="cyan"
+      finish="enamel"
       shape="stamp"
       rotation={-1}
       selected={selected}
@@ -152,6 +153,7 @@ export default function StickerBadgeExample() {
   return (
     <StickerBadge
       tone="cyan"
+      finish="enamel"
       rotation={-1}
     >
       {"Fresh signal"}
@@ -169,6 +171,7 @@ export default function StickerBadgeExample() {
   return (
     <StickerBadge
       tone="cyan"
+      finish="enamel"
       rotation={-1}
     >
       {"Fresh signal"}
@@ -193,6 +196,7 @@ export default function StickerBadgeExample() {
     <StickerBadge
       mode="remove"
       tone="pink"
+      finish="enamel"
       rotation={-1}
       removeLabel={"Remove tag: Remove me"}
       onRemove={() => setVisible(false)}
@@ -218,6 +222,7 @@ export default function StickerBadgeExample() {
     <StickerBadge
       mode="select"
       tone="acid"
+      finish="enamel"
       shape="stamp"
       rotation={-1}
       selected={selected}
@@ -624,6 +629,7 @@ export default function StickerPeelExample() {
           <p>Complete semantic content.</p>
         </article>
       }
+      appearance="realistic"
       defaultOpen
       origin="bottom-left"
       drag={false}
@@ -652,6 +658,7 @@ export default function StickerPeelExample() {
           <p>Complete semantic content.</p>
         </article>
       }
+      appearance="realistic"
       drag
     />
   );
@@ -678,6 +685,7 @@ export default function StickerPeelExample() {
           <p>Complete semantic content.</p>
         </article>
       }
+      appearance="realistic"
       drag
     />
   );
@@ -704,6 +712,7 @@ export default function StickerPeelExample() {
           <p>Complete semantic content.</p>
         </article>
       }
+      appearance="realistic"
       defaultOpen
       drag
     />
@@ -731,6 +740,7 @@ export default function StickerPeelExample() {
           <p>Complete semantic content.</p>
         </article>
       }
+      appearance="realistic"
       origin="bottom-left"
       drag={false}
       reducedMotion="always"
@@ -763,6 +773,7 @@ export default function StickerStackExample() {
           <h2>{item.title}</h2>
         </article>
       )}
+      appearance="deck"
       defaultIndex={2}
       axis="y"
       drag
@@ -796,6 +807,7 @@ export default function StickerStackExample() {
           <h2>{item.title}</h2>
         </article>
       )}
+      appearance="deck"
     />
   );
 }
@@ -825,6 +837,7 @@ export default function StickerStackExample() {
           <h2>{item.title}</h2>
         </article>
       )}
+      appearance="deck"
     />
   );
 }
@@ -854,6 +867,7 @@ export default function StickerStackExample() {
           <h2>{item.title}</h2>
         </article>
       )}
+      appearance="deck"
       loop
       drag
       keyboard
@@ -886,6 +900,7 @@ export default function StickerStackExample() {
           <h2>{item.title}</h2>
         </article>
       )}
+      appearance="deck"
       defaultIndex={2}
       visibleCount={4}
       axis="y"

@@ -589,6 +589,14 @@ Static mode renders a `<span>`. Select mode renders a button with
 and removal, consumers compose sibling select and remove controls in a group
 rather than nesting interactive elements.
 
+**Post-v0.1 opt-in (design branch, pending release approval):**
+`finish?: "flat" | "enamel" | "foil"`, default `"flat"`. `enamel` renders an
+enamel-pin treatment (metallic rim, domed gloss, pressed state for select mode);
+`foil` renders a holographic foil whose sheen sweeps on hover and focus. Both
+are pure CSS, keep the badge a server-compatible leaf, keep every semantic and
+target-size rule above, and fall back to the flat look in forced colors and
+reduced motion (no sweep).
+
 ### 10.3 StickerButton
 
 ```ts
@@ -838,6 +846,19 @@ mounted by default to preserve semantics and size; inertness and visibility are
 managed according to state. An opt-in lazy back layer may be considered after
 hydration and accessibility tests.
 
+**Post-v0.1 opt-in (design branch, pending release approval):**
+`appearance?: "classic" | "realistic"`, default `"classic"`. `realistic` renders
+a physically modelled peel: the fold line is the perpendicular bisector between
+the peel corner and the drag point, the front is clipped to the still-stuck
+half-plane, the peeled region is reflected across the fold as the paper backside
+(crease shading and highlight follow the fold angle), and a soft cast shadow
+falls on the front. The tip follows the pointer during drag, settles with a
+spring on release, rests with a small lifted corner, and lifts further on
+hover/focus of the grip. Fully open fades the flap away. Geometry is written
+imperatively (clip-path, transforms) in coalesced frames; React state still
+changes only on commit. Reduced motion swaps state without travel; forced colors
+hide the flap and shadow.
+
 ### 10.8 StickerStack
 
 ```ts
@@ -876,6 +897,14 @@ and `keyboard=false`. The default control labels are “Next item” and “Prev
 item”. These defaults keep the minimal render bounded, finite, button-operable,
 and free of gesture or keyboard interception until the consumer opts into those
 enhancements.
+
+**Post-v0.1 opt-in (design branch, pending release approval):**
+`appearance?: "paper" | "deck"`, default `"paper"`. `deck` presents the items as
+a fanned deck of prints. With `drag`, the active card follows the pointer in two
+dimensions and tilts with horizontal travel; a committed swipe throws it off in
+the release direction and it tucks back under the deck. Buttons and keyboard
+navigation throw in a default direction. Semantics, inertness, announcements,
+`visibleCount` bounds, and reduced-motion direct commits are unchanged.
 
 ## 11. CSS architecture
 

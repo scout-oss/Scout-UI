@@ -406,6 +406,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 - Mode: select. Choose static label, selection, or whole-badge removal semantics.
 - Label: "Fresh signal". Set the compact visible label.
 - Tone: cyan. Choose an expressive semantic tone.
+- Finish: enamel. Choose the material: flat label, enamel pin, or holographic foil.
 - Shape: stamp. Use label, stamp, or a true pill.
 - Size: default. Choose compact, default, or large target geometry.
 - Rotation: -1. Keep compact label rotation within a restrained range.
@@ -447,6 +448,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Exact selected configuration
 - Label: "Fresh signal". Set the compact visible label.
 - Tone: cyan. Choose an expressive semantic tone.
+- Finish: enamel. Choose the material: flat label, enamel pin, or holographic foil.
 - Rotation: -1. Keep compact label rotation within a restrained range.
 
 ## Integration and layout
@@ -482,6 +484,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 - Mode: static. Choose static label, selection, or whole-badge removal semantics.
 - Label: "Fresh signal". Set the compact visible label.
 - Tone: cyan. Choose an expressive semantic tone.
+- Finish: enamel. Choose the material: flat label, enamel pin, or holographic foil.
 - Shape: label. Use label, stamp, or a true pill.
 - Size: default. Choose compact, default, or large target geometry.
 - Rotation: -1. Keep compact label rotation within a restrained range.
@@ -521,6 +524,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 ## Exact selected configuration
 - Label: "Fresh signal". Set the compact visible label.
 - Tone: cyan. Choose an expressive semantic tone.
+- Finish: enamel. Choose the material: flat label, enamel pin, or holographic foil.
 - Rotation: -1. Keep compact label rotation within a restrained range.
 
 ## Integration and layout
@@ -556,6 +560,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 - Mode: static. Choose static label, selection, or whole-badge removal semantics.
 - Label: "Fresh signal". Set the compact visible label.
 - Tone: cyan. Choose an expressive semantic tone.
+- Finish: enamel. Choose the material: flat label, enamel pin, or holographic foil.
 - Shape: label. Use label, stamp, or a true pill.
 - Size: default. Choose compact, default, or large target geometry.
 - Rotation: -1. Keep compact label rotation within a restrained range.
@@ -596,6 +601,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 - Mode: remove. Choose static label, selection, or whole-badge removal semantics.
 - Label: "Remove me". Set the compact visible label.
 - Tone: pink. Choose an expressive semantic tone.
+- Finish: enamel. Choose the material: flat label, enamel pin, or holographic foil.
 - Rotation: -1. Keep compact label rotation within a restrained range.
 
 ## Integration and layout
@@ -631,6 +637,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 - Mode: remove. Choose static label, selection, or whole-badge removal semantics.
 - Label: "Remove me". Set the compact visible label.
 - Tone: pink. Choose an expressive semantic tone.
+- Finish: enamel. Choose the material: flat label, enamel pin, or holographic foil.
 - Shape: label. Use label, stamp, or a true pill.
 - Size: default. Choose compact, default, or large target geometry.
 - Rotation: -1. Keep compact label rotation within a restrained range.
@@ -671,6 +678,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 - Mode: select. Choose static label, selection, or whole-badge removal semantics.
 - Label: "Fresh signal". Set the compact visible label.
 - Tone: acid. Choose an expressive semantic tone.
+- Finish: enamel. Choose the material: flat label, enamel pin, or holographic foil.
 - Shape: stamp. Use label, stamp, or a true pill.
 - Rotation: -1. Keep compact label rotation within a restrained range.
 - Selected: enabled. Set the pressed selection state.
@@ -708,6 +716,7 @@ Inspect the existing React entry, component structure, styling convention, packa
 - Mode: select. Choose static label, selection, or whole-badge removal semantics.
 - Label: "Fresh signal". Set the compact visible label.
 - Tone: acid. Choose an expressive semantic tone.
+- Finish: enamel. Choose the material: flat label, enamel pin, or holographic foil.
 - Shape: stamp. Use label, stamp, or a true pill.
 - Size: default. Choose compact, default, or large target geometry.
 - Rotation: -1. Keep compact label rotation within a restrained range.
@@ -1826,6 +1835,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: realistic. Choose the classic diagonal reveal or the physically modelled peel.
 - Open: enabled. Choose the current semantic layer.
 - Origin: bottom-left. Anchor the peel to one of four corners.
 - Peel size: 72. Set the authored curl signal size.
@@ -1868,6 +1878,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: realistic. Choose the classic diagonal reveal or the physically modelled peel.
 - Drag enhancement: enabled. Add directional pointer drag without removing click or keyboard.
 
 ## Integration and layout
@@ -1900,6 +1911,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: realistic. Choose the classic diagonal reveal or the physically modelled peel.
 - Open: disabled. Choose the current semantic layer.
 - Origin: top-right. Anchor the peel to one of four corners.
 - Peel size: 72. Set the authored curl signal size.
@@ -1943,6 +1955,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: realistic. Choose the classic diagonal reveal or the physically modelled peel.
 - Drag enhancement: enabled. Add directional pointer drag without removing click or keyboard.
 
 ## Integration and layout
@@ -1975,6 +1988,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: realistic. Choose the classic diagonal reveal or the physically modelled peel.
 - Open: disabled. Choose the current semantic layer.
 - Origin: top-right. Anchor the peel to one of four corners.
 - Peel size: 72. Set the authored curl signal size.
@@ -2018,6 +2032,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: realistic. Choose the classic diagonal reveal or the physically modelled peel.
 - Open: enabled. Choose the current semantic layer.
 - Drag enhancement: enabled. Add directional pointer drag without removing click or keyboard.
 
@@ -2051,6 +2066,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: realistic. Choose the classic diagonal reveal or the physically modelled peel.
 - Open: enabled. Choose the current semantic layer.
 - Origin: top-right. Anchor the peel to one of four corners.
 - Peel size: 72. Set the authored curl signal size.
@@ -2094,6 +2110,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: realistic. Choose the classic diagonal reveal or the physically modelled peel.
 - Origin: bottom-left. Anchor the peel to one of four corners.
 - Drag enhancement: disabled. Add directional pointer drag without removing click or keyboard.
 - Motion policy: Always reduce. Replace spatial curl travel with immediate state feedback.
@@ -2128,6 +2145,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: realistic. Choose the classic diagonal reveal or the physically modelled peel.
 - Open: disabled. Choose the current semantic layer.
 - Origin: bottom-left. Anchor the peel to one of four corners.
 - Peel size: 72. Set the authored curl signal size.
@@ -2170,6 +2188,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: deck. Choose paper cards or a fanned deck of prints you can throw.
 - Active card: 2. Choose one of the four fixed authored demo cards.
 - Visible cards: 3. Bound rendered layers from two to five.
 - Loop: disabled. Allow navigation across collection boundaries.
@@ -2214,7 +2233,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Use the canonical documented defaults.
+- Appearance: deck. Choose paper cards or a fanned deck of prints you can throw.
 
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerStack; do not invent a filename.
@@ -2246,6 +2265,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: deck. Choose paper cards or a fanned deck of prints you can throw.
 - Active card: 0. Choose one of the four fixed authored demo cards.
 - Visible cards: 3. Bound rendered layers from two to five.
 - Loop: disabled. Allow navigation across collection boundaries.
@@ -2290,7 +2310,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
-- Use the canonical documented defaults.
+- Appearance: deck. Choose paper cards or a fanned deck of prints you can throw.
 
 ## Integration and layout
 Inspect the existing page and component hierarchy, then choose the smallest appropriate integration point for StickerStack; do not invent a filename.
@@ -2322,6 +2342,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: deck. Choose paper cards or a fanned deck of prints you can throw.
 - Active card: 0. Choose one of the four fixed authored demo cards.
 - Visible cards: 3. Bound rendered layers from two to five.
 - Loop: disabled. Allow navigation across collection boundaries.
@@ -2366,6 +2387,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: deck. Choose paper cards or a fanned deck of prints you can throw.
 - Loop: enabled. Allow navigation across collection boundaries.
 - Drag enhancement: enabled. Add axis-locked swipe while preserving buttons.
 - Arrow keys: enabled. Enable documented arrow navigation on the focused stack.
@@ -2400,6 +2422,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: deck. Choose paper cards or a fanned deck of prints you can throw.
 - Active card: 0. Choose one of the four fixed authored demo cards.
 - Visible cards: 3. Bound rendered layers from two to five.
 - Loop: enabled. Allow navigation across collection boundaries.
@@ -2444,6 +2467,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: deck. Choose paper cards or a fanned deck of prints you can throw.
 - Active card: 2. Choose one of the four fixed authored demo cards.
 - Visible cards: 4. Bound rendered layers from two to five.
 - Axis: Vertical. Choose horizontal or vertical gesture geometry.
@@ -2479,6 +2503,7 @@ Inspect the manifest and current package manager; add @scout-ui/react only if it
 Inspect the existing React entry, component structure, styling convention, package manager, and test setup before editing files.
 
 ## Exact selected configuration
+- Appearance: deck. Choose paper cards or a fanned deck of prints you can throw.
 - Active card: 2. Choose one of the four fixed authored demo cards.
 - Visible cards: 4. Bound rendered layers from two to five.
 - Loop: disabled. Allow navigation across collection boundaries.

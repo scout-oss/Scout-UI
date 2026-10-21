@@ -75,7 +75,10 @@ export default function HomePage() {
   const deskStickers = collageStickers;
 
   return (
-    <div className="sui-docs-home sui-k-home" data-pagefind-body>
+    <div
+      className="sui-docs-home sui-k-home sui-k-gallery-page"
+      data-pagefind-body
+    >
       <section className="sui-k-hero" data-k-pressure-field>
         <CollageTrailLayer />
         <div className="sui-k-hero-meta">

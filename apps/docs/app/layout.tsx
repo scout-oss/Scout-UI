@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import "@scout-ui/react/styles.css";
 import "./globals.css";
 import "./kinetic.css";
+import "./gallery.css";
 
 import { DocsNavbar } from "../components/docs-navbar";
 import { Footer } from "../components/footer";

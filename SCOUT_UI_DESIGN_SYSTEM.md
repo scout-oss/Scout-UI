@@ -432,6 +432,10 @@ or placing dozens without hierarchy.
 
 ### 13.2 StickerBadge
 
+> Post-v0.1 opt-in `finish`: **enamel** (pin with metallic rim and domed gloss;
+> selected pins press into the surface) and **foil** (holographic sheen that
+> sweeps on hover/focus). Flat remains the default.
+
 **Purpose:** label, filter, tag, or indicate compact state.
 
 **Anatomy:** optional sticker/icon; text; optional remove control; paper/label
@@ -652,6 +656,11 @@ link density on mobile.
 
 ### 13.7 StickerPeel
 
+> Post-v0.1 opt-in `appearance="realistic"`: a real peel — the corner tip
+> follows the finger, the lifted part shows the paper backside with crease
+> shading, a soft shadow falls beneath it, and it settles with a spring. Classic
+> remains the default.
+
 **Purpose:** reveal a meaningful second layer using the metaphor of lifting an
 applied sticker.
 
@@ -693,6 +702,9 @@ peel size, tone, material, drag enhancement, threshold, and layer slots.
 or requiring precise corner dragging.
 
 ### 13.8 StickerStack
+
+> Post-v0.1 opt-in `appearance="deck"`: a fanned deck of prints; the top card is
+> held, tilted and thrown, then tucks back under. Paper remains the default.
 
 **Purpose:** browse a small, visually layered sequence while keeping the active
 item readable.

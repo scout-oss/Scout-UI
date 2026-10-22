@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="noise"/>
+      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.07  0 0 0 0 0.06  0 0 0 0 0.05  0 0 0 0.16 0" result="grainAlpha"/>
+      <feComposite in="grainAlpha" in2="SourceGraphic" operator="in" result="grainIn"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="grainIn"/></feMerge>
+    </filter>
+    <filter id="sheen" x="0" y="0" width="100%" height="100%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="soft"/>
+      <feSpecularLighting in="soft" surfaceScale="4" specularConstant="0.7" specularExponent="22" lighting-color="#ffffff" result="spec">
+        <fePointLight x="40" y="-60" z="260"/>
+      </feSpecularLighting>
+      <feComposite in="spec" in2="SourceAlpha" operator="in" result="specIn"/>
+      <feComposite in="SourceGraphic" in2="specIn" operator="arithmetic" k1="0" k2="1" k3="0.32" k4="0"/>
+    </filter>
+    <filter id="cut" x="-25%" y="-25%" width="150%" height="150%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="dilated"/>
+      <feFlood flood-color="#fffdf7"/>
+      <feComposite in2="dilated" operator="in" result="border"/>
+      <feGaussianBlur in="dilated" stdDeviation="7" result="blur"/>
+      <feOffset in="blur" dx="5" dy="9" result="offset"/>
+      <feFlood flood-color="#120d18" flood-opacity="0.32"/>
+      <feComposite in2="offset" operator="in" result="shadow"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="border"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="dots" width="9" height="9" patternUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="2" fill="#121116" opacity="0.22"/>
+    </pattern>
+    <pattern id="dotsLight" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="4" r="1.6" fill="#ffffff" opacity="0.35"/>
+    </pattern>
+    <pattern id="twill" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="3" height="6" fill="#000" opacity="0.12"/>
+    </pattern>
+    <pattern id="airmail" width="56" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+      <rect width="14" height="20" fill="#d9363b"/>
+      <rect x="14" width="14" height="20" fill="#f7f5ef"/>
+      <rect x="28" width="14" height="20" fill="#1f4fbf"/>
+      <rect x="42" width="14" height="20" fill="#f7f5ef"/>
+    </pattern>
+    <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8a6416"/>
+      <stop offset="0.22" stop-color="#ffe9a3"/>
+      <stop offset="0.42" stop-color="#c8962a"/>
+      <stop offset="0.6" stop-color="#fff4c9"/>
+      <stop offset="0.8" stop-color="#b07d1c"/>
+      <stop offset="1" stop-color="#ffe08a"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#61dbe8"/>
+      <stop offset="0.7" stop-color="#ffd1e6"/>
+      <stop offset="1" stop-color="#ff3d9a"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#aeb3bd"/>
+      <stop offset="0.5" stop-color="#eef0f4"/>
+      <stop offset="1" stop-color="#9aa0aa"/>
+    </linearGradient>
+  </defs>
+  <g filter="url(#cut)"><g filter="url(#sheen)"><g filter="url(#grain)">
+    <g transform="rotate(-5 200 200)">
+      <rect x="38" y="92" width="324" height="216" rx="6" fill="url(#airmail)"/>
+      <rect x="50" y="104" width="300" height="192" rx="3" fill="#fbf8f0"/>
+      <path d="M50 104 L200 214 L350 104" fill="none" stroke="#d8d0bd" stroke-width="3"/>
+      <rect x="70" y="122" width="132" height="34" rx="3" fill="#1f4fbf"/>
+      <text x="136" y="145" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="16" fill="#fbf8f0" text-anchor="middle">PAR AVION</text>
+      <text x="136" y="172" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="11" fill="#1f4fbf" text-anchor="middle">BY AIR MAIL</text>
+      <rect x="274" y="116" width="58" height="70" fill="#d4ff5f" stroke="#121116" stroke-width="2"/>
+      <circle cx="303" cy="146" r="16" fill="#ff7a1a" stroke="#121116" stroke-width="2"/>
+      <path d="M296 150 q7 7 14 0" fill="none" stroke="#121116" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="297" cy="142" r="2" fill="#121116"/><circle cx="309" cy="142" r="2" fill="#121116"/>
+      <g fill="none" stroke="#3a3540" stroke-width="2" opacity="0.75">
+        <circle cx="262" cy="182" r="26"/><circle cx="262" cy="182" r="19"/>
+        <path d="M200 176 q10 -6 20 0 t20 0 t20 0 M200 188 q10 -6 20 0 t20 0 t20 0"/>
+      </g>
+      <text x="262" y="186" font-family="'Courier New', Courier, monospace" font-weight="700" font-size="7" fill="#3a3540" text-anchor="middle">UI·STICKS</text>
+      <text x="92" y="236" font-family="'Marker Felt', 'Chalkboard SE', 'Comic Sans MS', cursive" font-size="22" fill="#121116">to: whoever ships it</text>
+      <text x="92" y="266" font-family="'Marker Felt', 'Chalkboard SE', 'Comic Sans MS', cursive" font-size="16" fill="#121116" opacity="0.8">with love, scout ui ♥</text>
+    </g></g></g></g></svg>

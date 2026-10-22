@@ -129,3 +129,25 @@ describe("StickerBadge", () => {
     expect(markup.match(/<button/gu)).toHaveLength(1);
   });
 });
+
+describe("StickerBadge finish (opt-in)", () => {
+  it("defaults to flat and keeps select semantics with enamel and foil", () => {
+    expect(
+      renderToStaticMarkup(createElement(StickerBadge, { children: "Tag" })),
+    ).toContain('data-finish="flat"');
+    for (const finish of ["enamel", "foil"] as const) {
+      const markup = renderToStaticMarkup(
+        createElement(StickerBadge, {
+          children: "Pinned",
+          finish,
+          mode: "select",
+          onSelectedChange: () => undefined,
+          selected: true,
+        }),
+      );
+      expect(markup).toContain(`data-finish="${finish}"`);
+      expect(markup).toContain('aria-pressed="true"');
+      expect(markup).toMatch(/^<button/u);
+    }
+  });
+});

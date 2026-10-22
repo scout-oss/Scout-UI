@@ -161,7 +161,7 @@ describe("M14 deterministic code generators", () => {
   it("normalizes hostile asset IDs before trusted import mapping", () => {
     for (const sourceId of ["../../x", "@scope/pkg", `bad"id`]) {
       const source = generated("sticker", { sourceId }).source;
-      expect(source).toContain("definitions/sunny-smile");
+      expect(source).toContain('const pixelHeart = { id: "pixel-heart"');
       expect(source).not.toContain(sourceId);
       expect(syntaxDiagnostics(source)).toEqual([]);
     }

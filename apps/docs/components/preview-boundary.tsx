@@ -1,10 +1,10 @@
 "use client";
 
 import { Sticker, StickerBadge, StickerButton } from "@scout-ui/react";
-import { attentionBolt } from "@scout-ui/stickers/definitions/attention-bolt";
-import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
 import type { ErrorInfo, ReactNode } from "react";
 import { Component, useSyncExternalStore } from "react";
+
+import { collageSticker } from "../lib/collage";
 
 declare global {
   interface Window {
@@ -36,11 +36,11 @@ function PreviewPoster() {
       role="img"
     >
       <Sticker
-        alt="Smiling sun sticker"
+        alt="Instant photo sticker"
         rotation={-8}
         shadow="lifted"
         size="xl"
-        source={sunnySmile}
+        source={collageSticker("instant-photo")}
       />
       <div className="sui-docs-preview-copy">
         <span className="sui-docs-preview-kicker">Poster first</span>
@@ -59,13 +59,13 @@ function ActivePreview({ shouldFail }: { readonly shouldFail: boolean }) {
   return (
     <div className="sui-docs-preview-composition" data-preview-active="true">
       <Sticker
-        alt="Smiling sun sticker"
+        alt="Instant photo sticker"
         interactive
         onClick={() => {}}
         rotation={-8}
         shadow="lifted"
         size="xl"
-        source={sunnySmile}
+        source={collageSticker("instant-photo")}
         title="A real interactive Sticker"
       />
       <div className="sui-docs-preview-copy">
@@ -89,7 +89,7 @@ function ActivePreview({ shouldFail }: { readonly shouldFail: boolean }) {
         rotation={12}
         shadow="none"
         size="lg"
-        source={attentionBolt}
+        source={collageSticker("fragile-label")}
       />
     </div>
   );
@@ -123,11 +123,11 @@ class PreviewErrorBoundary extends Component<BoundaryProps, BoundaryState> {
       return (
         <div className="sui-docs-preview-error" data-preview-error="true">
           <Sticker
-            alt="Attention bolt sticker"
+            alt="Fragile label sticker"
             rotation={-5}
             shadow="stuck"
             size="lg"
-            source={attentionBolt}
+            source={collageSticker("fragile-label")}
           />
           <div role="status">
             <strong>This preview lost its stick.</strong>

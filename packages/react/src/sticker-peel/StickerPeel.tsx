@@ -21,6 +21,7 @@ import {
   shouldCommitOpen,
   type PeelPoint,
 } from "./peel-math.js";
+import { createRealisticPeel, type RealisticPeel } from "./peel-realistic.js";
 
 export interface StickerPeelProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "onChange">, ScoutMotionPolicy {
@@ -38,6 +39,11 @@ export interface StickerPeelProps
   revealLabel?: string;
   closeLabel?: string;
   disabled?: boolean;
+  /**
+   * Post-v0.1 opt-in. `realistic` renders a physically modelled peel (fold
+   * geometry, paper backside, cast shadow, spring settle). Default `classic`.
+   */
+  appearance?: "classic" | "realistic";
 }
 
 interface DragSession {
@@ -62,6 +68,7 @@ function hasDocument(): boolean {
 
 export function StickerPeel(props: StickerPeelProps) {
   const {
+    appearance = "classic",
     back,
     className,
     closeLabel = "Stick back",
@@ -99,6 +106,10 @@ export function StickerPeel(props: StickerPeelProps) {
   >(null);
   const suppressClickRef = useRef(false);
   const semanticOpenRef = useRef(semanticOpen);
+  const flapRef = useRef<HTMLSpanElement>(null);
+  const shadowRef = useRef<HTMLSpanElement>(null);
+  const realisticRef = useRef<RealisticPeel | null>(null);
+  const realistic = appearance === "realistic";
 
   const writeProgress = (progress: number) => {
     const root = rootRef.current;
@@ -128,6 +139,7 @@ export function StickerPeel(props: StickerPeelProps) {
 
   const restoreSemanticProgress = () => {
     writeProgress(semanticOpenRef.current ? 1 : 0);
+    realisticRef.current?.settle(semanticOpenRef.current);
   };
 
   const removeDragEscapeListener = () => {
@@ -189,6 +201,7 @@ export function StickerPeel(props: StickerPeelProps) {
         width: session.width,
       });
       writeProgress(session.progress);
+      realisticRef.current?.dragTo(session.latest.x, session.latest.y);
     });
   };
 
@@ -260,6 +273,7 @@ export function StickerPeel(props: StickerPeelProps) {
       if (session.intent === "peel") {
         event.currentTarget.setPointerCapture(event.pointerId);
         rootRef.current?.setAttribute("data-dragging", "true");
+        realisticRef.current?.beginDrag(session.start.x, session.start.y);
       }
     }
 
@@ -313,6 +327,9 @@ export function StickerPeel(props: StickerPeelProps) {
       }),
     );
     if (isControlled) restoreSemanticProgress();
+    // An uncommitted or unchanged release springs back to the semantic state;
+    // a changed state is animated by the semanticOpen effect.
+    realisticRef.current?.settle(semanticOpenRef.current);
   };
 
   const handlePointerCancel = () => {
@@ -370,6 +387,28 @@ export function StickerPeel(props: StickerPeelProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [semanticOpen]);
 
+  useEffect(() => {
+    const root = rootRef.current;
+    const frontNode = frontRef.current;
+    const flap = flapRef.current;
+    const shadow = shadowRef.current;
+    if (!realistic || !root || !frontNode || !flap || !shadow) return;
+    if (typeof ResizeObserver === "undefined") return;
+    const renderer = createRealisticPeel(
+      { flap, front: frontNode, root, shadow },
+      origin,
+      motionIsReduced,
+    );
+    renderer.settle(semanticOpenRef.current, true);
+    realisticRef.current = renderer;
+    return () => {
+      renderer.destroy();
+      realisticRef.current = null;
+    };
+    // motionIsReduced reads current props/media at call time.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [realistic, origin]);
+
   useEffect(
     () => () => {
       cancelFrame();
@@ -395,6 +434,7 @@ export function StickerPeel(props: StickerPeelProps) {
     <div
       {...elementProps}
       className={joinClassNames("sui-sticker-peel", className)}
+      data-appearance={appearance}
       data-disabled={disabled ? "true" : "false"}
       data-drag-enabled={drag ? "true" : "false"}
       data-dragging="false"
@@ -428,6 +468,18 @@ export function StickerPeel(props: StickerPeelProps) {
       >
         {back}
       </div>
+      {realistic ? (
+        <>
+          <span aria-hidden="true" className="sui-sticker-peel-shadow-wrap">
+            <span className="sui-sticker-peel-shadow" ref={shadowRef} />
+          </span>
+          <span
+            aria-hidden="true"
+            className="sui-sticker-peel-flap"
+            ref={flapRef}
+          />
+        </>
+      ) : null}
       <button
         aria-controls={backId}
         aria-expanded={semanticOpen}
@@ -439,6 +491,18 @@ export function StickerPeel(props: StickerPeelProps) {
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
+        onPointerEnter={
+          realistic ? () => realisticRef.current?.hover(true) : undefined
+        }
+        onPointerLeave={
+          realistic ? () => realisticRef.current?.hover(false) : undefined
+        }
+        onFocus={
+          realistic ? () => realisticRef.current?.hover(true) : undefined
+        }
+        onBlur={
+          realistic ? () => realisticRef.current?.hover(false) : undefined
+        }
         ref={toggleRef}
         type="button"
       >

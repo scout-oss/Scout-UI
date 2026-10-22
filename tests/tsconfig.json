@@ -8,6 +8,7 @@
   },
   "include": [
     "browser/**/*.ts",
+    "browser-kinetic/**/*.ts",
     "../playwright.config.ts",
     "../tooling/test/**/*.ts"
   ]

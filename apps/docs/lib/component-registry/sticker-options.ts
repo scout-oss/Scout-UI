@@ -1,62 +1,52 @@
-import { attentionBolt } from "@scout-ui/stickers/definitions/attention-bolt";
-import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
-import { pocketCamera } from "@scout-ui/stickers/definitions/pocket-camera";
-import { scribblePointer } from "@scout-ui/stickers/definitions/scribble-pointer";
-import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
-import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
-import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
+import { type CollageSticker, collageStickers } from "../collage";
+import { siteOrigin } from "../site";
 
-export const playgroundStickerCatalog = Object.freeze({
-  "attention-bolt": {
-    exportName: "attentionBolt",
-    module: "@scout-ui/stickers/definitions/attention-bolt",
-    source: attentionBolt,
-  },
-  "chunky-check": {
-    exportName: "chunkyCheck",
-    module: "@scout-ui/stickers/definitions/chunky-check",
-    source: chunkyCheck,
-  },
-  "pocket-camera": {
-    exportName: "pocketCamera",
-    module: "@scout-ui/stickers/definitions/pocket-camera",
-    source: pocketCamera,
-  },
-  "scribble-pointer": {
-    exportName: "scribblePointer",
-    module: "@scout-ui/stickers/definitions/scribble-pointer",
-    source: scribblePointer,
-  },
-  "sparkle-pop": {
-    exportName: "sparklePop",
-    module: "@scout-ui/stickers/definitions/sparkle-pop",
-    source: sparklePop,
-  },
-  "sunny-smile": {
-    exportName: "sunnySmile",
-    module: "@scout-ui/stickers/definitions/sunny-smile",
-    source: sunnySmile,
-  },
-  "wonky-star": {
-    exportName: "wonkyStar",
-    module: "@scout-ui/stickers/definitions/wonky-star",
-    source: wonkyStar,
-  },
-});
+/**
+ * Artwork offered by the playground's sticker pickers. The docs use the
+ * printed-matter set (lib/collage.ts), which is NOT part of
+ * @scout-ui/stickers — so generated code declares each selection as the
+ * consumer's own StickerSource ({ id, src, width, height }), the contract
+ * every component already accepts, instead of importing a package asset.
+ */
+export interface PlaygroundStickerEntry {
+  /** Identifier used in generated code, e.g. `pixelHeart`. */
+  readonly exportName: string;
+  /** Path the consumer serves the file from in their own app. */
+  readonly hostedPath: string;
+  /** Where the consumer can download this artwork. */
+  readonly downloadUrl: string;
+  readonly source: CollageSticker;
+}
 
-type PlaygroundStickerId = keyof typeof playgroundStickerCatalog;
+function camelCase(id: string): string {
+  return id.replace(/-([a-z])/gu, (_, letter: string) => letter.toUpperCase());
+}
 
-export const playgroundStickerSources = Object.freeze(
+export const playgroundStickerCatalog: Readonly<
+  Record<string, PlaygroundStickerEntry>
+> = Object.freeze(
+  Object.fromEntries(
+    collageStickers.map((source) => [
+      source.id,
+      Object.freeze({
+        downloadUrl: new URL(source.src, siteOrigin).href,
+        exportName: camelCase(source.id),
+        hostedPath: `/stickers/${source.id}.webp`,
+        source,
+      }),
+    ]),
+  ),
+);
+
+export const playgroundStickerSources: Readonly<
+  Record<string, CollageSticker>
+> = Object.freeze(
   Object.fromEntries(
     Object.entries(playgroundStickerCatalog).map(([id, entry]) => [
       id,
       entry.source,
     ]),
-  ) as {
-    readonly [
-      K in PlaygroundStickerId
-    ]: (typeof playgroundStickerCatalog)[K]["source"];
-  },
+  ),
 );
 
 export const playgroundStickerOptions = Object.freeze(
@@ -66,7 +56,9 @@ export const playgroundStickerOptions = Object.freeze(
   })),
 );
 
-export function getPlaygroundStickerImport(id: string) {
+export function getPlaygroundStickerImport(
+  id: string,
+): PlaygroundStickerEntry | null {
   if (!Object.hasOwn(playgroundStickerCatalog, id)) return null;
-  return playgroundStickerCatalog[id as PlaygroundStickerId];
+  return playgroundStickerCatalog[id] ?? null;
 }

@@ -5,6 +5,7 @@ import type { ComponentSummaryDefinition } from "../lib/registry";
 import { componentReferenceDetails } from "../lib/content/component-reference";
 import { repositoryUrl } from "../lib/site";
 import { CodeBlock } from "./code-block";
+import { SplitChars } from "./kinetic/split-chars";
 import { PageEdgeNav } from "./page-edge-nav";
 import { PlaygroundSession } from "./playground/playground-session";
 
@@ -44,13 +45,13 @@ export function ComponentPageShell({
     <article className="sui-docs-component-page">
       <div className="sui-docs-component-intro">
         <Link className="sui-docs-breadcrumb" href="/components">
-          ← Component pinboard
+          ← Specimen sheet
         </Link>
         <div className="sui-docs-component-title-row">
           <div>
             <p className="sui-docs-eyebrow">{component.kind} primitive</p>
             <h1 data-route-heading tabIndex={-1}>
-              {component.name}
+              <SplitChars text={component.name} />
             </h1>
             <p className="sui-docs-lede">{component.purpose}</p>
           </div>

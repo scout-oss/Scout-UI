@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="noise"/>
+      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.07  0 0 0 0 0.06  0 0 0 0 0.05  0 0 0 0.16 0" result="grainAlpha"/>
+      <feComposite in="grainAlpha" in2="SourceGraphic" operator="in" result="grainIn"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="grainIn"/></feMerge>
+    </filter>
+    <filter id="sheen" x="0" y="0" width="100%" height="100%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="soft"/>
+      <feSpecularLighting in="soft" surfaceScale="4" specularConstant="0.7" specularExponent="22" lighting-color="#ffffff" result="spec">
+        <fePointLight x="40" y="-60" z="260"/>
+      </feSpecularLighting>
+      <feComposite in="spec" in2="SourceAlpha" operator="in" result="specIn"/>
+      <feComposite in="SourceGraphic" in2="specIn" operator="arithmetic" k1="0" k2="1" k3="0.32" k4="0"/>
+    </filter>
+    <filter id="cut" x="-25%" y="-25%" width="150%" height="150%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="dilated"/>
+      <feFlood flood-color="#fffdf7"/>
+      <feComposite in2="dilated" operator="in" result="border"/>
+      <feGaussianBlur in="dilated" stdDeviation="7" result="blur"/>
+      <feOffset in="blur" dx="5" dy="9" result="offset"/>
+      <feFlood flood-color="#120d18" flood-opacity="0.32"/>
+      <feComposite in2="offset" operator="in" result="shadow"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="border"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="dots" width="9" height="9" patternUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="2" fill="#121116" opacity="0.22"/>
+    </pattern>
+    <pattern id="dotsLight" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="4" r="1.6" fill="#ffffff" opacity="0.35"/>
+    </pattern>
+    <pattern id="twill" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="3" height="6" fill="#000" opacity="0.12"/>
+    </pattern>
+    <pattern id="airmail" width="56" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+      <rect width="14" height="20" fill="#d9363b"/>
+      <rect x="14" width="14" height="20" fill="#f7f5ef"/>
+      <rect x="28" width="14" height="20" fill="#1f4fbf"/>
+      <rect x="42" width="14" height="20" fill="#f7f5ef"/>
+    </pattern>
+    <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8a6416"/>
+      <stop offset="0.22" stop-color="#ffe9a3"/>
+      <stop offset="0.42" stop-color="#c8962a"/>
+      <stop offset="0.6" stop-color="#fff4c9"/>
+      <stop offset="0.8" stop-color="#b07d1c"/>
+      <stop offset="1" stop-color="#ffe08a"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#61dbe8"/>
+      <stop offset="0.7" stop-color="#ffd1e6"/>
+      <stop offset="1" stop-color="#ff3d9a"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#aeb3bd"/>
+      <stop offset="0.5" stop-color="#eef0f4"/>
+      <stop offset="1" stop-color="#9aa0aa"/>
+    </linearGradient>
+  </defs>
+  <g filter="url(#cut)"><g filter="url(#sheen)"><g filter="url(#grain)">
+    <g transform="rotate(-6 200 200)">
+      <circle cx="200" cy="200" r="150" fill="#121116"/>
+      <circle cx="200" cy="200" r="138" fill="#7c2cff"/>
+      <circle cx="200" cy="200" r="138" fill="url(#twill)"/>
+      <circle cx="200" cy="200" r="144" fill="none" stroke="#d4ff5f" stroke-width="4" stroke-dasharray="6 5"/>
+      <circle cx="200" cy="200" r="78" fill="#d4ff5f" stroke="#121116" stroke-width="5"/>
+      <circle cx="200" cy="200" r="78" fill="url(#twill)"/>
+      <path d="M200.0 146.0L214.1 180.6L251.4 183.3L222.8 207.4L231.7 243.7L200.0 224.0L168.3 243.7L177.2 207.4L148.6 183.3L185.9 180.6Z" fill="#ff3d9a" stroke="#121116" stroke-width="5" stroke-linejoin="round"/>
+      <text x="108.2" y="147.0" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(-60.0 108.2 147.0)">U</text><text x="117.9" y="133.0" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(-50.8 117.9 133.0)">I</text><text x="129.7" y="120.7" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(-41.5 129.7 120.7)"> </text><text x="143.3" y="110.4" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(-32.3 143.3 110.4)">T</text><text x="158.5" y="102.5" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(-23.1 158.5 102.5)">H</text><text x="174.6" y="97.1" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(-13.8 174.6 97.1)">A</text><text x="191.5" y="94.3" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(-4.6 191.5 94.3)">T</text><text x="208.5" y="94.3" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(4.6 208.5 94.3)"> </text><text x="225.4" y="97.1" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(13.8 225.4 97.1)">S</text><text x="241.5" y="102.5" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(23.1 241.5 102.5)">T</text><text x="256.7" y="110.4" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(32.3 256.7 110.4)">I</text><text x="270.3" y="120.7" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(41.5 270.3 120.7)">C</text><text x="282.1" y="133.0" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(50.8 282.1 133.0)">K</text><text x="291.8" y="147.0" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="30" fill="#f7f5ef" text-anchor="middle" dominant-baseline="middle" transform="rotate(60.0 291.8 147.0)">S</text>
+      <text x="103.3" y="267.7" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(55.0 103.3 267.7)">S</text><text x="112.8" y="279.5" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(47.7 112.8 279.5)">C</text><text x="123.6" y="290.0" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(40.3 123.6 290.0)">O</text><text x="135.7" y="299.0" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(33.0 135.7 299.0)">U</text><text x="148.9" y="306.4" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(25.7 148.9 306.4)">T</text><text x="162.9" y="312.0" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(18.3 162.9 312.0)"> </text><text x="177.5" y="315.8" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(11.0 177.5 315.8)">·</text><text x="192.5" y="317.8" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(3.7 192.5 317.8)"> </text><text x="207.5" y="317.8" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(-3.7 207.5 317.8)">E</text><text x="222.5" y="315.8" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(-11.0 222.5 315.8)">S</text><text x="237.1" y="312.0" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(-18.3 237.1 312.0)">T</text><text x="251.1" y="306.4" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(-25.7 251.1 306.4)"> </text><text x="264.3" y="299.0" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(-33.0 264.3 299.0)">2</text><text x="276.4" y="290.0" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(-40.3 276.4 290.0)">0</text><text x="287.2" y="279.5" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(-47.7 287.2 279.5)">2</text><text x="296.7" y="267.7" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#d4ff5f" text-anchor="middle" dominant-baseline="middle" transform="rotate(-55.0 296.7 267.7)">6</text>
+    </g></g></g></g></svg>

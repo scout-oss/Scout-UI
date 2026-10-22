@@ -1,9 +1,7 @@
-import { StickerBadge } from "@scout-ui/react";
 import type { Metadata } from "next";
-import Link from "next/link";
 
+import { SpecimenSheet } from "../../components/kinetic/specimen-sheet";
 import { PageHeading } from "../../components/page-heading";
-import { componentCatalog } from "../../lib/registry";
 import { routeMetadata } from "../../lib/site";
 
 export const metadata: Metadata = routeMetadata({
@@ -12,54 +10,19 @@ export const metadata: Metadata = routeMetadata({
   description: "Browse Scout UI's eight sticker-native React primitives.",
 });
 
-const clientComponents = new Set([
-  "sticker-trail",
-  "sticker-cursor",
-  "sticker-peel",
-  "sticker-stack",
-  "sticker-navbar",
-]);
-
 export default function ComponentsPage() {
   return (
-    <div className="sui-docs-page sui-docs-components-page" data-pagefind-body>
+    <div
+      className="sui-docs-page sui-docs-components-page sui-k-wide-page sui-k-gallery-page"
+      data-pagefind-body
+    >
       <PageHeading
-        eyebrow="The pinboard"
-        lede="Eight primitives, arranged by the job they do—not forced into an identical card grid."
+        eyebrow="The specimen sheet · eight live primitives"
+        lede="Every tile is the published component, running. Each one is sized by the job it does and labelled with the motion verb it owns — try it here, then open its reference or playground."
       >
         Components
       </PageHeading>
-      <ul className="sui-docs-pinboard">
-        {componentCatalog.entries.map((component, index) => (
-          <li
-            data-accent={component.accent}
-            data-kind={component.kind}
-            key={component.slug}
-          >
-            <Link href={`/components/${component.slug}`}>
-              <span className="sui-docs-pin-number">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <div>
-                <h2>{component.name}</h2>
-                <p>{component.purpose}</p>
-              </div>
-              <div className="sui-docs-pin-meta">
-                <StickerBadge size="compact" tone="paper">
-                  {component.status}
-                </StickerBadge>
-                <code>{component.packageName}</code>
-                <span>{component.capabilities.join(" · ")}</span>
-                <span>
-                  {clientComponents.has(component.slug)
-                    ? "narrow client leaf"
-                    : "server-compatible leaf"}
-                </span>
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <SpecimenSheet headingLevel={2} />
     </div>
   );
 }

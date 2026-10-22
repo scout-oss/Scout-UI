@@ -89,3 +89,21 @@ describe("StickerStack server semantics", () => {
     expect(one.match(/disabled=""/gu)).toHaveLength(2);
   });
 });
+
+describe("StickerStack deck appearance (opt-in)", () => {
+  it("defaults to paper and marks deck only when requested", () => {
+    const props = {
+      getKey: (item: Item) => item.id,
+      items,
+      renderItem: (item: Item) => item.label,
+    };
+    expect(renderToStaticMarkup(createElement(TestStack, props))).toContain(
+      'data-appearance="paper"',
+    );
+    const deck = renderToStaticMarkup(
+      createElement(TestStack, { ...props, appearance: "deck" }),
+    );
+    expect(deck).toContain('data-appearance="deck"');
+    expect(deck).toContain('aria-roledescription="stack"');
+  });
+});

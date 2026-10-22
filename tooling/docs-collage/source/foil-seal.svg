@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="noise"/>
+      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.07  0 0 0 0 0.06  0 0 0 0 0.05  0 0 0 0.16 0" result="grainAlpha"/>
+      <feComposite in="grainAlpha" in2="SourceGraphic" operator="in" result="grainIn"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="grainIn"/></feMerge>
+    </filter>
+    <filter id="sheen" x="0" y="0" width="100%" height="100%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="soft"/>
+      <feSpecularLighting in="soft" surfaceScale="4" specularConstant="0.7" specularExponent="22" lighting-color="#ffffff" result="spec">
+        <fePointLight x="40" y="-60" z="260"/>
+      </feSpecularLighting>
+      <feComposite in="spec" in2="SourceAlpha" operator="in" result="specIn"/>
+      <feComposite in="SourceGraphic" in2="specIn" operator="arithmetic" k1="0" k2="1" k3="0.32" k4="0"/>
+    </filter>
+    <filter id="cut" x="-25%" y="-25%" width="150%" height="150%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="dilated"/>
+      <feFlood flood-color="#fffdf7"/>
+      <feComposite in2="dilated" operator="in" result="border"/>
+      <feGaussianBlur in="dilated" stdDeviation="7" result="blur"/>
+      <feOffset in="blur" dx="5" dy="9" result="offset"/>
+      <feFlood flood-color="#120d18" flood-opacity="0.32"/>
+      <feComposite in2="offset" operator="in" result="shadow"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="border"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="dots" width="9" height="9" patternUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="2" fill="#121116" opacity="0.22"/>
+    </pattern>
+    <pattern id="dotsLight" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="4" r="1.6" fill="#ffffff" opacity="0.35"/>
+    </pattern>
+    <pattern id="twill" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="3" height="6" fill="#000" opacity="0.12"/>
+    </pattern>
+    <pattern id="airmail" width="56" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+      <rect width="14" height="20" fill="#d9363b"/>
+      <rect x="14" width="14" height="20" fill="#f7f5ef"/>
+      <rect x="28" width="14" height="20" fill="#1f4fbf"/>
+      <rect x="42" width="14" height="20" fill="#f7f5ef"/>
+    </pattern>
+    <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8a6416"/>
+      <stop offset="0.22" stop-color="#ffe9a3"/>
+      <stop offset="0.42" stop-color="#c8962a"/>
+      <stop offset="0.6" stop-color="#fff4c9"/>
+      <stop offset="0.8" stop-color="#b07d1c"/>
+      <stop offset="1" stop-color="#ffe08a"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#61dbe8"/>
+      <stop offset="0.7" stop-color="#ffd1e6"/>
+      <stop offset="1" stop-color="#ff3d9a"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#aeb3bd"/>
+      <stop offset="0.5" stop-color="#eef0f4"/>
+      <stop offset="1" stop-color="#9aa0aa"/>
+    </linearGradient>
+  </defs>
+  <g filter="url(#cut)"><g filter="url(#sheen)"><g filter="url(#grain)">
+    <g transform="rotate(12 200 200)">
+      <path d="M200.0 50.0L216.7 73.1L238.8 55.1L249.0 81.7L275.0 70.1L277.9 98.5L306.1 93.9L301.5 122.1L329.9 125.0L318.3 151.0L344.9 161.2L326.9 183.3L350.0 200.0L326.9 216.7L344.9 238.8L318.3 249.0L329.9 275.0L301.5 277.9L306.1 306.1L277.9 301.5L275.0 329.9L249.0 318.3L238.8 344.9L216.7 326.9L200.0 350.0L183.3 326.9L161.2 344.9L151.0 318.3L125.0 329.9L122.1 301.5L93.9 306.1L98.5 277.9L70.1 275.0L81.7 249.0L55.1 238.8L73.1 216.7L50.0 200.0L73.1 183.3L55.1 161.2L81.7 151.0L70.1 125.0L98.5 122.1L93.9 93.9L122.1 98.5L125.0 70.1L151.0 81.7L161.2 55.1L183.3 73.1Z" fill="url(#foil)" stroke="#7a5512" stroke-width="3"/>
+      <circle cx="200" cy="200" r="108" fill="none" stroke="#7a5512" stroke-width="3"/>
+      <circle cx="200" cy="200" r="98" fill="url(#foil)"/>
+      <path d="M150 200 l32 32 l66 -70" fill="none" stroke="#121116" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="200" y="152" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="20" fill="#5a3d08" text-anchor="middle" letter-spacing="2">100%</text>
+      <text x="200" y="272" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="18" fill="#5a3d08" text-anchor="middle" letter-spacing="2">OPEN SOURCE</text>
+    </g></g></g></g></svg>

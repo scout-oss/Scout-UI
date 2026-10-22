@@ -12,6 +12,8 @@
     "playwright.config.ts",
     "../../tests/browser/copy-code-*.spec.ts",
     "../../tests/browser/docs-*.spec.ts",
-    "../../tests/browser/playground-*.spec.ts"
+    "../../tests/browser/playground-*.spec.ts",
+    "playwright.kinetic.config.ts",
+    "../../tests/browser-kinetic/*.spec.ts"
   ]
 }

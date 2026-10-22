@@ -1,0 +1,2734 @@
+/*
+ * Scout UI docs — kinetic design layer ("Pressure-sensitive").
+ *
+ * This is a top-level layer ordered after the package's `scout-ui` layer.
+ * Dotted names nest: every `scout-ui-docs.*` sublayer lives inside the
+ * `scout-ui-docs` layer, which the bundled CSS declares before `scout-ui`, so
+ * on the release docs the package token `--sui-font-display: inherit` wins and
+ * every heading falls back to the browser default serif. Ordering
+ * `scout-ui-kinetic` after `scout-ui` explicitly fixes that for the redesign.
+ */
+@layer scout-ui, scout-ui-kinetic;
+
+/* Compositions deliberately override shared element shapes (as in globals). */
+/* stylelint-disable no-descending-specificity */
+
+@layer scout-ui-kinetic {
+  :root {
+    --sui-font-display:
+      var(--sui-docs-font-display), "Arial Black", "Helvetica Neue", arial,
+      sans-serif;
+    --sui-font-body:
+      var(--sui-docs-font-body), ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", sans-serif;
+    --sui-font-mono:
+      ui-monospace, "SFMono-Regular", "SF Mono", consolas, "Liberation Mono",
+      monospace;
+
+    /* Motion grammar: one physics, shared by CSS and the JS springs. */
+    --sui-k-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --sui-k-ease-press: cubic-bezier(0.2, 0.9, 0.3, 1);
+    --sui-k-ease-slap: cubic-bezier(0.34, 1.45, 0.64, 1);
+    --sui-k-ease-lift: cubic-bezier(0.3, 1.25, 0.55, 1);
+    --sui-k-ease-settle: cubic-bezier(0.34, 1.3, 0.64, 1);
+    --sui-k-dur-press: 140ms;
+    --sui-k-dur-lift: 240ms;
+    --sui-k-dur-slap: 460ms;
+    --sui-k-dur-reveal: 560ms;
+    --sui-k-dur-settle: 600ms;
+    --sui-k-stagger: 45ms;
+    --sui-k-edge: var(--sui-page-edge);
+    --sui-k-max: 90rem;
+  }
+
+  /* Spring curves sampled from the same stiffness/damping as lib/kinetic. */
+  @supports (transition-timing-function: linear(0, 1)) {
+    :root {
+      /* slap: k700 c30 m1 */
+      --sui-k-ease-slap: linear(
+        0,
+        0.064,
+        0.198,
+        0.368,
+        0.544,
+        0.707,
+        0.846,
+        0.954,
+        1.032,
+        1.078,
+        1.105,
+        1.112,
+        1.106,
+        1.092,
+        1.073,
+        1.054,
+        1.035,
+        1.019,
+        1.006,
+        0.997,
+        0.991,
+        0.988,
+        0.987,
+        0.988,
+        0.99,
+        0.994,
+        0.998,
+        1
+      );
+
+      /* lift: k520 c34 m0.9 */
+      --sui-k-ease-lift: linear(
+        0,
+        0.045,
+        0.129,
+        0.244,
+        0.367,
+        0.478,
+        0.589,
+        0.687,
+        0.77,
+        0.833,
+        0.887,
+        0.929,
+        0.958,
+        0.981,
+        0.997,
+        1.007,
+        1.013,
+        1.016,
+        1.017,
+        1.016,
+        1.013,
+        1.009,
+        1.006,
+        1.003,
+        1.001,
+        1
+      );
+
+      /* settle: k320 c22 m1 */
+      --sui-k-ease-settle: linear(
+        0,
+        0.058,
+        0.185,
+        0.345,
+        0.511,
+        0.667,
+        0.8,
+        0.906,
+        0.984,
+        1.035,
+        1.067,
+        1.082,
+        1.084,
+        1.077,
+        1.066,
+        1.052,
+        1.038,
+        1.025,
+        1.014,
+        1.006,
+        1,
+        0.996,
+        0.994,
+        0.993,
+        0.994,
+        0.996,
+        0.998,
+        1
+      );
+    }
+  }
+
+  body {
+    font-family: var(--sui-font-body);
+    font-optical-sizing: auto;
+    text-rendering: optimizelegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--sui-font-display);
+    font-weight: 800;
+    letter-spacing: -0.018em;
+  }
+
+  /* Playground index: long component names must fit their cards. */
+  .sui-docs-playground-index strong {
+    font-size: clamp(1.8rem, 2.6vw, 2.9rem);
+    letter-spacing: -0.015em;
+    overflow-wrap: anywhere;
+  }
+
+  /* ---------------------------------------------------------------- */
+
+  /* Shared kinetic vocabulary                                         */
+
+  /* ---------------------------------------------------------------- */
+
+  .sui-k-kicker {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    margin: 0 0 1rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .sui-k-kicker > span {
+    display: inline-grid;
+    min-width: 2.2rem;
+    height: 1.6rem;
+    padding-inline: 0.4rem;
+    place-items: center;
+    border: 2px solid currentcolor;
+    border-radius: 0.4rem 0.6rem 0.45rem 0.35rem;
+    font-family: var(--sui-font-mono);
+    letter-spacing: 0;
+    rotate: -4deg;
+  }
+
+  .sui-k-chip {
+    display: inline-flex;
+    gap: 0.45rem;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.45rem 0.9rem;
+    border: 2px solid var(--sui-ink);
+    border-radius: 0.55rem 0.8rem 0.6rem 0.5rem;
+    color: var(--sui-ink);
+    background: var(--sui-paper-raised);
+    box-shadow: 0.2rem 0.2rem 0 var(--sui-ink);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 750;
+    cursor: pointer;
+    transition:
+      translate var(--sui-k-dur-lift) var(--sui-k-ease-lift),
+      box-shadow var(--sui-k-dur-lift) var(--sui-k-ease-lift);
+  }
+
+  .sui-k-chip:hover {
+    box-shadow: 0.3rem 0.32rem 0 var(--sui-ink);
+    translate: -1px -2px;
+  }
+
+  .sui-k-chip:active {
+    box-shadow: 0 0 0 var(--sui-ink);
+    transition-duration: var(--sui-k-dur-press);
+    transition-timing-function: var(--sui-k-ease-press);
+    translate: 0.2rem 0.2rem;
+  }
+
+  .sui-k-text-link {
+    font-weight: 800;
+    text-decoration-thickness: 0.14em;
+    text-underline-offset: 0.25em;
+  }
+
+  .sui-k-text-link:hover {
+    text-decoration-color: var(--sui-ultraviolet);
+  }
+
+  .sui-k-magnetic {
+    display: inline-flex;
+    will-change: transform;
+  }
+
+  /* Masked word reveals. Content is only hidden once JS armed the page. */
+  .sui-k-word {
+    display: inline-block;
+    padding-block-end: 0.1em;
+    margin-block-end: -0.1em;
+    overflow: clip;
+    overflow-clip-margin: 0.04em;
+    vertical-align: top;
+  }
+
+  .sui-k-word-inner {
+    display: inline-block;
+  }
+
+  .sui-k-word[data-k-highlight] {
+    overflow: visible;
+  }
+
+  .sui-k-word[data-k-highlight] .sui-k-word-inner {
+    padding: 0 0.16em 0.02em;
+    border: 0.055em solid var(--sui-ink);
+    border-radius: 0.12em 0.18em 0.14em 0.1em;
+    color: var(--sui-ink);
+    background: var(--sui-acid);
+    box-shadow: 0.07em 0.08em 0 var(--sui-ink);
+    rotate: -2deg;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Hero: pressure-sensitive type                                       */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  .sui-k-home {
+    overflow-x: clip;
+  }
+
+  .sui-k-hero {
+    position: relative;
+    display: grid;
+    width: min(100%, var(--sui-k-max));
+    margin-inline: auto;
+    padding: clamp(1.5rem, 3vw, 2.5rem) var(--sui-k-edge) clamp(3rem, 6vw, 5rem);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--sui-docs-grid-gutter);
+  }
+
+  .sui-k-hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    gap: 1rem 1.5rem;
+    align-items: center;
+    margin-block-end: clamp(1rem, 2.5vw, 2rem);
+  }
+
+  .sui-k-hero-meta > p {
+    margin: 0;
+    color: var(--sui-ink-muted);
+    font-family: var(--sui-font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .sui-k-break {
+    display: none;
+  }
+
+  .sui-k-headline {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .sui-k-headline:focus-visible {
+    border-radius: 1rem;
+  }
+
+  .sui-k-headline-art {
+    position: relative;
+    display: block;
+  }
+
+  .sui-k-headline-lead {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 0.22em;
+    align-items: flex-end;
+    margin-block-end: -0.16em;
+    margin-inline-start: 0.06em;
+    font-family: var(--sui-font-display);
+    font-size: clamp(1.7rem, 5vw, 4.9rem);
+    font-variation-settings: "wdth" 100;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .sui-k-label {
+    display: inline-block;
+    padding: 0.04em 0.24em 0.02em;
+    border: 0.055em solid var(--sui-ink);
+    border-radius: 0.12em 0.2em 0.16em 0.1em;
+    color: var(--sui-ink);
+    background: var(--sui-acid);
+    box-shadow: 0.08em 0.09em 0 var(--sui-ink);
+    rotate: -3deg;
+  }
+
+  .sui-k-label + .sui-k-label {
+    background: var(--sui-cyan);
+    rotate: 2deg;
+    translate: 0 -0.08em;
+  }
+
+  .sui-k-headline-word {
+    display: flex;
+    font-family: var(--sui-docs-font-hero), var(--sui-font-display);
+
+    /* Fill the measure: the word is ~3.3em wide at rest (wdth 90). */
+    width: max-content;
+    font-size: calc(
+      min(calc((100vw - 2 * var(--sui-k-edge)) / 3.36), 25rem) *
+        var(--sui-k-fit, 1)
+    );
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 0.84;
+    padding-block: 0.06em 0.1em;
+  }
+
+  .sui-k-letter-slot {
+    position: relative;
+    display: inline-grid;
+    margin-inline: -0.012em;
+    rotate: var(--sui-k-r, 0deg);
+  }
+
+  .sui-k-letter-sizer,
+  .sui-k-letter {
+    font-variation-settings:
+      "wdth" 90,
+      "wght" 760;
+  }
+
+  .sui-k-letter-sizer {
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+
+  .sui-k-letter {
+    --sui-k-press: 0;
+
+    position: relative;
+    display: grid;
+    grid-area: 1 / 1;
+    place-items: center;
+    font-variation-settings:
+      "wdth" calc(90 + var(--sui-k-press) * 10),
+      "wght" calc(760 + var(--sui-k-press) * 40);
+    transform-origin: 50% 60%;
+    user-select: none;
+    touch-action: pan-y;
+    will-change: transform;
+  }
+
+  [data-k-live] .sui-k-letter {
+    cursor: grab;
+  }
+
+  .sui-k-letter[data-k-grabbed] {
+    z-index: 3;
+    cursor: grabbing;
+  }
+
+  .sui-k-letter > *,
+  .sui-k-letter-lift > * {
+    grid-area: 1 / 1;
+  }
+
+  .sui-k-letter-lift {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    transform-origin: 50% 60%;
+  }
+
+  /* Explicit stacking: the shadow copy must paint under the lifted face even
+     though both establish stacking contexts once transformed. */
+  .sui-k-letter-shadow {
+    position: relative;
+    z-index: 0;
+    color: var(--sui-ink);
+    -webkit-text-stroke: 0.12em var(--sui-ink);
+    translate: 0.06em 0.075em;
+  }
+
+  .sui-k-letter-cut {
+    color: var(--sui-paper-raised);
+    -webkit-text-stroke: 0.12em var(--sui-paper-raised);
+  }
+
+  .sui-k-letter-face {
+    color: var(--sui-ultraviolet);
+    -webkit-text-stroke: 0.05em var(--sui-ink);
+    paint-order: stroke fill;
+  }
+
+  .sui-k-letter-face[data-k-dot] {
+    color: var(--sui-hot-pink);
+  }
+
+  .sui-k-hero-foot {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.5rem var(--sui-docs-grid-gutter);
+    align-items: end;
+    margin-block-start: clamp(0.75rem, 2vw, 1.75rem);
+  }
+
+  .sui-k-hero-lede {
+    grid-column: 1 / span 5;
+    max-width: 34rem;
+    margin: 0;
+    font-size: clamp(1.05rem, 1.4vw, 1.22rem);
+    line-height: 1.55;
+  }
+
+  .sui-k-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 6 / span 4;
+    gap: 0.9rem 1.1rem;
+    align-items: center;
+  }
+
+  .sui-k-hero-note {
+    display: grid;
+    grid-column: 10 / -1;
+    gap: 0.7rem;
+    justify-items: end;
+    text-align: end;
+  }
+
+  .sui-k-hero-note > p {
+    margin: 0;
+    font-family: var(--sui-font-display);
+    font-size: 1.05rem;
+    font-variation-settings: "wdth" 85;
+    font-weight: 650;
+    line-height: 1.2;
+    rotate: -2deg;
+  }
+
+  .sui-k-scribble-arrow {
+    display: inline-block;
+    margin-inline-end: 0.35rem;
+    color: var(--sui-hot-pink);
+    font-size: 1.6em;
+    font-weight: 800;
+    line-height: 0;
+    vertical-align: -0.1em;
+  }
+
+  .sui-k-adhesive-button {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.5rem 1rem;
+    border: 2px dashed var(--sui-ink);
+    border-radius: 999px;
+    color: var(--sui-ink);
+    background: transparent;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+      background-color var(--sui-k-dur-press) ease,
+      translate var(--sui-k-dur-lift) var(--sui-k-ease-lift);
+  }
+
+  .sui-k-adhesive-button:hover {
+    border-style: solid;
+    background: var(--sui-acid);
+  }
+
+  .sui-k-adhesive-button:active {
+    translate: 0 2px;
+  }
+
+  .sui-k-adhesive-button[hidden] {
+    display: none;
+  }
+
+  .sui-k-adhesive-icon {
+    color: var(--sui-ultraviolet);
+  }
+
+  .sui-k-stamps {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    gap: 0.9rem;
+    margin: clamp(2rem, 4vw, 3rem) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sui-k-stamps li {
+    display: grid;
+    min-width: 9.5rem;
+    padding: 0.7rem 1.1rem 0.6rem;
+    border: 2px solid var(--sui-ink);
+    border-radius: 999px;
+    outline: 2px dashed var(--sui-ink);
+    outline-offset: -0.45rem;
+    background: var(--sui-paper-raised);
+    text-align: center;
+    rotate: calc((var(--sui-k-i) - 1) * 3deg);
+  }
+
+  .sui-k-stamps strong {
+    font-family: var(--sui-font-display);
+    font-size: 1.05rem;
+    font-variation-settings: "wdth" 80;
+    letter-spacing: 0.02em;
+  }
+
+  .sui-k-stamps span {
+    color: var(--sui-ink-muted);
+    font-size: 0.78rem;
+  }
+
+  @media (width >= 64rem) {
+    .sui-k-stamps {
+      position: absolute;
+      top: clamp(1.5rem, 3.5vw, 3rem);
+      right: var(--sui-k-edge);
+      gap: 0.4rem;
+      margin: 0;
+    }
+
+    .sui-k-stamps li {
+      min-width: 0;
+      padding: 0.55rem 0.95rem 0.45rem;
+    }
+
+    .sui-k-stamps span {
+      display: none;
+    }
+  }
+
+  @media (width < 64rem) {
+    .sui-k-hero-lede {
+      grid-column: 1 / -1;
+    }
+
+    .sui-k-hero-actions {
+      grid-column: 1 / -1;
+    }
+
+    .sui-k-hero-note {
+      grid-column: 1 / -1;
+      justify-items: start;
+      text-align: start;
+    }
+
+    .sui-k-scribble-arrow {
+      rotate: 90deg;
+    }
+  }
+
+  @media (width < 30rem) {
+    .sui-k-hero-meta > p {
+      font-size: 0.7rem;
+    }
+
+    .sui-k-break {
+      display: initial;
+    }
+
+    .sui-k-hero-meta > p span {
+      display: none;
+    }
+
+    .sui-k-stamps li {
+      flex: 1 1 100%;
+      rotate: 0deg;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sui-k-letter-shadow,
+    .sui-k-letter-cut {
+      display: none;
+    }
+
+    .sui-k-letter-face {
+      -webkit-text-stroke: 0;
+      color: CanvasText;
+    }
+
+    .sui-k-label,
+    .sui-k-word[data-k-highlight] .sui-k-word-inner {
+      border-color: CanvasText;
+      box-shadow: none;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Velocity strip, sections                                            */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  .sui-k-velocity {
+    position: relative;
+    z-index: 1;
+    padding-block: 0.9rem 0.75rem;
+    overflow: hidden;
+    border-block: 3px solid var(--sui-ink);
+    color: var(--sui-paper);
+    background: var(--sui-ink);
+    rotate: -1.5deg;
+    margin-inline: -2vw;
+  }
+
+  .sui-k-velocity-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .sui-k-velocity-run {
+    display: flex;
+    flex: none;
+  }
+
+  .sui-k-velocity-word {
+    display: inline-flex;
+    gap: 0.4em;
+    align-items: center;
+    padding-inline-end: 0.4em;
+    font-family: var(--sui-font-display);
+    font-size: clamp(2.6rem, 7vw, 6.4rem);
+    font-variation-settings:
+      "wdth" 75,
+      "wght" 800;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+
+  /* Solid fills only: strokes expose the variable font's overlapping
+     contours. Rhythm comes from colour and the wdth axis instead. */
+  .sui-k-velocity-word[data-tone="1"] {
+    color: var(--sui-cyan);
+    font-variation-settings:
+      "wdth" 100,
+      "wght" 300;
+  }
+
+  .sui-k-velocity-word[data-tone="2"] {
+    color: var(--sui-acid);
+  }
+
+  .sui-k-velocity-word[data-tone="3"] {
+    color: var(--sui-hot-pink);
+    font-variation-settings:
+      "wdth" 100,
+      "wght" 300;
+  }
+
+  .sui-k-velocity-dot {
+    color: var(--sui-acid);
+    font-size: 0.4em;
+  }
+
+  .sui-k-section {
+    width: min(100%, var(--sui-k-max));
+    margin-inline: auto;
+    padding: clamp(5rem, 9vw, 8.5rem) var(--sui-k-edge) 0;
+  }
+
+  .sui-k-section-head {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--sui-docs-grid-gutter);
+    margin-block-end: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .sui-k-section-head > * {
+    grid-column: 1 / span 8;
+  }
+
+  .sui-k-section-head h2 {
+    margin: 0 0 1.25rem;
+    font-size: clamp(2.6rem, 6.4vw, 6.2rem);
+    font-variation-settings: "wdth" 88;
+    letter-spacing: -0.02em;
+    line-height: 0.92;
+  }
+
+  .sui-k-section-head > p:last-child,
+  .sui-k-section-head > p:not(.sui-k-kicker) {
+    max-width: 40rem;
+    margin: 0;
+    color: var(--sui-ink-muted);
+    font-size: clamp(1rem, 1.3vw, 1.15rem);
+  }
+
+  [data-sui-theme="night"] .sui-k-section-head > p:not(.sui-k-kicker) {
+    color: var(--sui-night-muted);
+  }
+
+  @media (width < 64rem) {
+    .sui-k-section-head > * {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Specimen sheet                                                      */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  .sui-k-specimens {
+    position: relative;
+    display: grid;
+    gap: clamp(1.4rem, 2.6vw, 2.4rem);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    margin: 0;
+    padding: clamp(1.2rem, 2.8vw, 2.6rem);
+    border: 2px solid var(--sui-ink);
+    border-radius: 1.75rem 1.75rem 1.75rem 0.5rem;
+    background:
+      radial-gradient(circle, rgb(18 17 22 / 9%) 1px, transparent 1.3px) 0 0 /
+        14px 14px,
+      var(--sui-paper-muted);
+    list-style: none;
+  }
+
+  /* The backing sheet's own peeled corner. */
+  .sui-k-specimens::after {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: clamp(2.5rem, 5vw, 4.5rem);
+    height: clamp(2.5rem, 5vw, 4.5rem);
+    border-bottom: 2px solid var(--sui-ink);
+    border-left: 2px solid var(--sui-ink);
+    border-radius: 0 1.75rem 0 0.9rem;
+    background: linear-gradient(
+      225deg,
+      var(--sui-paper) 0 49%,
+      var(--sui-paper-raised) 50%
+    );
+    box-shadow: -0.3rem 0.3rem 0 rgb(18 17 22 / 18%);
+    content: "";
+  }
+
+  .sui-k-specimen {
+    --sui-k-accent: var(--sui-acid);
+
+    position: relative;
+    display: grid;
+    grid-column: span 4;
+    grid-template-rows: 1fr auto;
+    min-width: 0;
+    border: 2px solid var(--sui-ink);
+    border-radius: 1.25rem;
+    outline: 2px dashed rgb(18 17 22 / 28%);
+    outline-offset: 0.45rem;
+    background: var(--sui-paper-raised);
+    box-shadow: 0.38rem 0.38rem 0 var(--sui-ink);
+    rotate: var(--sui-k-tilt, 0deg);
+    transition:
+      rotate var(--sui-k-dur-settle) var(--sui-k-ease-settle),
+      translate var(--sui-k-dur-lift) var(--sui-k-ease-lift),
+      box-shadow var(--sui-k-dur-lift) var(--sui-k-ease-lift);
+  }
+
+  .sui-k-specimen:hover,
+  .sui-k-specimen:focus-within {
+    z-index: 2;
+    box-shadow:
+      0.62rem 0.66rem 0 var(--sui-ink),
+      0 1.4rem 2.6rem rgb(18 17 22 / 16%);
+    rotate: 0deg;
+    translate: -0.15rem -0.28rem;
+  }
+
+  .sui-k-specimen[data-accent="pink"] {
+    --sui-k-accent: var(--sui-hot-pink);
+  }
+
+  .sui-k-specimen[data-accent="cyan"] {
+    --sui-k-accent: var(--sui-cyan);
+  }
+
+  .sui-k-specimen[data-accent="orange"] {
+    --sui-k-accent: var(--sui-orange);
+  }
+
+  .sui-k-specimen[data-accent="ultraviolet"] {
+    --sui-k-accent: var(--sui-ultraviolet);
+  }
+
+  .sui-k-specimen[data-span="wide"] {
+    grid-column: span 7;
+  }
+
+  .sui-k-specimen[data-span="tall"] {
+    grid-column: span 5;
+  }
+
+  .sui-k-specimen[data-span="half"] {
+    grid-column: span 6;
+  }
+
+  .sui-k-specimen[data-span="full"] {
+    grid-column: 1 / -1;
+  }
+
+  .sui-k-specimen-stage {
+    position: relative;
+    display: grid;
+    min-height: 15rem;
+    overflow: hidden;
+    border-bottom: 2px solid var(--sui-ink);
+    border-radius: 1.1rem 1.1rem 0 0;
+    background: var(--sui-k-accent);
+  }
+
+  .sui-k-specimen[data-span="wide"] .sui-k-specimen-stage,
+  .sui-k-specimen[data-span="tall"] .sui-k-specimen-stage {
+    min-height: 21rem;
+  }
+
+  .sui-k-specimen[data-span="full"] .sui-k-specimen-stage {
+    min-height: 11rem;
+  }
+
+  .sui-k-specimen[data-accent="ultraviolet"] .sui-k-specimen-stage,
+  .sui-k-specimen[data-accent="orange"] .sui-k-specimen-stage {
+    color: var(--sui-night-text);
+    background:
+      radial-gradient(circle, rgb(255 255 255 / 14%) 1px, transparent 1.4px) 0
+        0 / 18px 18px,
+      var(--sui-night);
+  }
+
+  .sui-k-specimen[data-accent="orange"] .sui-k-specimen-stage {
+    background:
+      radial-gradient(circle, rgb(18 17 22 / 18%) 1px, transparent 1.4px) 0 0 /
+        18px 18px,
+      var(--sui-orange);
+    color: var(--sui-ink);
+  }
+
+  .sui-k-specimen-live {
+    display: grid;
+    min-height: 100%;
+  }
+
+  .sui-k-specimen-live > * {
+    grid-area: 1 / 1;
+  }
+
+  .sui-k-specimen-label {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.15rem 0.8rem;
+    align-items: baseline;
+    padding: 1.1rem 1.3rem 1.25rem;
+  }
+
+  .sui-k-specimen-number {
+    grid-row: 1 / span 2;
+    font-family: var(--sui-font-display);
+    font-size: 2.6rem;
+    font-variation-settings: "wdth" 75;
+    font-weight: 800;
+    line-height: 0.8;
+    -webkit-text-stroke: 1.5px var(--sui-ink);
+    color: transparent;
+  }
+
+  .sui-k-specimen-verb {
+    justify-self: start;
+    padding: 0.1rem 0.5rem;
+    border: 1.5px solid var(--sui-ink);
+    border-radius: 0.35rem;
+    background: var(--sui-k-accent);
+    font-family: var(--sui-font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    rotate: -3deg;
+  }
+
+  .sui-k-specimen[data-accent="ultraviolet"] .sui-k-specimen-verb {
+    color: var(--sui-paper);
+  }
+
+  .sui-k-specimen-label :is(h2, h3) {
+    grid-column: 2;
+    margin: 0;
+    font-size: clamp(1.5rem, 2.3vw, 2.1rem);
+    letter-spacing: -0.035em;
+    line-height: 1;
+  }
+
+  .sui-k-specimen-label :is(h2, h3) a {
+    text-decoration: none;
+  }
+
+  .sui-k-specimen-label :is(h2, h3) a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+  }
+
+  .sui-k-specimen-label > p {
+    grid-column: 1 / -1;
+    margin: 0.55rem 0 0;
+    color: var(--sui-ink-muted);
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .sui-k-specimen-links {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    gap: 0.5rem 1rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-start: 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .sui-k-specimen-links code {
+    font-size: 0.78rem;
+  }
+
+  .sui-k-specimen-links a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    font-weight: 800;
+  }
+
+  .sui-k-specimen-center {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .sui-k-badge-cloud {
+    max-width: 18rem;
+    margin: auto;
+  }
+
+  .sui-k-press-count {
+    display: inline-grid;
+    min-width: 4.2rem;
+    min-height: 4.2rem;
+    padding: 0.4rem;
+    place-items: center;
+    border: 2px solid var(--sui-ink);
+    border-radius: 50%;
+    outline: 2px dashed var(--sui-ink);
+    outline-offset: -0.4rem;
+    background: var(--sui-paper-raised);
+    font-family: var(--sui-font-display);
+    font-size: 1.05rem;
+    font-weight: 800;
+    rotate: 8deg;
+  }
+
+  .sui-k-specimen-poster {
+    display: grid;
+    gap: 0.6rem;
+    place-content: center;
+    justify-items: center;
+    font-family: var(--sui-font-display);
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .sui-k-specimen-field {
+    display: grid;
+    min-height: 100%;
+    place-items: center;
+  }
+
+  .sui-k-specimen-field .sui-k-specimen-center {
+    flex-direction: column;
+  }
+
+  .sui-k-specimen-hint {
+    font-family: var(--sui-font-display);
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    font-variation-settings: "wdth" 80;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    pointer-events: none;
+  }
+
+  .sui-k-specimen-peel {
+    width: min(86%, 18rem);
+    height: 13rem;
+    margin: auto;
+  }
+
+  .sui-k-peel-face {
+    display: grid;
+    gap: 0.5rem;
+    height: 100%;
+    padding: 1.2rem;
+    place-content: center;
+    justify-items: center;
+    background: var(--sui-paper-raised);
+    text-align: center;
+  }
+
+  .sui-k-peel-face[data-side="back"] {
+    color: var(--sui-paper);
+    background: var(--sui-ink);
+  }
+
+  .sui-k-peel-face strong {
+    font-family: var(--sui-font-display);
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .sui-k-specimen-stack {
+    width: min(84%, 19rem);
+    margin: auto;
+  }
+
+  .sui-k-specimen-stack article {
+    display: grid;
+    min-height: 9.5rem;
+    padding: 1.1rem;
+    align-content: space-between;
+    border: 2px solid var(--sui-ink);
+    border-radius: 1rem;
+    background: var(--sui-paper-raised);
+  }
+
+  .sui-k-specimen-stack article[data-tone="acid"] {
+    background: var(--sui-acid);
+  }
+
+  .sui-k-specimen-stack article[data-tone="pink"] {
+    background: var(--sui-hot-pink);
+  }
+
+  .sui-k-specimen-stack article[data-tone="cyan"] {
+    background: var(--sui-cyan);
+  }
+
+  .sui-k-specimen-stack article span {
+    font-family: var(--sui-font-mono);
+    font-size: 0.8rem;
+  }
+
+  .sui-k-specimen-stack article strong {
+    font-family: var(--sui-font-display);
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  .sui-k-specimen-navbar {
+    align-self: center;
+    padding: 1.25rem;
+  }
+
+  .sui-k-specimen-brand {
+    font-family: var(--sui-font-display);
+    font-weight: 800;
+  }
+
+  @media (width < 64rem) {
+    .sui-k-specimens {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sui-k-specimen,
+    .sui-k-specimen[data-span] {
+      grid-column: span 1;
+    }
+
+    .sui-k-specimen[data-span="wide"],
+    .sui-k-specimen[data-span="full"] {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (width < 40rem) {
+    .sui-k-specimens {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.6rem;
+    }
+
+    .sui-k-specimen[data-span] {
+      grid-column: 1 / -1;
+    }
+
+    .sui-k-specimen[data-span] .sui-k-specimen-stage {
+      min-height: 15rem;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Desk, handoff, rules, final                                         */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  .sui-k-desk {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .sui-k-desk-board {
+    position: relative;
+    height: clamp(24rem, 46vw, 36rem);
+    overflow: hidden;
+    border: 2px dashed rgb(245 241 247 / 32%);
+    border-radius: 1.75rem;
+    background:
+      linear-gradient(rgb(245 241 247 / 5%) 1px, transparent 1px) 0 0 / 100%
+        2.5rem,
+      linear-gradient(90deg, rgb(245 241 247 / 5%) 1px, transparent 1px) 0 0 /
+        2.5rem 100%,
+      var(--sui-night-raised);
+    contain: layout paint;
+  }
+
+  .sui-k-desk[data-k-compact] {
+    height: 100%;
+    gap: 0;
+  }
+
+  .sui-k-desk[data-k-compact] .sui-k-desk-board {
+    height: 100%;
+    min-height: 13rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .sui-k-desk[data-k-compact] .sui-k-desk-tools {
+    position: absolute;
+    right: 0.8rem;
+    bottom: 0.8rem;
+  }
+
+  .sui-k-desk-item {
+    position: absolute;
+    top: calc(var(--sui-k-y) * (100% - var(--sui-k-size)));
+    left: calc(var(--sui-k-x) * (100% - var(--sui-k-size)));
+    width: var(--sui-k-size);
+    height: var(--sui-k-size);
+    user-select: none;
+    touch-action: pan-y;
+    will-change: transform;
+  }
+
+  [data-k-live] .sui-k-desk-item {
+    cursor: grab;
+  }
+
+  .sui-k-desk-item[data-k-held] {
+    cursor: grabbing;
+  }
+
+  .sui-k-desk-sticker {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: scale var(--sui-k-dur-lift) var(--sui-k-ease-lift);
+  }
+
+  .sui-k-desk-sticker .sui-sticker {
+    transition: filter var(--sui-k-dur-lift) var(--sui-k-ease-out);
+  }
+
+  .sui-k-desk-item[data-k-held] .sui-k-desk-sticker {
+    scale: 1.1;
+  }
+
+  .sui-k-desk-item[data-k-held] .sui-sticker {
+    --sui-sticker-shadow-offset: 0.9rem;
+  }
+
+  .sui-k-desk-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .sui-k-drawer {
+    margin-block-start: clamp(5rem, 9vw, 8.5rem);
+    padding-block-end: clamp(4rem, 8vw, 7rem);
+    border-radius: 2.5rem;
+    color: var(--sui-night-text);
+    background: var(--sui-night);
+  }
+
+  .sui-k-drawer .sui-k-section-head h2 {
+    color: var(--sui-night-text);
+  }
+
+  .sui-k-drawer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    align-items: center;
+    margin-block-start: 1.6rem;
+  }
+
+  .sui-k-format-tags,
+  .sui-k-stack-row ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sui-k-format-tags li {
+    padding: 0.25rem 0.6rem;
+    border: 1.5px solid var(--sui-night-muted);
+    border-radius: 0.35rem;
+    font-family: var(--sui-font-mono);
+    font-size: 0.8rem;
+  }
+
+  .sui-k-handoff .sui-docs-playground-session {
+    margin-block-start: 0;
+  }
+
+  .sui-k-rule-list {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem) var(--sui-docs-grid-gutter);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sui-k-rule-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 1.25rem;
+    padding-block-start: 1.25rem;
+    border-top: 3px solid var(--sui-ink);
+  }
+
+  .sui-k-rule-number {
+    grid-row: 1 / span 2;
+    color: transparent;
+    font-family: var(--sui-font-display);
+    font-size: clamp(4.5rem, 9vw, 8rem);
+    font-variation-settings: "wdth" 75;
+    font-weight: 800;
+    line-height: 0.78;
+    -webkit-text-stroke: 2px var(--sui-ink);
+  }
+
+  .sui-k-rule-list li:nth-child(1) .sui-k-rule-number {
+    color: var(--sui-acid);
+  }
+
+  .sui-k-rule-list li:nth-child(4) .sui-k-rule-number {
+    color: var(--sui-cyan);
+  }
+
+  .sui-k-rule-list h3 {
+    margin: 0 0 0.6rem;
+    font-size: clamp(1.4rem, 2.4vw, 2.1rem);
+    line-height: 1.02;
+  }
+
+  .sui-k-rule-list p {
+    max-width: 30rem;
+    margin: 0;
+    color: var(--sui-ink-muted);
+  }
+
+  .sui-k-stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    align-items: center;
+    margin-block-start: clamp(3rem, 6vw, 5rem);
+    padding: 1.25rem 0;
+    border-block: 2px solid var(--sui-ink);
+  }
+
+  .sui-k-stack-row > p {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .sui-k-stack-row li {
+    padding: 0.35rem 0.75rem;
+    border: 2px solid var(--sui-ink);
+    border-radius: 0.5rem 0.7rem 0.55rem 0.45rem;
+    background: var(--sui-paper-raised);
+    font-weight: 700;
+  }
+
+  .sui-k-final {
+    display: grid;
+    width: min(calc(100% - 2 * var(--sui-k-edge)), var(--sui-k-max));
+    margin: clamp(5rem, 9vw, 8.5rem) auto clamp(3rem, 6vw, 5rem);
+    padding: clamp(3rem, 7vw, 6.5rem) clamp(1.25rem, 5vw, 5rem);
+    justify-items: start;
+    border: 2px solid var(--sui-ink);
+    border-radius: 2rem;
+    color: var(--sui-night-text);
+    background:
+      radial-gradient(circle, rgb(245 241 247 / 10%) 1px, transparent 1.4px) 0
+        0 / 20px 20px,
+      var(--sui-night);
+    box-shadow: 0.6rem 0.6rem 0 var(--sui-ultraviolet);
+  }
+
+  .sui-k-final h2 {
+    max-width: 12ch;
+    margin: 0 0 2rem;
+    color: var(--sui-night-text);
+    font-size: clamp(3.2rem, 10vw, 10rem);
+    font-variation-settings: "wdth" 82;
+    letter-spacing: -0.022em;
+    line-height: 0.86;
+  }
+
+  .sui-k-install {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 40rem;
+    margin-block-end: 2rem;
+  }
+
+  .sui-k-install code {
+    justify-self: start;
+    padding: 0.8rem 1.1rem;
+    border: 2px solid var(--sui-paper);
+    border-radius: 0.7rem;
+    color: var(--sui-ink);
+    background: var(--sui-paper);
+    box-shadow: 0.3rem 0.3rem 0 var(--sui-acid);
+    font-size: clamp(0.95rem, 2vw, 1.2rem);
+  }
+
+  .sui-k-install p {
+    margin: 0;
+    color: var(--sui-night-muted);
+  }
+
+  .sui-k-final-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .sui-k-contribute {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    align-items: center;
+    margin-block-start: 2.5rem;
+    color: var(--sui-night-muted);
+  }
+
+  .sui-k-contribute p {
+    margin: 0;
+  }
+
+  .sui-k-contribute a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    color: var(--sui-night-text);
+    font-weight: 700;
+  }
+
+  @media (width < 48rem) {
+    .sui-k-rule-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sui-k-drawer {
+      border-radius: 1.5rem;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Motion: only when the visitor accepts it                            */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-sui-docs-effects-effective="reduced"]) {
+      /* slap: letters land from above with their shadow catching up */
+      .sui-k-letter-slot {
+        animation: sui-k-slap var(--sui-k-dur-slap) var(--sui-k-ease-slap)
+          backwards;
+        animation-delay: calc(180ms + var(--sui-k-i) * 55ms);
+      }
+
+      .sui-k-letter-shadow {
+        animation: sui-k-shadow-land var(--sui-k-dur-slap) var(--sui-k-ease-out)
+          backwards;
+        animation-delay: calc(180ms + var(--sui-k-i) * 55ms);
+      }
+
+      .sui-k-label {
+        animation: sui-k-slap var(--sui-k-dur-slap) var(--sui-k-ease-slap)
+          backwards;
+        animation-delay: calc(40ms + var(--sui-k-i) * 90ms);
+      }
+
+      .sui-k-stamps li {
+        animation: sui-k-stamp 380ms var(--sui-k-ease-slap) backwards;
+        animation-delay: calc(720ms + var(--sui-k-i) * 90ms);
+      }
+
+      /* reveal: words rise out of their own masks, highlights get slapped */
+      [data-k-reveal] .sui-k-word-inner {
+        transition:
+          translate var(--sui-k-dur-reveal) var(--sui-k-ease-out),
+          rotate var(--sui-k-dur-reveal) var(--sui-k-ease-out);
+        transition-delay: calc(var(--sui-k-w) * var(--sui-k-stagger));
+      }
+
+      [data-k-reveal] .sui-k-word[data-k-highlight] .sui-k-word-inner {
+        transition:
+          scale var(--sui-k-dur-slap) var(--sui-k-ease-slap),
+          rotate var(--sui-k-dur-slap) var(--sui-k-ease-slap),
+          opacity 120ms linear;
+        transition-delay: calc(var(--sui-k-w) * var(--sui-k-stagger) + 120ms);
+      }
+
+      :root[data-k-armed] [data-k-reveal]:not([data-k-in]) .sui-k-word-inner {
+        rotate: 5deg;
+        translate: 0 110%;
+      }
+
+      :root[data-k-armed]
+        [data-k-reveal]:not([data-k-in])
+        .sui-k-word[data-k-highlight]
+        .sui-k-word-inner {
+        opacity: 0;
+        rotate: -14deg;
+        scale: 1.45;
+        translate: 0 0;
+      }
+
+      .sui-k-rule-list li[data-k-reveal] .sui-k-rule-number {
+        transition:
+          scale var(--sui-k-dur-slap) var(--sui-k-ease-slap),
+          rotate var(--sui-k-dur-slap) var(--sui-k-ease-slap),
+          opacity 140ms linear;
+        transition-delay: calc(var(--sui-k-i) * 70ms);
+      }
+
+      :root[data-k-armed]
+        .sui-k-rule-list
+        li[data-k-reveal]:not([data-k-in])
+        .sui-k-rule-number {
+        opacity: 0;
+        rotate: -18deg;
+        scale: 1.6;
+      }
+
+      /* desk: the pile is slapped down when first seen */
+      .sui-k-desk:not([data-k-compact])
+        .sui-k-desk-board[data-k-in]
+        .sui-k-desk-sticker {
+        animation: sui-k-drop 520ms var(--sui-k-ease-slap) backwards;
+        animation-delay: calc(var(--sui-k-i) * 32ms);
+      }
+
+      :root[data-k-armed]
+        .sui-k-desk-board:not([data-k-in])
+        .sui-k-desk-sticker {
+        opacity: 0;
+      }
+
+      .sui-k-press-count {
+        animation: sui-k-stamp 320ms var(--sui-k-ease-slap);
+      }
+
+      /* Revealed while skimming: arrive in place, no choreography. */
+      [data-k-reveal][data-k-instant] .sui-k-word .sui-k-word-inner,
+      [data-k-reveal][data-k-instant]
+        .sui-k-word[data-k-highlight]
+        .sui-k-word-inner,
+      .sui-k-rule-list li[data-k-reveal][data-k-instant] .sui-k-rule-number,
+      .sui-k-desk:not([data-k-compact])
+        .sui-k-desk-board[data-k-in][data-k-instant]
+        .sui-k-desk-sticker {
+        animation: none;
+        transition: none;
+      }
+    }
+  }
+
+  @keyframes sui-k-slap {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, -0.22em, 0) scale(1.32) rotate(-9deg);
+    }
+
+    20% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes sui-k-shadow-land {
+    0% {
+      opacity: 0;
+      translate: 0.3em 0.36em;
+    }
+
+    100% {
+      opacity: 1;
+      translate: 0.06em 0.075em;
+    }
+  }
+
+  @keyframes sui-k-stamp {
+    0% {
+      opacity: 0;
+      scale: 1.6;
+    }
+
+    30% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  @keyframes sui-k-drop {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, -2.5rem, 0) scale(1.35) rotate(-12deg);
+    }
+
+    25% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Global frame: navigation — calm pills over a dimmed sticker band      */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  .sui-k-navbar.sui-sticker-navbar {
+    --sui-navbar-surface: var(--sui-night);
+    --sui-navbar-ink: var(--sui-night-text);
+    --sui-navbar-height: 4.75rem;
+
+    border-block-end: 0;
+    color: var(--sui-night-text);
+    background: var(--sui-night);
+  }
+
+  /* The band is texture, not content: dimmed, slightly desaturated, and
+     faded toward the dock so the pills always win. */
+  .sui-k-navbar.sui-sticker-navbar::before,
+  .sui-k-navbar.sui-sticker-navbar::after {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+  }
+
+  .sui-k-navbar.sui-sticker-navbar::before {
+    background: url("/collage/band.webp") repeat-x center / auto 9rem;
+    filter: saturate(0.85) brightness(0.8);
+    opacity: 0.55;
+  }
+
+  .sui-k-navbar.sui-sticker-navbar::after {
+    background:
+      radial-gradient(
+        ellipse 60% 120% at 50% 50%,
+        rgb(11 10 14 / 55%),
+        rgb(11 10 14 / 10%) 75%
+      ),
+      linear-gradient(rgb(11 10 14 / 0%) 70%, rgb(11 10 14 / 45%));
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-decoration {
+    display: none;
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-inner {
+    z-index: 2;
+    width: min(100%, var(--sui-k-max));
+    gap: 0.75rem;
+    padding-block: 0.7rem;
+  }
+
+  /* Brand: a white pill holding the scroll-turning smiley. */
+  .sui-k-navbar .sui-sticker-navbar-brand {
+    max-width: none;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    rotate: 0deg;
+  }
+
+  .sui-k-brand {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 2.9rem;
+    padding: 0.3rem 1rem 0.3rem 0.35rem;
+    border: 2px solid var(--sui-ink);
+    border-radius: 999px;
+    color: var(--sui-ink);
+    background: var(--sui-paper-raised);
+    box-shadow: 0 0.22rem 0 var(--sui-ink);
+    text-decoration: none;
+  }
+
+  .sui-k-brand-word {
+    font-family: var(--sui-font-display);
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .sui-k-brand-word sup {
+    color: var(--sui-ultraviolet);
+  }
+
+  .sui-k-smiley {
+    display: inline-grid;
+    width: 2.2rem;
+    height: 2.2rem;
+    flex: none;
+    will-change: transform;
+  }
+
+  .sui-k-smiley svg {
+    width: 100%;
+    height: 100%;
+    transition: scale var(--sui-k-dur-lift) var(--sui-k-ease-lift);
+  }
+
+  .sui-k-brand:hover .sui-k-smiley svg {
+    scale: 1.12;
+  }
+
+  /* Desktop links: one quiet dock instead of eight rotated cards. */
+  .sui-k-navbar .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile) {
+    justify-content: safe center;
+    justify-self: center;
+    gap: 0.1rem;
+    padding: 0.3rem;
+    border: 2px solid var(--sui-ink);
+    border-radius: 999px;
+    background: var(--sui-paper-raised);
+    box-shadow:
+      0 0.22rem 0 var(--sui-ink),
+      0 0.75rem 2rem rgb(0 0 0 / 35%);
+  }
+
+  .sui-k-navbar
+    .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+    .sui-sticker-navbar-link-slot
+    .sui-sticker-navbar-item {
+    min-height: 2.6rem;
+    padding: 0.45rem 1.05rem;
+    border: 0;
+    border-radius: 999px;
+    color: var(--sui-ink);
+    background: transparent;
+    box-shadow: none;
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    rotate: 0deg;
+    transition:
+      background-color 140ms ease,
+      color 140ms ease,
+      scale var(--sui-k-dur-press) var(--sui-k-ease-press);
+  }
+
+  .sui-k-navbar
+    .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+    .sui-sticker-navbar-link-slot
+    .sui-sticker-navbar-item:hover {
+    background: var(--sui-paper-muted);
+    translate: none;
+  }
+
+  .sui-k-navbar
+    .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+    .sui-sticker-navbar-link-slot
+    .sui-sticker-navbar-item:active {
+    scale: 0.96;
+    translate: none;
+  }
+
+  .sui-k-navbar
+    .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+    .sui-sticker-navbar-link-slot
+    .sui-sticker-navbar-item[aria-current="page"] {
+    color: #fff;
+    background: var(--sui-ultraviolet);
+    box-shadow: inset 0 -0.18rem 0 rgb(0 0 0 / 22%);
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-item[aria-current="page"]::after {
+    display: none;
+  }
+
+  /* Actions: search pill + ringed primary CTA. GitHub lives in the hero and
+     footer; on a textured band a bare text link would not read. */
+  .sui-k-navbar .sui-docs-navbar-actions {
+    gap: 0.6rem;
+  }
+
+  .sui-k-navbar .sui-docs-navbar-actions > a:not(.sui-docs-navbar-start) {
+    display: none;
+  }
+
+  .sui-k-navbar .sui-docs-search-trigger {
+    min-height: 2.9rem;
+    padding: 0.45rem 0.55rem 0.45rem 1rem;
+    border: 2px solid var(--sui-ink);
+    border-radius: 999px;
+    color: var(--sui-ink);
+    background: var(--sui-paper-raised);
+    box-shadow: 0 0.22rem 0 var(--sui-ink);
+    font-weight: 700;
+  }
+
+  .sui-k-navbar .sui-docs-search-trigger kbd {
+    display: inline-grid;
+    min-width: 1.6rem;
+    height: 1.6rem;
+    place-items: center;
+    border: 1.5px solid var(--sui-ink);
+    border-radius: 0.45rem;
+    background: var(--sui-paper-muted);
+    font-size: 0.8rem;
+  }
+
+  .sui-k-navbar .sui-docs-navbar-start {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 2.9rem;
+    padding: 0.45rem 1.2rem;
+    border: 3px solid var(--sui-paper-raised);
+    border-radius: 999px;
+    color: #fff;
+    background: var(--sui-ultraviolet);
+    box-shadow:
+      0 0 0 2px var(--sui-ink),
+      0 0.6rem 1.6rem rgb(124 44 255 / 45%);
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: scale var(--sui-k-dur-press) var(--sui-k-ease-press);
+  }
+
+  .sui-k-navbar .sui-docs-navbar-start span {
+    display: inline-block;
+    transition: translate var(--sui-k-dur-lift) var(--sui-k-ease-lift);
+  }
+
+  .sui-k-navbar .sui-docs-navbar-start:hover span {
+    translate: 0.25rem 0;
+  }
+
+  .sui-k-navbar .sui-docs-navbar-start:active {
+    scale: 0.96;
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-menu-trigger {
+    min-height: 2.9rem;
+    padding-inline: 1rem;
+    border: 2px solid var(--sui-ink);
+    border-radius: 999px;
+    background: var(--sui-acid);
+    box-shadow: 0 0.22rem 0 var(--sui-ink);
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-progress {
+    inset-block-end: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--sui-acid),
+      var(--sui-cyan) 50%,
+      var(--sui-hot-pink)
+    );
+    box-shadow: none;
+  }
+
+  /* Phones: brand, search and menu only. The CTA's destination is in the
+     menu and the hero; keeping it here pushed the menu off-screen. */
+  @media (width <= 48rem) {
+    .sui-k-navbar .sui-docs-navbar-start {
+      display: none;
+    }
+  }
+
+  @media (width <= 680px) {
+    .sui-k-navbar.sui-sticker-navbar {
+      --sui-navbar-height: 4.25rem;
+    }
+
+    .sui-k-brand {
+      min-height: 2.6rem;
+      padding-inline-end: 0.8rem;
+    }
+
+    .sui-k-brand-word {
+      font-size: 0.95rem;
+    }
+
+    .sui-k-smiley {
+      width: 1.9rem;
+      height: 1.9rem;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sui-k-navbar.sui-sticker-navbar::before,
+    .sui-k-navbar.sui-sticker-navbar::after {
+      display: none;
+    }
+
+    .sui-k-navbar
+      .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+      .sui-sticker-navbar-link-slot
+      .sui-sticker-navbar-item[aria-current="page"] {
+      border: 2px solid Highlight;
+      color: CanvasText;
+      background: Canvas;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Sub-pages: headings, component titles, specimens index              */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  .sui-k-page-heading h1 {
+    font-size: clamp(3.2rem, 9vw, 8.5rem);
+    font-variation-settings: "wdth" 85;
+    letter-spacing: -0.018em;
+    line-height: 0.88;
+  }
+
+  .sui-k-wide-page {
+    width: min(100%, var(--sui-k-max));
+  }
+
+  .sui-docs-component-title-row h1 {
+    font-size: clamp(3rem, 8.5vw, 8rem);
+    font-variation-settings: "wdth" 85;
+    letter-spacing: -0.015em;
+    line-height: 0.9;
+  }
+
+  .sui-k-chars {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .sui-k-char {
+    display: inline-block;
+    transform-origin: 50% 80%;
+  }
+
+  .sui-k-specimen-caps {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    gap: 0.5rem;
+    align-items: center;
+    margin: 0.6rem 0 0;
+    color: var(--sui-ink-muted);
+    font-family: var(--sui-font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .sui-k-specimen-caps span {
+    padding: 0.05rem 0.4rem;
+    border: 1.5px solid var(--sui-ink);
+    border-radius: 999px;
+    color: var(--sui-ink);
+    background: var(--sui-acid);
+  }
+
+  /* Copy and share confirmation: the button is re-labelled by React; the
+     stamp here is the tactile echo of that state change. */
+  :is(
+    .sui-docs-copy-code,
+    .sui-docs-copy-prompt,
+    .sui-k-chip
+  )[data-copy-state="copied"] {
+    color: var(--sui-ink);
+    background: var(--sui-acid);
+    box-shadow: 0.22rem 0.22rem 0 var(--sui-ink);
+  }
+
+  /* The "Custom" tag appears when a preset no longer matches. Pin it to the
+     legend row so it can never wrap and move the content below the rail. */
+  .sui-docs-presets {
+    position: relative;
+  }
+
+  .sui-docs-presets > div > span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    rotate: 3deg;
+  }
+
+  /* "Customized" is wider than "Canonical"; a stable badge width keeps the
+     rail title from re-wrapping (and the page below from moving) on edit. */
+  .sui-docs-control-deck .sui-docs-dirty-state {
+    flex: none;
+    min-inline-size: 10em;
+    text-align: center;
+  }
+
+  .sui-k-copy-manual {
+    margin: 0;
+    color: var(--sui-danger-text);
+    font-size: 0.85rem;
+  }
+
+  .sui-docs-presets button,
+  .sui-docs-control-actions button {
+    transition:
+      translate var(--sui-k-dur-press) var(--sui-k-ease-press),
+      box-shadow var(--sui-k-dur-press) var(--sui-k-ease-press),
+      background-color 120ms ease;
+  }
+
+  .sui-docs-presets button:hover:not(:disabled),
+  .sui-docs-control-actions button:hover:not(:disabled) {
+    box-shadow: 0.28rem 0.3rem 0 var(--sui-ink);
+    translate: -1px -2px;
+  }
+
+  .sui-docs-presets button:active:not(:disabled),
+  .sui-docs-control-actions button:active:not(:disabled),
+  .sui-docs-copy-code:active,
+  .sui-docs-copy-prompt:active {
+    box-shadow: 0 0 0 var(--sui-ink);
+    translate: 0.18rem 0.18rem;
+  }
+
+  .sui-docs-copy-code,
+  .sui-docs-copy-prompt {
+    transition:
+      translate var(--sui-k-dur-press) var(--sui-k-ease-press),
+      box-shadow var(--sui-k-dur-press) var(--sui-k-ease-press),
+      background-color 120ms ease,
+      color 120ms ease;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Sticker drawer page                                                 */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  .sui-k-drawer-desk {
+    margin-block-end: clamp(3rem, 6vw, 5rem);
+    padding: clamp(0.75rem, 1.5vw, 1.25rem);
+    border-radius: 2rem;
+    background: var(--sui-night);
+  }
+
+  .sui-k-drawer-desk .sui-k-desk-tools {
+    padding: 0 0.25rem 0.25rem;
+  }
+
+  .sui-k-drawer-layout {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
+    align-items: start;
+  }
+
+  .sui-k-contact-sheet {
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+    gap: 0.6rem;
+    padding: 0.6rem;
+    border-width: 2px;
+    border-radius: 1.25rem;
+    box-shadow: 0.45rem 0.45rem 0 var(--sui-ultraviolet);
+  }
+
+  .sui-k-contact-sheet li {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .sui-k-contact-tile {
+    position: relative;
+    display: grid;
+    gap: 0.35rem;
+    width: 100%;
+    min-height: 100%;
+    padding: 1.6rem 0.6rem 0.9rem;
+    justify-items: center;
+    border: 1.5px solid var(--sui-ink);
+    border-radius: 0.85rem;
+    color: var(--sui-ink);
+    background: var(--sui-paper-raised);
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+    transition:
+      translate var(--sui-k-dur-lift) var(--sui-k-ease-lift),
+      box-shadow var(--sui-k-dur-lift) var(--sui-k-ease-lift),
+      background-color 120ms ease;
+  }
+
+  .sui-k-contact-tile .sui-sticker {
+    transition:
+      rotate var(--sui-k-dur-settle) var(--sui-k-ease-settle),
+      scale var(--sui-k-dur-lift) var(--sui-k-ease-lift);
+  }
+
+  .sui-k-contact-tile:hover {
+    box-shadow: 0.3rem 0.32rem 0 var(--sui-ink);
+    translate: -1px -3px;
+  }
+
+  .sui-k-contact-tile:hover .sui-sticker {
+    rotate: -6deg;
+    scale: 1.06;
+  }
+
+  .sui-k-contact-tile:active {
+    box-shadow: 0 0 0 var(--sui-ink);
+    transition-duration: var(--sui-k-dur-press);
+    translate: 0.15rem 0.15rem;
+  }
+
+  .sui-k-contact-tile[aria-pressed="true"] {
+    background: var(--sui-acid);
+    box-shadow: 0.3rem 0.3rem 0 var(--sui-ink);
+    outline: 2px dashed var(--sui-ink);
+    outline-offset: 0.3rem;
+  }
+
+  .sui-k-contact-tile strong {
+    font-size: 0.92rem;
+    line-height: 1.15;
+  }
+
+  .sui-k-contact-tile small {
+    color: var(--sui-ink-muted);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .sui-k-contact-number {
+    position: absolute;
+    top: 0.45rem;
+    left: 0.55rem;
+    font-family: var(--sui-font-mono);
+    font-size: 0.68rem;
+  }
+
+  .sui-k-inspector {
+    position: sticky;
+    top: calc(var(--sui-navbar-sticky-offset) + 1rem);
+    display: grid;
+    overflow: hidden;
+    border: 2px solid var(--sui-ink);
+    border-radius: 1.25rem;
+    background: var(--sui-paper-raised);
+    box-shadow: 0.45rem 0.45rem 0 var(--sui-ink);
+  }
+
+  .sui-k-loupe-stage {
+    display: grid;
+    height: 16rem;
+    place-items: center;
+    border-bottom: 2px solid var(--sui-ink);
+    background:
+      radial-gradient(circle, rgb(18 17 22 / 12%) 1px, transparent 1.4px) 0 0 /
+        16px 16px,
+      var(--sui-paper-muted);
+    perspective: 700px;
+  }
+
+  .sui-k-loupe-card {
+    --sui-k-sheen-x: 50%;
+    --sui-k-sheen-y: 50%;
+
+    position: relative;
+    width: 11rem;
+    height: 11rem;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .sui-k-loupe-sheen {
+    position: absolute;
+    inset: 4%;
+    border-radius: 30%;
+    background: radial-gradient(
+      circle at var(--sui-k-sheen-x) var(--sui-k-sheen-y),
+      rgb(255 255 255 / 55%),
+      rgb(97 219 232 / 18%) 28%,
+      rgb(212 255 95 / 10%) 46%,
+      transparent 62%
+    );
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  .sui-k-inspector-body {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.25rem 1.35rem 1.4rem;
+  }
+
+  .sui-k-inspector-body .sui-k-kicker {
+    margin: 0;
+  }
+
+  .sui-k-inspector-body h2 {
+    margin: 0;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    line-height: 0.95;
+  }
+
+  .sui-k-inspector-body dl {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+  }
+
+  .sui-k-inspector-body dl div {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0.75rem;
+    padding-block-end: 0.5rem;
+    border-bottom: 1px dashed rgb(18 17 22 / 30%);
+    font-size: 0.88rem;
+  }
+
+  .sui-k-inspector-body dt {
+    font-weight: 800;
+  }
+
+  .sui-k-inspector-body dd {
+    margin: 0;
+    color: var(--sui-ink-muted);
+  }
+
+  .sui-k-copy-import {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .sui-k-copy-import code {
+    display: block;
+    padding: 0.7rem;
+    overflow-wrap: anywhere;
+    border: 1.5px solid var(--sui-ink);
+    border-radius: 0.6rem;
+    background: var(--sui-paper-muted);
+    font-size: 0.78rem;
+    user-select: all;
+  }
+
+  .sui-k-copy-import .sui-k-chip {
+    justify-self: start;
+  }
+
+  @media (width < 64rem) {
+    .sui-k-drawer-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sui-k-inspector {
+      position: relative;
+      top: auto;
+      grid-row: 1;
+      grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr);
+    }
+
+    .sui-k-loupe-stage {
+      height: 100%;
+      min-height: 13rem;
+      border-right: 2px solid var(--sui-ink);
+      border-bottom: 0;
+    }
+
+    .sui-k-loupe-card {
+      width: 8rem;
+      height: 8rem;
+    }
+  }
+
+  @media (width < 40rem) {
+    .sui-k-inspector {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sui-k-loupe-stage {
+      min-height: 11rem;
+      border-right: 0;
+      border-bottom: 2px solid var(--sui-ink);
+    }
+
+    .sui-k-contact-sheet {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Sub-page motion: headings arrive, pickers respond. */
+@layer scout-ui-kinetic {
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-sui-docs-effects-effective="reduced"]) {
+      .sui-k-page-heading h1 .sui-k-word-inner {
+        animation: sui-k-rise var(--sui-k-dur-reveal) var(--sui-k-ease-out)
+          backwards;
+        animation-delay: calc(60ms + var(--sui-k-w) * 60ms);
+      }
+
+      .sui-k-char {
+        animation: sui-k-char-stick 440ms var(--sui-k-ease-slap) backwards;
+        animation-delay: calc(40ms + var(--sui-k-c) * 28ms);
+      }
+
+      .sui-k-loupe-card {
+        animation: sui-k-drop 460ms var(--sui-k-ease-slap);
+      }
+
+      :is(
+        .sui-docs-copy-code,
+        .sui-docs-copy-prompt,
+        .sui-k-chip
+      )[data-copy-state="copied"] {
+        animation: sui-k-stamp 320ms var(--sui-k-ease-slap);
+      }
+
+      .sui-docs-share-status:not(:empty) {
+        animation: sui-k-stamp 320ms var(--sui-k-ease-slap);
+      }
+    }
+  }
+
+  @keyframes sui-k-rise {
+    0% {
+      rotate: 5deg;
+      translate: 0 110%;
+    }
+
+    100% {
+      rotate: 0deg;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes sui-k-char-stick {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, -0.35em, 0) scale(1.4) rotate(-12deg);
+    }
+
+    25% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Forced colours: textures, accents and hard shadows give way to system
+   colours; boundaries stay visible as borders. */
+@layer scout-ui-kinetic {
+  @media (forced-colors: active) {
+    .sui-k-specimen[data-accent] .sui-k-specimen-verb,
+    .sui-k-specimen-caps span,
+    .sui-k-press-count,
+    .sui-k-stamps li,
+    .sui-k-chip,
+    .sui-k-format-tags li,
+    .sui-k-stack-row li,
+    .sui-k-install code,
+    .sui-k-kicker > span {
+      border-color: CanvasText;
+      color: CanvasText;
+      background: Canvas;
+      box-shadow: none;
+    }
+
+    .sui-k-specimen,
+    .sui-k-specimens,
+    .sui-k-inspector,
+    .sui-k-contact-tile,
+    .sui-k-final {
+      border-color: CanvasText;
+      box-shadow: none;
+    }
+
+    .sui-k-contact-tile[aria-pressed="true"] {
+      outline-color: Highlight;
+    }
+
+    .sui-k-velocity {
+      border-color: CanvasText;
+    }
+
+    .sui-k-loupe-sheen,
+    .sui-k-specimens::after {
+      display: none;
+    }
+  }
+}
+
+/* The grab hint only makes sense when the letters are live. */
+@layer scout-ui-kinetic {
+  @media (prefers-reduced-motion: reduce) {
+    .sui-k-hero-note > p {
+      display: none;
+    }
+  }
+
+  :root[data-sui-docs-effects-effective="reduced"] .sui-k-hero-note > p {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Collage trail (docs-level, printed-matter stickers)                  */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  .sui-k-hero {
+    isolation: isolate;
+  }
+
+  /* Stack: page < giant word < collage < actions. Like a real collage the
+     trail piles over the headline; primary actions never disappear. */
+  .sui-k-collage-layer {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+  }
+
+  .sui-k-headline {
+    position: relative;
+    z-index: 1;
+  }
+
+  .sui-k-hero-actions,
+  .sui-k-hero-note {
+    position: relative;
+    z-index: 3;
+  }
+
+  .sui-k-collage-sticker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: none;
+    height: auto;
+    visibility: hidden;
+    user-select: none;
+  }
+
+  @media (forced-colors: active) {
+    .sui-k-collage-layer {
+      display: none;
+    }
+  }
+}
+
+/* The printed-matter desk on /stickers: labelled as site artwork. */
+@layer scout-ui-kinetic {
+  .sui-k-drawer-desk-head {
+    max-width: 44rem;
+    padding: 1rem 0.5rem 1.25rem;
+    color: var(--sui-night-text);
+  }
+
+  .sui-k-drawer-desk-head h2 {
+    margin: 0 0 0.6rem;
+    color: var(--sui-night-text);
+    font-size: clamp(1.8rem, 3.6vw, 3rem);
+    line-height: 0.95;
+  }
+
+  .sui-k-drawer-desk-head > p:last-child {
+    margin: 0;
+    color: var(--sui-night-muted);
+  }
+
+  .sui-k-drawer-desk-head code {
+    color: var(--sui-ink);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+
+/* Footer outro                                                         */
+
+/* ------------------------------------------------------------------ */
+@layer scout-ui-kinetic {
+  .sui-k-footer.sui-docs-footer {
+    display: block;
+    padding: 0;
+    overflow: hidden;
+    border-top: 0;
+    color: var(--sui-night-text);
+    background: var(--sui-night);
+  }
+
+  .sui-k-footer-band {
+    height: 6.5rem;
+    background: url("/collage/band.webp") repeat-x center / auto 9rem;
+    filter: saturate(0.85) brightness(0.8);
+    opacity: 0.5;
+    mask-image: linear-gradient(#000 35%, transparent);
+  }
+
+  .sui-k-footer-inner {
+    display: grid;
+    width: min(100%, var(--sui-k-max));
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 3rem) var(--sui-k-edge) 0;
+    gap: 3rem var(--sui-docs-grid-gutter);
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr);
+  }
+
+  .sui-k-footer-lead > p {
+    margin: 0;
+    color: var(--sui-night-muted);
+  }
+
+  .sui-k-footer-lead > .sui-k-footer-statement {
+    margin-block-end: 1rem;
+    color: var(--sui-night-text);
+    font-family: var(--sui-font-display);
+    font-size: clamp(2.4rem, 4.6vw, 4.2rem);
+    font-variation-settings: "wdth" 85;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+  }
+
+  .sui-k-footer-statement span {
+    display: inline-block;
+    padding: 0 0.16em;
+    border: 0.05em solid var(--sui-paper-raised);
+    border-radius: 0.12em 0.18em 0.14em 0.1em;
+    color: var(--sui-ink);
+    background: var(--sui-acid);
+    rotate: -3deg;
+  }
+
+  .sui-k-footer-nav {
+    display: grid;
+    gap: 2rem var(--sui-docs-grid-gutter);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sui-k-footer-label {
+    margin: 0 0 1rem;
+    color: var(--sui-night-muted);
+    font-family: var(--sui-font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .sui-k-footer-nav ul {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sui-k-footer-nav a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    color: var(--sui-night-text);
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 140ms ease;
+  }
+
+  .sui-k-footer-nav a:hover {
+    color: var(--sui-acid);
+    text-decoration: underline;
+    text-decoration-thickness: 0.1em;
+    text-underline-offset: 0.25em;
+  }
+
+  /* Giant wordmark; the "O" is the scroll-turning smiley. */
+  .sui-k-footer-word {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: clamp(2rem, 5vw, 4rem) 0 -0.16em;
+
+    /* Ultraviolet on night is 3.44:1, above the 3:1 large-text minimum
+       even though the wordmark is decorative (aria-hidden). */
+    color: var(--sui-ultraviolet);
+    font-family: var(--sui-font-display);
+    font-size: clamp(4.5rem, 19vw, 21rem);
+    font-variation-settings: "wdth" 85;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 0.82;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .sui-k-footer-word .sui-k-smiley {
+    width: 0.74em;
+    height: 0.74em;
+    margin-inline: 0.02em;
+  }
+
+  .sui-k-footer-meta.sui-docs-footer-meta {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    width: min(100%, var(--sui-k-max));
+    margin-inline: auto;
+    padding: 1.25rem var(--sui-k-edge) 1.5rem;
+    border-top: 1px solid var(--sui-night-line);
+    background: var(--sui-night);
+  }
+
+  .sui-k-footer-meta p {
+    margin: 0;
+    color: var(--sui-night-muted);
+    font-size: 0.85rem;
+  }
+
+  @media (width < 64rem) {
+    .sui-k-footer-inner {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (width < 40rem) {
+    .sui-k-footer-nav {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sui-k-footer-band {
+      display: none;
+    }
+  }
+}
+
+/* Forced colours for the night surfaces: the browser replaces backgrounds
+   with Canvas, so every authored light-on-dark colour must yield to system
+   colours or it lands light-on-light. */
+@layer scout-ui-kinetic {
+  @media (forced-colors: active) {
+    .sui-k-footer.sui-docs-footer,
+    .sui-k-footer-meta.sui-docs-footer-meta,
+    .sui-k-drawer,
+    .sui-k-final,
+    .sui-k-drawer-desk {
+      color: CanvasText;
+      background: Canvas;
+    }
+
+    :is(
+        .sui-k-footer.sui-docs-footer,
+        .sui-k-drawer.sui-k-section,
+        .sui-k-final[data-sui-theme],
+        .sui-k-drawer-desk[aria-labelledby]
+      )
+      :is(h2, p, span, li, code, strong) {
+      color: CanvasText;
+    }
+
+    :is(
+        .sui-k-footer.sui-docs-footer,
+        .sui-k-drawer.sui-k-section,
+        .sui-k-final[data-sui-theme],
+        .sui-k-drawer-desk[aria-labelledby]
+      )
+      a {
+      color: LinkText;
+    }
+
+    .sui-k-footer-statement span,
+    .sui-k-word[data-k-highlight] .sui-k-word-inner {
+      border-color: CanvasText;
+      background: Canvas;
+    }
+
+    .sui-k-footer-word {
+      color: CanvasText;
+    }
+  }
+}

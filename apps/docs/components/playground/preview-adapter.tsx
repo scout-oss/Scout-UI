@@ -15,20 +15,23 @@ import type {
   ComponentConfigMap,
   ComponentSlug,
 } from "../../lib/component-registry/types";
+import { collageSticker } from "../../lib/collage";
 import { playgroundStickerSources } from "../../lib/component-registry/sticker-options";
 
-const {
-  "attention-bolt": attentionBolt,
-  "chunky-check": chunkyCheck,
-  "sparkle-pop": sparklePop,
-  "sunny-smile": sunnySmile,
-  "wonky-star": wonkyStar,
-} = playgroundStickerSources;
+// Companion artwork around the configured sticker (trail sequence, cursor
+// hover state, peel face, navbar collage) comes from the same printed-matter
+// set the pickers offer.
+const mixtape = collageSticker("mixtape");
+const stamp = collageSticker("postage-stamp");
+const seal = collageSticker("foil-seal");
+const photo = collageSticker("instant-photo");
+const ticket = collageSticker("ticket-stub");
+const heart = collageSticker("pixel-heart");
 
 function selectedSticker(id: string) {
   return (
     Object.entries(playgroundStickerSources).find(([key]) => key === id)?.[1] ??
-    sunnySmile
+    heart
   );
 }
 
@@ -80,6 +83,7 @@ function BadgePreview({
 }) {
   const shared = {
     children: config.label,
+    finish: config.finish,
     rotation: config.rotation,
     shape: config.shape,
     size: config.size,
@@ -174,7 +178,7 @@ function TrailPreview({
         min: Math.max(12, config.spacing - 10),
         max: config.spacing + 10,
       }}
-      stickers={[source, sparklePop, wonkyStar]}
+      stickers={[source, stamp, ticket]}
       touch={config.touch}
     >
       <div data-preview-value={`${config.preset}:${String(config.maxActive)}`}>
@@ -201,7 +205,7 @@ function CursorPreview({
       size={config.size}
       smoothing={config.smoothing}
       tilt={config.tilt}
-      visuals={{ default: { source }, hover: { source: chunkyCheck } }}
+      visuals={{ default: { source }, hover: { source: seal } }}
     >
       <div data-preview-value={`${config.visualId}:${String(config.size)}`}>
         <strong>Native cursor wins whenever safety is uncertain.</strong>
@@ -224,6 +228,7 @@ function PeelPreview({
 }) {
   return (
     <StickerPeel
+      appearance={config.appearance}
       back={
         <div className="sui-docs-demo-peel-layer" data-side="back">
           <strong>Second layer.</strong>
@@ -237,10 +242,10 @@ function PeelPreview({
       front={
         <div className="sui-docs-demo-peel-layer" data-side="front">
           <Sticker
-            alt="Smiling sun sticker"
+            alt="Instant photo sticker"
             shadow="none"
             size="lg"
-            source={sunnySmile}
+            source={photo}
           />
           <strong>Peel the idea.</strong>
         </div>
@@ -261,6 +266,7 @@ function StackPreview({
 }) {
   return (
     <StickerStack
+      appearance={config.appearance}
       axis={config.axis}
       className="sui-docs-demo-stack"
       disabled={config.disabled}
@@ -305,7 +311,7 @@ function NavbarPreview({
         }
         activeId={config.activeId}
         brand={<a href="#preview">STICK/WORK</a>}
-        collage={[collageSource, sparklePop, attentionBolt]}
+        collage={[collageSource, mixtape, heart]}
         items={navItems}
         reducedMotion={config.reducedMotion}
         showScrollProgress={config.showScrollProgress}

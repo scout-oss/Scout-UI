@@ -14,6 +14,11 @@ interface StickerBadgeSharedProps {
   shape?: "label" | "stamp" | "pill";
   size?: "compact" | "default" | "large";
   rotation?: number;
+  /**
+   * Post-v0.1 opt-in material. `enamel` renders an enamel pin, `foil` a
+   * holographic foil. CSS-only; default `flat`.
+   */
+  finish?: "flat" | "enamel" | "foil";
 }
 
 type StaticStickerBadgeProps = StickerBadgeSharedProps &
@@ -71,6 +76,7 @@ export function StickerBadge(props: StickerBadgeProps) {
   const {
     children,
     className,
+    finish = "flat",
     leading,
     mode = "static",
     rotation = 0,
@@ -86,6 +92,7 @@ export function StickerBadge(props: StickerBadgeProps) {
       mode !== "static" && "sui-focusable sui-motion",
       className,
     ),
+    "data-finish": finish,
     "data-mode": mode,
     "data-shape": shape,
     "data-size": size,

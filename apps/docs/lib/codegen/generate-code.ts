@@ -19,7 +19,6 @@ export const generatedCodePublicImportPatterns = Object.freeze([
   /^@scout-ui\/react\/styles\.css$/u,
   /^@scout-ui\/sticker-trail$/u,
   /^@scout-ui\/sticker-trail\/styles\.css$/u,
-  /^@scout-ui\/stickers\/definitions\/[a-z0-9-]+$/u,
 ]);
 
 export interface GeneratedCodeResult {
@@ -145,9 +144,19 @@ function trustedSticker(id: string) {
   return entry;
 }
 
+// The playground artwork is consumer-owned (not in @scout-ui/stickers), so a
+// selection becomes a local StickerSource declaration rather than an import.
+const LOCAL_ASSET_PREFIX = "asset:";
+
 function addStickerImport(table: ImportTable, id: string) {
   const entry = trustedSticker(id);
-  addImport(table, entry.module, entry.exportName);
+  const { height, width } = entry.source;
+  table.set(
+    `${LOCAL_ASSET_PREFIX}${entry.exportName}`,
+    new Set([
+      `const ${entry.exportName} = { id: ${stringLiteral(entry.source.id)}, src: ${stringLiteral(entry.hostedPath)}, width: ${finiteNumber(width)}, height: ${finiteNumber(height)} };`,
+    ]),
+  );
   return entry.exportName;
 }
 
@@ -176,6 +185,19 @@ function renderImports(table: ImportTable, useClient: boolean): string[] {
     .sort();
   for (const module of styleModules)
     result.push(`import ${stringLiteral(module)};`);
+
+  const assetDeclarations = [...table.keys()]
+    .filter((key) => key.startsWith(LOCAL_ASSET_PREFIX))
+    .sort()
+    .flatMap((key) => [...(table.get(key) ?? [])]);
+  if (assetDeclarations.length > 0) {
+    if (result.length > 0) result.push("");
+    result.push(
+      "// Your own artwork: download it from the Scout UI docs and serve it",
+      "// from your app (any PNG, WebP or SVG with the same shape works).",
+      ...assetDeclarations,
+    );
+  }
   if (result.length > 0) result.push("");
   return result;
 }
@@ -245,6 +267,7 @@ const badgeGenerator: Generator<"sticker-badge"> = (definition, config) => {
   }
   const props = emittedSchemaProps(definition, config, {
     mode: (value) => enumProp("mode", String(value)),
+    finish: (value) => enumProp("finish", String(value)),
     tone: (value) => enumProp("tone", String(value)),
     shape: (value) => enumProp("shape", String(value)),
     size: (value) => enumProp("size", String(value)),
@@ -334,13 +357,14 @@ const buttonGenerator: Generator<"sticker-button"> = (definition, config) => {
 const trailGenerator: Generator<"sticker-trail"> = (definition, config) => {
   const table = baseImports("StickerTrail", "@scout-ui/sticker-trail");
   const selected = addStickerImport(table, config.stickerId);
-  const sparkle = addStickerImport(table, "sparkle-pop");
-  const star = addStickerImport(table, "wonky-star");
+  // Companions mirror the live preview (PreviewAdapter TrailPreview).
+  const stamp = addStickerImport(table, "postage-stamp");
+  const ticket = addStickerImport(table, "ticket-stub");
   const props = [
     requiredFieldProp(
       definition,
       "stickerId",
-      `stickers={[${[selected, sparkle, star].filter((name, index, all) => all.indexOf(name) === index).join(", ")}]}`,
+      `stickers={[${[selected, stamp, ticket].filter((name, index, all) => all.indexOf(name) === index).join(", ")}]}`,
     ),
     ...emittedSchemaProps(definition, config, {
       preset: (value) => enumProp("preset", String(value)),
@@ -384,7 +408,7 @@ const trailGenerator: Generator<"sticker-trail"> = (definition, config) => {
 const cursorGenerator: Generator<"sticker-cursor"> = (definition, config) => {
   const table = baseImports("StickerCursor");
   const selected = addStickerImport(table, config.visualId);
-  const hover = addStickerImport(table, "chunky-check");
+  const hover = addStickerImport(table, "foil-seal");
   const visualField = definition.schema.fields.find(
     (field) => field.key === "visualId",
   );
@@ -430,6 +454,7 @@ const peelGenerator: Generator<"sticker-peel"> = (definition, config) => {
   const table = baseImports("StickerPeel");
   const props = emittedSchemaProps(definition, config, {
     open: (value) => (value === true ? "defaultOpen" : null),
+    appearance: (value) => enumProp("appearance", String(value)),
     origin: (value) => enumProp("origin", String(value)),
     peelSize: (value) => numberProp("peelSize", Number(value)),
     drag: (value) => booleanProp("drag", Boolean(value)),
@@ -466,6 +491,7 @@ const peelGenerator: Generator<"sticker-peel"> = (definition, config) => {
 const stackGenerator: Generator<"sticker-stack"> = (definition, config) => {
   const table = baseImports("StickerStack");
   const props = emittedSchemaProps(definition, config, {
+    appearance: (value) => enumProp("appearance", String(value)),
     index: (value) => numberProp("defaultIndex", Number(value)),
     visibleCount: (value) => numberProp("visibleCount", Number(value)),
     loop: (value) => booleanProp("loop", Boolean(value)),

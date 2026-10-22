@@ -18,6 +18,7 @@ import type {
   PromptSection,
   PromptSummaryItem,
 } from "../component-registry/types";
+import { getPlaygroundStickerImport } from "../component-registry/sticker-options";
 
 export const TARGET_LOCATION_LIMIT = 120;
 export const PROJECT_CONTEXT_LIMIT = 500;
@@ -152,7 +153,11 @@ function displayValue<C extends object>(
   if (field.kind === "boolean") return value ? "enabled" : "disabled";
   if (field.kind === "sticker") {
     const option = field.options.find((candidate) => candidate.value === value);
-    return `${option?.label ?? String(value)} (${JSON.stringify(value)})`;
+    const entry = getPlaygroundStickerImport(String(value));
+    const label = `${option?.label ?? String(value)} (${JSON.stringify(value)})`;
+    return entry
+      ? `${label}, consumer-hosted artwork downloadable from ${entry.downloadUrl}`
+      : label;
   }
   if ("options" in field) {
     const option = field.options.find((candidate) => candidate.value === value);
@@ -236,8 +241,8 @@ function assetInstruction(
   switch (strategy) {
     case "bundled":
       return usesStickerAsset
-        ? "Use the selected public definition from @scout-ui/stickers; do not copy private Scout artwork or add React to the asset package."
-        : "No bundled artwork is required by this configuration; if a visual slot is added, use only public @scout-ui/stickers definitions through the documented React API.";
+        ? "Treat the selected artwork as the project's own StickerSource ({ id, src, width, height }): download it from the listed Scout UI docs URL, serve it from the project's public assets, and do not add it to @scout-ui/stickers or copy private Scout artwork."
+        : "No artwork is required by this configuration; if a visual slot is added, pass a StickerSource ({ id, src, width, height }) for project-hosted art or a public @scout-ui/stickers definition through the documented React API.";
     case "local":
       return "Use assets already present in the project through its existing public asset convention; do not copy protected Scout artwork.";
     case "remote":
@@ -302,7 +307,7 @@ function installLines(
   if (context.assetStrategy === "bundled" && hasStickerField(definition)) {
     lines.push(
       promptLine(
-        "Add @scout-ui/stickers only if the selected public definition is not already available to the project.",
+        "Do not install @scout-ui/stickers for this artwork; place the downloaded file in the project's public assets at the path used by the generated StickerSource.",
       ),
     );
   }

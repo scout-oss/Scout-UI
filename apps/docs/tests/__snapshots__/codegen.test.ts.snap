@@ -4,14 +4,17 @@ exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, a
 ""use client";
 
 import { Sticker } from "@scout-ui/react";
-import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
 import "@scout-ui/react/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const pixelHeart = { id: "pixel-heart", src: "/stickers/pixel-heart.webp", width: 400, height: 400 };
 
 export default function StickerExample() {
   return (
     <Sticker
-      source={sunnySmile}
-      alt={"Smiling sun sticker"}
+      source={pixelHeart}
+      alt={"Pixel heart sticker"}
       size="xl"
       material="photo"
       shadow="lifted"
@@ -26,14 +29,17 @@ export default function StickerExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker/default 1`] = `
 "import { Sticker } from "@scout-ui/react";
-import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
 import "@scout-ui/react/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const pixelHeart = { id: "pixel-heart", src: "/stickers/pixel-heart.webp", width: 400, height: 400 };
 
 export default function StickerExample() {
   return (
     <Sticker
-      source={sunnySmile}
-      alt={"Smiling sun sticker"}
+      source={pixelHeart}
+      alt={"Pixel heart sticker"}
       size="lg"
       shadow="lifted"
       rotation={-6}
@@ -45,14 +51,17 @@ export default function StickerExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker/preset/calm 1`] = `
 "import { Sticker } from "@scout-ui/react";
-import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
 import "@scout-ui/react/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const pixelHeart = { id: "pixel-heart", src: "/stickers/pixel-heart.webp", width: 400, height: 400 };
 
 export default function StickerExample() {
   return (
     <Sticker
-      source={sunnySmile}
-      alt={"Smiling sun sticker"}
+      source={pixelHeart}
+      alt={"Pixel heart sticker"}
       size="md"
       shadow="stuck"
       rotation={0}
@@ -65,14 +74,17 @@ export default function StickerExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker/preset/default 1`] = `
 "import { Sticker } from "@scout-ui/react";
-import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
 import "@scout-ui/react/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const pixelHeart = { id: "pixel-heart", src: "/stickers/pixel-heart.webp", width: 400, height: 400 };
 
 export default function StickerExample() {
   return (
     <Sticker
-      source={sunnySmile}
-      alt={"Smiling sun sticker"}
+      source={pixelHeart}
+      alt={"Pixel heart sticker"}
       size="lg"
       shadow="lifted"
       rotation={-6}
@@ -84,14 +96,17 @@ export default function StickerExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker/preset/loud 1`] = `
 "import { Sticker } from "@scout-ui/react";
-import { attentionBolt } from "@scout-ui/stickers/definitions/attention-bolt";
 import "@scout-ui/react/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const foilSeal = { id: "foil-seal", src: "/stickers/foil-seal.webp", width: 400, height: 400 };
 
 export default function StickerExample() {
   return (
     <Sticker
-      source={attentionBolt}
-      alt={"Attention bolt sticker"}
+      source={foilSeal}
+      alt={"Foil seal sticker"}
       size="xl"
       tone="orange"
       shadow="lifted"
@@ -117,6 +132,7 @@ export default function StickerBadgeExample() {
     <StickerBadge
       mode="select"
       tone="cyan"
+      finish="enamel"
       shape="stamp"
       rotation={-1}
       selected={selected}
@@ -137,6 +153,7 @@ export default function StickerBadgeExample() {
   return (
     <StickerBadge
       tone="cyan"
+      finish="enamel"
       rotation={-1}
     >
       {"Fresh signal"}
@@ -154,6 +171,7 @@ export default function StickerBadgeExample() {
   return (
     <StickerBadge
       tone="cyan"
+      finish="enamel"
       rotation={-1}
     >
       {"Fresh signal"}
@@ -178,6 +196,7 @@ export default function StickerBadgeExample() {
     <StickerBadge
       mode="remove"
       tone="pink"
+      finish="enamel"
       rotation={-1}
       removeLabel={"Remove tag: Remove me"}
       onRemove={() => setVisible(false)}
@@ -203,6 +222,7 @@ export default function StickerBadgeExample() {
     <StickerBadge
       mode="select"
       tone="acid"
+      finish="enamel"
       shape="stamp"
       rotation={-1}
       selected={selected}
@@ -309,16 +329,19 @@ export default function StickerButtonExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-cursor/custom 1`] = `
 "import { StickerCursor } from "@scout-ui/react";
-import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
-import { scribblePointer } from "@scout-ui/stickers/definitions/scribble-pointer";
 import "@scout-ui/react/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const foilSeal = { id: "foil-seal", src: "/stickers/foil-seal.webp", width: 400, height: 400 };
+const pixelHeart = { id: "pixel-heart", src: "/stickers/pixel-heart.webp", width: 400, height: 400 };
 
 export default function StickerCursorExample() {
   return (
     <StickerCursor
       visuals={{
-        default: { source: scribblePointer },
-        hover: { source: chunkyCheck },
+        default: { source: pixelHeart },
+        hover: { source: foilSeal },
       }}
       size={48}
       tilt={3}
@@ -340,16 +363,19 @@ export default function StickerCursorExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-cursor/default 1`] = `
 "import { StickerCursor } from "@scout-ui/react";
-import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
-import { scribblePointer } from "@scout-ui/stickers/definitions/scribble-pointer";
 import "@scout-ui/react/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const foilSeal = { id: "foil-seal", src: "/stickers/foil-seal.webp", width: 400, height: 400 };
+const pixelHeart = { id: "pixel-heart", src: "/stickers/pixel-heart.webp", width: 400, height: 400 };
 
 export default function StickerCursorExample() {
   return (
     <StickerCursor
       visuals={{
-        default: { source: scribblePointer },
-        hover: { source: chunkyCheck },
+        default: { source: pixelHeart },
+        hover: { source: foilSeal },
       }}
       size={48}
     >
@@ -368,16 +394,19 @@ export default function StickerCursorExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-cursor/preset/default 1`] = `
 "import { StickerCursor } from "@scout-ui/react";
-import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
-import { scribblePointer } from "@scout-ui/stickers/definitions/scribble-pointer";
 import "@scout-ui/react/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const foilSeal = { id: "foil-seal", src: "/stickers/foil-seal.webp", width: 400, height: 400 };
+const pixelHeart = { id: "pixel-heart", src: "/stickers/pixel-heart.webp", width: 400, height: 400 };
 
 export default function StickerCursorExample() {
   return (
     <StickerCursor
       visuals={{
-        default: { source: scribblePointer },
-        hover: { source: chunkyCheck },
+        default: { source: pixelHeart },
+        hover: { source: foilSeal },
       }}
       size={48}
     >
@@ -396,16 +425,19 @@ export default function StickerCursorExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-cursor/preset/native 1`] = `
 "import { StickerCursor } from "@scout-ui/react";
-import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
-import { scribblePointer } from "@scout-ui/stickers/definitions/scribble-pointer";
 import "@scout-ui/react/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const foilSeal = { id: "foil-seal", src: "/stickers/foil-seal.webp", width: 400, height: 400 };
+const pixelHeart = { id: "pixel-heart", src: "/stickers/pixel-heart.webp", width: 400, height: 400 };
 
 export default function StickerCursorExample() {
   return (
     <StickerCursor
       visuals={{
-        default: { source: scribblePointer },
-        hover: { source: chunkyCheck },
+        default: { source: pixelHeart },
+        hover: { source: foilSeal },
       }}
       size={48}
       tilt={4}
@@ -427,15 +459,18 @@ export default function StickerCursorExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-cursor/preset/quiet 1`] = `
 "import { StickerCursor } from "@scout-ui/react";
-import { chunkyCheck } from "@scout-ui/stickers/definitions/chunky-check";
 import "@scout-ui/react/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const foilSeal = { id: "foil-seal", src: "/stickers/foil-seal.webp", width: 400, height: 400 };
 
 export default function StickerCursorExample() {
   return (
     <StickerCursor
       visuals={{
-        default: { source: chunkyCheck },
-        hover: { source: chunkyCheck },
+        default: { source: foilSeal },
+        hover: { source: foilSeal },
       }}
       size={34}
       tilt={0}
@@ -503,8 +538,11 @@ export default function StickerNavbarExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-navbar/preset/collage 1`] = `
 "import { StickerNavbar } from "@scout-ui/react";
-import { attentionBolt } from "@scout-ui/stickers/definitions/attention-bolt";
 import "@scout-ui/react/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const ticketStub = { id: "ticket-stub", src: "/stickers/ticket-stub.webp", width: 400, height: 400 };
 
 const items = [
   { id: "components", label: "Components", href: "/components" },
@@ -519,7 +557,7 @@ export default function StickerNavbarExample() {
       items={items}
       variant="collage"
       activeId="examples"
-      collage={[attentionBolt]}
+      collage={[ticketStub]}
     />
   );
 }
@@ -591,6 +629,7 @@ export default function StickerPeelExample() {
           <p>Complete semantic content.</p>
         </article>
       }
+      appearance="realistic"
       defaultOpen
       origin="bottom-left"
       drag={false}
@@ -619,6 +658,7 @@ export default function StickerPeelExample() {
           <p>Complete semantic content.</p>
         </article>
       }
+      appearance="realistic"
       drag
     />
   );
@@ -645,6 +685,7 @@ export default function StickerPeelExample() {
           <p>Complete semantic content.</p>
         </article>
       }
+      appearance="realistic"
       drag
     />
   );
@@ -671,6 +712,7 @@ export default function StickerPeelExample() {
           <p>Complete semantic content.</p>
         </article>
       }
+      appearance="realistic"
       defaultOpen
       drag
     />
@@ -698,6 +740,7 @@ export default function StickerPeelExample() {
           <p>Complete semantic content.</p>
         </article>
       }
+      appearance="realistic"
       origin="bottom-left"
       drag={false}
       reducedMotion="always"
@@ -730,6 +773,7 @@ export default function StickerStackExample() {
           <h2>{item.title}</h2>
         </article>
       )}
+      appearance="deck"
       defaultIndex={2}
       axis="y"
       drag
@@ -763,6 +807,7 @@ export default function StickerStackExample() {
           <h2>{item.title}</h2>
         </article>
       )}
+      appearance="deck"
     />
   );
 }
@@ -792,6 +837,7 @@ export default function StickerStackExample() {
           <h2>{item.title}</h2>
         </article>
       )}
+      appearance="deck"
     />
   );
 }
@@ -821,6 +867,7 @@ export default function StickerStackExample() {
           <h2>{item.title}</h2>
         </article>
       )}
+      appearance="deck"
       loop
       drag
       keyboard
@@ -853,6 +900,7 @@ export default function StickerStackExample() {
           <h2>{item.title}</h2>
         </article>
       )}
+      appearance="deck"
       defaultIndex={2}
       visibleCount={4}
       axis="y"
@@ -865,14 +913,18 @@ export default function StickerStackExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-trail/custom 1`] = `
 "import { StickerTrail } from "@scout-ui/sticker-trail";
-import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
-import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 import "@scout-ui/sticker-trail/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const mixtape = { id: "mixtape", src: "/stickers/mixtape.webp", width: 400, height: 400 };
+const postageStamp = { id: "postage-stamp", src: "/stickers/postage-stamp.webp", width: 400, height: 400 };
+const ticketStub = { id: "ticket-stub", src: "/stickers/ticket-stub.webp", width: 400, height: 400 };
 
 export default function StickerTrailExample() {
   return (
     <StickerTrail
-      stickers={[sparklePop, wonkyStar]}
+      stickers={[mixtape, postageStamp, ticketStub]}
       spacing={{ min: 56, max: 76 }}
       maxActive={18}
       sequence="random"
@@ -889,14 +941,18 @@ export default function StickerTrailExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-trail/default 1`] = `
 "import { StickerTrail } from "@scout-ui/sticker-trail";
-import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
-import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 import "@scout-ui/sticker-trail/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const mixtape = { id: "mixtape", src: "/stickers/mixtape.webp", width: 400, height: 400 };
+const postageStamp = { id: "postage-stamp", src: "/stickers/postage-stamp.webp", width: 400, height: 400 };
+const ticketStub = { id: "ticket-stub", src: "/stickers/ticket-stub.webp", width: 400, height: 400 };
 
 export default function StickerTrailExample() {
   return (
     <StickerTrail
-      stickers={[sparklePop, wonkyStar]}
+      stickers={[mixtape, postageStamp, ticketStub]}
       spacing={{ min: 32, max: 52 }}
     >
       <section style={{ minHeight: 320, padding: 32 }}>
@@ -911,14 +967,18 @@ export default function StickerTrailExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-trail/preset/calm 1`] = `
 "import { StickerTrail } from "@scout-ui/sticker-trail";
-import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
-import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 import "@scout-ui/sticker-trail/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const mixtape = { id: "mixtape", src: "/stickers/mixtape.webp", width: 400, height: 400 };
+const postageStamp = { id: "postage-stamp", src: "/stickers/postage-stamp.webp", width: 400, height: 400 };
+const ticketStub = { id: "ticket-stub", src: "/stickers/ticket-stub.webp", width: 400, height: 400 };
 
 export default function StickerTrailExample() {
   return (
     <StickerTrail
-      stickers={[sparklePop, wonkyStar]}
+      stickers={[mixtape, postageStamp, ticketStub]}
       preset="calm"
       size={{ min: 46, max: 74 }}
       spacing={{ min: 62, max: 82 }}
@@ -936,14 +996,18 @@ export default function StickerTrailExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-trail/preset/chaos 1`] = `
 "import { StickerTrail } from "@scout-ui/sticker-trail";
-import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
-import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 import "@scout-ui/sticker-trail/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const mixtape = { id: "mixtape", src: "/stickers/mixtape.webp", width: 400, height: 400 };
+const postageStamp = { id: "postage-stamp", src: "/stickers/postage-stamp.webp", width: 400, height: 400 };
+const ticketStub = { id: "ticket-stub", src: "/stickers/ticket-stub.webp", width: 400, height: 400 };
 
 export default function StickerTrailExample() {
   return (
     <StickerTrail
-      stickers={[sparklePop, wonkyStar]}
+      stickers={[mixtape, postageStamp, ticketStub]}
       preset="chaos"
       size={{ min: 78, max: 106 }}
       spacing={{ min: 20, max: 40 }}
@@ -963,14 +1027,18 @@ export default function StickerTrailExample() {
 
 exports[`M14 deterministic code generators > snapshots 8 defaults, 24 presets, and 8 representative custom outputs > sticker-trail/preset/default 1`] = `
 "import { StickerTrail } from "@scout-ui/sticker-trail";
-import { sparklePop } from "@scout-ui/stickers/definitions/sparkle-pop";
-import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 import "@scout-ui/sticker-trail/styles.css";
+
+// Your own artwork: download it from the Scout UI docs and serve it
+// from your app (any PNG, WebP or SVG with the same shape works).
+const mixtape = { id: "mixtape", src: "/stickers/mixtape.webp", width: 400, height: 400 };
+const postageStamp = { id: "postage-stamp", src: "/stickers/postage-stamp.webp", width: 400, height: 400 };
+const ticketStub = { id: "ticket-stub", src: "/stickers/ticket-stub.webp", width: 400, height: 400 };
 
 export default function StickerTrailExample() {
   return (
     <StickerTrail
-      stickers={[sparklePop, wonkyStar]}
+      stickers={[mixtape, postageStamp, ticketStub]}
       spacing={{ min: 32, max: 52 }}
     >
       <section style={{ minHeight: 320, padding: 32 }}>

@@ -10,16 +10,31 @@ import {
   StickerStack,
 } from "@scout-ui/react";
 import { StickerTrail } from "@scout-ui/sticker-trail";
-import { attentionBolt } from "@scout-ui/stickers/definitions/attention-bolt";
-import { sunnySmile } from "@scout-ui/stickers/definitions/sunny-smile";
-import { wonkyStar } from "@scout-ui/stickers/definitions/wonky-star";
 import { useState } from "react";
 
 import type { ExampleSlug } from "../../lib/content/examples";
 
-const sun = sunnySmile;
-const star = wonkyStar;
-const bolt = attentionBolt;
+// Examples consume only published packages, so the artwork is declared the
+// way an application would: its own StickerSource objects pointing at files
+// it serves. (These are the docs site's printed-matter stickers.)
+const sun = {
+  height: 400,
+  id: "instant-photo",
+  src: "/collage/instant-photo.webp",
+  width: 400,
+};
+const star = {
+  height: 400,
+  id: "postage-stamp",
+  src: "/collage/postage-stamp.webp",
+  width: 400,
+};
+const bolt = {
+  height: 400,
+  id: "fragile-label",
+  src: "/collage/fragile-label.webp",
+  width: 400,
+};
 
 const stories = [
   {
@@ -130,14 +145,14 @@ export function ExampleCanvas({ slug }: { readonly slug: ExampleSlug }) {
       <div className="sui-docs-recipe-mood">
         <div>
           <Sticker
-            alt="Smiling sun"
+            alt="Instant photo"
             rotation={-7}
             shadow="lifted"
             size="xl"
             source={sun}
           />
           <Sticker
-            alt="Wonky star"
+            alt="Postage stamp"
             rotation={9}
             shadow="stuck"
             size="lg"

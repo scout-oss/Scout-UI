@@ -328,6 +328,7 @@ export function CodeOutput({
         </div>
         <button
           className="sui-docs-copy-code"
+          data-copy-state={activeCopyState}
           onClick={() => void copy()}
           type="button"
         >

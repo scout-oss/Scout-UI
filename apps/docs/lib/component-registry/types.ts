@@ -44,6 +44,7 @@ export interface StickerBadgeDocsConfig {
   size: "compact" | "default" | "large";
   rotation: number;
   selected: boolean;
+  finish: "flat" | "enamel" | "foil";
 }
 
 export interface StickerButtonDocsConfig {
@@ -86,6 +87,7 @@ export interface StickerCursorDocsConfig {
 }
 
 export interface StickerPeelDocsConfig {
+  appearance: "classic" | "realistic";
   open: boolean;
   origin: "top-left" | "top-right" | "bottom-left" | "bottom-right";
   peelSize: number;
@@ -96,6 +98,7 @@ export interface StickerPeelDocsConfig {
 }
 
 export interface StickerStackDocsConfig {
+  appearance: "paper" | "deck";
   index: number;
   visibleCount: number;
   loop: boolean;

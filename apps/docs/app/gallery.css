@@ -1,0 +1,765 @@
+/*
+ * Dark gallery art direction.
+ *
+ * Showcase pages (home, components, stickers, playground index) become a lit
+ * gallery: warm near-black, off-white type, hairline rules, mono plate labels,
+ * acid as the only UI accent. Colour belongs to the sticker objects, not the
+ * chrome. Reading pages keep calm paper. Same top-level layer as kinetic.css,
+ * loaded after it, so these rules refine rather than fight it.
+ */
+@layer scout-ui-kinetic {
+  :root {
+    --sui-k-gallery: #0d0c10;
+    --sui-k-gallery-raised: #16141a;
+    --sui-k-gallery-plate: #1b181f;
+    --sui-k-text: #f2eee6;
+    --sui-k-muted: #a7a1ac;
+    --sui-k-hair: rgb(242 238 230 / 13%);
+    --sui-k-hair-strong: rgb(242 238 230 / 24%);
+    --sui-k-lit: var(--sui-acid);
+    --sui-k-spot: radial-gradient(
+      62% 72% at 50% 32%,
+      #2a2630 0%,
+      #1a171e 55%,
+      #141217 100%
+    );
+  }
+
+  /* Canvas */
+  body:has(.sui-k-gallery-page) {
+    color: var(--sui-k-text);
+    background:
+      radial-gradient(
+        120% 60% at 50% -10%,
+        rgb(124 44 255 / 9%),
+        rgb(124 44 255 / 0%) 60%
+      ),
+      var(--sui-k-gallery);
+  }
+
+  /* The playground session keeps its light paper panels and ink type. */
+  .sui-k-gallery-page :is(h1, h2, h3):not(.sui-docs-playground-session *) {
+    color: var(--sui-k-text);
+  }
+
+  .sui-k-gallery-page .sui-docs-eyebrow:not(.sui-docs-playground-session *),
+  .sui-k-gallery-page .sui-k-kicker {
+    color: var(--sui-k-muted);
+    font-family: var(--sui-font-mono);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+  }
+
+  .sui-k-gallery-page .sui-docs-lede {
+    color: var(--sui-k-muted);
+  }
+
+  /* Highlight words: acid ink, no candy label box. */
+  .sui-k-gallery-page .sui-k-word[data-k-highlight] .sui-k-word-inner {
+    padding: 0;
+    border: 0;
+    color: var(--sui-k-lit);
+    background: none;
+    box-shadow: none;
+    rotate: 0deg;
+  }
+
+  .sui-k-gallery-page .sui-k-section-head h2 {
+    font-variation-settings: "wdth" 92;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  /* Hero: light caption over a heavy off-white vinyl word. */
+  .sui-k-gallery-page .sui-k-hero-meta > p {
+    color: var(--sui-k-muted);
+  }
+
+  .sui-k-gallery-page .sui-k-headline-lead {
+    gap: 0.28em;
+    margin-block-end: 0.02em;
+    font-size: clamp(1.6rem, 4.4vw, 4.4rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+
+  .sui-k-gallery-page .sui-k-label,
+  .sui-k-gallery-page .sui-k-label + .sui-k-label {
+    padding: 0;
+    border: 0;
+    color: var(--sui-k-muted);
+    background: none;
+    box-shadow: none;
+    rotate: 0deg;
+    translate: none;
+  }
+
+  .sui-k-gallery-page .sui-k-letter-face {
+    color: #f4f1ea;
+    -webkit-text-stroke: 0;
+  }
+
+  .sui-k-gallery-page .sui-k-letter-face[data-k-dot] {
+    color: var(--sui-k-lit);
+  }
+
+  /* The cut line becomes the vinyl's lit edge; the shadow becomes light. */
+  .sui-k-gallery-page .sui-k-letter-cut {
+    color: #fff;
+    -webkit-text-stroke: 0.035em #fff;
+    opacity: 0.9;
+  }
+
+  .sui-k-gallery-page .sui-k-letter-shadow {
+    /* No filter: a blurred glyph this size is repainted under every stamp. */
+    color: rgb(0 0 0 / 55%);
+    -webkit-text-stroke: 0.04em rgb(0 0 0 / 35%);
+    translate: 0.03em 0.06em;
+  }
+
+  .sui-k-gallery-page .sui-k-hero-lede {
+    color: var(--sui-k-muted);
+  }
+
+  .sui-k-gallery-page .sui-k-text-link {
+    color: var(--sui-k-text);
+  }
+
+  .sui-k-gallery-page .sui-k-hero-note > p {
+    color: var(--sui-k-muted);
+    font-family: var(--sui-font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    rotate: 0deg;
+  }
+
+  .sui-k-gallery-page .sui-k-scribble-arrow {
+    color: var(--sui-k-lit);
+    font-size: 1.2em;
+  }
+
+  .sui-k-gallery-page .sui-k-adhesive-button {
+    border: 1px solid var(--sui-k-hair-strong);
+    color: var(--sui-k-text);
+  }
+
+  .sui-k-gallery-page .sui-k-adhesive-button:hover {
+    border-style: solid;
+    color: var(--sui-ink);
+    background: var(--sui-k-lit);
+  }
+
+  .sui-k-gallery-page .sui-k-stamps li {
+    padding: 0.45rem 0.85rem 0.4rem;
+    border: 1px solid var(--sui-k-hair-strong);
+    outline: 0;
+    background: transparent;
+    rotate: 0deg;
+  }
+
+  .sui-k-gallery-page .sui-k-stamps strong {
+    color: var(--sui-k-text);
+    font-family: var(--sui-font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+  }
+
+  .sui-k-gallery-page .sui-k-stamps span {
+    color: var(--sui-k-muted);
+  }
+
+  /* Hero actions: one lit pill, one hairline pill. */
+  .sui-k-gallery-page .sui-k-hero-actions .sui-sticker-button {
+    height: 3.25rem;
+    border: 1px solid var(--sui-k-hair-strong);
+    border-radius: 0.75rem;
+    color: var(--sui-k-text);
+    background: transparent;
+    box-shadow: none;
+    rotate: 0deg;
+  }
+
+  .sui-k-gallery-page
+    .sui-k-hero-actions
+    .sui-sticker-button[data-tone="acid"] {
+    border-color: #f4f1ea;
+    color: var(--sui-ink);
+    background: #f4f1ea;
+  }
+
+  .sui-k-gallery-page .sui-k-hero-actions .sui-sticker-button:hover {
+    border-color: var(--sui-k-lit);
+    color: var(--sui-ink);
+    background: var(--sui-k-lit);
+    translate: none;
+  }
+
+  /* Velocity strip: monochrome type, acid punctuation. */
+  .sui-k-gallery-page .sui-k-velocity {
+    border-block: 1px solid var(--sui-k-hair);
+    background: transparent;
+    rotate: 0deg;
+  }
+
+  .sui-k-gallery-page .sui-k-velocity-word,
+  .sui-k-gallery-page .sui-k-velocity-word[data-tone] {
+    color: var(--sui-k-text);
+    font-variation-settings:
+      "wdth" 75,
+      "wght" 700;
+  }
+
+  .sui-k-gallery-page
+    .sui-k-velocity-word:is([data-tone="1"], [data-tone="3"]) {
+    color: var(--sui-k-muted);
+    font-variation-settings:
+      "wdth" 100,
+      "wght" 250;
+  }
+
+  .sui-k-gallery-page .sui-k-velocity-dot {
+    color: var(--sui-k-lit);
+  }
+
+  /* The exhibition: specimen plates. */
+  .sui-k-gallery-page .sui-k-specimens {
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .sui-k-gallery-page .sui-k-specimens::after {
+    display: none;
+  }
+
+  .sui-k-gallery-page .sui-k-specimen {
+    border: 1px solid var(--sui-k-hair);
+    border-radius: 1rem;
+    outline: 0;
+    background: var(--sui-k-gallery-plate);
+    box-shadow: 0 1.5rem 3rem -2rem rgb(0 0 0 / 70%);
+    rotate: 0deg;
+  }
+
+  .sui-k-gallery-page .sui-k-specimen:hover,
+  .sui-k-gallery-page .sui-k-specimen:focus-within {
+    border-color: var(--sui-k-hair-strong);
+    box-shadow: 0 2.2rem 4rem -2rem rgb(0 0 0 / 85%);
+    translate: 0 -0.2rem;
+  }
+
+  .sui-k-gallery-page .sui-k-specimen-stage,
+  .sui-k-gallery-page .sui-k-specimen[data-accent] .sui-k-specimen-stage {
+    border-bottom: 1px solid var(--sui-k-hair);
+    border-radius: 1rem 1rem 0 0;
+    color: var(--sui-k-text);
+    background: var(--sui-k-spot);
+  }
+
+  .sui-k-gallery-page .sui-k-specimen-number {
+    color: var(--sui-k-muted);
+    font-family: var(--sui-font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    -webkit-text-stroke: 0;
+  }
+
+  .sui-k-gallery-page .sui-k-specimen-number::before {
+    content: "PLATE ";
+  }
+
+  .sui-k-gallery-page .sui-k-specimen-verb,
+  .sui-k-gallery-page .sui-k-specimen[data-accent] .sui-k-specimen-verb {
+    border: 1px solid var(--sui-k-hair-strong);
+    color: var(--sui-k-lit);
+    background: transparent;
+    rotate: 0deg;
+  }
+
+  /* Plate number and verb share a line; the name gets the full measure. */
+  .sui-k-gallery-page .sui-k-specimen-label :is(h2, h3) {
+    grid-column: 1 / -1;
+    margin-block-start: 0.35rem;
+  }
+
+  .sui-k-gallery-page .sui-k-specimen-label > p,
+  .sui-k-gallery-page .sui-k-specimen-caps {
+    color: var(--sui-k-muted);
+  }
+
+  .sui-k-gallery-page .sui-k-specimen-caps span {
+    border-color: var(--sui-k-hair-strong);
+    color: var(--sui-k-text);
+    background: transparent;
+  }
+
+  .sui-k-gallery-page .sui-k-specimen-links code {
+    border-color: var(--sui-k-hair-strong);
+    color: var(--sui-k-text);
+    background: transparent;
+  }
+
+  /* Heading link and playground link. */
+  .sui-k-gallery-page .sui-k-specimen-label a {
+    color: var(--sui-k-text);
+  }
+
+  .sui-k-gallery-page .sui-k-specimen-hint,
+  .sui-k-gallery-page .sui-k-specimen-poster {
+    color: var(--sui-k-text);
+  }
+
+  .sui-k-gallery-page .sui-k-press-count {
+    border-color: var(--sui-k-hair-strong);
+    outline-color: var(--sui-k-hair);
+    color: var(--sui-k-text);
+    background: transparent;
+  }
+
+  /* Realistic peel specimen: a printed label on a dark plate. */
+  .sui-k-gallery-page .sui-k-specimen-peel {
+    --sui-peel-front: #efe9dc;
+    --sui-peel-back: #24202a;
+    --sui-peel-ink: var(--sui-ink);
+  }
+
+  .sui-k-gallery-page .sui-k-specimen-peel .sui-sticker-peel-layer {
+    border: 0;
+  }
+
+  .sui-k-peel-face[data-side="front"] {
+    gap: 0.35rem;
+    color: var(--sui-ink);
+    background:
+      radial-gradient(circle, rgb(18 17 22 / 8%) 1px, transparent 1.3px) 0 0 /
+        10px 10px,
+      #efe9dc;
+  }
+
+  .sui-k-gallery-page .sui-k-peel-face[data-side="back"] {
+    color: var(--sui-k-text);
+    background: #24202a;
+  }
+
+  .sui-k-peel-brand,
+  .sui-k-peel-fine {
+    font-family: var(--sui-font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .sui-k-peel-face[data-side="front"] strong {
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+    font-variation-settings: "wdth" 85;
+    letter-spacing: -0.02em;
+  }
+
+  /* Deck specimen: prints with a photo window and a written caption. */
+  .sui-k-print {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0;
+  }
+
+  .sui-k-print-photo {
+    display: grid;
+    aspect-ratio: 1;
+    padding: 0.9rem;
+    place-items: center;
+    overflow: hidden;
+    background: radial-gradient(80% 80% at 50% 40%, #2c2832, #17141b);
+  }
+
+  .sui-k-print figcaption {
+    color: #3a3640;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .sui-k-gallery-page .sui-k-specimen-stack article {
+    border: 0;
+  }
+
+  /* Drawer, rules, final. */
+  .sui-k-gallery-page .sui-k-drawer {
+    border-top: 1px solid var(--sui-k-hair);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .sui-k-gallery-page .sui-k-desk-board {
+    border: 1px solid var(--sui-k-hair);
+    background: var(--sui-k-spot);
+  }
+
+  .sui-k-gallery-page .sui-k-chip {
+    border: 1px solid var(--sui-k-hair-strong);
+    border-radius: 999px;
+    color: var(--sui-k-text);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .sui-k-gallery-page .sui-k-chip:hover {
+    border-color: var(--sui-k-lit);
+    color: var(--sui-ink);
+    background: var(--sui-k-lit);
+    box-shadow: none;
+    translate: none;
+  }
+
+  .sui-k-gallery-page .sui-k-format-tags li,
+  .sui-k-gallery-page .sui-k-stack-row li {
+    border: 1px solid var(--sui-k-hair-strong);
+    border-radius: 999px;
+    color: var(--sui-k-text);
+    background: transparent;
+  }
+
+  .sui-k-gallery-page .sui-k-rule-list li {
+    border-top: 1px solid var(--sui-k-hair-strong);
+  }
+
+  .sui-k-gallery-page .sui-k-rule-number,
+  .sui-k-gallery-page .sui-k-rule-list li:nth-child(n) .sui-k-rule-number {
+    color: var(--sui-k-text);
+    font-variation-settings:
+      "wdth" 75,
+      "wght" 200;
+    -webkit-text-stroke: 0;
+  }
+
+  .sui-k-gallery-page .sui-k-rule-list p,
+  .sui-k-gallery-page .sui-k-stack-row > p {
+    color: var(--sui-k-muted);
+  }
+
+  .sui-k-gallery-page .sui-k-stack-row {
+    border-block: 1px solid var(--sui-k-hair);
+  }
+
+  .sui-k-gallery-page .sui-k-final {
+    border: 1px solid var(--sui-k-hair);
+    background: var(--sui-k-spot);
+    box-shadow: none;
+  }
+
+  .sui-k-gallery-page .sui-k-install code {
+    border: 1px solid var(--sui-k-hair-strong);
+    color: var(--sui-k-text);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  /* Handoff: the playground sits on the gallery as a lit spec sheet. */
+  .sui-k-gallery-page .sui-k-handoff .sui-docs-playground-session {
+    padding: clamp(0.75rem, 2vw, 1.5rem);
+    border: 1px solid var(--sui-k-hair);
+    border-radius: 1.25rem;
+    background: var(--sui-k-gallery-raised);
+  }
+
+  /* Stickers page and playground index on the gallery. */
+  .sui-k-gallery-page .sui-docs-sticker-tools {
+    border: 1px solid var(--sui-k-hair);
+    border-radius: 1rem;
+    color: var(--sui-k-text);
+    background: var(--sui-k-gallery-raised);
+    box-shadow: none;
+  }
+
+  .sui-k-gallery-page .sui-docs-sticker-tools input {
+    border: 1px solid var(--sui-k-hair-strong);
+    border-radius: 0.6rem;
+    color: var(--sui-k-text);
+    background: var(--sui-k-gallery);
+  }
+
+  .sui-k-gallery-page .sui-docs-sticker-tools input::placeholder {
+    color: var(--sui-k-muted);
+  }
+
+  .sui-k-gallery-page .sui-k-contact-sheet {
+    border: 1px solid var(--sui-k-hair);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .sui-k-gallery-page .sui-k-contact-tile {
+    border: 1px solid var(--sui-k-hair);
+    color: var(--sui-k-text);
+    background: var(--sui-k-gallery-plate);
+  }
+
+  .sui-k-gallery-page .sui-k-contact-tile:hover {
+    border-color: var(--sui-k-hair-strong);
+    box-shadow: 0 1rem 2rem -1.2rem rgb(0 0 0 / 80%);
+  }
+
+  .sui-k-gallery-page .sui-k-contact-tile[aria-pressed="true"] {
+    border-color: var(--sui-k-lit);
+    outline-color: var(--sui-k-lit);
+    color: var(--sui-k-text);
+    background: var(--sui-k-gallery-raised);
+    box-shadow: none;
+  }
+
+  .sui-k-gallery-page .sui-k-contact-tile small,
+  .sui-k-gallery-page .sui-k-contact-number,
+  .sui-k-gallery-page .sui-docs-sticker-license-line {
+    color: var(--sui-k-muted);
+  }
+
+  .sui-k-gallery-page .sui-k-inspector {
+    border: 1px solid var(--sui-k-hair);
+    color: var(--sui-k-text);
+    background: var(--sui-k-gallery-plate);
+    box-shadow: none;
+  }
+
+  .sui-k-gallery-page .sui-k-loupe-stage {
+    border-color: var(--sui-k-hair);
+    background: var(--sui-k-spot);
+  }
+
+  .sui-k-gallery-page .sui-k-inspector-body dl div {
+    border-bottom-color: var(--sui-k-hair);
+  }
+
+  .sui-k-gallery-page .sui-k-inspector-body dd {
+    color: var(--sui-k-muted);
+  }
+
+  .sui-k-gallery-page .sui-k-copy-import code {
+    border-color: var(--sui-k-hair-strong);
+    color: var(--sui-k-text);
+    background: var(--sui-k-gallery);
+  }
+
+  .sui-k-gallery-page .sui-docs-license-note {
+    border: 1px solid var(--sui-k-hair);
+    border-radius: 1rem;
+    color: var(--sui-k-muted);
+    background: var(--sui-k-gallery-raised);
+    box-shadow: none;
+    rotate: 0deg;
+  }
+
+  .sui-k-gallery-page .sui-docs-license-note a {
+    color: var(--sui-k-text);
+  }
+
+  .sui-k-gallery-page .sui-docs-playground-index > li > a {
+    border: 1px solid var(--sui-k-hair);
+    border-radius: 1rem;
+    color: var(--sui-k-text);
+    background: var(--sui-k-gallery-plate);
+    box-shadow: 0 1.5rem 3rem -2rem rgb(0 0 0 / 70%);
+    rotate: 0deg;
+  }
+
+  .sui-k-gallery-page .sui-docs-playground-index > li > a:hover {
+    border-color: var(--sui-k-hair-strong);
+  }
+
+  .sui-k-gallery-page .sui-docs-playground-index p,
+  .sui-k-gallery-page .sui-docs-playground-index span,
+  .sui-k-gallery-page .sui-docs-playground-index small {
+    color: var(--sui-k-muted);
+  }
+
+  /* Global frame on every page: smoked-glass dock, quiet band. */
+  .sui-k-navbar.sui-sticker-navbar::before {
+    filter: grayscale(0.55) brightness(0.7);
+    opacity: 0.28;
+  }
+
+  .sui-k-navbar.sui-sticker-navbar::after {
+    background:
+      linear-gradient(rgb(13 12 16 / 35%), rgb(13 12 16 / 75%)),
+      radial-gradient(
+        ellipse 60% 120% at 50% 50%,
+        rgb(13 12 16 / 60%),
+        rgb(13 12 16 / 0%) 75%
+      );
+  }
+
+  .sui-k-brand,
+  .sui-k-navbar .sui-docs-search-trigger,
+  .sui-k-navbar .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile) {
+    border: 1px solid rgb(242 238 230 / 16%);
+    color: var(--sui-k-text);
+    background: rgb(22 20 26 / 72%);
+    box-shadow: 0 0.8rem 2rem -1rem rgb(0 0 0 / 70%);
+    backdrop-filter: blur(14px) saturate(1.2);
+  }
+
+  .sui-k-navbar .sui-docs-search-trigger kbd {
+    border-color: rgb(242 238 230 / 22%);
+    color: var(--sui-k-text);
+    background: transparent;
+  }
+
+  .sui-k-navbar
+    .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+    .sui-sticker-navbar-link-slot
+    .sui-sticker-navbar-item {
+    color: rgb(242 238 230 / 86%);
+  }
+
+  .sui-k-navbar
+    .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+    .sui-sticker-navbar-link-slot
+    .sui-sticker-navbar-item:hover {
+    color: var(--sui-k-text);
+    background: rgb(242 238 230 / 8%);
+  }
+
+  .sui-k-navbar
+    .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+    .sui-sticker-navbar-link-slot
+    .sui-sticker-navbar-item[aria-current="page"] {
+    color: var(--sui-ink);
+    background: var(--sui-k-lit);
+    box-shadow: none;
+  }
+
+  .sui-k-navbar .sui-docs-navbar-start {
+    border: 0;
+    color: var(--sui-ink);
+    background: #f4f1ea;
+    box-shadow: 0 0.8rem 2rem -1rem rgb(0 0 0 / 70%);
+  }
+
+  .sui-k-navbar .sui-docs-navbar-start:hover {
+    background: var(--sui-k-lit);
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-menu-trigger {
+    border: 1px solid rgb(242 238 230 / 16%);
+    color: var(--sui-k-text);
+    background: rgb(22 20 26 / 72%);
+    box-shadow: none;
+  }
+
+  .sui-k-brand-word sup {
+    color: var(--sui-k-lit);
+  }
+
+  .sui-k-navbar .sui-sticker-navbar-progress {
+    height: 2px;
+    background: var(--sui-k-lit);
+  }
+
+  /* Footer: monochrome wordmark (3.6:1, above the large-text minimum). */
+  .sui-k-footer.sui-docs-footer {
+    border-top: 1px solid var(--sui-k-hair);
+    background: var(--sui-k-gallery);
+  }
+
+  .sui-k-footer-band {
+    filter: grayscale(0.55) brightness(0.7);
+    opacity: 0.25;
+  }
+
+  .sui-k-footer-word {
+    color: #6f6a75;
+    font-weight: 700;
+  }
+
+  .sui-k-footer .sui-k-footer-statement span {
+    border: 0;
+    color: var(--sui-k-lit);
+    background: none;
+    rotate: 0deg;
+  }
+
+  .sui-k-footer-meta.sui-docs-footer-meta {
+    background: var(--sui-k-gallery);
+  }
+
+  /* Reading pages: calm paper without the notebook grid. */
+  body:not(:has(.sui-k-gallery-page)) {
+    background: #f5f3ee;
+  }
+
+  /* Higher-specificity text overrides, kept last for selector ordering. */
+  .sui-k-gallery-page .sui-k-kicker > span {
+    border-color: var(--sui-k-hair-strong);
+    color: var(--sui-k-text);
+    rotate: 0deg;
+  }
+
+  .sui-k-gallery-page .sui-k-section-head > p:not(.sui-k-kicker) {
+    color: var(--sui-k-muted);
+  }
+
+  .sui-k-gallery-page .sui-k-print figcaption span {
+    margin-inline-end: 0.35rem;
+    font-family: var(--sui-font-mono);
+    font-size: 0.7rem;
+  }
+
+  /* Forced colours: lit accents and smoked glass give way to system colours. */
+  @media (forced-colors: active) {
+    :root {
+      --sui-k-gallery: Canvas;
+      --sui-k-gallery-raised: Canvas;
+      --sui-k-gallery-plate: Canvas;
+      --sui-k-text: CanvasText;
+      --sui-k-muted: CanvasText;
+      --sui-k-hair: CanvasText;
+      --sui-k-hair-strong: CanvasText;
+      --sui-k-lit: CanvasText;
+      --sui-k-spot: Canvas;
+    }
+
+    .sui-k-gallery-page .sui-k-letter-face,
+    .sui-k-navbar
+      .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+      .sui-sticker-navbar-link-slot
+      .sui-sticker-navbar-item,
+    .sui-k-gallery-page .sui-k-word[data-k-highlight] .sui-k-word-inner,
+    .sui-k-gallery-page .sui-k-letter-face[data-k-dot],
+    .sui-k-gallery-page .sui-k-specimen-verb,
+    .sui-k-gallery-page .sui-k-velocity-dot,
+    .sui-k-gallery-page .sui-k-scribble-arrow,
+    .sui-k-footer .sui-k-footer-statement span,
+    .sui-k-footer-word {
+      color: CanvasText;
+    }
+
+    .sui-k-brand,
+    .sui-k-navbar .sui-docs-search-trigger,
+    .sui-k-navbar .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile),
+    .sui-k-navbar .sui-sticker-navbar-menu-trigger {
+      border-color: CanvasText;
+      color: CanvasText;
+      background: Canvas;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .sui-k-navbar .sui-docs-search-trigger kbd {
+      color: CanvasText;
+      background: Canvas;
+    }
+
+    .sui-docs-mobile-customize .sui-docs-customize-trigger span {
+      color: inherit;
+    }
+
+    .sui-k-navbar
+      .sui-sticker-navbar-nav:not(.sui-sticker-navbar-nav-mobile)
+      .sui-sticker-navbar-link-slot
+      .sui-sticker-navbar-item[aria-current="page"] {
+      color: HighlightText;
+      background: Highlight;
+    }
+  }
+}

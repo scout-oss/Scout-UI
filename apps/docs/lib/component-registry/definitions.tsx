@@ -203,8 +203,8 @@ function definition<C extends object>(value: ComponentDocDefinitionBase<C>) {
 }
 
 const stickerDefaults = {
-  sourceId: "sunny-smile",
-  alt: "Smiling sun sticker",
+  sourceId: "pixel-heart",
+  alt: "Pixel heart sticker",
   size: "lg",
   tone: "paper",
   material: "flat",
@@ -332,6 +332,7 @@ const badgeDefaults = {
   size: "default",
   rotation: -1,
   selected: false,
+  finish: "enamel",
 } as const satisfies ComponentConfigMap["sticker-badge"];
 const badgeFields: readonly ConfigField<ComponentConfigMap["sticker-badge"]>[] =
   [
@@ -364,6 +365,20 @@ const badgeFields: readonly ConfigField<ComponentConfigMap["sticker-badge"]>[] =
       "Appearance",
       badgeDefaults.tone,
       toneOptions,
+      { omitWhenDefault: false },
+    ),
+    choiceField(
+      "segmented",
+      "finish",
+      "Finish",
+      "Choose the material: flat label, enamel pin, or holographic foil.",
+      "Appearance",
+      badgeDefaults.finish,
+      [
+        { label: "flat", value: "flat" },
+        { label: "enamel", value: "enamel" },
+        { label: "foil", value: "foil" },
+      ],
       { omitWhenDefault: false },
     ),
     choiceField(
@@ -528,7 +543,7 @@ const buttonFields: readonly ConfigField<
 
 const trailDefaults = {
   preset: "scout",
-  stickerId: "sparkle-pop",
+  stickerId: "mixtape",
   enabled: true,
   size: 78,
   spacing: 42,
@@ -663,7 +678,7 @@ const trailFields: readonly ConfigField<ComponentConfigMap["sticker-trail"]>[] =
   ];
 
 const cursorDefaults = {
-  visualId: "scribble-pointer",
+  visualId: "pixel-heart",
   enabled: true,
   size: 48,
   tilt: 10,
@@ -758,6 +773,7 @@ const cursorFields: readonly ConfigField<
 ];
 
 const peelDefaults = {
+  appearance: "realistic",
   open: false,
   origin: "top-right",
   peelSize: 72,
@@ -767,6 +783,19 @@ const peelDefaults = {
   reducedMotion: "system",
 } as const satisfies ComponentConfigMap["sticker-peel"];
 const peelFields: readonly ConfigField<ComponentConfigMap["sticker-peel"]>[] = [
+  choiceField(
+    "segmented",
+    "appearance",
+    "Appearance",
+    "Choose the classic diagonal reveal or the physically modelled peel.",
+    "Appearance",
+    peelDefaults.appearance,
+    [
+      { label: "realistic", value: "realistic" },
+      { label: "classic", value: "classic" },
+    ],
+    { omitWhenDefault: false },
+  ),
   booleanField(
     "open",
     "Open",
@@ -840,6 +869,7 @@ const peelFields: readonly ConfigField<ComponentConfigMap["sticker-peel"]>[] = [
 ];
 
 const stackDefaults = {
+  appearance: "deck",
   index: 0,
   visibleCount: 3,
   loop: false,
@@ -851,6 +881,19 @@ const stackDefaults = {
 } as const satisfies ComponentConfigMap["sticker-stack"];
 const stackFields: readonly ConfigField<ComponentConfigMap["sticker-stack"]>[] =
   [
+    choiceField(
+      "segmented",
+      "appearance",
+      "Appearance",
+      "Choose paper cards or a fanned deck of prints you can throw.",
+      "Appearance",
+      stackDefaults.appearance,
+      [
+        { label: "deck", value: "deck" },
+        { label: "paper", value: "paper" },
+      ],
+      { omitWhenDefault: false },
+    ),
     numericField(
       "range",
       "index",
@@ -929,7 +972,7 @@ const navbarDefaults = {
   activeId: "components",
   sticky: false,
   showScrollProgress: false,
-  collageAssetId: "wonky-star",
+  collageAssetId: "postage-stamp",
   reducedMotion: "system",
 } as const satisfies ComponentConfigMap["sticker-navbar"];
 const navbarFields: readonly ConfigField<
@@ -1019,8 +1062,8 @@ export const componentDefinitions = Object.freeze({
       }),
       preset("loud", "Loud", "A bounded high-energy object.", {
         ...stickerDefaults,
-        alt: "Attention bolt sticker",
-        sourceId: "attention-bolt",
+        alt: "Foil seal sticker",
+        sourceId: "foil-seal",
         tone: "orange",
         size: "xl",
         rotation: 9,
@@ -1166,7 +1209,7 @@ export const componentDefinitions = Object.freeze({
       }),
       preset("quiet", "Quiet", "Small and restrained.", {
         ...cursorDefaults,
-        visualId: "chunky-check",
+        visualId: "foil-seal",
         size: 34,
         tilt: 0,
         smoothing: 0.65,
@@ -1278,7 +1321,7 @@ export const componentDefinitions = Object.freeze({
       preset("collage", "Collage", "Art-directed sticker collage.", {
         ...navbarDefaults,
         variant: "collage",
-        collageAssetId: "attention-bolt",
+        collageAssetId: "ticket-stub",
         activeId: "examples",
       }),
       preset(

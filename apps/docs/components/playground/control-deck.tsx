@@ -181,7 +181,9 @@ function FieldControl({
                   }}
                   type="radio"
                 />
-                <Sticker alt="" shadow="none" size="sm" source={source} />
+                {source ? (
+                  <Sticker alt="" shadow="none" size="md" source={source} />
+                ) : null}
                 <span>{option.label}</span>
               </label>
             );

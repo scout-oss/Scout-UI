@@ -24,7 +24,7 @@
     "@scout-ui/react": "workspace:*",
     "@scout-ui/sticker-trail": "workspace:*",
     "@scout-ui/stickers": "workspace:*",
-    "@shikijs/core": "4.4.3",
+    "@shikijs/core": "4.5.0",
     "@shikijs/engine-javascript": "4.4.3",
     "@shikijs/langs": "4.4.3",
     "@shikijs/themes": "4.4.3",
